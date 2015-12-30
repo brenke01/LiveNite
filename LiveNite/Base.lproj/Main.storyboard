@@ -132,6 +132,18 @@
                                     <constraint firstAttribute="height" constant="317" id="bbS-cp-chu"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2NA-Kh-hr8">
+                                <rect key="frame" x="0.0" y="381" width="240" height="107"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Gd-Ok-eqd">
+                                        <rect key="frame" x="21" y="21" width="52" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.32508680559999997" green="0.32508680559999997" blue="0.32508680559999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -148,7 +160,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="350" height="600"/>
                     <connections>
+                        <outlet property="detailView" destination="2NA-Kh-hr8" id="sc2-nd-8NO"/>
                         <outlet property="imgView" destination="6Mh-OL-qxe" id="XKm-nt-Z37"/>
+                        <outlet property="upvotesLabel" destination="3Gd-Ok-eqd" id="TaB-Dp-nNJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kmr-u8-OBq" sceneMemberID="firstResponder"/>
