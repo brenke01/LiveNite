@@ -132,11 +132,11 @@
                                     <constraint firstAttribute="height" constant="317" id="bbS-cp-chu"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2NA-Kh-hr8">
-                                <rect key="frame" x="0.0" y="381" width="240" height="107"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pct-Rs-Yqu">
+                                <rect key="frame" x="0.0" y="389" width="350" height="80"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Gd-Ok-eqd">
-                                        <rect key="frame" x="21" y="21" width="52" height="48"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WR2-bH-X5E">
+                                        <rect key="frame" x="16" y="20" width="37" height="40"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -145,7 +145,7 @@
                                 <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.32508680559999997" green="0.32508680559999997" blue="0.32508680559999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="nHt-Wp-u4A" firstAttribute="top" secondItem="pLR-rD-vJW" secondAttribute="topMargin" id="1Xp-M5-GNd"/>
                             <constraint firstItem="6Mh-OL-qxe" firstAttribute="centerX" secondItem="pLR-rD-vJW" secondAttribute="centerX" id="Ock-HV-dto"/>
@@ -160,9 +160,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="350" height="600"/>
                     <connections>
-                        <outlet property="detailView" destination="2NA-Kh-hr8" id="sc2-nd-8NO"/>
+                        <outlet property="detailView" destination="pct-Rs-Yqu" id="mLR-kt-h0d"/>
                         <outlet property="imgView" destination="6Mh-OL-qxe" id="XKm-nt-Z37"/>
-                        <outlet property="upvotesLabel" destination="3Gd-Ok-eqd" id="TaB-Dp-nNJ"/>
+                        <outlet property="upvotesLabel" destination="WR2-bH-X5E" id="JcI-Yk-wxc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kmr-u8-OBq" sceneMemberID="firstResponder"/>

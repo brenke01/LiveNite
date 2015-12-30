@@ -20,9 +20,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         self.dismissViewControllerAnimated(false, completion: nil)
     }
     
-    
-    @IBOutlet weak var detailView: UIView!
     @IBOutlet weak var upvotesLabel: UILabel!
+    @IBOutlet weak var detailView: UIView!
     @IBOutlet var imgView: UIImageView!
     
     var imageTapped = UIImage()
@@ -38,9 +37,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     func loadImageDetail(){
         imgView.image = imageTapped
         upvotesLabel.text = String(imageUpvotes)
-        //Needs styling and formatting for label and UIView
+        //Needs styling
         upvotesLabel.textColor = UIColor.whiteColor()
-
         
         
     }
