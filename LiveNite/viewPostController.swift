@@ -13,6 +13,7 @@ import MobileCoreServices
 import AVFoundation
 import CoreData
 import CoreLocation
+import GoogleMaps
 
 class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout{
 
@@ -21,10 +22,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     @IBAction func upvoteAction(sender: AnyObject) {
+        upvoteButton.tag = imageID
         UpVote(upvoteButton)
     }
     
     @IBAction func downvoteAction(sender: AnyObject) {
+        downvoteButton.tag = imageID
         DownVote(downvoteButton)
     }
     
@@ -51,8 +54,6 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         navigationBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         
-        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
-        
     }
     
     func loadImageDetail(){
@@ -74,23 +75,25 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func UpVote(sender: UIButton){
+        print("Upvote")
         print(sender.tag, terminator: "")
         let id = 0
         let disableMyButton = sender as UIButton
         disableMyButton.enabled = false
-        let disableUpVoteImage = UIImage(named: "UpVoted")
-        disableMyButton.setBackgroundImage(disableUpVoteImage, forState: UIControlState.Normal)
+        disableMyButton.alpha = 0.5
         let fetchRequest = NSFetchRequest(entityName: "Entity")
         fetchRequest.predicate = NSPredicate(format: "id = %i", sender.tag)
         let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        var upvote = 0
         if let locations = locations{
             
             for loc in locations{
+                print("Loop")
                 let idData : AnyObject? = loc.valueForKey("id")
                 let id = idData as! Int
                 print(id, terminator: "")
                 let upvoteData : AnyObject? = loc.valueForKey("upvotes")
-                var upvote = upvoteData as! Int
+                upvote = upvoteData as! Int
                 upvote = upvote + 1
                 
                 loc.setValue(upvote, forKey: "upvotes")
@@ -110,6 +113,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             
         }
         userUpvoted(id)
+        upvotesLabel.text = String(upvote)
         //self.collectionView!.reloadData()
         
     }
@@ -123,6 +127,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         let fetchRequest = NSFetchRequest(entityName: "Entity")
         fetchRequest.predicate = NSPredicate(format: "id = %i", sender.tag)
         let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        var upvote = 0
         if let locations = locations{
             
             for loc in locations{
@@ -131,7 +136,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 let id = idData as! Int
                 print(id, terminator: "")
                 let upvoteData : AnyObject? = loc.valueForKey("upvotes")
-                var upvote = upvoteData as! Int
+                upvote = upvoteData as! Int
                 upvote = upvote - 1
                 loc.setValue(upvote, forKey: "upvotes")
                 do {
@@ -149,7 +154,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             
         }
-        
+        upvotesLabel.text = String(upvote)
         //self.collectionView?.reloadData()
         
     }

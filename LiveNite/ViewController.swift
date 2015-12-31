@@ -12,6 +12,7 @@ import MobileCoreServices
 import AVFoundation
 import CoreData
 import CoreLocation
+import GoogleMaps
 
 var appDel = (UIApplication.sharedApplication().delegate as! AppDelegate)
 var context:NSManagedObjectContext = appDel.managedObjectContext!
@@ -59,7 +60,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //collectionView = UICollectionView(fr, collectionViewLayout: layout)
         collectionView?.dataSource = self
         collectionView!.delegate = self
-        print("cell")
         
         collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         let nibname = UINib(nibName: "Cell", bundle: nil)
@@ -135,7 +135,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         layer.shadowOpacity = 0.4
         layer.shadowRadius = 5
         cell.addSubview(imageButton)
-        print("cell")
         return cell
     }
     
@@ -415,12 +414,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             print("saved successfully", terminator: "")
             
             dismissViewControllerAnimated(true, completion: nil)
-            locationManager.stopUpdatingLocation()  
+            locationManager.stopUpdatingLocation()
             self.collectionView!.reloadData()
             
             
             
         }
+        
+        fetchNearbyPlaces(userLocation)
         
         
         
@@ -612,6 +613,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         }
         return currentID
+    }
+    
+    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) {
+        let searchRadius:Double = 3000
+        let searchedTypes = ["bar","club","restaurant","establishment"]
+        let dataProvider = GoogleDataProvider()
+        dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
+            for place: GooglePlace in places {
+                print(place.name)
+            }
+        }
     }
 }
 

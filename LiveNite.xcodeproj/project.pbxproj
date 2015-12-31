@@ -15,7 +15,11 @@
 		15DDCC2B1B5F381F00E87EA1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15DDCC291B5F381F00E87EA1 /* LaunchScreen.xib */; };
 		15DDCC371B5F381F00E87EA1 /* LiveNiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DDCC361B5F381F00E87EA1 /* LiveNiteTests.swift */; };
 		6B69ED921C321FF8000785EF /* viewPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED911C321FF8000785EF /* viewPostController.swift */; };
+		6B69ED981C34BA6C000785EF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6B69ED971C34BA6C000785EF /* Podfile */; };
+		6B69ED9A1C34BF0E000785EF /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */; };
+		6B69ED9D1C34C1F2000785EF /* GooglePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */; };
 		6BDCEDA31C210E68004C3029 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BDCEDA21C210E68004C3029 /* CoreLocation.framework */; };
+		FFFC7B1B04B7D6052E296CA1 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85F2763A40152D1702DFD2E7 /* Pods.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +45,14 @@
 		15DDCC351B5F381F00E87EA1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15DDCC361B5F381F00E87EA1 /* LiveNiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveNiteTests.swift; sourceTree = "<group>"; };
 		6B69ED911C321FF8000785EF /* viewPostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = viewPostController.swift; sourceTree = "<group>"; };
+		6B69ED971C34BA6C000785EF /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
+		6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlace.swift; sourceTree = "<group>"; };
+		6B69EDA41C34CCCA000785EF /* LiveNite-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "LiveNite-Bridging-Header.h"; path = "../LiveNite-Bridging-Header.h"; sourceTree = "<group>"; };
 		6BDCEDA21C210E68004C3029 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		7D58985DD7F087B75CA05378 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		85F2763A40152D1702DFD2E7 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FD03FA82CABB072A51AE13B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BDCEDA31C210E68004C3029 /* CoreLocation.framework in Frameworks */,
+				FFFC7B1B04B7D6052E296CA1 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,10 +78,13 @@
 		15DDCC0F1B5F381F00E87EA1 = {
 			isa = PBXGroup;
 			children = (
+				6B69ED971C34BA6C000785EF /* Podfile */,
 				6BDCEDA21C210E68004C3029 /* CoreLocation.framework */,
 				15DDCC1A1B5F381F00E87EA1 /* LiveNite */,
 				15DDCC331B5F381F00E87EA1 /* LiveNiteTests */,
 				15DDCC191B5F381F00E87EA1 /* Products */,
+				BEF815D7F11FC7B60ABBBA29 /* Pods */,
+				A95959DC0F62E5D6B726E554 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,7 +100,10 @@
 		15DDCC1A1B5F381F00E87EA1 /* LiveNite */ = {
 			isa = PBXGroup;
 			children = (
+				6B69EDA41C34CCCA000785EF /* LiveNite-Bridging-Header.h */,
 				15DDCC1D1B5F381F00E87EA1 /* AppDelegate.swift */,
+				6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */,
+				6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */,
 				15DDCC221B5F381F00E87EA1 /* ViewController.swift */,
 				6B69ED911C321FF8000785EF /* viewPostController.swift */,
 				15DDCC241B5F381F00E87EA1 /* Main.storyboard */,
@@ -122,6 +140,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A95959DC0F62E5D6B726E554 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				85F2763A40152D1702DFD2E7 /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BEF815D7F11FC7B60ABBBA29 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8FD03FA82CABB072A51AE13B /* Pods.debug.xcconfig */,
+				7D58985DD7F087B75CA05378 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -129,9 +164,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 15DDCC3A1B5F381F00E87EA1 /* Build configuration list for PBXNativeTarget "LiveNite" */;
 			buildPhases = (
+				D0B3B02A8BD33B5DD06AA7B1 /* Check Pods Manifest.lock */,
 				15DDCC141B5F381F00E87EA1 /* Sources */,
 				15DDCC151B5F381F00E87EA1 /* Frameworks */,
 				15DDCC161B5F381F00E87EA1 /* Resources */,
+				E7401E73D6D56C3D815FE819 /* Embed Pods Frameworks */,
+				3A7B5BB5861EA6E6E6F229AE /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -167,13 +205,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0710;
-				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0640;
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = LiveNite;
 				TargetAttributes = {
 					15DDCC171B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = A45KMLTLUF;
+						DevelopmentTeam = 4P5R952TU2;
 					};
 					15DDCC2F1B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
@@ -207,6 +245,7 @@
 			files = (
 				15DDCC261B5F381F00E87EA1 /* Main.storyboard in Resources */,
 				15DDCC2B1B5F381F00E87EA1 /* LaunchScreen.xib in Resources */,
+				6B69ED981C34BA6C000785EF /* Podfile in Resources */,
 				15DDCC281B5F381F00E87EA1 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,12 +259,62 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3A7B5BB5861EA6E6E6F229AE /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0B3B02A8BD33B5DD06AA7B1 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E7401E73D6D56C3D815FE819 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		15DDCC141B5F381F00E87EA1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B69ED9A1C34BF0E000785EF /* GoogleDataProvider.swift in Sources */,
 				6B69ED921C321FF8000785EF /* viewPostController.swift in Sources */,
+				6B69ED9D1C34C1F2000785EF /* GooglePlace.swift in Sources */,
 				15DDCC231B5F381F00E87EA1 /* ViewController.swift in Sources */,
 				15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */,
 				15DDCC211B5F381F00E87EA1 /* LiveNite.xcdatamodeld in Sources */,
@@ -291,6 +380,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -306,7 +396,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -344,7 +434,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -353,29 +443,38 @@
 		};
 		15DDCC3B1B5F381F00E87EA1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8FD03FA82CABB072A51AE13B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = LiveNite/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "LiveNite/LiveNite-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		15DDCC3C1B5F381F00E87EA1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D58985DD7F087B75CA05378 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = LiveNite/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "LiveNite/LiveNite-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -393,6 +492,7 @@
 				);
 				INFOPLIST_FILE = LiveNiteTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LiveNite.app/LiveNite";
 			};
@@ -408,6 +508,7 @@
 				);
 				INFOPLIST_FILE = LiveNiteTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LiveNite.app/LiveNite";
 			};
