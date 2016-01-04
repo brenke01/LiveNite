@@ -29,6 +29,21 @@
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" red="0.29189898318830076" green="0.29720908403396606" blue="0.049259983662290639" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jka-j3-CCD">
+                                <rect key="frame" x="144" y="538" width="62" height="62"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="62" id="4S5-TP-edX"/>
+                                    <constraint firstAttribute="height" constant="62" id="aIj-Dp-X0R"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <state key="normal" backgroundImage="Image">
+                                    <color key="titleColor" red="0.01614025339668998" green="0.016433869949494917" blue="0.0027237800212318295" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="capVideo" destination="vXZ-lx-hvc" eventType="touchUpInside" id="lMu-OV-fAI"/>
+                                </connections>
+                            </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BTf-tM-Z8b">
                                 <rect key="frame" x="0.0" y="0.0" width="350" height="537"/>
                                 <color key="backgroundColor" red="0.23993844696969702" green="0.23993844696969702" blue="0.23993844696969702" alpha="1" colorSpace="calibratedRGB"/>
@@ -58,21 +73,6 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="jR3-KX-oJQ"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jka-j3-CCD">
-                                <rect key="frame" x="144" y="538" width="62" height="62"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="62" id="4S5-TP-edX"/>
-                                    <constraint firstAttribute="height" constant="62" id="aIj-Dp-X0R"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                                <state key="normal" backgroundImage="Image">
-                                    <color key="titleColor" red="0.01614025339668998" green="0.016433869949494917" blue="0.0027237800212318295" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="capVideo" destination="vXZ-lx-hvc" eventType="touchUpInside" id="lMu-OV-fAI"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.32508680555555558" green="0.32508680555555558" blue="0.32508680555555558" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -94,6 +94,7 @@
                     <connections>
                         <outlet property="collectionView" destination="BTf-tM-Z8b" id="f9b-Ap-TSK"/>
                         <segue destination="VBq-gS-Kxm" kind="show" identifier="viewPost" id="6Rr-U6-rPJ"/>
+                        <segue destination="SQT-NH-12I" kind="show" identifier="pickLocation" id="SDa-va-xY6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -221,6 +222,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kmr-u8-OBq" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1544" y="8"/>
+        </scene>
+        <!--Pick Location Controller-->
+        <scene sceneID="BeN-rJ-Idf">
+            <objects>
+                <viewController id="SQT-NH-12I" customClass="PickLocationController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Qzq-4W-gIz"/>
+                        <viewControllerLayoutGuide type="bottom" id="nZN-c1-ZXR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mbs-rX-2Hh">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Background_Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="PFc-xq-2yf">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
+                            </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JWa-Xg-aTn">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.32508680559999997" green="0.32508680559999997" blue="0.32508680559999997" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="WVW-MN-fWS"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="350" height="600"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vTl-xe-zqT" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1085" y="-706"/>
         </scene>
     </scenes>
     <resources>

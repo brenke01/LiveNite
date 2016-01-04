@@ -208,6 +208,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     }
                 }
             }
+        }else if segue.identifier == "pickLocation"{
+            
+            if let destinationVC = segue.destinationViewController as? PickLocationController{
+                destinationVC.locations = 1
+            }
         }
     }
     
@@ -414,6 +419,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             print("saved successfully", terminator: "")
             
             dismissViewControllerAnimated(true, completion: nil)
+
             locationManager.stopUpdatingLocation()
             self.collectionView!.reloadData()
             
@@ -422,7 +428,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
         fetchNearbyPlaces(userLocation)
-        
+                    self.performSegueWithIdentifier("pickLocation", sender: nil)
         
         
     }
