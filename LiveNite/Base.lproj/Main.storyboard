@@ -227,6 +227,10 @@
         <scene sceneID="BeN-rJ-Idf">
             <objects>
                 <viewController id="SQT-NH-12I" customClass="PickLocationController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
+                    <imageView key="view" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background_Gradient" id="qWE-kk-Dwt">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="350" height="600"/>
                 </viewController>
