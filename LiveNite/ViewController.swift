@@ -184,6 +184,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print(segue.identifier)
         if segue.identifier == "viewPost" {
             print("test")
             if let destinationVC = segue.destinationViewController as? viewPostController{
@@ -208,9 +209,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     }
                 }
             }
-        }else if segue.identifier == "pickLocation"{
+        }else if segue.identifier == "PickLocation"{
             
             if let destinationVC = segue.destinationViewController as? PickLocationController{
+                
                 destinationVC.locations = 1
             }
         }
@@ -428,7 +430,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
         fetchNearbyPlaces(userLocation)
-                    self.performSegueWithIdentifier("pickLocation", sender: nil)
+        self.performSegueWithIdentifier("PickLocation", sender: 1)
         
         
     }
