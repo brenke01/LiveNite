@@ -20,9 +20,15 @@
         <attribute name="gender" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="user_name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="UserUpvotes" syncable="YES">
+        <attribute name="image_id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="upvote_value" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="user_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="CurrentID" positionX="-45" positionY="54" width="128" height="60"/>
         <element name="Entity" positionX="-45" positionY="0" width="128" height="180"/>
         <element name="Users" positionX="-45" positionY="72" width="128" height="105"/>
+        <element name="UserUpvotes" positionX="-36" positionY="81" width="128" height="90"/>
     </elements>
 </model>
