@@ -15,21 +15,81 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout{
+class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource{
+    @IBOutlet var tableView: UITableView!
     
+    
+    var vc = ViewController()
+    var saved = false
     var locations = 1
+    var selectedImage = UIImage()
+    var listOfPlaces : [String] = []
+    //variable for accessing location
+    var locationManager = CLLocationManager()
+    var userLocation = CLLocationCoordinate2D()
+    var locationUpdated = false
     var complete = false
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("pick location")
+        tableView.hidden = true
+        
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        tableView.dataSource = self
+        tableView.delegate = self
+        if #available(iOS 8.0, *) {
+            locationManager.requestWhenInUseAuthorization()
+        } else {
+            // Fallback on earlier versions
+        }
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        
         
         
     }
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        userLocation = locations[0].coordinate
+        print("\(userLocation.latitude) Degrees Latitude, \(userLocation.longitude) Degrees Longitude")
+        locationUpdated = true
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        print("view appeared")
+        //location settings
+        //needs better error checking
+
+        
+        print(userLocation)
+        print(saved)
+        print(listOfPlaces)
+        
+        if (complete == false){
+            takeAndSave()
+        }else{
+        
+       
+
+            
+            print("Not saved")
+            fetchNearbyPlaces(userLocation)
+            tableView.reloadData()
+        }
+        if (saved == true){
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+
+    
+
     func takeAndSave(){
-        //locationManager.startUpdatingLocation()
+        
         
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
             
@@ -45,7 +105,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             imagePicker.showsCameraControls = true
 
             self.presentViewController(imagePicker, animated: true, completion: nil)
-            complete = true
+            
+            
         }
             
         else {
@@ -55,40 +116,16 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : AnyObject]) {
         
+        self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         
         
-        if let newVideo = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
-            let tempImage = info[UIImagePickerControllerOriginalImage] as! UIImage;
-            let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
-            newVideo.setValue(dataImage, forKey: "videoData")
-            var date = NSDate()
-            var calendar = NSCalendar.currentCalendar()
-            var components = calendar.components([.Hour, .Minute], fromDate: date)
-            var hourOfDate = components.hour
-            newVideo.setValue(hourOfDate, forKey: "time")
-            var setImageTitle : String = "Fun at Blarneys"
-            var setUpVotes : Int = 0
-            var setId : Int = getImageId()
-            print(setId, terminator: "")
-            newVideo.setValue(setId, forKey: "id")
-            newVideo.setValue(setUpVotes, forKey: "upvotes")
-            newVideo.setValue(setImageTitle, forKey: "title")
-            do {
-                try context.save()
-            } catch _ {
-            }
-            print("saved successfully", terminator: "")
-            
-            dismissViewControllerAnimated(true, completion: nil)
-            
-            //locationManager.stopUpdatingLocation()
-            //self.collectionView!.reloadData()
-            
-            
-            
-        }
+
+
         
-        //fetchNearbyPlaces(userLocation)
+        dismissViewControllerAnimated(true, completion: nil)
+        
+        locationManager.stopUpdatingLocation()
+        complete = true
         
         
     }
@@ -124,15 +161,83 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        print("view appeared")
-        if (complete == false){
-            takeAndSave()
-        }else{
-            dismissViewControllerAnimated(true, completion: nil)
-        }
+    func retrieveListOfPlaces(listOfPlaces: [String]){
+        self.listOfPlaces = listOfPlaces
+        
+        tableView.reloadData()
+        tableView.hidden = false
+       
     }
     
+    
+    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) {
+        let searchRadius:Double = 3000
+        var list : [String] = []
+        let searchedTypes = ["bar","club","restaurant","establishment"]
+        let dataProvider = GoogleDataProvider()
+        dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
+            for place: GooglePlace in places {
+                list.append(place.name as String)
+               
+                if (list.count == places.count){
+                     self.retrieveListOfPlaces(list)
+                }
+                
+            }
+        }
+    }
+    func numberOfSectionsinTableView(tableView: UITableView) -> Int{
+        return 1
+    }
+    
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
+        return self.listOfPlaces.count
+    }
+    
+    
+    func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell{
+        
+        let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
+        cell.backgroundColor = UIColor.blackColor()
+        if (self.listOfPlaces.count != 0){
+            cell.textLabel?.text = self.listOfPlaces[indexPath.row]
+        
+            cell.textLabel?.textColor = UIColor.whiteColor()
+        }
+        return cell
+    }
+    
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        var cell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        var cellText : String = (cell.textLabel?.text)!
+        if let newVideo = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
+            let tempImage = self.selectedImage
+            let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
+            newVideo.setValue(dataImage, forKey: "videoData")
+            var date = NSDate()
+            var calendar = NSCalendar.currentCalendar()
+            var components = calendar.components([.Hour, .Minute], fromDate: date)
+            var hourOfDate = components.hour
+            newVideo.setValue(hourOfDate, forKey: "time")
+            var setImageTitle : String = cellText
+            var setUpVotes : Int = 0
+            var setId : Int = getImageId()
+            print(setId, terminator: "")
+            newVideo.setValue(setId, forKey: "id")
+            newVideo.setValue(setUpVotes, forKey: "upvotes")
+            newVideo.setValue(setImageTitle, forKey: "title")
+            do {
+                try context.save()
+            } catch _ {
+            }
+            print("saved successfully", terminator: "")
+            dismissViewControllerAnimated(true, completion: nil)
+            
+            
+            
+        }
+    }
     
 }

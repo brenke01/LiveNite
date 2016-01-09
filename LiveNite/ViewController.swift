@@ -25,9 +25,6 @@ var noColumns: Int = 2
 var imgWidth = 120
 var imgHeight = 160
 
-//variable for location
-var userLocation = CLLocationCoordinate2D()
-var locationUpdated = false
 
 
 
@@ -44,6 +41,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     //variable for accessing location
     var locationManager = CLLocationManager()
+    var userLocation = CLLocationCoordinate2D()
+    var locationUpdated = false
     
     
     let captureSession = AVCaptureSession()
@@ -210,10 +209,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         let imageUpvotes : AnyObject? =
                             img.valueForKey("upvotes")
                         let imageData : AnyObject? = img.valueForKey("videoData")
+                        let imageTitle : AnyObject? = img.valueForKey("title")
                         destinationVC.imageUpvotes = (imageUpvotes as? Int)!
                         print(imageID)
                         destinationVC.imageTapped = UIImage(data: (imageData as? NSData)!)!
                         destinationVC.imageID = (imageID as? Int)!
+                        destinationVC.imageTitle = (imageTitle as? String)!
                         
                     }
                 }
@@ -542,16 +543,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
 
-    
-    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) {
-        let searchRadius:Double = 3000
-        let searchedTypes = ["bar","club","restaurant","establishment"]
-        let dataProvider = GoogleDataProvider()
-        dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
-            for place: GooglePlace in places {
-                print(place.name)
-            }
-        }
-    }
+
 }
 

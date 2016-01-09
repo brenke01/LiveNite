@@ -124,7 +124,7 @@
                                 </constraints>
                                 <color key="tintColor" red="0.239938447" green="0.239938447" blue="0.239938447" alpha="1" colorSpace="calibratedRGB"/>
                                 <items>
-                                    <navigationItem title="Blarney's" id="jte-41-csA">
+                                    <navigationItem id="jte-41-csA">
                                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="EO6-eA-hQc">
                                             <connections>
                                                 <action selector="exit:" destination="VBq-gS-Kxm" id="sei-Ag-AgO"/>
@@ -133,12 +133,6 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Mh-OL-qxe">
-                                <rect key="frame" x="0.0" y="64" width="350" height="325"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="325" id="W3w-fw-2Dk"/>
-                                </constraints>
-                            </imageView>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pct-Rs-Yqu">
                                 <rect key="frame" x="0.0" y="389" width="350" height="86"/>
                                 <subviews>
@@ -186,6 +180,12 @@
                                     <constraint firstItem="jkC-YH-G4v" firstAttribute="top" secondItem="pct-Rs-Yqu" secondAttribute="top" constant="8" id="wJ5-oA-KTR"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Mh-OL-qxe">
+                                <rect key="frame" x="0.0" y="64" width="350" height="325"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="325" id="W3w-fw-2Dk"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -227,12 +227,18 @@
         <scene sceneID="BeN-rJ-Idf">
             <objects>
                 <viewController id="SQT-NH-12I" customClass="PickLocationController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
-                    <imageView key="view" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background_Gradient" id="qWE-kk-Dwt">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="aPa-Ie-teM">
                         <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tableView>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="350" height="600"/>
+                    <connections>
+                        <outlet property="tableView" destination="aPa-Ie-teM" id="Rpu-px-76V"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vTl-xe-zqT" sceneMemberID="firstResponder"/>
             </objects>

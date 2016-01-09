@@ -41,6 +41,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var imageTapped = UIImage()
     var imageID = 0
     var imageUpvotes = 0
+    var imageTitle =  ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +54,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         navigationBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
+        navigationBar.topItem!.title = imageTitle
         
     }
     
