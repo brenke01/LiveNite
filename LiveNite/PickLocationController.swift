@@ -18,6 +18,7 @@ import GoogleMaps
 class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource{
     @IBOutlet var tableView: UITableView!
     
+    @IBOutlet weak var selectedImageView: UIImageView!
     
     var vc = ViewController()
     var saved = false
@@ -34,8 +35,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var captureDevice : AVCaptureDevice?
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.hidden = true
         
+        
+        self.view.hidden = true
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -65,24 +68,19 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         //needs better error checking
 
         
-        print(userLocation)
-        print(saved)
-        print(listOfPlaces)
-        
         if (complete == false){
             takeAndSave()
-        }else{
+        }else if (complete == true && saved == false){
         
-       
+            dismissViewControllerAnimated(true, completion: nil)
 
             
-            print("Not saved")
+
+        }else{
             fetchNearbyPlaces(userLocation)
             tableView.reloadData()
         }
-        if (saved == true){
-            dismissViewControllerAnimated(true, completion: nil)
-        }
+
     }
     
 
@@ -105,7 +103,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             imagePicker.showsCameraControls = true
 
             self.presentViewController(imagePicker, animated: true, completion: nil)
-            
+            complete = true
             
         }
             
@@ -117,15 +115,15 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : AnyObject]) {
         
         self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
+        selectedImageView.image = self.selectedImage
         
 
 
         
         dismissViewControllerAnimated(true, completion: nil)
-        
+        saved = true
         locationManager.stopUpdatingLocation()
-        complete = true
+        
         
         
     }
@@ -165,7 +163,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         self.listOfPlaces = listOfPlaces
         
         tableView.reloadData()
-        tableView.hidden = false
+        self.view.hidden = false
        
     }
     
@@ -199,7 +197,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell{
         
         let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        cell.backgroundColor = UIColor.blackColor()
+        tableView.backgroundColor = UIColor.clearColor()
+        tableView.opaque = false
+        cell.backgroundColor = UIColor.clearColor()
+        cell.opaque = false
         if (self.listOfPlaces.count != 0){
             cell.textLabel?.text = self.listOfPlaces[indexPath.row]
         
