@@ -10,5 +10,7 @@
 #define LiveNite_Bridging_Header_h
 
 #import <GoogleMaps/GoogleMaps.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 #endif /* LiveNite_Bridging_Header_h */

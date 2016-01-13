@@ -95,6 +95,7 @@
                         <outlet property="collectionView" destination="BTf-tM-Z8b" id="f9b-Ap-TSK"/>
                         <segue destination="VBq-gS-Kxm" kind="show" identifier="viewPost" id="6Rr-U6-rPJ"/>
                         <segue destination="SQT-NH-12I" kind="show" identifier="PickLocation" id="SaP-TC-hYB"/>
+                        <segue destination="o6U-yY-ghQ" kind="show" identifier="login" id="LTZ-YS-sK5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -261,6 +262,26 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vTl-xe-zqT" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1085" y="-706"/>
+        </scene>
+        <!--Login Controller-->
+        <scene sceneID="XHN-EO-kvc">
+            <objects>
+                <viewController id="o6U-yY-ghQ" customClass="LoginController" customModule="Current - LiveNite" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="J83-E2-SqF"/>
+                        <viewControllerLayoutGuide type="bottom" id="iy0-WJ-8Mq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7IW-wW-I45">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="350" height="600"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kHJ-eg-Hxi" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="543" y="-782"/>
         </scene>
     </scenes>
     <resources>
