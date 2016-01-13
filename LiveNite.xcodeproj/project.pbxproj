@@ -10,7 +10,6 @@
 		0AC989DC1C39C7F0008439B5 /* PickLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */; };
 		0AD608BE1C45EAAA007D3A3B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD608BD1C45EAAA007D3A3B /* FBSDKLoginKit.framework */; };
 		0AD608C01C45EABE007D3A3B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD608BF1C45EABE007D3A3B /* Bolts.framework */; };
-		0AD608CC1C45F819007D3A3B /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD608CB1C45F819007D3A3B /* LoginController.swift */; };
 		0ADCDEA11C44978400E05257 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ADCDEA01C44978400E05257 /* FBSDKCoreKit.framework */; };
 		15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DDCC1D1B5F381F00E87EA1 /* AppDelegate.swift */; };
 		15DDCC211B5F381F00E87EA1 /* LiveNite.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 15DDCC1F1B5F381F00E87EA1 /* LiveNite.xcdatamodeld */; };
@@ -23,6 +22,7 @@
 		6B69ED981C34BA6C000785EF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6B69ED971C34BA6C000785EF /* Podfile */; };
 		6B69ED9A1C34BF0E000785EF /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */; };
 		6B69ED9D1C34C1F2000785EF /* GooglePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */; };
+		6B8C50C81C46EB5900BE715C /* FBLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C50C71C46EB5900BE715C /* FBLoginController.swift */; };
 		6BDCEDA31C210E68004C3029 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BDCEDA21C210E68004C3029 /* CoreLocation.framework */; };
 		FFFC7B1B04B7D6052E296CA1 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85F2763A40152D1702DFD2E7 /* Pods.framework */; };
 /* End PBXBuildFile section */
@@ -41,7 +41,6 @@
 		0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickLocationController.swift; sourceTree = "<group>"; };
 		0AD608BD1C45EAAA007D3A3B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "FacebookSDKs-iOS-20151111/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		0AD608BF1C45EABE007D3A3B /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "FacebookSDKs-iOS-20151111/Bolts.framework"; sourceTree = "<group>"; };
-		0AD608CB1C45F819007D3A3B /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = ../../../../kevin/Documents/LoginController.swift; sourceTree = "<group>"; };
 		0ADCDEA01C44978400E05257 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "FacebookSDKs-iOS-20151111/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		15DDCC181B5F381F00E87EA1 /* LiveNite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveNite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15DDCC1C1B5F381F00E87EA1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,6 +58,7 @@
 		6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
 		6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlace.swift; sourceTree = "<group>"; };
 		6B69EDA41C34CCCA000785EF /* LiveNite-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "LiveNite-Bridging-Header.h"; path = "../LiveNite-Bridging-Header.h"; sourceTree = "<group>"; };
+		6B8C50C71C46EB5900BE715C /* FBLoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBLoginController.swift; sourceTree = "<group>"; };
 		6BDCEDA21C210E68004C3029 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		7D58985DD7F087B75CA05378 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		85F2763A40152D1702DFD2E7 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,7 +120,7 @@
 				15DDCC221B5F381F00E87EA1 /* ViewController.swift */,
 				6B69ED911C321FF8000785EF /* viewPostController.swift */,
 				0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */,
-				0AD608CB1C45F819007D3A3B /* LoginController.swift */,
+				6B8C50C71C46EB5900BE715C /* FBLoginController.swift */,
 				15DDCC241B5F381F00E87EA1 /* Main.storyboard */,
 				15DDCC271B5F381F00E87EA1 /* Images.xcassets */,
 				15DDCC291B5F381F00E87EA1 /* LaunchScreen.xib */,
@@ -229,7 +229,7 @@
 				TargetAttributes = {
 					15DDCC171B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = A45KMLTLUF;
+						DevelopmentTeam = 4P5R952TU2;
 					};
 					15DDCC2F1B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
@@ -337,7 +337,7 @@
 				15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */,
 				0AC989DC1C39C7F0008439B5 /* PickLocationController.swift in Sources */,
 				15DDCC211B5F381F00E87EA1 /* LiveNite.xcdatamodeld in Sources */,
-				0AD608CC1C45F819007D3A3B /* LoginController.swift in Sources */,
+				6B8C50C81C46EB5900BE715C /* FBLoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

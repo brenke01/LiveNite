@@ -49,16 +49,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if (FBSDKAccessToken.currentAccessToken() == nil)
+        {
+            print("is nil")
+            self.performSegueWithIdentifier("login", sender: nil)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        if (FBSDKAccessToken.currentAccessToken() == nil)
-        {
-            print("is nil")
-            self.performSegueWithIdentifier("login", sender: nil)
-        }else{
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         //layout.sectionInset = UIEdgeInsets(top: 40, left: 0, bottom: 40, right: 5)
         //layout.itemSize = CGSize(width: 120, height: 160)
@@ -85,7 +88,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
         // Do any additional setup after loading the view, typically from a nib.
-        }
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -233,7 +235,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 destinationVC.locations = 1
             }
         }else if segue.identifier == "login"{
-            if let destinationVC = segue.destinationViewController as? LoginController{
+            if let destinationVC = segue.destinationViewController as? FBLoginController{
                 print("login controller")
                 destinationVC.locations = 1
             }

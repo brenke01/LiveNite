@@ -22,7 +22,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
+        print("Made it")
         let loginView : FBSDKLoginButton = FBSDKLoginButton()
         self.view.addSubview(loginView)
         loginView.center = self.view.center
