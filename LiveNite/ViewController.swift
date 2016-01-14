@@ -56,12 +56,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             print("is nil")
             self.performSegueWithIdentifier("login", sender: nil)
         }
+        self.view.hidden = false
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
-        
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         //layout.sectionInset = UIEdgeInsets(top: 40, left: 0, bottom: 40, right: 5)
         //layout.itemSize = CGSize(width: 120, height: 160)
