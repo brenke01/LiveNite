@@ -33,6 +33,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
+    var locationDictionary = [String: CLLocationCoordinate2D]()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -176,7 +177,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
             for place: GooglePlace in places {
                 list.append(place.name as String)
-               
+                self.locationDictionary.updateValue(place.coordinate, forKey: place.name)
                 if (list.count == places.count){
                      self.retrieveListOfPlaces(list)
                 }
@@ -229,6 +230,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             newVideo.setValue(setId, forKey: "id")
             newVideo.setValue(setUpVotes, forKey: "upvotes")
             newVideo.setValue(setImageTitle, forKey: "title")
+            newVideo.setValue(userLocation.latitude, forKey: "picTakenLatitude")
+            newVideo.setValue(userLocation.longitude, forKey: "picTakenLongitude")
+            newVideo.setValue(locationDictionary[setImageTitle]!.latitude, forKey: "titleLatitude")
+            newVideo.setValue(locationDictionary[setImageTitle]!.longitude, forKey: "titleLongitude")
             do {
                 try context.save()
             } catch _ {
