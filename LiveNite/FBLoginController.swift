@@ -83,6 +83,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 newUser.setValue(firstName as! NSString, forKey: "first_name")
                 newUser.setValue(gender as! NSString, forKey: "gender")
                 newUser.setValue(ageRange as! Int, forKey: "age")
+                newUser.setValue(0, forKey: "score")
                 do {
                     try context.save()
                 } catch _ {

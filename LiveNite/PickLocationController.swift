@@ -34,6 +34,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
     var locationDictionary = [String: CLLocationCoordinate2D]()
+    var currentUserName : String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,7 +53,20 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         }
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
-        
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"])
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            
+            if ((error) != nil)
+            {
+                // Process error
+                print("Error: \(error)")
+                
+            }
+            else
+            {
+                self.currentUserName = result.valueForKey("id") as! String
+            }
+        })
         
         
     }
@@ -234,6 +248,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             newVideo.setValue(userLocation.longitude, forKey: "picTakenLongitude")
             newVideo.setValue(locationDictionary[setImageTitle]!.latitude, forKey: "titleLatitude")
             newVideo.setValue(locationDictionary[setImageTitle]!.longitude, forKey: "titleLongitude")
+            newVideo.setValue(currentUserName, forKey: "userOP")
             do {
                 try context.save()
             } catch _ {

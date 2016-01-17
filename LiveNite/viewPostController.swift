@@ -159,23 +159,33 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 print(id, terminator: "")
                 let upvoteData : AnyObject? = loc.valueForKey("upvotes")
                 upvote = upvoteData as! Int
+                var change = 0
                 if userUpvoteStatus == 0 {
-                    upvote = upvote + 1
+                    change = 1
                     userUpvoteStatus = 1
                     upvoteButton.alpha = 0.5
                 } else if userUpvoteStatus == 1 {
-                    upvote = upvote - 1
+                    change = -1
                     userUpvoteStatus = 0
                     upvoteButton.alpha = 1.0
                 } else if userUpvoteStatus == -1 {
-                    upvote = upvote + 2
+                    change = 2
                     userUpvoteStatus = 1
                     upvoteButton.alpha = 0.5
                     downvoteButton.alpha = 1.0
                 } else {
                     print("userUpvoteStatus is not a valid number")
                 }
-                
+                let OPUserName = loc.valueForKey("userOP") as! String
+                upvote = upvote + change
+                let OPFetchRequest = NSFetchRequest(entityName: "Users")
+                fetchRequest.predicate = NSPredicate(format: "id = %@", OPUserName)
+                let OPUser = (try? context.executeFetchRequest(OPFetchRequest)) as! [NSManagedObject]?
+                if let OPUser = OPUser{
+                    for user in OPUser{
+                        user.setValue(user.valueForKey("score") as! Int + change, forKey: "score")
+                    }
+                }
                 loc.setValue(upvote, forKey: "upvotes")
                 do {
                     try context.save()
@@ -213,6 +223,22 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     }
                 }
                 
+            }
+        }
+        let userFetchRequest = NSFetchRequest(entityName: "Entity")
+        userFetchRequest.predicate = NSPredicate(format: "id = %i", imageID)
+        var OP : String = ""
+        let user = (try? context.executeFetchRequest(userFetchRequest)) as! [NSManagedObject]?
+        if let user = user{
+            OP = user[0].valueForKey("userOP") as! String
+            print("User: \(OP)")
+        }
+        let scoreFetchRequest = NSFetchRequest(entityName: "Users")
+        scoreFetchRequest.predicate = NSPredicate(format: "id = \(OP)")
+        let scores = (try? context.executeFetchRequest(scoreFetchRequest)) as! [NSManagedObject]?
+        if let scores = scores{
+            for score in scores{
+                print("Score: \(score.valueForKey("score") as! Int)")
             }
         }
     }
@@ -266,23 +292,33 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 print(id, terminator: "")
                 let upvoteData : AnyObject? = loc.valueForKey("upvotes")
                 upvote = upvoteData as! Int
+                var change = 0
                 if userUpvoteStatus == 0 {
-                    upvote = upvote - 1
+                    change = -1
                     userUpvoteStatus = -1
                     downvoteButton.alpha = 0.5
                 } else if userUpvoteStatus == 1 {
-                    upvote = upvote - 2
+                    change = -2
                     userUpvoteStatus = -1
                     downvoteButton.alpha = 0.5
                     upvoteButton.alpha = 1.0
                 } else if userUpvoteStatus == -1 {
-                    upvote = upvote + 1
+                    change = 1
                     userUpvoteStatus = 0
                     downvoteButton.alpha = 1.0
                 } else {
                     print("userUpvoteStatus is not a valid number")
                 }
-                
+                upvote = upvote + change
+                let OPUserName = loc.valueForKey("userOP") as! String
+                let OPFetchRequest = NSFetchRequest(entityName: "Users")
+                fetchRequest.predicate = NSPredicate(format: "id = %@", OPUserName)
+                let OPUser = (try? context.executeFetchRequest(OPFetchRequest)) as! [NSManagedObject]?
+                if let OPUser = OPUser{
+                    for user in OPUser{
+                        user.setValue(user.valueForKey("score") as! Int + change, forKey: "score")
+                    }
+                }
                 loc.setValue(upvote, forKey: "upvotes")
                 do {
                     try context.save()
