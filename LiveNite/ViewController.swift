@@ -33,7 +33,7 @@ var imgHeight = 160
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, CLLocationManagerDelegate{
     
     @IBOutlet weak var scroller: UIScrollView!
-    
+
     @IBOutlet
     var tableView : UITableView!
     
@@ -43,7 +43,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var locationManager = CLLocationManager()
     var userLocation = CLLocationCoordinate2D()
     var locationUpdated = false
-    
+    var toggleState = 0
+    var userID = ""
     
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
@@ -87,8 +88,57 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         } else {
             // Fallback on earlier versions
         }
-        
+        retrieveUserID()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func retrieveUserID(){
+        var id = ""
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range"])
+        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+            
+            if ((error) != nil)
+            {
+                // Process error
+                print("Error: \(error)")
+                
+            }else{
+                id = result.valueForKey("id") as! String
+                self.userID = id
+            }
+        })
+    }
+    
+    @IBAction func profileView(sender: AnyObject) {
+        let profileMenu = UIView(frame: CGRect(x: (self.collectionView?.frame.midX)!, y: ((self.collectionView?.frame.maxY)! / 2), width: (self.collectionView?.frame.midX)!, height: ((self.collectionView?.frame.maxY)! / 2)))
+        let black = UIColor.blackColor()
+        let alphaBlack = black.colorWithAlphaComponent(0.7)
+        profileMenu.backgroundColor = alphaBlack
+        profileMenu.tag = 100
+        let nameLabel = UILabel(frame: CGRect(x: 15, y: 10, width: profileMenu.frame.maxX, height: profileMenu.frame.maxY / 15))
+        
+        let scoreLabel = UILabel(frame: CGRect(x: 15, y: profileMenu.frame.maxY / 15, width: profileMenu.frame.maxX, height: profileMenu.frame.maxY / 15))
+        if toggleState == 0{
+            toggleState = 1
+            print(self.userID)
+            let fetchRequest = NSFetchRequest(entityName: "Users")
+            fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
+            let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+            let userName = user![0].valueForKey("first_name")
+            let score = user![0].valueForKey("score")
+            nameLabel.text = userName as! String
+            scoreLabel.text = String(score!)
+            nameLabel.textColor = UIColor.whiteColor()
+            scoreLabel.textColor = UIColor.whiteColor()
+            profileMenu.addSubview(nameLabel)
+            profileMenu.addSubview(scoreLabel)
+            self.view.addSubview(profileMenu)
+        }else{
+            toggleState = 0
+            var viewWithTag = self.view.viewWithTag(100)! as UIView
+            viewWithTag.removeFromSuperview()
+        }
+        
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
