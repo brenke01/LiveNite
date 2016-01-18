@@ -206,18 +206,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         var userUpvoteStatus : Int = 0
         //get user upvote status
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
+        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", currentUserName)])
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?
         if let userUpvoteStatusFetchResults = userUpvoteStatusFetchResults{
             for result in userUpvoteStatusFetchResults{
-                let idData : AnyObject? = result.valueForKey("image_id")
-                let id = idData as! Int
                 let upvoteData : AnyObject? = result.valueForKey("upvote_value")
-                let upvoteStatus = upvoteData as! Int
-                let userData : AnyObject? = result.valueForKey("user_name")
-                let userName = userData as! String
-                if userName == currentUserName && id == imageID {
-                    userUpvoteStatus = upvoteStatus
-                }
+                userUpvoteStatus = upvoteData as! Int
             }
         }
         //get image upvote data and manipulate based on upvote status
@@ -323,19 +317,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         var userUpvoteStatus : Int = 0
         //get upvote status
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
+        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", currentUserName)])
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?
         if let userUpvoteStatusFetchResults = userUpvoteStatusFetchResults{
             for result in userUpvoteStatusFetchResults{
-                print("Loop in upvote")
-                let idData : AnyObject? = result.valueForKey("image_id")
-                let id = idData as! Int
                 let upvoteData : AnyObject? = result.valueForKey("upvote_value")
-                let upvoteStatus = upvoteData as! Int
-                let userData : AnyObject? = result.valueForKey("user_name")
-                let userName = userData as! String
-                if userName == currentUserName && id == imageID {
-                    userUpvoteStatus = upvoteStatus
-                }
+                userUpvoteStatus = upvoteData as! Int
             }
         }
         //get image upvote data and manipulate based on upvote status
