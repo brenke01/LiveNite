@@ -112,20 +112,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func profileView(sender: AnyObject) {
         let profileMenu = UIView(frame: CGRect(x: (self.collectionView?.frame.midX)!, y: ((self.collectionView?.frame.maxY)! / 2), width: (self.collectionView?.frame.midX)!, height: ((self.collectionView?.frame.maxY)! / 2)))
         let black = UIColor.blackColor()
-        let alphaBlack = black.colorWithAlphaComponent(0.3)
+        let alphaBlack = black.colorWithAlphaComponent(0.7)
         profileMenu.backgroundColor = alphaBlack
         profileMenu.tag = 100
-        let nameLabel = UILabel(frame: CGRect(x: 15, y: 0, width: profileMenu.frame.maxX, height: profileMenu.frame.maxY / 8))
+        let nameLabel = UILabel(frame: CGRect(x: 15, y: 10, width: profileMenu.frame.maxX, height: profileMenu.frame.maxY / 15))
+        
+        let scoreLabel = UILabel(frame: CGRect(x: 15, y: profileMenu.frame.maxY / 15, width: profileMenu.frame.maxX, height: profileMenu.frame.maxY / 15))
         if toggleState == 0{
             toggleState = 1
             print(self.userID)
             let fetchRequest = NSFetchRequest(entityName: "Users")
             fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-            var userName = user![0].valueForKey("first_name")
+            let userName = user![0].valueForKey("first_name")
+            let score = user![0].valueForKey("score")
             nameLabel.text = userName as! String
+            scoreLabel.text = String(score!)
             nameLabel.textColor = UIColor.whiteColor()
+            scoreLabel.textColor = UIColor.whiteColor()
             profileMenu.addSubview(nameLabel)
+            profileMenu.addSubview(scoreLabel)
             self.view.addSubview(profileMenu)
         }else{
             toggleState = 0
