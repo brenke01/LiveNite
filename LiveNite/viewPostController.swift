@@ -15,8 +15,109 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout{
+class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate{
 
+    var locationManager = CLLocationManager()
+    var userLocation = CLLocation()
+    var locationUpdated = false
+    
+    @IBAction func checkIn(sender: AnyObject) {
+        
+        let imageLocationFetchRequest = NSFetchRequest(entityName: "Entity")
+        imageLocationFetchRequest.predicate = NSPredicate(format: "id = %i", imageID)
+        let imageLocationFetchResults = (try? context.executeFetchRequest(imageLocationFetchRequest)) as! [NSManagedObject]?
+        if let imageLocationFetchResults = imageLocationFetchResults{
+            for result in imageLocationFetchResults{
+                //get distance between user and place
+                let latitude : AnyObject? = result.valueForKey("titleLatitude")
+                let imageLatitude = latitude as! Double
+                let longitude : AnyObject? = result.valueForKey("titleLongitude")
+                let imageLongitude = longitude as! Double
+                let titleLocation = CLLocation(latitude: imageLatitude, longitude: imageLongitude)
+                let distanceBetweenUserandTitle : CLLocationDistance = titleLocation.distanceFromLocation(userLocation)
+                let maxAllowableDistance : CLLocationDistance = 2500
+                print(distanceBetweenUserandTitle)
+                
+                //if within range, check if they've checked in recently
+                if distanceBetweenUserandTitle < maxAllowableDistance {
+                    
+                    //get title of location and date of last check in
+                    let title = result.valueForKey("title") as! String
+                    let currentDate = NSDate()
+                    let checkInFetchRequest = NSFetchRequest(entityName: "UserCheckIns")
+                    print("Current User Name: \(currentUserName)")
+                    checkInFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "locationTitle= %@",title), NSPredicate(format: "userName= %@", currentUserName)])
+                    let checkInResult = (try? context.executeFetchRequest(checkInFetchRequest)) as! [NSManagedObject]?
+                    //If the fetch request returns nothing, we know it is a new location they are checking into
+                    if (checkInResult! == []){
+                        //Make new check in in table
+                        if let newCheckIn = NSEntityDescription.insertNewObjectForEntityForName("UserCheckIns", inManagedObjectContext:context) as? NSManagedObject{
+                    
+                            newCheckIn.setValue(currentUserName as NSString, forKey: "userName")
+                            newCheckIn.setValue(currentDate, forKey: "dateOfLastCheckIn")
+                            newCheckIn.setValue(title as NSString, forKey: "locationTitle")
+                            do {
+                                try context.save()
+                            } catch _ {
+                            }
+                            
+                        }
+                        //Award user points
+                        print("currentUserName: \(currentUserName)")
+                        let scoreFetchRequest = NSFetchRequest(entityName: "Users")
+                        scoreFetchRequest.predicate = NSPredicate(format: "id = \(currentUserName)")
+                        let scores = (try? context.executeFetchRequest(scoreFetchRequest)) as! [NSManagedObject]?
+                        if let scores = scores{
+                            for score in scores{
+                                score.setValue(score.valueForKey("score") as! Int + 5, forKey: "score")
+                                print("Score: \(score.valueForKey("score") as! Int)")
+                            }
+                        }
+                    } else {
+                        if let checkInResult = checkInResult{
+                            for result in checkInResult{
+                                let lastCheckIn : NSDate = result.valueForKey("dateOfLastCheckIn") as! NSDate
+                                var diffDateComponents = NSCalendar.currentCalendar().components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second], fromDate: lastCheckIn, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+                                
+                                print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
+                                if (diffDateComponents.year > 0 || diffDateComponents.month > 0 || diffDateComponents.day > 0){
+                                    print("It's been a while")
+                                    //award points
+                                    print("currentUserName: \(currentUserName)")
+                                    let scoreFetchRequest = NSFetchRequest(entityName: "Users")
+                                    scoreFetchRequest.predicate = NSPredicate(format: "id = \(currentUserName)")
+                                    let scores = (try? context.executeFetchRequest(scoreFetchRequest)) as! [NSManagedObject]?
+                                    if let scores = scores{
+                                        for score in scores{
+                                            score.setValue(score.valueForKey("score") as! Int + 5, forKey: "score")
+                                            print("Score: \(score.valueForKey("score") as! Int)")
+                                        }
+                                    }
+                                    //update check in date
+                                    result.setValue(currentDate, forKey: "dateOfLastCheckIn")
+                                } else{
+                                    print("You've checked in within the last 24 hours")
+                                }
+
+                            }
+                        }
+
+                    }
+                    
+                } else {
+                    print("not close enough to check in")
+                }
+                
+            }
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        userLocation = locations[0]
+        print("\(userLocation.coordinate.latitude) Degrees Latitude, \(userLocation.coordinate.longitude) Degrees Longitude")
+        locationUpdated = true
+    }
+    
     @IBAction func exit(sender: AnyObject) {
         self.dismissViewControllerAnimated(false, completion: nil)
     }
@@ -47,30 +148,19 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         loadUIDetails()
         loadImageDetail()
-        
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
     func loadUIDetails() {
         
+        print(currentUserName)
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         navigationBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         navigationBar.topItem!.title = imageTitle
         var userUpvoteStatus : Int = 0
-        var currentUserName : String = ""
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"])
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil)
-            {
-                // Process error
-                print("Error: \(error)")
-                
-            }
-            else
-            {
-                currentUserName = result.valueForKey("id") as! String
-            }
-        })
+        
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?
         if let userUpvoteStatusFetchResults = userUpvoteStatusFetchResults{
@@ -112,23 +202,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func UpVote(sender: UIButton){
-        //get current user name
+
         var userUpvoteStatus : Int = 0
-        var currentUserName : String = ""
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"])
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil)
-            {
-                // Process error
-                print("Error: \(error)")
-                
-            }
-            else
-            {
-                currentUserName = result.valueForKey("id") as! String
-            }
-        })
         //get user upvote status
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?
@@ -244,23 +319,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func DownVote(sender: UIButton){
-        //get current user name
+        
         var userUpvoteStatus : Int = 0
-        var currentUserName : String = ""
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"])
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
-            
-            if ((error) != nil)
-            {
-                // Process error
-                print("Error: \(error)")
-                
-            }
-            else
-            {
-                currentUserName = result.valueForKey("id") as! String
-            }
-        })
         //get upvote status
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?

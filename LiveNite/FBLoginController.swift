@@ -16,6 +16,9 @@ import AVFoundation
 import CoreData
 import CoreLocation
 import GoogleMaps
+
+var currentUserName : String = ""
+
 class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, FBSDKLoginButtonDelegate{
     var locations = 0
     override func viewDidLoad() {
@@ -28,7 +31,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         loginView.center = self.view.center
         loginView.readPermissions = ["public_profile", "email"]
         loginView.delegate = self
-        
+        FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
         
     }
     
@@ -66,6 +69,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         //The result from the Facebook request is an object that works like a Dictionary 
         //First we grab all of the fields
         let userID = result.valueForKey("id") as! AnyObject?
+        currentUserName = userID as! String
         let firstName = result.valueForKey("first_name") as! AnyObject?
         let gender = result.valueForKey("gender") as! AnyObject?
         let ageRange = result.valueForKey("age_range")?.valueForKey("min") as! AnyObject?

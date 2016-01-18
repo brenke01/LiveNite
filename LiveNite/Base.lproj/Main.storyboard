@@ -131,6 +131,11 @@
                                                 <action selector="exit:" destination="VBq-gS-Kxm" id="sei-Ag-AgO"/>
                                             </connections>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="I'm Here!" id="ibG-eV-6JN">
+                                            <connections>
+                                                <action selector="checkIn:" destination="VBq-gS-Kxm" id="y1h-yz-ElB"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -209,6 +214,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="nHt-Wp-u4A" secondAttribute="trailing" constant="-20" id="vyy-ye-Kds"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="UfR-x8-XGW"/>
+                    </toolbarItems>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="350" height="600"/>
                     <connections>
