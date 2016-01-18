@@ -115,14 +115,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let alphaBlack = black.colorWithAlphaComponent(0.3)
         profileMenu.backgroundColor = alphaBlack
         profileMenu.tag = 100
-        
+        let nameLabel = UILabel(frame: CGRect(x: 15, y: 0, width: profileMenu.frame.maxX, height: profileMenu.frame.maxY / 8))
         if toggleState == 0{
             toggleState = 1
             print(self.userID)
             let fetchRequest = NSFetchRequest(entityName: "Users")
             fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-            print(user![0].valueForKey("first_name") as! String)
+            var userName = user![0].valueForKey("first_name")
+            nameLabel.text = userName as! String
+            nameLabel.textColor = UIColor.whiteColor()
+            profileMenu.addSubview(nameLabel)
             self.view.addSubview(profileMenu)
         }else{
             toggleState = 0
