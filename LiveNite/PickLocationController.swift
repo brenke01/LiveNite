@@ -78,19 +78,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        print("view appeared")
-        //location settings
-        //needs better error checking
-
-        
         if (complete == false){
             takeAndSave()
         }else if (complete == true && saved == false){
-        
             dismissViewControllerAnimated(true, completion: nil)
-
-            
-
         }else{
             fetchNearbyPlaces(userLocation)
             tableView.reloadData()
@@ -131,10 +122,6 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
         self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         selectedImageView.image = self.selectedImage
-        
-
-
-        
         dismissViewControllerAnimated(true, completion: nil)
         saved = true
         locationManager.stopUpdatingLocation()
@@ -146,10 +133,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func getImageId()-> Int{
         var currentID = 1
         let fetchRequest = NSFetchRequest(entityName: "CurrentID")
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        if let locations = locations{
-            for loc in locations{
-                let idData : AnyObject? = loc.valueForKey("id")
+        let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        if let images = images{
+            for image in images{
+                let idData : AnyObject? = image.valueForKey("id")
                 if (idData == nil){
                     currentID = 1
                 }else{
@@ -184,9 +171,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) {
-        let searchRadius:Double = 3000
+        let searchRadius:Double = 1000
         var list : [String] = []
-        let searchedTypes = ["bar","club","restaurant","establishment"]
+        let searchedTypes = ["bar","club","restaurant", "night_club", "meal_delivery", "food"]
         let dataProvider = GoogleDataProvider()
         dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
             for place: GooglePlace in places {
@@ -210,7 +197,6 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell{
-        
         let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
         tableView.backgroundColor = UIColor.clearColor()
         tableView.opaque = false
@@ -218,7 +204,6 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         cell.opaque = false
         if (self.listOfPlaces.count != 0){
             cell.textLabel?.text = self.listOfPlaces[indexPath.row]
-        
             cell.textLabel?.textColor = UIColor.whiteColor()
         }
         return cell
@@ -226,29 +211,29 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        var cell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
-        var cellText : String = (cell.textLabel?.text)!
-        if let newVideo = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
+        let cell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        let cellText : String = (cell.textLabel?.text)!
+        if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
             let tempImage = self.selectedImage
             let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
-            newVideo.setValue(dataImage, forKey: "videoData")
-            var date = NSDate()
-            var calendar = NSCalendar.currentCalendar()
-            var components = calendar.components([.Hour, .Minute], fromDate: date)
-            var hourOfDate = components.hour
-            newVideo.setValue(hourOfDate, forKey: "time")
-            var setImageTitle : String = cellText
-            var setUpVotes : Int = 0
-            var setId : Int = getImageId()
+            newImage.setValue(dataImage, forKey: "imageData")
+            let date = NSDate()
+            let calendar = NSCalendar.currentCalendar()
+            let components = calendar.components([.Hour, .Minute], fromDate: date)
+            let hourOfDate = components.hour
+            newImage.setValue(hourOfDate, forKey: "time")
+            let setImageTitle : String = cellText
+            let setUpVotes : Int = 0
+            let setId : Int = getImageId()
             print(setId, terminator: "")
-            newVideo.setValue(setId, forKey: "id")
-            newVideo.setValue(setUpVotes, forKey: "upvotes")
-            newVideo.setValue(setImageTitle, forKey: "title")
-            newVideo.setValue(userLocation.latitude, forKey: "picTakenLatitude")
-            newVideo.setValue(userLocation.longitude, forKey: "picTakenLongitude")
-            newVideo.setValue(locationDictionary[setImageTitle]!.latitude, forKey: "titleLatitude")
-            newVideo.setValue(locationDictionary[setImageTitle]!.longitude, forKey: "titleLongitude")
-            newVideo.setValue(currentUserName, forKey: "userOP")
+            newImage.setValue(setId, forKey: "id")
+            newImage.setValue(setUpVotes, forKey: "upvotes")
+            newImage.setValue(setImageTitle, forKey: "title")
+            newImage.setValue(userLocation.latitude, forKey: "picTakenLatitude")
+            newImage.setValue(userLocation.longitude, forKey: "picTakenLongitude")
+            newImage.setValue(locationDictionary[setImageTitle]!.latitude, forKey: "titleLatitude")
+            newImage.setValue(locationDictionary[setImageTitle]!.longitude, forKey: "titleLongitude")
+            newImage.setValue(currentUserName, forKey: "userOP")
             do {
                 try context.save()
             } catch _ {

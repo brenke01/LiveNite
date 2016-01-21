@@ -218,15 +218,14 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         let fetchRequest = NSFetchRequest(entityName: "Entity")
         fetchRequest.predicate = NSPredicate(format: "id = %i", sender.tag)
         print(fetchRequest.predicate)
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
         var upvote = 0
-        if let locations = locations{
-            for loc in locations{
-                print("Loop")
-                let idData : AnyObject? = loc.valueForKey("id")
+        if let images = images{
+            for image in images{
+                let idData : AnyObject? = image.valueForKey("id")
                 let id = idData as! Int
                 print(id, terminator: "")
-                let upvoteData : AnyObject? = loc.valueForKey("upvotes")
+                let upvoteData : AnyObject? = image.valueForKey("upvotes")
                 upvote = upvoteData as! Int
                 var change = 0
                 if userUpvoteStatus == 0 {
@@ -245,7 +244,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 } else {
                     print("userUpvoteStatus is not a valid number")
                 }
-                let OPUserName = loc.valueForKey("userOP") as! String
+                let OPUserName = image.valueForKey("userOP") as! String
                 upvote = upvote + change
                 let OPFetchRequest = NSFetchRequest(entityName: "Users")
                 fetchRequest.predicate = NSPredicate(format: "id = %@", OPUserName)
@@ -255,7 +254,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                         user.setValue(user.valueForKey("score") as! Int + change, forKey: "score")
                     }
                 }
-                loc.setValue(upvote, forKey: "upvotes")
+                image.setValue(upvote, forKey: "upvotes")
                 do {
                     try context.save()
                 } catch _ {

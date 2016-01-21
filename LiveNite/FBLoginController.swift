@@ -114,9 +114,6 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 self.saveUserToCoreData(result)
                 
                 self.dismissViewControllerAnimated(true, completion: nil)
-                print("fetched user: \(result)")
-                let userGender : NSString = result.valueForKey("gender") as! NSString
-                print("User gender is: \(userGender)")
                 
 
             }

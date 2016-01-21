@@ -65,9 +65,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        //layout.sectionInset = UIEdgeInsets(top: 40, left: 0, bottom: 40, right: 5)
-        //layout.itemSize = CGSize(width: 120, height: 160)
-        //collectionView = UICollectionView(fr, collectionViewLayout: layout)
         collectionView?.dataSource = self
         collectionView!.delegate = self
         
@@ -89,7 +86,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             // Fallback on earlier versions
         }
         retrieveUserID()
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     func retrieveUserID(){
@@ -135,7 +131,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.view.addSubview(profileMenu)
         }else{
             toggleState = 0
-            var viewWithTag = self.view.viewWithTag(100)! as UIView
+            let viewWithTag = self.view.viewWithTag(100)! as UIView
             viewWithTag.removeFromSuperview()
         }
         
@@ -166,7 +162,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if let locations = locations{
             for loc in locations{
                 
-                let imageData: AnyObject? = loc.valueForKey("videoData")
+                let imageData: AnyObject? = loc.valueForKey("imageData")
                 let imgData = UIImage(data: (imageData as? NSData)!)
                 imageArray.append(imgData!)
                 let idData : AnyObject? = loc.valueForKey("id")
@@ -182,7 +178,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
             }
         }
-        var imageButton = UIButton(frame: CGRectMake(0, 0, CGFloat(imgWidth), CGFloat(imgHeight)))
+        let imageButton = UIButton(frame: CGRectMake(0, 0, CGFloat(imgWidth), CGFloat(imgHeight)))
         imageButton.setImage(imageArray[indexPath.row], forState: .Normal)
         imageButton.addTarget(self, action: "viewPost:", forControlEvents: .TouchUpInside)
         imageButton.userInteractionEnabled = true
@@ -268,7 +264,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         let imageID: AnyObject? = img.valueForKey("id")
                         let imageUpvotes : AnyObject? =
                             img.valueForKey("upvotes")
-                        let imageData : AnyObject? = img.valueForKey("videoData")
+                        let imageData : AnyObject? = img.valueForKey("imageData")
                         let imageTitle : AnyObject? = img.valueForKey("title")
                         destinationVC.imageUpvotes = (imageUpvotes as? Int)!
                         print(imageID)
@@ -292,143 +288,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         }
     }
-    
-
-    /*func tableView(tableView: UITableView, numberOfRowsInSection section: Int)-> Int {
-        let fetchRequest = NSFetchRequest(entityName: "Entity")
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        return locations!.count
-    }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell {
-        
-        let label = UILabel(frame: CGRectMake(15, 5, 250, 50))
-        
-        var i = 0
-        
-        label.text = "Fun at Blarneys"
-        label.font = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
-        let commitLabel = UILabel(frame: CGRectMake(15, 440, 105, 30))
-        commitLabel.font = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
-        commitLabel.text = " I'M GOING"
-        commitLabel.backgroundColor = UIColor.yellowColor()
-        commitLabel.textColor = UIColor.blackColor()
-        let upVotebutton : UIButton = UIButton(frame: CGRectMake(220, 440, 40, 40))
-        let downVoteButton = UIButton(frame: CGRectMake(260, 440, 40, 40))
-        
-        let upVoteImage = UIImage(named: "UpVote")
-       
-        upVotebutton.setBackgroundImage(upVoteImage, forState: UIControlState.Normal)
-        //upVotebutton.backgroundColor = UIColor.yellowColor()
-        
-        let downVoteImage = UIImage(named: "DownVote")
-        
-        downVoteButton.setBackgroundImage(downVoteImage, forState: UIControlState.Normal)
-        downVoteButton.addTarget(self, action: "DownVote:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        
-        
-        upVotebutton.addTarget(self, action: "UpVote:", forControlEvents: UIControlEvents.TouchUpInside)
-        label.textColor = UIColor.whiteColor()
-        self.tableView.rowHeight = 480
-        //let cell : UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as! UITableViewCell
-        
-
-       
-        let fetchRequest = NSFetchRequest(entityName: "Entity")
-        //cell.backgroundColor = UIColor.blackColor()
-        
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        var idArray : [Int] = []
-        var imageArray : [UIImage] = []
-        
-        var upVoteArray : [Int] = []
-        if let locations = locations{
-            for loc in locations{
-                
-                let imageData: AnyObject? = loc.valueForKey("videoData")
-                let imgData = UIImage(data: (imageData as? NSData)!)
-                imageArray.append(imgData!)
-                let idData : AnyObject? = loc.valueForKey("id")
-                let imageId = idData as? Int
-                idArray.append(imageId!)
-                let upVoteData : AnyObject? = loc.valueForKey("upvotes")
-                let upVotes = upVoteData as? Int
-                upVoteArray.append(upVotes!)
-                
-                
-                
-                
-                
-            }
-        }
-       
-        
-
-        upVotebutton.tag = idArray[indexPath.row]
-        downVoteButton.tag = idArray[indexPath.row]
-        if cell.viewWithTag(100) == nil{
-            
-            let upVoteLabel = UILabel(frame: CGRectMake(15, 400, 50, 50))
-            upVoteLabel.textColor = UIColor.whiteColor()
-            upVoteLabel.text = "\(upVoteArray[indexPath.row])"
-            upVoteLabel.font = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
-            upVoteLabel.tag = 100
-            cell.addSubview(upVoteLabel)
-            
-            
-        }else{
-            let upVoteLabel = cell.viewWithTag(100) as! UILabel
-            print(upVoteArray[indexPath.row], terminator: "")
-            upVoteLabel.text = "\(upVoteArray[indexPath.row])"
-            cell.addSubview(upVoteLabel)
-            
-        }
-        cell.addSubview(commitLabel)
-        cell.addSubview(label)
-        cell.addSubview(upVotebutton)
-        cell.addSubview(downVoteButton)
-        let imageContainer = UIImageView(frame: CGRectMake(0, 50, 320, 350))
-        imageContainer.image = imageArray[indexPath.row]
-        cell.addSubview(imageContainer)
-
-        
-       return cell
-    }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var selectedCell = tableView.cellForRowAtIndexPath(indexPath)
-        //selectedCell?.contentView.backgroundColor = UIColor.blackColor()
-        print("selected", terminator: "")
-        var imageDetails = UIView(frame: CGRectMake(0, 0, 325, 600))
-        let fetchRequest = NSFetchRequest(entityName: "Entity")
-
-        
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        var idArray : [Int] = []
-        var imageArray : [UIImage] = []
-        
-        var upVoteArray : [Int] = []
-        if let locations = locations{
-            for loc in locations{
-                
-                let imageData: AnyObject? = loc.valueForKey("videoData")
-                let imgData = UIImage(data: (imageData as? NSData)!)
-                imageArray.append(imgData!)
-                let idData : AnyObject? = loc.valueForKey("id")
-                let imageId = idData as? Int
-                idArray.append(imageId!)
-                let upVoteData : AnyObject? = loc.valueForKey("upvotes")
-                let upVotes = upVoteData as? Int
-                upVoteArray.append(upVotes!)
-                
-                
-                
-                
-                
-            }
-        }
-        
-        
-    }*/
 
     
     
@@ -443,171 +302,5 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
-    
-
-
-    //Reconstruct to use tableView
-    func loadImageFeed(){
-        let fetchRequest = NSFetchRequest(entityName: "Entity")
-        var count : CGFloat = 70
-        var imageCount : CGFloat = 30
-        let containerCount : CGFloat = 300
-        
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        let multiplier : Int = locations!.count
-
-        let imageContainer = UIView(frame: CGRectMake(5, 50, 300, containerCount * CGFloat(multiplier)))
-        if let locations = locations{
-            for loc in locations{
-                print("test", terminator: "")
-                let imageData: AnyObject? = loc.valueForKey("videoData")
-                let imageText : AnyObject? = loc.valueForKey("title")
-                var upVoteCount : AnyObject? = loc.valueForKey("upvotes")
-                let imageId : AnyObject? = loc.valueForKey("id")
-                let imgData = UIImage(data: (imageData as? NSData)!)
-                var img : UIImageView
-                let imageviewObj = UIImageView(frame: CGRectMake(5, imageCount, 300, 250))
-                imageviewObj.image = imgData
-                
-                
-                let imageTitle : UILabel = UILabel(frame: CGRectMake(5,upVoteInc, 150, 25))
-                
-                imageUpvotes = UILabel(frame: CGRectMake(150, upVoteInc, 30, 25))
-                imageUpvotes.textColor = UIColor.blackColor()
-                let upVotebutton : UIButton = UIButton(frame: CGRectMake(250,upVoteInc, 70, 25))
-                upVoteCount = upVoteCount as? Int
-                imageUpvotes.text = "\(upVoteCount!)"
-                upVotebutton.setTitle("^", forState: UIControlState.Normal)
-                
-                //var upVoteLabel: UILabel = UILabel(frame: CGRectMake(180, containerCount, 20, 25))
-                upVotebutton.addTarget(self, action: "UpVote:", forControlEvents: UIControlEvents.TouchUpInside)
-                let id = imageId as! Int
-                upVotebutton.tag = id
-                upVotebutton.backgroundColor = UIColor.blackColor()
-                
-                //upVoteLabel.text = upVoteCount as? String
-                //upVoteLabel.textColor = UIColor.whiteColor()
-                //imageTitle.addSubview(upVoteLabel)
-                
-                imageTitle.textColor = UIColor.blackColor()
-                imageTitle.text = imageText as? String
-                imageContainer.addSubview(imageviewObj)
-                
-                
-                imageContainer.sendSubviewToBack(imageUpvotes)
-                imageContainer.addSubview(imageTitle)
-                
-                imageContainer.addSubview(upVotebutton)
-                imageContainer.addSubview(imageUpvotes)
-                
-                imageContainer.backgroundColor = UIColor.yellowColor()
-                
-                
-                scroller.contentSize = imageContainer.bounds.size
-                
-                scroller.addSubview(imageContainer)
-                scroller.sendSubviewToBack(imageContainer)
-                
-                
-                
-                count = count + 300
-                
-                imageCount += 300
-                upVoteInc += 300
-                
-                
-                
-            }
-            
-        }
-        
-        self.view.addSubview(scroller)
-        
-
-        
-    }
-    
-    func UpVote(sender: UIButton){
-        print(sender.tag, terminator: "")
-        let id = 0
-        let disableMyButton = sender as UIButton
-        disableMyButton.enabled = false
-        let disableUpVoteImage = UIImage(named: "UpVoted")
-        disableMyButton.setBackgroundImage(disableUpVoteImage, forState: UIControlState.Normal)
-        let fetchRequest = NSFetchRequest(entityName: "Entity")
-        fetchRequest.predicate = NSPredicate(format: "id = %i", sender.tag)
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        if let locations = locations{
-            
-            for loc in locations{
-                let idData : AnyObject? = loc.valueForKey("id")
-                let id = idData as! Int
-                print(id, terminator: "")
-                let upvoteData : AnyObject? = loc.valueForKey("upvotes")
-                var upvote = upvoteData as! Int
-                upvote = upvote + 1
-                
-                loc.setValue(upvote, forKey: "upvotes")
-                do {
-                    try context.save()
-                } catch _ {
-                }
-                
-                
-                
-            }
-            
-            
-            
-            
-            
-            
-        }
-        userUpvoted(id)
-        self.collectionView!.reloadData()
-        
-    }
-    
-    func userUpvoted(id : Int){
-        
-    }
-    func DownVote(sender: UIButton){
-        print(sender.tag, terminator: "")
-        let fetchRequest = NSFetchRequest(entityName: "Entity")
-        fetchRequest.predicate = NSPredicate(format: "id = %i", sender.tag)
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        if let locations = locations{
-            
-            for loc in locations{
-                
-                let idData : AnyObject? = loc.valueForKey("id")
-                let id = idData as! Int
-                print(id, terminator: "")
-                let upvoteData : AnyObject? = loc.valueForKey("upvotes")
-                var upvote = upvoteData as! Int
-                upvote = upvote - 1
-                loc.setValue(upvote, forKey: "upvotes")
-                do {
-                    try context.save()
-                } catch _ {
-                }
-                
-                
-                
-            }
-            
-            
-            
-            
-            
-            
-        }
-       
-        self.collectionView?.reloadData()
-        
-    }
-    
-
-
 }
 
