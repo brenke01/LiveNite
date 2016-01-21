@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ekb-dr-WoT">
-                                <rect key="frame" x="0.0" y="537" width="350" height="63"/>
+                                <rect key="frame" x="0.0" y="545" width="350" height="55"/>
                                 <color key="backgroundColor" red="0.8862745098" green="0.76078431369999999" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="63" id="Pvu-66-uRx"/>
@@ -29,8 +29,8 @@
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" red="0.29189898318830076" green="0.29720908403396606" blue="0.049259983662290639" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jka-j3-CCD">
-                                <rect key="frame" x="144" y="538" width="62" height="62"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jka-j3-CCD">
+                                <rect key="frame" x="144" y="542" width="62" height="62"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="62" id="4S5-TP-edX"/>
                                     <constraint firstAttribute="height" constant="62" id="aIj-Dp-X0R"/>
@@ -44,6 +44,27 @@
                                     <action selector="capVideo" destination="vXZ-lx-hvc" eventType="touchUpInside" id="lMu-OV-fAI"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OQx-Mt-5pg">
+                                <rect key="frame" x="300" y="552" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="41" id="0wl-Dr-FbX"/>
+                                    <constraint firstAttribute="width" constant="39" id="A5J-iP-u5G"/>
+                                </constraints>
+                                <state key="normal" image="Profile"/>
+                                <connections>
+                                    <action selector="profileView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="atD-0b-EAj"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DQW-X9-gQp">
+                                <rect key="frame" x="305" y="583" width="20" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="6mo-d0-EHz"/>
+                                    <constraint firstAttribute="width" constant="20" id="9Wr-bb-frJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="BTf-tM-Z8b">
                                 <rect key="frame" x="0.0" y="0.0" width="350" height="537"/>
                                 <color key="backgroundColor" red="0.23993844696969702" green="0.23993844696969702" blue="0.23993844696969702" alpha="1" colorSpace="calibratedRGB"/>
@@ -73,21 +94,11 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="jR3-KX-oJQ"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OQx-Mt-5pg">
-                                <rect key="frame" x="291" y="548" width="39" height="41"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="41" id="0wl-Dr-FbX"/>
-                                    <constraint firstAttribute="width" constant="39" id="A5J-iP-u5G"/>
-                                </constraints>
-                                <state key="normal" image="Profile"/>
-                                <connections>
-                                    <action selector="profileView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="atD-0b-EAj"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.32549019607843138" green="0.32549019607843138" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="OQx-Mt-5pg" firstAttribute="centerY" secondItem="jka-j3-CCD" secondAttribute="centerY" id="40Q-TU-eMV"/>
+                            <constraint firstItem="DQW-X9-gQp" firstAttribute="baseline" secondItem="Ekb-dr-WoT" secondAttribute="baseline" id="4Hc-m3-NgO"/>
                             <constraint firstItem="jka-j3-CCD" firstAttribute="top" secondItem="BTf-tM-Z8b" secondAttribute="bottom" id="GUP-hH-mAl"/>
                             <constraint firstItem="BTf-tM-Z8b" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="Nec-v8-AzU"/>
                             <constraint firstItem="OQx-Mt-5pg" firstAttribute="leading" secondItem="jka-j3-CCD" secondAttribute="trailing" constant="85" id="PUj-aR-POh"/>
@@ -99,6 +110,7 @@
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="jka-j3-CCD" secondAttribute="bottom" id="mlv-VA-uWD"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Ekb-dr-WoT" secondAttribute="bottom" id="sSx-CT-7SY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ekb-dr-WoT" secondAttribute="trailing" constant="-20" id="usL-ms-Uux"/>
+                            <constraint firstItem="DQW-X9-gQp" firstAttribute="centerX" secondItem="OQx-Mt-5pg" secondAttribute="centerX" id="xRz-zB-XQ5"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="y5c-Ku-uS4"/>
@@ -144,7 +156,7 @@
                                                 <action selector="exit:" destination="VBq-gS-Kxm" id="sei-Ag-AgO"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="I'm Here!" id="ibG-eV-6JN">
+                                        <barButtonItem key="rightBarButtonItem" image="checkin" id="ibG-eV-6JN">
                                             <connections>
                                                 <action selector="checkIn:" destination="VBq-gS-Kxm" id="y1h-yz-ElB"/>
                                             </connections>
@@ -310,7 +322,8 @@
         <image name="Background_Gradient" width="748" height="1333"/>
         <image name="Downvote_Gold" width="51" height="28"/>
         <image name="Image" width="101" height="106"/>
-        <image name="Profile" width="128" height="128"/>
+        <image name="Profile" width="64" height="64"/>
         <image name="Upvote_Gold" width="51" height="28"/>
+        <image name="checkin" width="128" height="128"/>
     </resources>
 </document>
