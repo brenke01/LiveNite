@@ -198,13 +198,20 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell{
         let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        tableView.backgroundColor = UIColor.clearColor()
+        tableView.backgroundColor = UIColor.darkGrayColor()
         tableView.opaque = false
-        cell.backgroundColor = UIColor.clearColor()
+        cell.backgroundColor = UIColor.darkGrayColor()
         cell.opaque = false
         if (self.listOfPlaces.count != 0){
-            cell.textLabel?.text = self.listOfPlaces[indexPath.row]
-            cell.textLabel?.textColor = UIColor.whiteColor()
+            if (indexPath.row == listOfPlaces.count - 1){
+                cell.textLabel?.text = ""
+                
+                cell.textLabel?.textColor = UIColor.whiteColor()
+            }else{
+                cell.textLabel?.text = self.listOfPlaces[indexPath.row]
+            
+                cell.textLabel?.textColor = UIColor.whiteColor()
+            }
         }
         return cell
     }

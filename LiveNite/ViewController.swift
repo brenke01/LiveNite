@@ -111,9 +111,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let alphaBlack = black.colorWithAlphaComponent(0.7)
         profileMenu.backgroundColor = alphaBlack
         profileMenu.tag = 100
-        let nameLabel = UILabel(frame: CGRect(x: 15, y: 10, width: profileMenu.frame.maxX, height: profileMenu.frame.maxY / 15))
+        let medalLabel = UILabel(frame: CGRect(x: 15, y: 5, width: profileMenu.frame.width / 4, height: profileMenu.frame.height / 5))
         
-        let scoreLabel = UILabel(frame: CGRect(x: 15, y: profileMenu.frame.maxY / 15, width: profileMenu.frame.maxX, height: profileMenu.frame.maxY / 15))
+        let nameLabel = UILabel(frame: CGRect(x: profileMenu.frame.width / 4, y: profileMenu.frame.height / 25, width: profileMenu.frame.width - profileMenu.frame.width / 4, height: profileMenu.frame.height / 5))
+        let scoreLabel = UILabel(frame: CGRect(x: profileMenu.frame.width / 4, y: profileMenu.frame.maxX / 20, width: profileMenu.frame.width - profileMenu.frame.width / 4, height: profileMenu.frame.maxY / 5))
+        
+        let myFriendsLabel = UILabel(frame: CGRect(x: 15, y: profileMenu.frame.height / 3, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
+        
         if toggleState == 0{
             toggleState = 1
             print(self.userID)
@@ -124,10 +128,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let score = user![0].valueForKey("score")
             nameLabel.text = userName as! String
             scoreLabel.text = String(score!)
+            myFriendsLabel.text = "My VIP"
+            myFriendsLabel.textColor = UIColor.whiteColor()
             nameLabel.textColor = UIColor.whiteColor()
             scoreLabel.textColor = UIColor.whiteColor()
+
+            profileMenu.addSubview(medalLabel)
             profileMenu.addSubview(nameLabel)
             profileMenu.addSubview(scoreLabel)
+            profileMenu.addSubview(myFriendsLabel)
             self.view.addSubview(profileMenu)
         }else{
             toggleState = 0
