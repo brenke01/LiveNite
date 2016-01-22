@@ -211,7 +211,7 @@
                                     <constraint firstItem="jkC-YH-G4v" firstAttribute="top" secondItem="pct-Rs-Yqu" secondAttribute="top" constant="8" id="wJ5-oA-KTR"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Mh-OL-qxe">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Mh-OL-qxe">
                                 <rect key="frame" x="0.0" y="64" width="350" height="325"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="325" id="W3w-fw-2Dk"/>
@@ -231,6 +231,7 @@
                             <constraint firstItem="pct-Rs-Yqu" firstAttribute="top" secondItem="6Mh-OL-qxe" secondAttribute="bottom" id="YSW-9N-ySA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="bvL-ap-Bq1" secondAttribute="trailing" constant="-20" id="ZlD-Qt-WiN"/>
                             <constraint firstItem="bvL-ap-Bq1" firstAttribute="leading" secondItem="pLR-rD-vJW" secondAttribute="leadingMargin" constant="-20" id="a11-2R-7oa"/>
+                            <constraint firstItem="6Mh-OL-qxe" firstAttribute="leading" secondItem="nHt-Wp-u4A" secondAttribute="leading" id="gmS-4I-f5z"/>
                             <constraint firstItem="nHt-Wp-u4A" firstAttribute="centerX" secondItem="pLR-rD-vJW" secondAttribute="centerX" id="kfv-3U-xIQ"/>
                             <constraint firstItem="nHt-Wp-u4A" firstAttribute="leading" secondItem="pLR-rD-vJW" secondAttribute="leadingMargin" constant="-20" id="orF-K4-M7o"/>
                             <constraint firstItem="pct-Rs-Yqu" firstAttribute="top" secondItem="6Mh-OL-qxe" secondAttribute="bottom" id="tYh-it-wrD"/>
