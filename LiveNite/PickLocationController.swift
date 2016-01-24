@@ -78,6 +78,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        print(complete)
+        print(saved)
         if (complete == false){
             takeAndSave()
         }else if (complete == true && saved == false){
@@ -163,7 +165,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     func retrieveListOfPlaces(listOfPlaces: [String]){
         self.listOfPlaces = listOfPlaces
-        
+        print("fetching places")
         tableView.reloadData()
         self.view.hidden = false
        
@@ -172,6 +174,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) {
         let searchRadius:Double = 1000
+        
         var list : [String] = []
         let searchedTypes = ["bar","club","restaurant", "night_club", "meal_delivery", "food"]
         let dataProvider = GoogleDataProvider()
@@ -179,6 +182,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             for place: GooglePlace in places {
                 list.append(place.name as String)
                 self.locationDictionary.updateValue(place.coordinate, forKey: place.name)
+             
                 if (list.count == places.count){
                      self.retrieveListOfPlaces(list)
                 }
@@ -225,10 +229,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
             newImage.setValue(dataImage, forKey: "imageData")
             let date = NSDate()
-            let calendar = NSCalendar.currentCalendar()
-            let components = calendar.components([.Hour, .Minute], fromDate: date)
-            let hourOfDate = components.hour
-            newImage.setValue(hourOfDate, forKey: "time")
+            newImage.setValue(date, forKey: "time")
             let setImageTitle : String = cellText
             let setUpVotes : Int = 0
             let setId : Int = getImageId()

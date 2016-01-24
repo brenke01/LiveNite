@@ -45,6 +45,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var locationUpdated = false
     var toggleState = 0
     var userID = ""
+    var hotToggle = 0
     
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
@@ -159,10 +160,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as UICollectionViewCell
         cell.backgroundColor = UIColor.yellowColor()
-        
         let fetchRequest = NSFetchRequest(entityName: "Entity")
         cell.backgroundColor = UIColor.blackColor()
-        
+        if (self.hotToggle == 1){
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "upvotes", ascending: false)]
+        }else{
+             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
+        }
         let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
         var idArray : [Int] = []
         var imageArray : [UIImage] = []
@@ -227,6 +231,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return offset
     }
     
+    @IBAction func getHotImages(sender: AnyObject) {
+        self.hotToggle = 1
+        collectionView?.reloadData()
+    }
+    
+    @IBAction func getRecentImages(sender: AnyObject) {
+        self.hotToggle = 0
+        collectionView?.reloadData()
+    }
     //end auto layout code
     
     //get user location function
@@ -235,6 +248,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //call it when they open the camera to take a picture so it has a few seconds to settle
     //store userLocation in the database once picture is taken (error check to make sure it got a location)
     //call locationManager.stopUpdatingLocation once location has been stored and reset locationUpdated to false
+
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0].coordinate

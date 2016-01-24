@@ -12,7 +12,7 @@
         <attribute name="isUpvoted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="picTakenLatitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="picTakenLongitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="time" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="time" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="titleLatitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="titleLongitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
