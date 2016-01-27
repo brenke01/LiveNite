@@ -112,12 +112,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let alphaBlack = black.colorWithAlphaComponent(0.7)
         profileMenu.backgroundColor = alphaBlack
         profileMenu.tag = 100
-        let medalLabel = UILabel(frame: CGRect(x: 15, y: 5, width: profileMenu.frame.width / 4, height: profileMenu.frame.height / 5))
         
-        let nameLabel = UILabel(frame: CGRect(x: profileMenu.frame.width / 4, y: profileMenu.frame.height / 25, width: profileMenu.frame.width - profileMenu.frame.width / 4, height: profileMenu.frame.height / 5))
-        let scoreLabel = UILabel(frame: CGRect(x: profileMenu.frame.width / 4, y: profileMenu.frame.maxX / 20, width: profileMenu.frame.width - profileMenu.frame.width / 4, height: profileMenu.frame.maxY / 5))
+        let profileLabel = UILabel(frame: CGRect(x: 0, y: 0, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
         
-        let myFriendsLabel = UILabel(frame: CGRect(x: 15, y: profileMenu.frame.height / 3, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
+        let myFriendsLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
+        
+        let moreLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height * (2/3), width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
         
         if toggleState == 0{
             toggleState = 1
@@ -127,17 +127,51 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
             let userName = user![0].valueForKey("first_name")
             let score = user![0].valueForKey("score")
+            
+            
+            
+            let nameLabel = UITextField(frame: CGRectMake(profileLabel.frame.width / 4, profileLabel.frame.height / 3, profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
             nameLabel.text = userName as! String
-            scoreLabel.text = String(score!)
-            myFriendsLabel.text = "My VIP"
-            myFriendsLabel.textColor = UIColor.whiteColor()
+            
             nameLabel.textColor = UIColor.whiteColor()
+            profileLabel.addSubview(nameLabel)
+            
+            let medalLabel = UIImageView(frame: CGRectMake(5, profileLabel.frame.height / 3, profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
+            profileLabel.addSubview(medalLabel)
+            
+            let scoreLabel = UITextField(frame: CGRectMake(profileLabel.frame.width / 4, profileLabel.frame.height * (2/3), profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
+            
+            scoreLabel.text = String(score!)
             scoreLabel.textColor = UIColor.whiteColor()
+            profileLabel.addSubview(scoreLabel)
+            
+            let topFriendsBorder = CALayer()
+            topFriendsBorder.frame = CGRectMake(0, 0, myFriendsLabel.bounds.size.width, 1)
+            topFriendsBorder.backgroundColor = UIColor.darkGrayColor().CGColor
+            myFriendsLabel.layer.addSublayer(topFriendsBorder)
+            let myFriendsTextLabel = UITextField(frame: CGRectMake(15, myFriendsLabel.frame.height / 2, myFriendsLabel.frame.width * (3/4), myFriendsLabel.frame.height / 2))
+            myFriendsTextLabel.text = "My VIP"
+            myFriendsTextLabel.textColor = UIColor.whiteColor()
+            myFriendsTextLabel.font = UIFont(name: "Helvetica Neue", size: 20)
+            myFriendsLabel.addSubview(myFriendsTextLabel)
+            
+            let topMoreBorder = CALayer()
+            topMoreBorder.frame = CGRectMake(0, 0, myFriendsLabel.bounds.size.width, 1)
+            topMoreBorder.backgroundColor = UIColor.darkGrayColor().CGColor
+            moreLabel.layer.addSublayer(topMoreBorder)
+            let moreTextLabel = UITextField(frame: CGRectMake(15, moreLabel.frame.height / 2, moreLabel.frame.width * (3/4), moreLabel.frame.height / 2))
+            moreTextLabel.text = "More..."
+            moreTextLabel.textColor = UIColor.whiteColor()
+            moreTextLabel.font = UIFont(name: "Helvetica Neue", size: 20)
+            moreLabel.addSubview(moreTextLabel)
+            
+          
+            nameLabel.font = UIFont(name: "Helvetica Neue", size: 18)
+            scoreLabel.font = UIFont(name: "Helvetica Neue", size: 14)
 
-            profileMenu.addSubview(medalLabel)
-            profileMenu.addSubview(nameLabel)
-            profileMenu.addSubview(scoreLabel)
+            profileMenu.addSubview(profileLabel)
             profileMenu.addSubview(myFriendsLabel)
+            profileMenu.addSubview(moreLabel)
             self.view.addSubview(profileMenu)
         }else{
             toggleState = 0
