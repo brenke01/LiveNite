@@ -173,8 +173,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) {
-        let searchRadius:Double = 1000
-        
+        let searchRadius:Double = 10000
+        print("Fetch nearby places")
         var list : [String] = []
         let searchedTypes = ["bar","club","restaurant", "night_club", "meal_delivery", "food"]
         let dataProvider = GoogleDataProvider()
