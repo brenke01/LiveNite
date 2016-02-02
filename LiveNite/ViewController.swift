@@ -46,7 +46,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var toggleState = 0
     var userID = ""
     var hotToggle = 0
-    let profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (self.collectionView?.frame.maxX)!, height: ((self.collectionView?.frame.maxY)!)))
     
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
@@ -60,7 +59,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.performSegueWithIdentifier("login", sender: nil)
         }
         self.view.hidden = false
-        
     }
     
     override func viewDidLoad() {
@@ -109,12 +107,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func profileView(sender: AnyObject) {
-        UIView.animateWithDuration(0.5, delay: 0.0, option: UIViewAnimationOptions.CurveEaseOut, animations: {
-        self.profileMenu.bounds.y += self.view.bounds.height
-        
-    }, completion: nil)
+        let profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (self.collectionView?.frame.maxX)!, height: ((self.collectionView?.frame.maxY)!)))
         let black = UIColor.blackColor()
-        let alphaBlack = black.colorWithAlphaComponent(0.8)
+        let alphaBlack = black.colorWithAlphaComponent(0.7)
         profileMenu.backgroundColor = alphaBlack
         profileMenu.tag = 100
         
@@ -357,8 +352,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.reloadData()
-        self.profileMenu.bounds.y -= self.view.bounds.height
-        
     }
     
     override func didReceiveMemoryWarning() {
