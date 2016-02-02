@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -83,22 +83,11 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="jR3-KX-oJQ"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OQx-Mt-5pg">
-                                <rect key="frame" x="290" y="550" width="32" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="32" id="S9e-MJ-y7l"/>
-                                    <constraint firstAttribute="height" constant="32" id="YVw-Pz-Kto"/>
-                                </constraints>
-                                <state key="normal" image="Profile"/>
-                                <connections>
-                                    <action selector="profileView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="atD-0b-EAj"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M5q-Yn-IIm">
-                                <rect key="frame" x="71" y="546" width="28" height="34"/>
+                                <rect key="frame" x="71" y="553" width="26" height="27"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="28" id="8IU-Ca-stA"/>
-                                    <constraint firstAttribute="height" constant="34" id="8jz-h6-m4y"/>
+                                    <constraint firstAttribute="height" constant="27" id="20M-GE-1xk"/>
+                                    <constraint firstAttribute="width" constant="26" id="GP1-nm-dre"/>
                                 </constraints>
                                 <state key="normal" image="Hot"/>
                                 <connections>
@@ -116,10 +105,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EvZ-7O-hHw">
-                                <rect key="frame" x="23" y="550" width="32" height="32"/>
+                                <rect key="frame" x="23" y="558" width="25" height="24"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="Vvr-GE-3rU"/>
-                                    <constraint firstAttribute="width" constant="32" id="nWg-2Z-Gbd"/>
+                                    <constraint firstAttribute="height" constant="24" id="J9g-OE-58l"/>
+                                    <constraint firstAttribute="width" constant="25" id="MzA-Wa-FPY"/>
                                 </constraints>
                                 <state key="normal" image="Recent"/>
                                 <connections>
@@ -132,6 +121,17 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OQx-Mt-5pg">
+                                <rect key="frame" x="290" y="548" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="S9e-MJ-y7l"/>
+                                    <constraint firstAttribute="height" constant="32" id="YVw-Pz-Kto"/>
+                                </constraints>
+                                <state key="normal" image="Profile"/>
+                                <connections>
+                                    <action selector="profileView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="atD-0b-EAj"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.32549019607843138" green="0.32549019607843138" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>

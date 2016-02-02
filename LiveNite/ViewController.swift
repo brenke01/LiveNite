@@ -46,6 +46,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var toggleState = 0
     var userID = ""
     var hotToggle = 0
+    let profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (self.collectionView?.frame.maxX)!, height: ((self.collectionView?.frame.maxY)!)))
     
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
@@ -59,6 +60,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.performSegueWithIdentifier("login", sender: nil)
         }
         self.view.hidden = false
+        
     }
     
     override func viewDidLoad() {
@@ -107,17 +109,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func profileView(sender: AnyObject) {
-        let profileMenu = UIView(frame: CGRect(x: (self.collectionView?.frame.midX)!, y: ((self.collectionView?.frame.maxY)! / 2), width: (self.collectionView?.frame.midX)!, height: ((self.collectionView?.frame.maxY)! / 2)))
+        UIView.animateWithDuration(0.5, delay: 0.0, option: UIViewAnimationOptions.CurveEaseOut, animations: {
+        self.profileMenu.bounds.y += self.view.bounds.height
+        
+    }, completion: nil)
         let black = UIColor.blackColor()
-        let alphaBlack = black.colorWithAlphaComponent(0.7)
+        let alphaBlack = black.colorWithAlphaComponent(0.8)
         profileMenu.backgroundColor = alphaBlack
         profileMenu.tag = 100
         
         let profileLabel = UILabel(frame: CGRect(x: 0, y: 0, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
         
-        let myFriendsLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
+        let myFriendsLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3, width: profileMenu.frame.width, height: profileMenu.frame.height / 10))
         
-        let moreLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height * (2/3), width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
+        let moreLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3 + myFriendsLabel.frame.height, width: profileMenu.frame.width, height: profileMenu.frame.height / 10))
         
         if toggleState == 0{
             toggleState = 1
@@ -149,7 +154,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             topFriendsBorder.frame = CGRectMake(0, 0, myFriendsLabel.bounds.size.width, 1)
             topFriendsBorder.backgroundColor = UIColor.darkGrayColor().CGColor
             myFriendsLabel.layer.addSublayer(topFriendsBorder)
-            let myFriendsTextLabel = UITextField(frame: CGRectMake(15, myFriendsLabel.frame.height / 2, myFriendsLabel.frame.width * (3/4), myFriendsLabel.frame.height / 2))
+            let myFriendsTextLabel = UITextField(frame: CGRectMake(15, myFriendsLabel.frame.height / 4, myFriendsLabel.frame.width * (3/4), myFriendsLabel.frame.height / 2))
             myFriendsTextLabel.text = "My VIP"
             myFriendsTextLabel.textColor = UIColor.whiteColor()
             myFriendsTextLabel.font = UIFont(name: "Helvetica Neue", size: 20)
@@ -159,7 +164,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             topMoreBorder.frame = CGRectMake(0, 0, myFriendsLabel.bounds.size.width, 1)
             topMoreBorder.backgroundColor = UIColor.darkGrayColor().CGColor
             moreLabel.layer.addSublayer(topMoreBorder)
-            let moreTextLabel = UITextField(frame: CGRectMake(15, moreLabel.frame.height / 2, moreLabel.frame.width * (3/4), moreLabel.frame.height / 2))
+            let moreTextLabel = UITextField(frame: CGRectMake(15, moreLabel.frame.height / 4, moreLabel.frame.width * (3/4), moreLabel.frame.height / 2))
             moreTextLabel.text = "More..."
             moreTextLabel.textColor = UIColor.whiteColor()
             moreTextLabel.font = UIFont(name: "Helvetica Neue", size: 20)
@@ -352,6 +357,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.reloadData()
+        self.profileMenu.bounds.y -= self.view.bounds.height
+        
     }
     
     override func didReceiveMemoryWarning() {
