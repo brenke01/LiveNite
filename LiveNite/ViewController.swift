@@ -38,7 +38,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var tableView : UITableView!
     
     @IBOutlet var collectionView: UICollectionView?
-    
+
     //variable for accessing location
     var locationManager = CLLocationManager()
     var userLocation = CLLocationCoordinate2D()
@@ -46,10 +46,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var toggleState = 0
     var userID = ""
     var hotToggle = 0
-    
+    var profileMenu = UIView()
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
+    
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -59,10 +61,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.performSegueWithIdentifier("login", sender: nil)
         }
         self.view.hidden = false
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
+        profileMenu.hidden = true
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -107,7 +112,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func profileView(sender: AnyObject) {
-        let profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (self.collectionView?.frame.maxX)!, height: ((self.collectionView?.frame.maxY)!)))
+
+
         let black = UIColor.blackColor()
         let alphaBlack = black.colorWithAlphaComponent(0.7)
         profileMenu.backgroundColor = alphaBlack
@@ -173,11 +179,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             profileMenu.addSubview(myFriendsLabel)
             profileMenu.addSubview(moreLabel)
             self.view.addSubview(profileMenu)
+            
+            UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+                
+                self.profileMenu.bounds.origin.y += 200
+                }, completion: nil)
+                self.profileMenu.hidden = false
         }else{
             toggleState = 0
             let viewWithTag = self.view.viewWithTag(100)! as UIView
             viewWithTag.removeFromSuperview()
         }
+
         
     }
     
@@ -352,6 +365,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.reloadData()
+        self.profileMenu.bounds.origin.y -= 200
+        
     }
     
     override func didReceiveMemoryWarning() {
