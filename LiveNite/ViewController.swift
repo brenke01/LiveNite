@@ -66,7 +66,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
+  
         profileMenu.hidden = true
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
@@ -112,7 +112,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func profileView(sender: AnyObject) {
-
+        profileMenu = UIView(frame: CGRect(x: 0, y: (collectionView?.bounds.height)!, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
 
         let black = UIColor.blackColor()
         let alphaBlack = black.colorWithAlphaComponent(0.7)
@@ -178,17 +178,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             profileMenu.addSubview(profileLabel)
             profileMenu.addSubview(myFriendsLabel)
             profileMenu.addSubview(moreLabel)
-            self.view.addSubview(profileMenu)
             
-            UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            
+            UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+   
+                self.view.addSubview(self.profileMenu)
+                self.profileMenu.frame.origin.y -= (self.collectionView?.bounds.height)! - 20
                 
-                self.profileMenu.bounds.origin.y += 200
                 }, completion: nil)
                 self.profileMenu.hidden = false
+            
+            
         }else{
             toggleState = 0
             let viewWithTag = self.view.viewWithTag(100)! as UIView
             viewWithTag.removeFromSuperview()
+            self.profileMenu.bounds.origin.y += (self.collectionView?.bounds.height)! - 20
         }
 
         
@@ -365,7 +370,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.reloadData()
-        self.profileMenu.bounds.origin.y -= 200
         
     }
     
