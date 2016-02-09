@@ -114,9 +114,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func profileView(sender: AnyObject) {
         profileMenu = UIView(frame: CGRect(x: 0, y: (collectionView?.bounds.height)!, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
 
-        let black = UIColor.blackColor()
-        let alphaBlack = black.colorWithAlphaComponent(0.7)
-        profileMenu.backgroundColor = alphaBlack
+        let black = UIColor(red: 9/255, green: 10/255, blue: 3/255, alpha: 0.7)
+
+        profileMenu.backgroundColor = black
         profileMenu.tag = 100
         
         let profileLabel = UILabel(frame: CGRect(x: 0, y: 0, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
@@ -249,6 +249,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageButton.userInteractionEnabled = true
         
         imageButton.tag = idArray[indexPath.row]
+        
+        
+
         let layer = imageButton.layer
         layer.shadowColor = UIColor.blackColor().CGColor
         layer.shadowOffset = CGSize(width: 0, height: 20)
