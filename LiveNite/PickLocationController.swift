@@ -18,6 +18,7 @@ import GoogleMaps
 class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource{
     @IBOutlet var tableView: UITableView!
     
+    @IBOutlet weak var pickLocNav: UINavigationBar!
     @IBOutlet weak var selectedImageView: UIImageView!
     
     var vc = ViewController()
@@ -38,7 +39,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
+        pickLocNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
+        pickLocNav.topItem!.title = "Pick Location"
         self.view.hidden = true
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
         locationManager.startUpdatingLocation()
@@ -69,6 +72,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         })
         
         
+    }
+    @IBAction func exit(sender: AnyObject) {
+        self.dismissViewControllerAnimated(false, completion: nil)
     }
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0].coordinate
