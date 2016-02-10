@@ -37,6 +37,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet
     var tableView : UITableView!
     
+
     @IBOutlet var collectionView: UICollectionView?
 
     //variable for accessing location
@@ -68,6 +69,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
   
         profileMenu.hidden = true
+
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -127,13 +129,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         if toggleState == 0{
             toggleState = 1
-            print(self.userID)
             let fetchRequest = NSFetchRequest(entityName: "Users")
             fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
             let userName = user![0].valueForKey("first_name")
             let score = user![0].valueForKey("score")
-            
+            let medalImage : UIImage = getRankMedal(Int(score! as! NSNumber))
             
             
             let nameLabel = UITextField(frame: CGRectMake(profileLabel.frame.width / 4, profileLabel.frame.height / 3, profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
@@ -142,7 +143,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             nameLabel.textColor = UIColor.whiteColor()
             profileLabel.addSubview(nameLabel)
             
-            let medalLabel = UIImageView(frame: CGRectMake(5, profileLabel.frame.height / 3, profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
+            let medalLabel = UIImageView(frame: CGRectMake(15, profileLabel.frame.height / 3, profileLabel.frame.width / 5, profileLabel.frame.height / 2 + 10))
+            medalLabel.image = medalImage
             profileLabel.addSubview(medalLabel)
             
             let scoreLabel = UITextField(frame: CGRectMake(profileLabel.frame.width / 4, profileLabel.frame.height * (2/3), profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
@@ -287,11 +289,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func getHotImages(sender: AnyObject) {
+        let viewWithTag = self.view.viewWithTag(100)! as UIView
+        
+        viewWithTag.removeFromSuperview()
+
+        
         self.hotToggle = 1
         collectionView?.reloadData()
     }
     
     @IBAction func getRecentImages(sender: AnyObject) {
+        let viewWithTag = self.view.viewWithTag(100)! as UIView
+        
+        viewWithTag.removeFromSuperview()
+
         self.hotToggle = 0
         collectionView?.reloadData()
     }
@@ -365,6 +376,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 destinationVC.locations = 1
             }
         }
+    }
+    
+    func getRankMedal(score : Int) -> UIImage{
+        let score = 750
+        var medal : UIImage
+        if score < 100{
+            medal = UIImage(named: "Novice")!
+        }else if score >= 100 && score < 500{
+            medal = UIImage(named: "Regular")!
+        }else if score >= 500 && score < 1000{
+            medal = UIImage(named: "Legend")!
+        }else if score >= 1000 && score < 2500{
+            medal = UIImage(named: "Legend")!
+        }else {
+            medal = UIImage(named: "Myth")!
+        }
+        
+        return medal
     }
 
     

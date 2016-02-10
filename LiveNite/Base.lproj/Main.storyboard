@@ -132,6 +132,10 @@
                                     <action selector="profileView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="atD-0b-EAj"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RmQ-Yk-wtj">
+                                <rect key="frame" x="125" y="613" width="46" height="19"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.32549019607843138" green="0.32549019607843138" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
