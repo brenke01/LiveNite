@@ -375,7 +375,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.reloadData()
+        userID = currentUserName
         checkForUserName()
+        
     }
     
     override func didReceiveMemoryWarning() {
