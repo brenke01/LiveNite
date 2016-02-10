@@ -37,8 +37,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet
     var tableView : UITableView!
     
+
     @IBOutlet var collectionView: UICollectionView?
-    
+
     //variable for accessing location
     var locationManager = CLLocationManager()
     var userLocation = CLLocationCoordinate2D()
@@ -46,10 +47,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var toggleState = 0
     var userID = ""
     var hotToggle = 0
-    
+    var profileMenu = UIView()
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
+    
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -59,10 +62,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.performSegueWithIdentifier("login", sender: nil)
         }
         self.view.hidden = false
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+  
+        profileMenu.hidden = true
+
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -125,27 +132,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func profileView(sender: AnyObject) {
-        let profileMenu = UIView(frame: CGRect(x: (self.collectionView?.frame.midX)!, y: ((self.collectionView?.frame.maxY)! / 2), width: (self.collectionView?.frame.midX)!, height: ((self.collectionView?.frame.maxY)! / 2)))
-        let black = UIColor.blackColor()
-        let alphaBlack = black.colorWithAlphaComponent(0.7)
-        profileMenu.backgroundColor = alphaBlack
+        profileMenu = UIView(frame: CGRect(x: 0, y: (collectionView?.bounds.height)!, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
+
+        let black = UIColor(red: 9/255, green: 10/255, blue: 3/255, alpha: 0.7)
+
+        profileMenu.backgroundColor = black
         profileMenu.tag = 100
         
         let profileLabel = UILabel(frame: CGRect(x: 0, y: 0, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
         
-        let myFriendsLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
+        let myFriendsLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3, width: profileMenu.frame.width, height: profileMenu.frame.height / 10))
         
-        let moreLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height * (2/3), width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
+        let moreLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3 + myFriendsLabel.frame.height, width: profileMenu.frame.width, height: profileMenu.frame.height / 10))
         
         if toggleState == 0{
             toggleState = 1
-            print(self.userID)
             let fetchRequest = NSFetchRequest(entityName: "Users")
             fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
             let userName = user![0].valueForKey("first_name")
             let score = user![0].valueForKey("score")
-            
+            let medalImage : UIImage = getRankMedal(Int(score! as! NSNumber))
             
             
             let nameLabel = UITextField(frame: CGRectMake(profileLabel.frame.width / 4, profileLabel.frame.height / 3, profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
@@ -154,7 +161,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             nameLabel.textColor = UIColor.whiteColor()
             profileLabel.addSubview(nameLabel)
             
-            let medalLabel = UIImageView(frame: CGRectMake(5, profileLabel.frame.height / 3, profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
+            let medalLabel = UIImageView(frame: CGRectMake(15, profileLabel.frame.height / 3, profileLabel.frame.width / 5, profileLabel.frame.height / 2 + 10))
+            medalLabel.image = medalImage
             profileLabel.addSubview(medalLabel)
             
             let scoreLabel = UITextField(frame: CGRectMake(profileLabel.frame.width / 4, profileLabel.frame.height * (2/3), profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
@@ -167,7 +175,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             topFriendsBorder.frame = CGRectMake(0, 0, myFriendsLabel.bounds.size.width, 1)
             topFriendsBorder.backgroundColor = UIColor.darkGrayColor().CGColor
             myFriendsLabel.layer.addSublayer(topFriendsBorder)
-            let myFriendsTextLabel = UITextField(frame: CGRectMake(15, myFriendsLabel.frame.height / 2, myFriendsLabel.frame.width * (3/4), myFriendsLabel.frame.height / 2))
+            let myFriendsTextLabel = UITextField(frame: CGRectMake(15, myFriendsLabel.frame.height / 4, myFriendsLabel.frame.width * (3/4), myFriendsLabel.frame.height / 2))
             myFriendsTextLabel.text = "My VIP"
             myFriendsTextLabel.textColor = UIColor.whiteColor()
             myFriendsTextLabel.font = UIFont(name: "Helvetica Neue", size: 20)
@@ -177,7 +185,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             topMoreBorder.frame = CGRectMake(0, 0, myFriendsLabel.bounds.size.width, 1)
             topMoreBorder.backgroundColor = UIColor.darkGrayColor().CGColor
             moreLabel.layer.addSublayer(topMoreBorder)
-            let moreTextLabel = UITextField(frame: CGRectMake(15, moreLabel.frame.height / 2, moreLabel.frame.width * (3/4), moreLabel.frame.height / 2))
+            let moreTextLabel = UITextField(frame: CGRectMake(15, moreLabel.frame.height / 4, moreLabel.frame.width * (3/4), moreLabel.frame.height / 2))
             moreTextLabel.text = "More..."
             moreTextLabel.textColor = UIColor.whiteColor()
             moreTextLabel.font = UIFont(name: "Helvetica Neue", size: 20)
@@ -190,12 +198,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             profileMenu.addSubview(profileLabel)
             profileMenu.addSubview(myFriendsLabel)
             profileMenu.addSubview(moreLabel)
-            self.view.addSubview(profileMenu)
+            
+            
+            UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+   
+                self.view.addSubview(self.profileMenu)
+                self.profileMenu.frame.origin.y -= (self.collectionView?.bounds.height)! - 20
+                
+                }, completion: nil)
+                self.profileMenu.hidden = false
+            
+            
         }else{
             toggleState = 0
             let viewWithTag = self.view.viewWithTag(100)! as UIView
             viewWithTag.removeFromSuperview()
+            self.profileMenu.bounds.origin.y += (self.collectionView?.bounds.height)! - 20
         }
+
         
     }
     
@@ -249,6 +269,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageButton.userInteractionEnabled = true
         
         imageButton.tag = idArray[indexPath.row]
+        
+        
+
         let layer = imageButton.layer
         layer.shadowColor = UIColor.blackColor().CGColor
         layer.shadowOffset = CGSize(width: 0, height: 20)
@@ -284,11 +307,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func getHotImages(sender: AnyObject) {
+        let viewWithTag = self.view.viewWithTag(100)! as UIView
+        
+        viewWithTag.removeFromSuperview()
+
+        
         self.hotToggle = 1
         collectionView?.reloadData()
     }
     
     @IBAction func getRecentImages(sender: AnyObject) {
+        let viewWithTag = self.view.viewWithTag(100)! as UIView
+        
+        viewWithTag.removeFromSuperview()
+
         self.hotToggle = 0
         collectionView?.reloadData()
     }
@@ -367,6 +399,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 destinationVC.userID = userID
             }
         }
+    }
+    
+    func getRankMedal(score : Int) -> UIImage{
+        let score = 750
+        var medal : UIImage
+        if score < 100{
+            medal = UIImage(named: "Novice")!
+        }else if score >= 100 && score < 500{
+            medal = UIImage(named: "Regular")!
+        }else if score >= 500 && score < 1000{
+            medal = UIImage(named: "Legend")!
+        }else if score >= 1000 && score < 2500{
+            medal = UIImage(named: "Legend")!
+        }else {
+            medal = UIImage(named: "Myth")!
+        }
+        
+        return medal
     }
 
     
