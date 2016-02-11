@@ -27,6 +27,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBOutlet var inputUserName: UITextField!
     @IBAction func submitAction(sender: AnyObject) {
         print("submit")
+        print(userID)
         let fetchRequest = NSFetchRequest(entityName: "Users")
         fetchRequest.predicate = NSPredicate(format: "id= %@", userID as NSString)
         let users = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
@@ -93,7 +94,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         let fetchRequest = NSFetchRequest(entityName: "Users")
         //The result from the Facebook request is an object that works like a Dictionary 
         //First we grab all of the fields
-        let userID = result.valueForKey("id") as! AnyObject?
+        userID = result.valueForKey("id") as! String
         let firstName = result.valueForKey("first_name") as! AnyObject?
         let gender = result.valueForKey("gender") as! AnyObject?
         let ageRange = result.valueForKey("age_range")?.valueForKey("min") as! AnyObject?

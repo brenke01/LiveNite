@@ -45,7 +45,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var userLocation = CLLocationCoordinate2D()
     var locationUpdated = false
     var toggleState = 0
-    var userID = ""
     var hotToggle = 0
     var profileMenu = UIView()
     let captureSession = AVCaptureSession()
@@ -108,7 +107,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 
             }else{
                 id = result.valueForKey("id") as! String
-                self.userID = id
+                userID = id
             }
         })
         
@@ -131,7 +130,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if toggleState == 0{
             toggleState = 1
             let fetchRequest = NSFetchRequest(entityName: "Users")
-            fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
+            fetchRequest.predicate = NSPredicate(format: "id= %@", userID)
+            print(userID)
+            print(userID)
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
             let userName = user![0].valueForKey("user_name")
             let score = user![0].valueForKey("score")
