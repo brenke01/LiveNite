@@ -17,14 +17,39 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-var currentUserName : String = ""
+var userID : String = ""
 
 class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, FBSDKLoginButtonDelegate{
     var locations = 0
+    
+    
+    @IBOutlet var submitButton: UIButton!
+    @IBOutlet var inputUserName: UITextField!
+    @IBAction func submitAction(sender: AnyObject) {
+        print("submit")
+        let fetchRequest = NSFetchRequest(entityName: "Users")
+        fetchRequest.predicate = NSPredicate(format: "id= %@", userID as NSString)
+        let users = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        if let users = users{
+            for user in users{
+                user.setValue(inputUserName.text, forKey: "user_name")
+                do {
+                    try context.save()
+                } catch _ {
+                }
+            }
+        } else {
+            print("User Name storage failed")
+        }
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        submitButton.hidden = true
+        inputUserName.hidden = true
+        submitButton.enabled = false
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
         let loginView : FBSDKLoginButton = FBSDKLoginButton()
         self.view.addSubview(loginView)
@@ -69,7 +94,6 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         //The result from the Facebook request is an object that works like a Dictionary 
         //First we grab all of the fields
         let userID = result.valueForKey("id") as! AnyObject?
-        currentUserName = userID as! String
         let firstName = result.valueForKey("first_name") as! AnyObject?
         let gender = result.valueForKey("gender") as! AnyObject?
         let ageRange = result.valueForKey("age_range")?.valueForKey("min") as! AnyObject?
@@ -89,12 +113,15 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 newUser.setValue(ageRange as! Int, forKey: "age")
                 newUser.setValue(0, forKey: "score")
                 //let them pick a username
-                newUser.setValue("", forKey: "user_name")
+                submitButton.hidden = false
+                inputUserName.hidden = false
+                submitButton.enabled = true
+                
                 do {
                     try context.save()
                 } catch _ {
                 }
-
+                
             }
         }
     }
@@ -114,9 +141,9 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             else
             {   //Save the user to the Users table
                 self.saveUserToCoreData(result)
-                
-                self.dismissViewControllerAnimated(true, completion: nil)
-                
+                if (self.submitButton.enabled == false) {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
 
             }
         })
@@ -125,6 +152,15 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+        inputUserName.resignFirstResponder()
+        return true
     }
     
 }

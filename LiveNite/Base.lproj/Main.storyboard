@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -170,12 +170,11 @@
                         <segue destination="VBq-gS-Kxm" kind="show" identifier="viewPost" id="6Rr-U6-rPJ"/>
                         <segue destination="SQT-NH-12I" kind="show" identifier="PickLocation" id="SaP-TC-hYB"/>
                         <segue destination="o6U-yY-ghQ" kind="show" identifier="login" id="LTZ-YS-sK5"/>
-                        <segue destination="rmp-W8-zE9" kind="show" identifier="chooseUserName" id="oD1-HT-zlD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1085" y="8"/>
+            <point key="canvasLocation" x="415" y="32"/>
         </scene>
         <!--View Post Controller-->
         <scene sceneID="Mzj-ex-Dob">
@@ -307,7 +306,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kmr-u8-OBq" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1544" y="8"/>
+            <point key="canvasLocation" x="1536" y="32"/>
         </scene>
         <!--Pick Location Controller-->
         <scene sceneID="BeN-rJ-Idf">
@@ -381,7 +380,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vTl-xe-zqT" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1085" y="-706"/>
+            <point key="canvasLocation" x="1536" y="812"/>
         </scene>
         <!--Login Controller-->
         <scene sceneID="XHN-EO-kvc">
@@ -394,65 +393,46 @@
                     <view key="view" contentMode="scaleToFill" id="7IW-wW-I45">
                         <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="350" height="600"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kHJ-eg-Hxi" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="543" y="-782"/>
-        </scene>
-        <!--Choose User Name Controller-->
-        <scene sceneID="4R5-bZ-5vF">
-            <objects>
-                <viewController id="rmp-W8-zE9" customClass="ChooseUserNameController" customModule="LiveNite" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Hsg-xK-t0w"/>
-                        <viewControllerLayoutGuide type="bottom" id="pJZ-5l-iIe"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="M2e-A9-iv7">
-                        <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Choose a User Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8S1-lY-o7m">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Choose a User Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qgy-JJ-TGa">
                                 <rect key="frame" x="75" y="120" width="200" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="7Kd-EO-nFr"/>
-                                    <constraint firstAttribute="height" constant="30" id="rbB-VA-PH8"/>
+                                    <constraint firstAttribute="height" constant="30" id="pDg-8V-6Pl"/>
+                                    <constraint firstAttribute="width" constant="200" id="pEw-mN-x3W"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dbf-Y2-aLf">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KWU-YT-DAH">
                                 <rect key="frame" x="150" y="158" width="50" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="mJC-f3-tlo"/>
-                                    <constraint firstAttribute="width" constant="50" id="wfa-oE-Pny"/>
+                                    <constraint firstAttribute="height" constant="30" id="LGl-oO-Fgd"/>
+                                    <constraint firstAttribute="width" constant="50" id="tLo-wK-QUw"/>
                                 </constraints>
                                 <state key="normal" title="Submit"/>
                                 <connections>
-                                    <action selector="submitUserName:" destination="rmp-W8-zE9" eventType="touchUpInside" id="VWi-Fd-F2K"/>
+                                    <action selector="submitAction:" destination="o6U-yY-ghQ" eventType="touchUpInside" id="pr0-T6-Jff"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.25490196079999999" green="0.25490196079999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Dbf-Y2-aLf" firstAttribute="centerX" secondItem="M2e-A9-iv7" secondAttribute="centerX" id="16G-9E-qKG"/>
-                            <constraint firstItem="8S1-lY-o7m" firstAttribute="top" secondItem="Hsg-xK-t0w" secondAttribute="bottom" constant="100" id="Sa5-lf-HAI"/>
-                            <constraint firstItem="8S1-lY-o7m" firstAttribute="centerX" secondItem="M2e-A9-iv7" secondAttribute="centerX" id="ldy-2c-YbC"/>
-                            <constraint firstItem="Dbf-Y2-aLf" firstAttribute="top" secondItem="8S1-lY-o7m" secondAttribute="bottom" constant="8" id="run-0I-MjA"/>
+                            <constraint firstItem="KWU-YT-DAH" firstAttribute="centerX" secondItem="7IW-wW-I45" secondAttribute="centerX" id="NBB-p2-P0g"/>
+                            <constraint firstItem="qgy-JJ-TGa" firstAttribute="top" secondItem="J83-E2-SqF" secondAttribute="bottom" constant="100" id="NeM-B6-eW6"/>
+                            <constraint firstItem="KWU-YT-DAH" firstAttribute="top" secondItem="qgy-JJ-TGa" secondAttribute="bottom" constant="8" id="RH1-Os-MkS"/>
+                            <constraint firstItem="qgy-JJ-TGa" firstAttribute="centerX" secondItem="7IW-wW-I45" secondAttribute="centerX" id="TDG-My-39p"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="350" height="600"/>
                     <connections>
-                        <outlet property="userNameText" destination="8S1-lY-o7m" id="qIf-CM-Hg5"/>
+                        <outlet property="inputUserName" destination="qgy-JJ-TGa" id="dxM-PU-hvp"/>
+                        <outlet property="submitButton" destination="KWU-YT-DAH" id="yvz-83-RjL"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3IX-jL-PBm" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kHJ-eg-Hxi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1587" y="-782"/>
+            <point key="canvasLocation" x="883" y="-766"/>
         </scene>
     </scenes>
     <resources>

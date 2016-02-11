@@ -93,7 +93,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         } else {
             // Fallback on earlier versions
         }
-        retrieveUserID()
+        //retrieveUserID()
     }
     
     func retrieveUserID(){
@@ -109,26 +109,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }else{
                 id = result.valueForKey("id") as! String
                 self.userID = id
-                self.checkForUserName()
             }
         })
         
-    }
-    
-    func checkForUserName(){
-        print("check")
-        print(userID)
-        let fetchRequest = NSFetchRequest(entityName: "Users")
-        fetchRequest.predicate = NSPredicate(format: "id= %@", userID as! NSString)
-        let users = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        if let users = users{
-            for user in users{
-                print("User_name = \(user.valueForKey("user_name"))")
-                if (user.valueForKey("user_name") as! String == "") {
-                    self.performSegueWithIdentifier("chooseUserName", sender: userID)
-                }
-            }
-        }
     }
     
     @IBAction func profileView(sender: AnyObject) {
@@ -394,11 +377,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 print("login controller")
                 destinationVC.locations = 1
             }
-        }else if segue.identifier == "chooseUserName"{
-            if let destinationVC = segue.destinationViewController as? ChooseUserNameController{
-                print("choose user name controller")
-                destinationVC.userID = userID
-            }
         }
     }
     
@@ -426,7 +404,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.reloadData()
-        checkForUserName()
         
     }
     

@@ -45,15 +45,15 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     let title = result.valueForKey("title") as! String
                     let currentDate = NSDate()
                     let checkInFetchRequest = NSFetchRequest(entityName: "UserCheckIns")
-                    print("Current User Name: \(currentUserName)")
-                    checkInFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "locationTitle= %@",title), NSPredicate(format: "userName= %@", currentUserName)])
+                    print("Current User Name: \(userID)")
+                    checkInFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "locationTitle= %@",title), NSPredicate(format: "userName= %@", userID)])
                     let checkInResult = (try? context.executeFetchRequest(checkInFetchRequest)) as! [NSManagedObject]?
                     //If the fetch request returns nothing, we know it is a new location they are checking into
                     if (checkInResult! == []){
                         //Make new check in in table
                         if let newCheckIn = NSEntityDescription.insertNewObjectForEntityForName("UserCheckIns", inManagedObjectContext:context) as? NSManagedObject{
                     
-                            newCheckIn.setValue(currentUserName as NSString, forKey: "userName")
+                            newCheckIn.setValue(userID as NSString, forKey: "userName")
                             newCheckIn.setValue(currentDate, forKey: "dateOfLastCheckIn")
                             newCheckIn.setValue(title as NSString, forKey: "locationTitle")
                             do {
@@ -63,9 +63,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                             
                         }
                         //Award user points
-                        print("currentUserName: \(currentUserName)")
+                        print("userID: \(userID)")
                         let scoreFetchRequest = NSFetchRequest(entityName: "Users")
-                        scoreFetchRequest.predicate = NSPredicate(format: "id = \(currentUserName)")
+                        scoreFetchRequest.predicate = NSPredicate(format: "id = \(userID)")
                         let scores = (try? context.executeFetchRequest(scoreFetchRequest)) as! [NSManagedObject]?
                         if let scores = scores{
                             for score in scores{
@@ -83,9 +83,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                                 if (diffDateComponents.year > 0 || diffDateComponents.month > 0 || diffDateComponents.day > 0){
                                     print("It's been a while")
                                     //award points
-                                    print("currentUserName: \(currentUserName)")
+                                    print("userID: \(userID)")
                                     let scoreFetchRequest = NSFetchRequest(entityName: "Users")
-                                    scoreFetchRequest.predicate = NSPredicate(format: "id = \(currentUserName)")
+                                    scoreFetchRequest.predicate = NSPredicate(format: "id = \(userID)")
                                     let scores = (try? context.executeFetchRequest(scoreFetchRequest)) as! [NSManagedObject]?
                                     if let scores = scores{
                                         for score in scores{
@@ -155,7 +155,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func loadUIDetails() {
         
-        print(currentUserName)
+        print(userID)
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         navigationBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         navigationBar.topItem!.title = imageTitle
@@ -171,7 +171,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 let upvoteStatus = upvoteData as! Int
                 let userData : AnyObject? = result.valueForKey("user_name")
                 let userName = userData as! String
-                if userName == currentUserName && id == imageID {
+                if userName == userID && id == imageID {
                     userUpvoteStatus = upvoteStatus
                 }
             }
@@ -206,7 +206,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         var userUpvoteStatus : Int = 0
         //get user upvote status
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
-        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", currentUserName)])
+        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", userID)])
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?
         if let userUpvoteStatusFetchResults = userUpvoteStatusFetchResults{
             for result in userUpvoteStatusFetchResults{
@@ -263,7 +263,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         print(imageID)
         //save data in core data
-        userVoted(imageID, user_name: currentUserName, upvote_value: userUpvoteStatus)
+        userVoted(imageID, user_name: userID, upvote_value: userUpvoteStatus)
         upvotesLabel.text = String(upvote)
         //self.collectionView!.reloadData()
         
@@ -316,7 +316,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         var userUpvoteStatus : Int = 0
         //get upvote status
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
-        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", currentUserName)])
+        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", userID)])
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?
         if let userUpvoteStatusFetchResults = userUpvoteStatusFetchResults{
             for result in userUpvoteStatusFetchResults{
@@ -373,7 +373,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
         }
         //save data in core data
-        userVoted(imageID, user_name: currentUserName, upvote_value: userUpvoteStatus)
+        userVoted(imageID, user_name: userID, upvote_value: userUpvoteStatus)
         upvotesLabel.text = String(upvote)
     }
 }
