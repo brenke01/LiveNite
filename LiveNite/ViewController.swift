@@ -150,8 +150,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let fetchRequest = NSFetchRequest(entityName: "Users")
             fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-            let userName = user![0].valueForKey("first_name")
+            let userName = user![0].valueForKey("user_name")
             let score = user![0].valueForKey("score")
+            
             let medalImage : UIImage = getRankMedal(Int(score! as! NSNumber))
             
             

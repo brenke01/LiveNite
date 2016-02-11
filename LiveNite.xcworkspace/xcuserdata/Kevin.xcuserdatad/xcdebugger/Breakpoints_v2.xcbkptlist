@@ -200,11 +200,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "476760877.285355"
+            timestampString = "476849417.878447"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "376"
-            endingLineNumber = "376"
+            startingLineNumber = "377"
+            endingLineNumber = "377"
             landmarkName = "prepareForSegue(_:sender:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -216,11 +216,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "476759730.099345"
+            timestampString = "476849417.878447"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
             landmarkName = "profileView(_:)"
             landmarkType = "5">
          </BreakpointContent>

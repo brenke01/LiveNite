@@ -30,6 +30,10 @@ class ChooseUserNameController: UIViewController, UIImagePickerControllerDelegat
         if let users = users{
             for user in users{
                 user.setValue(userNameText.text, forKey: "user_name")
+                do {
+                    try context.save()
+                } catch _ {
+                }
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         } else {
