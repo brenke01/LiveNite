@@ -50,6 +50,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
+    var accessToken = ""
     
 
     
@@ -59,6 +60,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         {
             print("is nil")
             self.performSegueWithIdentifier("login", sender: nil)
+        }else{
+            self.accessToken = String(FBSDKAccessToken.currentAccessToken())
         }
         self.view.hidden = false
 
@@ -130,7 +133,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if toggleState == 0{
             toggleState = 1
             let fetchRequest = NSFetchRequest(entityName: "Users")
-            fetchRequest.predicate = NSPredicate(format: "id= %@", userID)
+            fetchRequest.predicate = NSPredicate(format: "access_token= %@", self.accessToken)
             print(userID)
             print(userID)
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?

@@ -113,6 +113,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 newUser.setValue(gender as! NSString, forKey: "gender")
                 newUser.setValue(ageRange as! Int, forKey: "age")
                 newUser.setValue(0, forKey: "score")
+                newUser.setValue(String(FBSDKAccessToken.currentAccessToken()), forKey: "access_token")
                 //let them pick a username
                 submitButton.hidden = false
                 inputUserName.hidden = false
@@ -123,6 +124,16 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 } catch _ {
                 }
                 
+            }
+        }else{
+            if let user = user{
+                for u in user{
+                    u.setValue(FBSDKAccessToken.currentAccessToken(), forKey: "access_token")
+                    do {
+                        try context.save()
+                    } catch _ {
+                    }
+                }
             }
         }
     }
