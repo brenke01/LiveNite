@@ -21,6 +21,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var pickLocNav: UINavigationBar!
     @IBOutlet weak var selectedImageView: UIImageView!
     
+    @IBOutlet weak var landmarkButton: UIButton!
+    @IBOutlet weak var foodButton: UIButton!
+    @IBOutlet weak var barsButton: UIButton!
     var vc = ViewController()
     var saved = false
     var locations = 1
@@ -38,7 +41,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var currentUserName : String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        barsButton.backgroundColor = UIColor.grayColor()
+        foodButton.backgroundColor = UIColor.grayColor()
+        landmarkButton.backgroundColor = UIColor.grayColor()
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         pickLocNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         pickLocNav.topItem!.title = "Pick Location"
@@ -91,7 +96,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         }else if (complete == true && saved == false){
             dismissViewControllerAnimated(true, completion: nil)
         }else{
-            fetchNearbyPlaces(userLocation)
+            var searchedTypes = ["bar", "night_club", "club"]
+            fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
             tableView.reloadData()
         }
 
@@ -126,6 +132,23 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
     
+    
+    @IBAction func getBars(sender: AnyObject) {
+        var searchedTypes = ["bar", "night_club", "club"]
+        fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
+        tableView.reloadData()
+    }
+    
+   /* @IBAction func getFood(sender: AnyObject) {
+        var searchedTypes = ["food", "restaurant", "meal_delivery"]
+        fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
+        tableView.reloadData()
+    }
+    @IBAction func getLandmarks(sender: AnyObject) {
+        var searchedTypes = ["establishment", "university", "movie_theater"]
+        fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
+        tableView.reloadData()
+    }*/
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : AnyObject]) {
         
         self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
@@ -178,11 +201,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     
-    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) {
+    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D, searchedTypes : [String]) {
         let searchRadius:Double = 10000
         print("Fetch nearby places")
         var list : [String] = []
-        let searchedTypes = ["bar","club","restaurant", "night_club", "meal_delivery", "food"]
         let dataProvider = GoogleDataProvider()
         dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
             for place: GooglePlace in places {
