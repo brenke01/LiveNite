@@ -42,8 +42,12 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         barsButton.backgroundColor = UIColor.grayColor()
+        barsButton.layer.cornerRadius = 8.0
         foodButton.backgroundColor = UIColor.grayColor()
+        foodButton.layer.cornerRadius = 8.0
         landmarkButton.backgroundColor = UIColor.grayColor()
+        landmarkButton.layer.cornerRadius = 8.0
+
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         pickLocNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         pickLocNav.topItem!.title = "Pick Location"
@@ -136,19 +140,20 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     @IBAction func getBars(sender: AnyObject) {
         var searchedTypes = ["bar", "night_club", "club"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
-        tableView.reloadData()
+        //tableView.reloadData()
     }
     
-   /* @IBAction func getFood(sender: AnyObject) {
+    @IBAction func getFood(sender: AnyObject) {
+        print("food")
         var searchedTypes = ["food", "restaurant", "meal_delivery"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
-        tableView.reloadData()
+        //tableView.reloadData()
     }
     @IBAction func getLandmarks(sender: AnyObject) {
-        var searchedTypes = ["establishment", "university", "movie_theater"]
+        var searchedTypes = ["establishment", "university"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
-        tableView.reloadData()
-    }*/
+        //tableView.reloadData()
+    }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : AnyObject]) {
         
         self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage

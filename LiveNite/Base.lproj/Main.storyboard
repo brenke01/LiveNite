@@ -352,60 +352,67 @@
                                 </items>
                             </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-8I-bBG">
-                                <rect key="frame" x="225" y="359" width="90" height="41"/>
+                                <rect key="frame" x="240" y="359" width="90" height="41"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="90" id="D31-Ek-50b"/>
-                                    <constraint firstAttribute="height" constant="41" id="WKp-sx-Ay5"/>
+                                    <constraint firstAttribute="width" constant="90" id="c1y-pb-Lbt"/>
+                                    <constraint firstAttribute="height" constant="41" id="wlH-Bv-hsU"/>
                                 </constraints>
-                                <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="25" maxY="0.0"/>
+                                <inset key="contentEdgeInsets" minX="25" minY="7" maxX="25" maxY="5"/>
                                 <state key="normal" image="Landmarks"/>
+                                <connections>
+                                    <action selector="getLandmarks:" destination="SQT-NH-12I" eventType="touchUpInside" id="SZ8-3Q-BMu"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JMO-Jg-0Ww">
-                                <rect key="frame" x="127" y="360" width="90" height="40"/>
+                                <rect key="frame" x="130" y="359" width="90" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="90" id="Ntx-V5-1WZ"/>
-                                    <constraint firstAttribute="height" constant="40" id="hZZ-s4-LW0"/>
+                                    <constraint firstAttribute="height" constant="40" id="ZoV-N8-PFS"/>
+                                    <constraint firstAttribute="width" constant="90" id="tlb-EO-Qt8"/>
                                 </constraints>
                                 <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="25" maxY="0.0"/>
                                 <state key="normal" image="Restaurants"/>
+                                <connections>
+                                    <action selector="getFood:" destination="SQT-NH-12I" eventType="touchUpInside" id="ksx-hU-Oqh"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQa-y4-8i8">
-                                <rect key="frame" x="29" y="359" width="90" height="40"/>
+                                <rect key="frame" x="20" y="359" width="90" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="90" id="bfI-1N-zG8"/>
-                                    <constraint firstAttribute="height" constant="40" id="uvt-Me-IOK"/>
+                                    <constraint firstAttribute="height" constant="40" id="kFE-Kj-kPW"/>
+                                    <constraint firstAttribute="width" constant="90" id="qDT-IO-fuG"/>
                                 </constraints>
-                                <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="25" maxY="0.0"/>
+                                <inset key="contentEdgeInsets" minX="25" minY="5" maxX="25" maxY="6"/>
                                 <state key="normal" image="Bars">
                                     <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="getBars:" destination="SQT-NH-12I" eventType="touchUpInside" id="y2K-sl-KKb"/>
+                                    <action selector="getBars:" destination="SQT-NH-12I" eventType="touchUpInside" id="4bb-U7-czO"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.26069286616161613" green="0.26069286616161613" blue="0.26069286616161613" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="JMO-Jg-0Ww" firstAttribute="leading" secondItem="tQa-y4-8i8" secondAttribute="trailing" constant="20" id="0Gr-Xg-KA7"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="bottom" secondItem="hrw-0b-NGW" secondAttribute="top" id="0mq-kX-Nzz"/>
+                            <constraint firstItem="tQa-y4-8i8" firstAttribute="centerY" secondItem="fzH-8I-bBG" secondAttribute="centerY" id="3qL-4L-4wm"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="leading" secondItem="BRW-SO-Y4q" secondAttribute="leading" id="5dL-tc-K9c"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="trailing" secondItem="hrw-0b-NGW" secondAttribute="trailing" id="DWG-lI-pdQ"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="top" secondItem="BRW-SO-Y4q" secondAttribute="topMargin" constant="-5" id="Eqi-9v-15W"/>
-                            <constraint firstItem="fzH-8I-bBG" firstAttribute="leading" secondItem="JMO-Jg-0Ww" secondAttribute="trailing" constant="8" symbolic="YES" id="JPx-6w-WEU"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="fzH-8I-bBG" secondAttribute="trailing" constant="19" id="L3V-be-9Kl"/>
-                            <constraint firstItem="fzH-8I-bBG" firstAttribute="bottom" secondItem="JMO-Jg-0Ww" secondAttribute="bottom" id="LTF-Yu-7g1"/>
+                            <constraint firstItem="tQa-y4-8i8" firstAttribute="top" secondItem="fzH-8I-bBG" secondAttribute="top" id="Jy4-4g-uAZ"/>
                             <constraint firstItem="Nlv-Zp-cAm" firstAttribute="trailing" secondItem="hrw-0b-NGW" secondAttribute="trailing" id="LjN-b7-glS"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="leading" secondItem="hrw-0b-NGW" secondAttribute="leading" id="Nx1-LT-JVf"/>
                             <constraint firstItem="cbu-tA-fIB" firstAttribute="centerX" secondItem="BRW-SO-Y4q" secondAttribute="centerX" id="OeY-mL-bDQ"/>
                             <constraint firstItem="AhC-0y-UuD" firstAttribute="top" secondItem="cbu-tA-fIB" secondAttribute="bottom" constant="8" symbolic="YES" id="QwY-2q-rTx"/>
-                            <constraint firstItem="JMO-Jg-0Ww" firstAttribute="leading" secondItem="tQa-y4-8i8" secondAttribute="trailing" constant="8" symbolic="YES" id="T4h-Gp-cNr"/>
+                            <constraint firstItem="JMO-Jg-0Ww" firstAttribute="centerX" secondItem="Nlv-Zp-cAm" secondAttribute="centerX" id="UoH-Bn-PAc"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="trailing" secondItem="cbu-tA-fIB" secondAttribute="trailing" id="X0q-2E-AtB"/>
                             <constraint firstItem="Nlv-Zp-cAm" firstAttribute="top" secondItem="hrw-0b-NGW" secondAttribute="bottom" constant="47" id="Xlx-Bw-gLv"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="leading" secondItem="cbu-tA-fIB" secondAttribute="leading" id="Xn0-F2-Stt"/>
                             <constraint firstItem="Nlv-Zp-cAm" firstAttribute="leading" secondItem="hrw-0b-NGW" secondAttribute="leading" id="Yt4-H1-3ma"/>
+                            <constraint firstItem="tQa-y4-8i8" firstAttribute="top" secondItem="JMO-Jg-0Ww" secondAttribute="top" id="gCq-32-nCF"/>
                             <constraint firstItem="Nlv-Zp-cAm" firstAttribute="bottom" secondItem="AhC-0y-UuD" secondAttribute="top" id="hSa-aY-fi2"/>
                             <constraint firstItem="cbu-tA-fIB" firstAttribute="centerY" secondItem="BRW-SO-Y4q" secondAttribute="centerY" id="jbL-4T-Kyg"/>
-                            <constraint firstItem="fzH-8I-bBG" firstAttribute="top" secondItem="tQa-y4-8i8" secondAttribute="top" id="npv-Hw-xx4"/>
-                            <constraint firstItem="Nlv-Zp-cAm" firstAttribute="top" secondItem="fzH-8I-bBG" secondAttribute="bottom" constant="4" id="rvF-hN-yzM"/>
+                            <constraint firstItem="fzH-8I-bBG" firstAttribute="leading" secondItem="JMO-Jg-0Ww" secondAttribute="trailing" constant="20" id="p2Z-ub-0Hy"/>
+                            <constraint firstItem="Nlv-Zp-cAm" firstAttribute="top" secondItem="JMO-Jg-0Ww" secondAttribute="bottom" constant="5" id="zuR-Sl-tgH"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
