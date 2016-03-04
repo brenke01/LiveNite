@@ -118,11 +118,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func profileView(sender: AnyObject) {
-        
+    
+        if (self.toggleState == 0){
+            self.toggleState = 1
         profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
         //profileMenu.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
         profileMenu.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
-        let backgroundImage = UIImageView(frame: CGRect(x: 0, y: (collectionView?.bounds.height)!, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
+        let backgroundImage = UIImageView(frame: CGRect(x: 0, y: 0, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
         backgroundImage.image = UIImage(named: "Background_Gradient")
         profileMenu.addSubview(backgroundImage)
       
@@ -190,8 +192,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.view.addSubview(self.profileMenu)
             self.profileMenu.hidden = false
         
-            
-            
+        }
+        
             
     
 
@@ -286,21 +288,30 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func getHotImages(sender: AnyObject) {
-        let viewWithTag = self.view.viewWithTag(100)! as UIView
+        if (self.toggleState == 1){
+            let viewWithTag = self.view.viewWithTag(100)! as UIView?
         
-        viewWithTag.removeFromSuperview()
-
+            viewWithTag!.removeFromSuperview()
+        }
+        
+        
+        self.toggleState = 0
         
         self.hotToggle = 1
         collectionView?.reloadData()
+        
     }
     
     @IBAction func getRecentImages(sender: AnyObject) {
-        let viewWithTag = self.view.viewWithTag(100)! as UIView
+        if (self.toggleState == 1){
+            let viewWithTag = self.view.viewWithTag(100)! as UIView?
         
-        viewWithTag.removeFromSuperview()
-
+            viewWithTag!.removeFromSuperview()
+        }
+        
+        self.toggleState = 0
         self.hotToggle = 0
+        
         collectionView?.reloadData()
     }
     //end auto layout code
