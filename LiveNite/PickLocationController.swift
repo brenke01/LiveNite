@@ -41,7 +41,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var currentUserName : String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        barsButton.backgroundColor = UIColor.grayColor()
+        barsButton.backgroundColor = UIColor.whiteColor()
         barsButton.layer.cornerRadius = 8.0
         foodButton.backgroundColor = UIColor.grayColor()
         foodButton.layer.cornerRadius = 8.0
@@ -138,18 +138,26 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     @IBAction func getBars(sender: AnyObject) {
+        barsButton.backgroundColor = UIColor.whiteColor()
+        foodButton.backgroundColor = UIColor.grayColor()
+        landmarkButton.backgroundColor = UIColor.grayColor()
         var searchedTypes = ["bar", "night_club", "club"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
     }
     
     @IBAction func getFood(sender: AnyObject) {
-        print("food")
+        barsButton.backgroundColor = UIColor.grayColor()
+        foodButton.backgroundColor = UIColor.whiteColor()
+        landmarkButton.backgroundColor = UIColor.grayColor()
         var searchedTypes = ["food", "restaurant", "meal_delivery"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
     }
     @IBAction func getLandmarks(sender: AnyObject) {
+        barsButton.backgroundColor = UIColor.grayColor()
+        foodButton.backgroundColor = UIColor.grayColor()
+        landmarkButton.backgroundColor = UIColor.whiteColor()
         var searchedTypes = ["establishment", "university"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()

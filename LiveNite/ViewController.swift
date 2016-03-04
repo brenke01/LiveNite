@@ -51,18 +51,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
     var accessToken = ""
+    var userID = ""
     
 
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if (FBSDKAccessToken.currentAccessToken() == nil)
-        {
-            print("is nil")
-            self.performSegueWithIdentifier("login", sender: nil)
-        }else{
-            self.accessToken = String(FBSDKAccessToken.currentAccessToken())
-        }
+
         self.view.hidden = false
 
     }
@@ -71,7 +66,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
   
         profileMenu.hidden = true
-
+        if (FBSDKAccessToken.currentAccessToken() == nil)
+        {
+            print("is nil")
+            self.performSegueWithIdentifier("login", sender: nil)
+        }else{
+            self.accessToken = String(FBSDKAccessToken.currentAccessToken())
+        }
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -95,7 +96,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         } else {
             // Fallback on earlier versions
         }
-        //retrieveUserID()
+        retrieveUserID()
     }
     
     func retrieveUserID(){
@@ -110,18 +111,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 
             }else{
                 id = result.valueForKey("id") as! String
-                userID = id
+                self.userID = id
             }
         })
         
     }
     
     @IBAction func profileView(sender: AnyObject) {
-        profileMenu = UIView(frame: CGRect(x: 0, y: (collectionView?.bounds.height)!, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
-
-        let black = UIColor(red: 9/255, green: 10/255, blue: 3/255, alpha: 0.7)
-
-        profileMenu.backgroundColor = black
+        
+        profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
+        //profileMenu.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
+        profileMenu.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
+        let backgroundImage = UIImageView(frame: CGRect(x: 0, y: (collectionView?.bounds.height)!, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
+        backgroundImage.image = UIImage(named: "Background_Gradient")
+        profileMenu.addSubview(backgroundImage)
+      
         profileMenu.tag = 100
         
         let profileLabel = UILabel(frame: CGRect(x: 0, y: 0, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
@@ -130,12 +134,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         let moreLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3 + myFriendsLabel.frame.height, width: profileMenu.frame.width, height: profileMenu.frame.height / 10))
         
-        if toggleState == 0{
-            toggleState = 1
             let fetchRequest = NSFetchRequest(entityName: "Users")
-            fetchRequest.predicate = NSPredicate(format: "access_token= %@", self.accessToken)
-            print(userID)
-            print(userID)
+            fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
+            
             let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
             let userName = user![0].valueForKey("user_name")
             let score = user![0].valueForKey("score")
@@ -186,23 +187,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             profileMenu.addSubview(profileLabel)
             profileMenu.addSubview(myFriendsLabel)
             profileMenu.addSubview(moreLabel)
+            self.view.addSubview(self.profileMenu)
+            self.profileMenu.hidden = false
+        
             
             
-            UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-   
-                self.view.addSubview(self.profileMenu)
-                self.profileMenu.frame.origin.y -= (self.collectionView?.bounds.height)! - 20
-                
-                }, completion: nil)
-                self.profileMenu.hidden = false
             
-            
-        }else{
-            toggleState = 0
-            let viewWithTag = self.view.viewWithTag(100)! as UIView
-            viewWithTag.removeFromSuperview()
-            self.profileMenu.bounds.origin.y += (self.collectionView?.bounds.height)! - 20
-        }
+    
 
         
     }
