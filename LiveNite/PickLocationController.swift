@@ -138,9 +138,12 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     @IBAction func getBars(sender: AnyObject) {
-        barsButton.backgroundColor = UIColor.whiteColor()
+        barsButton.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
         foodButton.backgroundColor = UIColor.grayColor()
         landmarkButton.backgroundColor = UIColor.grayColor()
+        barsButton.layer.borderColor = UIColor.whiteColor().CGColor
+        foodButton.layer.borderColor = UIColor.whiteColor().CGColor
+        landmarkButton.layer.borderColor = UIColor.whiteColor().CGColor
         var searchedTypes = ["bar", "night_club", "club"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
@@ -148,16 +151,24 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     @IBAction func getFood(sender: AnyObject) {
         barsButton.backgroundColor = UIColor.grayColor()
-        foodButton.backgroundColor = UIColor.whiteColor()
+        foodButton.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
         landmarkButton.backgroundColor = UIColor.grayColor()
+        barsButton.layer.borderColor = UIColor.whiteColor().CGColor
+        foodButton.layer.borderColor = UIColor.whiteColor().CGColor
+        landmarkButton.layer.borderColor = UIColor.whiteColor().CGColor
         var searchedTypes = ["food", "restaurant", "meal_delivery"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
     }
     @IBAction func getLandmarks(sender: AnyObject) {
         barsButton.backgroundColor = UIColor.grayColor()
+        
         foodButton.backgroundColor = UIColor.grayColor()
-        landmarkButton.backgroundColor = UIColor.whiteColor()
+        
+        landmarkButton.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
+        barsButton.layer.borderColor = UIColor.whiteColor().CGColor
+        foodButton.layer.borderColor = UIColor.whiteColor().CGColor
+        landmarkButton.layer.borderColor = UIColor.whiteColor().CGColor
         var searchedTypes = ["establishment", "university"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
@@ -254,7 +265,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 cell.textLabel?.textColor = UIColor.whiteColor()
             }else{
                 cell.textLabel?.text = self.listOfPlaces[indexPath.row]
-            
+                cell.textLabel?.font = UIFont(name: "HelveticaNeue", size: 14)
                 cell.textLabel?.textColor = UIColor.whiteColor()
             }
         }
