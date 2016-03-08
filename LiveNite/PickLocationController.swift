@@ -20,10 +20,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     @IBOutlet weak var pickLocNav: UINavigationBar!
     @IBOutlet weak var selectedImageView: UIImageView!
-    
-    @IBOutlet weak var landmarkButton: UIButton!
-    @IBOutlet weak var foodButton: UIButton!
-    @IBOutlet weak var barsButton: UIButton!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     var vc = ViewController()
     var saved = false
     var locations = 1
@@ -41,16 +38,11 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var currentUserName : String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        barsButton.backgroundColor = UIColor.whiteColor()
-        barsButton.layer.cornerRadius = 8.0
-        foodButton.backgroundColor = UIColor.grayColor()
-        foodButton.layer.cornerRadius = 8.0
-        landmarkButton.backgroundColor = UIColor.grayColor()
-        landmarkButton.layer.cornerRadius = 8.0
-
+        segmentedControl.tintColor = UIColor(red: 0.8471, green: 0.749, blue: 0, alpha: 1.0)
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         pickLocNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         pickLocNav.topItem!.title = "Pick Location"
+       
         self.view.hidden = true
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
         locationManager.startUpdatingLocation()
@@ -137,38 +129,32 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     
-    @IBAction func getBars(sender: AnyObject) {
-        barsButton.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
-        foodButton.backgroundColor = UIColor.grayColor()
-        landmarkButton.backgroundColor = UIColor.grayColor()
-        barsButton.layer.borderColor = UIColor.whiteColor().CGColor
-        foodButton.layer.borderColor = UIColor.whiteColor().CGColor
-        landmarkButton.layer.borderColor = UIColor.whiteColor().CGColor
+    
+    
+    @IBAction func segmentedControlAction(sender: AnyObject) {
+        if (segmentedControl.selectedSegmentIndex == 0){
+            getBars()
+        }else if (segmentedControl.selectedSegmentIndex == 1){
+            getFood()
+        }else if (segmentedControl.selectedSegmentIndex == 2){
+            getLandmarks()
+        }
+    }
+    func getBars() {
+
         var searchedTypes = ["bar", "night_club", "club"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
     }
     
-    @IBAction func getFood(sender: AnyObject) {
-        barsButton.backgroundColor = UIColor.grayColor()
-        foodButton.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
-        landmarkButton.backgroundColor = UIColor.grayColor()
-        barsButton.layer.borderColor = UIColor.whiteColor().CGColor
-        foodButton.layer.borderColor = UIColor.whiteColor().CGColor
-        landmarkButton.layer.borderColor = UIColor.whiteColor().CGColor
+    func getFood() {
+
         var searchedTypes = ["food", "restaurant", "meal_delivery"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
     }
-    @IBAction func getLandmarks(sender: AnyObject) {
-        barsButton.backgroundColor = UIColor.grayColor()
-        
-        foodButton.backgroundColor = UIColor.grayColor()
-        
-        landmarkButton.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
-        barsButton.layer.borderColor = UIColor.whiteColor().CGColor
-        foodButton.layer.borderColor = UIColor.whiteColor().CGColor
-        landmarkButton.layer.borderColor = UIColor.whiteColor().CGColor
+    func getLandmarks() {
+
         var searchedTypes = ["establishment", "university"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
