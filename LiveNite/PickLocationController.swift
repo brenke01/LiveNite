@@ -38,7 +38,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var currentUserName : String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        segmentedControl.tintColor = UIColor(red: 0.8471, green: 0.749, blue: 0, alpha: 1.0)
+        segmentedControl.tintColor = UIColor.whiteColor()
+        segmentedControl.backgroundColor = UIColor.darkGrayColor()
+       
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         pickLocNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         pickLocNav.topItem!.title = "Pick Location"
@@ -133,10 +135,22 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     @IBAction func segmentedControlAction(sender: AnyObject) {
         if (segmentedControl.selectedSegmentIndex == 0){
+            var subViewOfSegment: UIView = segmentedControl.subviews[0] as UIView
+            subViewOfSegment.tintColor = UIColor.whiteColor()
+            /*var subViewOfSegment1: UIView = segmentedControl.subviews[1] as UIView
+            subViewOfSegment.tintColor = UIColor.darkGrayColor()
+            var subViewOfSegment2: UIView = segmentedControl.subviews[2] as UIView
+            subViewOfSegment.tintColor = UIColor.darkGrayColor()*/
             getBars()
         }else if (segmentedControl.selectedSegmentIndex == 1){
+            var subViewOfSegment: UIView = segmentedControl.subviews[1] as UIView
+            subViewOfSegment.tintColor = UIColor.whiteColor()
+
             getFood()
         }else if (segmentedControl.selectedSegmentIndex == 2){
+            var subViewOfSegment: UIView = segmentedControl.subviews[2] as UIView
+            subViewOfSegment.tintColor = UIColor.whiteColor()
+
             getLandmarks()
         }
     }
@@ -202,9 +216,11 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    func retrieveListOfPlaces(listOfPlaces: [String]){
+    func retrieveListOfPlaces(var listOfPlaces: [String]){
+        if (listOfPlaces == []){
+            listOfPlaces.append("No nearby places found")
+        }
         self.listOfPlaces = listOfPlaces
-        print("fetching places")
         tableView.reloadData()
         self.view.hidden = false
        
@@ -212,7 +228,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D, searchedTypes : [String]) {
-        let searchRadius:Double = 10000
+        let searchRadius:Double = 1000
         print("Fetch nearby places")
         var list : [String] = []
         let dataProvider = GoogleDataProvider()
@@ -240,9 +256,16 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell{
         let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        tableView.backgroundColor = UIColor.darkGrayColor()
+        tableView.backgroundColor = UIColor.clearColor()
+        let border = CALayer()
+        let width = CGFloat(1.0)
+        border.borderColor = UIColor.whiteColor().CGColor
+        border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
+        border.borderWidth = width
+        tableView.layer.addSublayer(border)
+        
         tableView.opaque = false
-        cell.backgroundColor = UIColor.darkGrayColor()
+        cell.backgroundColor = UIColor.clearColor()
         cell.opaque = false
         if (self.listOfPlaces.count != 0){
             if (indexPath.row == listOfPlaces.count - 1){

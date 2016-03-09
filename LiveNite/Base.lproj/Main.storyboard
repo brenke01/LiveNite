@@ -182,7 +182,7 @@
                                 </items>
                             </navigationBar>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Oeb-5V-URR">
-                                <rect key="frame" x="91" y="360" width="168" height="29"/>
+                                <rect key="frame" x="101" y="360" width="149" height="29"/>
                                 <segments>
                                     <segment title="" image="Bars"/>
                                     <segment title="" image="Restaurants"/>
@@ -197,10 +197,10 @@
                         <constraints>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="bottom" secondItem="hrw-0b-NGW" secondAttribute="top" id="0mq-kX-Nzz"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="leading" secondItem="BRW-SO-Y4q" secondAttribute="leading" id="5dL-tc-K9c"/>
-                            <constraint firstItem="Oeb-5V-URR" firstAttribute="leading" secondItem="BRW-SO-Y4q" secondAttribute="leadingMargin" constant="75" id="B20-bW-Pp6"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="trailing" secondItem="hrw-0b-NGW" secondAttribute="trailing" id="DWG-lI-pdQ"/>
-                            <constraint firstItem="Oeb-5V-URR" firstAttribute="centerX" secondItem="Nlv-Zp-cAm" secondAttribute="centerX" id="Dzf-hk-WEg"/>
+                            <constraint firstItem="Oeb-5V-URR" firstAttribute="top" secondItem="hrw-0b-NGW" secondAttribute="bottom" constant="8" symbolic="YES" id="Dfg-5F-ZcQ"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="top" secondItem="BRW-SO-Y4q" secondAttribute="topMargin" constant="-5" id="Eqi-9v-15W"/>
+                            <constraint firstItem="Oeb-5V-URR" firstAttribute="centerX" secondItem="Nlv-Zp-cAm" secondAttribute="centerX" id="FD2-xs-IaV"/>
                             <constraint firstItem="Nlv-Zp-cAm" firstAttribute="trailing" secondItem="hrw-0b-NGW" secondAttribute="trailing" id="LjN-b7-glS"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="leading" secondItem="hrw-0b-NGW" secondAttribute="leading" id="Nx1-LT-JVf"/>
                             <constraint firstItem="cbu-tA-fIB" firstAttribute="centerX" secondItem="BRW-SO-Y4q" secondAttribute="centerX" id="OeY-mL-bDQ"/>
@@ -209,8 +209,8 @@
                             <constraint firstItem="Nlv-Zp-cAm" firstAttribute="top" secondItem="hrw-0b-NGW" secondAttribute="bottom" constant="47" id="Xlx-Bw-gLv"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="leading" secondItem="cbu-tA-fIB" secondAttribute="leading" id="Xn0-F2-Stt"/>
                             <constraint firstItem="Nlv-Zp-cAm" firstAttribute="leading" secondItem="hrw-0b-NGW" secondAttribute="leading" id="Yt4-H1-3ma"/>
-                            <constraint firstItem="Oeb-5V-URR" firstAttribute="top" secondItem="hrw-0b-NGW" secondAttribute="bottom" constant="8" symbolic="YES" id="fq4-AA-JqQ"/>
                             <constraint firstItem="Nlv-Zp-cAm" firstAttribute="bottom" secondItem="AhC-0y-UuD" secondAttribute="top" id="hSa-aY-fi2"/>
+                            <constraint firstItem="Oeb-5V-URR" firstAttribute="leading" secondItem="BRW-SO-Y4q" secondAttribute="leadingMargin" constant="85" id="jH9-qg-qwL"/>
                             <constraint firstItem="cbu-tA-fIB" firstAttribute="centerY" secondItem="BRW-SO-Y4q" secondAttribute="centerY" id="jbL-4T-Kyg"/>
                         </constraints>
                     </view>
