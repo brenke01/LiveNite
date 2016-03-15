@@ -220,6 +220,7 @@
                         <outlet property="pickLocNav" destination="YSW-tI-50P" id="zpA-2O-e1A"/>
                         <outlet property="segmentedControl" destination="Oeb-5V-URR" id="tTO-9B-Ozq"/>
                         <outlet property="selectedImageView" destination="hrw-0b-NGW" id="Q8x-Sb-wNa"/>
+                        <outlet property="stopButton" destination="YSW-tI-50P" id="F8v-Ww-zC7"/>
                         <outlet property="tableView" destination="Nlv-Zp-cAm" id="TOL-ly-cug"/>
                     </connections>
                 </viewController>
@@ -448,6 +449,66 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UYL-Nh-xDf" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="405" y="39"/>
+        </scene>
+        <!--Pick Location Controller-->
+        <scene sceneID="zpw-tU-Aan">
+            <objects>
+                <viewController id="eEM-fp-SS5" customClass="PickLocationController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Unv-Qo-Sei"/>
+                        <viewControllerLayoutGuide type="bottom" id="Bwv-ND-idf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tMg-SB-vBP">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Background_Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="AFI-dK-v5U">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="592"/>
+                            </imageView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pjf-M8-oWo">
+                                <rect key="frame" x="0.0" y="-5" width="350" height="64"/>
+                                <color key="backgroundColor" red="0.8862745098" green="0.76078431369999999" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="fQn-4I-EK2"/>
+                                </constraints>
+                                <color key="tintColor" red="0.239938447" green="0.239938447" blue="0.239938447" alpha="1" colorSpace="calibratedRGB"/>
+                                <items>
+                                    <navigationItem id="dXq-dd-Xab">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="E1J-On-Gm2">
+                                            <connections>
+                                                <action selector="exit:" destination="eEM-fp-SS5" id="pqQ-lQ-6x0"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="bezel" placeholder="Add caption" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="K1h-Lb-R1k">
+                                <rect key="frame" x="0.0" y="59" width="350" height="187"/>
+                                <color key="textColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" red="0.26069286619999998" green="0.26069286619999998" blue="0.26069286619999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Bwv-ND-idf" firstAttribute="top" secondItem="AFI-dK-v5U" secondAttribute="bottom" constant="8" symbolic="YES" id="4Pd-wa-Czc"/>
+                            <constraint firstItem="pjf-M8-oWo" firstAttribute="top" secondItem="tMg-SB-vBP" secondAttribute="topMargin" constant="-5" id="HgT-7p-Kxb"/>
+                            <constraint firstItem="AFI-dK-v5U" firstAttribute="centerX" secondItem="tMg-SB-vBP" secondAttribute="centerX" id="Qyj-tY-1lA"/>
+                            <constraint firstItem="pjf-M8-oWo" firstAttribute="leading" secondItem="AFI-dK-v5U" secondAttribute="leading" id="W9d-qc-d8L"/>
+                            <constraint firstItem="AFI-dK-v5U" firstAttribute="centerY" secondItem="tMg-SB-vBP" secondAttribute="centerY" id="WWJ-x6-QMs"/>
+                            <constraint firstItem="pjf-M8-oWo" firstAttribute="trailing" secondItem="AFI-dK-v5U" secondAttribute="trailing" id="rVO-Bf-1oW"/>
+                            <constraint firstItem="pjf-M8-oWo" firstAttribute="leading" secondItem="tMg-SB-vBP" secondAttribute="leading" id="stt-bF-j7S"/>
+                        </constraints>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="350" height="600"/>
+                    <connections>
+                        <outlet property="pickLocNav" destination="pjf-M8-oWo" id="7g2-T0-Lk8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s2c-a3-tEh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="795" y="862"/>
         </scene>
     </scenes>
     <resources>

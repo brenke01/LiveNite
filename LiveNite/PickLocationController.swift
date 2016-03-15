@@ -15,22 +15,26 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource{
+class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITextFieldDelegate{
     @IBOutlet var tableView: UITableView!
     
     @IBOutlet weak var pickLocNav: UINavigationBar!
+    @IBOutlet weak var stopButton: UINavigationBar!
     @IBOutlet weak var selectedImageView: UIImageView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     var vc = ViewController()
     var saved = false
     var locations = 1
     var selectedImage = UIImage()
+
     var listOfPlaces : [String] = []
     //variable for accessing location
     var locationManager = CLLocationManager()
     var userLocation = CLLocationCoordinate2D()
     var locationUpdated = false
     var complete = false
+    var captionView = 0
+    var textField = UITextField()
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
@@ -40,7 +44,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         segmentedControl.tintColor = UIColor.whiteColor()
         segmentedControl.backgroundColor = UIColor.darkGrayColor()
-       
+        
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         pickLocNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         pickLocNav.topItem!.title = "Pick Location"
@@ -77,7 +81,14 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
     }
     @IBAction func exit(sender: AnyObject) {
-        self.dismissViewControllerAnimated(false, completion: nil)
+        if (self.captionView == 1){
+            self.captionView = 0
+            self.tableView.hidden = false
+            self.textField.removeFromSuperview()
+        }else{
+           self.dismissViewControllerAnimated(false, completion: nil)
+        }
+        
     }
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0].coordinate
@@ -285,7 +296,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         let cell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         let cellText : String = (cell.textLabel?.text)!
-        if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
+        loadCaptionView()
+       /* if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
             let tempImage = self.selectedImage
             let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
             newImage.setValue(dataImage, forKey: "imageData")
@@ -312,7 +324,34 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             
             
             
-        }
+        }*/
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.tableView.hidden = true
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func loadCaptionView(){
+        self.captionView = 1
+        textField = UITextField(frame: CGRect(x: selectedImageView.frame.origin.x, y: self.view.frame.height, width: selectedImageView.frame.width, height: selectedImageView.frame.height + 40))
+        textField.delegate = self
+        textField.becomeFirstResponder()
+        textField.placeholder = "Add caption"
+        textField.textColor = UIColor.blackColor()
+        textField.borderStyle = UITextBorderStyle.RoundedRect
+        textField.autocorrectionType = UITextAutocorrectionType.No
+        textField.keyboardType = UIKeyboardType.Default
+        textField.returnKeyType = UIReturnKeyType.Done
+        textField.clearButtonMode = UITextFieldViewMode.WhileEditing;
+        textField.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
+        UITextField.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+                self.view.addSubview(self.textField)
+                self.textField.frame.origin.y =  (self.textField.frame.origin.y - self.view.frame.height - 5) + self.pickLocNav.frame.height
+            }, completion: nil)
+            
+        
+        
     }
     
 }
