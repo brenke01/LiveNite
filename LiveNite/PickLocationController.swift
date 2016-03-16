@@ -40,6 +40,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var captureDevice : AVCaptureDevice?
     var locationDictionary = [String: CLLocationCoordinate2D]()
     var currentUserName : String = ""
+    var chosenLocation = ""
+    var submitButton = UIButton()
     override func viewDidLoad() {
         super.viewDidLoad()
         segmentedControl.tintColor = UIColor.whiteColor()
@@ -82,9 +84,12 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
     @IBAction func exit(sender: AnyObject) {
         if (self.captionView == 1){
+            tableView.hidden = false
+            pickLocNav.topItem!.title = "Pick Location"
             self.captionView = 0
-            self.tableView.hidden = false
+            self.submitButton.removeFromSuperview()
             self.textField.removeFromSuperview()
+            
         }else{
            self.dismissViewControllerAnimated(false, completion: nil)
         }
@@ -296,14 +301,22 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         let cell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         let cellText : String = (cell.textLabel?.text)!
+        self.chosenLocation = cellText
         loadCaptionView()
-       /* if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
+
+            
+            
+            
+        
+    }
+    func saveImageInfo(){
+        if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
             let tempImage = self.selectedImage
             let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
             newImage.setValue(dataImage, forKey: "imageData")
             let date = NSDate()
             newImage.setValue(date, forKey: "time")
-            let setImageTitle : String = cellText
+            let setImageTitle : String = self.chosenLocation
             let setUpVotes : Int = 0
             let setId : Int = getImageId()
             print(setId, terminator: "")
@@ -321,29 +334,38 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             }
             print("saved successfully", terminator: "")
             dismissViewControllerAnimated(true, completion: nil)
-            
-            
-            
-        }*/
+        }
     }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.tableView.hidden = true
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool{
+
         textField.resignFirstResponder()
+        submitButton = UIButton(frame: CGRect(x: 10, y: self.view.frame.height * (3/4),width: self.view.frame.width - 20, height: 40 ))
+        submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
+        submitButton.setTitle("Submit", forState: .Normal)
+        submitButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        submitButton.titleLabel!.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
+        
+        self.view.addSubview(submitButton)
+        //saveImageInfo()
         return true
     }
-    
+
     func loadCaptionView(){
         self.captionView = 1
+        pickLocNav.topItem!.title = "Add Caption"
+        tableView.hidden = true
         textField = UITextField(frame: CGRect(x: selectedImageView.frame.origin.x, y: self.view.frame.height, width: selectedImageView.frame.width, height: selectedImageView.frame.height + 40))
         textField.delegate = self
         textField.becomeFirstResponder()
-        textField.placeholder = "Add caption"
+        textField.placeholder = "What's happening here?"
         textField.textColor = UIColor.blackColor()
-        textField.borderStyle = UITextBorderStyle.RoundedRect
-        textField.autocorrectionType = UITextAutocorrectionType.No
+        textField.backgroundColor = UIColor.whiteColor()
+        textField.borderStyle = UITextBorderStyle.None
+        textField.autocorrectionType = UITextAutocorrectionType.Default
         textField.keyboardType = UIKeyboardType.Default
         textField.returnKeyType = UIReturnKeyType.Done
-        textField.clearButtonMode = UITextFieldViewMode.WhileEditing;
+        textField.font = UIFont (name: "HelveticaNeue", size: 24)
         textField.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
         UITextField.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
                 self.view.addSubview(self.textField)
