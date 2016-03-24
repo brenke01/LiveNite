@@ -52,6 +52,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var captureDevice : AVCaptureDevice?
     var accessToken = ""
     var userID = ""
+    var userName = ""
     
 
     
@@ -59,13 +60,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidAppear(animated)
 
         self.view.hidden = false
-
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-  
-        profileMenu.hidden = true
         if (FBSDKAccessToken.currentAccessToken() == nil)
         {
             print("is nil")
@@ -73,6 +67,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }else{
             self.accessToken = String(FBSDKAccessToken.currentAccessToken())
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+  
+        profileMenu.hidden = true
+
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -112,6 +113,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }else{
                 id = result.valueForKey("id") as! String
                 self.userID = id
+                let fetchRequest = NSFetchRequest(entityName: "Users")
+                fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID as NSString)
+                let users = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+                if let users = users{
+                    for user in users{
+                        let name : AnyObject? = user.valueForKey("user_name")
+                        self.userName = (name as? String)!
+                    }
+                }
             }
         })
         
@@ -363,11 +373,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             img.valueForKey("upvotes")
                         let imageData : AnyObject? = img.valueForKey("imageData")
                         let imageTitle : AnyObject? = img.valueForKey("title")
+                        let caption : AnyObject? = img.valueForKey("caption")
+                        let userName : AnyObject? = img.valueForKey("userOP")
                         destinationVC.imageUpvotes = (imageUpvotes as? Int)!
                         print(imageID)
+                        destinationVC.userName = (userName as?String)!
                         destinationVC.imageTapped = UIImage(data: (imageData as? NSData)!)!
                         destinationVC.imageID = (imageID as? Int)!
                         destinationVC.imageTitle = (imageTitle as? String)!
+                        destinationVC.caption = (caption as? String)!
                         
                     }
                 }
@@ -377,10 +391,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if let destinationVC = segue.destinationViewController as? PickLocationController{
                 
                 destinationVC.locations = 1
+                destinationVC.userName = self.userName
             }
         }else if segue.identifier == "login"{
             if let destinationVC = segue.destinationViewController as? FBLoginController{
-                print("login controller")
                 destinationVC.locations = 1
             }
         }

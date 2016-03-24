@@ -25,6 +25,24 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     @IBOutlet var submitButton: UIButton!
     @IBOutlet var inputUserName: UITextField!
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        submitButton.hidden = true
+        inputUserName.hidden = true
+        submitButton.enabled = false
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
+        let loginView : FBSDKLoginButton = FBSDKLoginButton()
+        self.view.addSubview(loginView)
+        loginView.center = self.view.center
+        loginView.readPermissions = ["public_profile", "email"]
+        loginView.delegate = self
+        FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
+        
+    }
+    
     @IBAction func submitAction(sender: AnyObject) {
         print("submit")
         print(userID)
@@ -43,22 +61,6 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             print("User Name storage failed")
         }
         self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        submitButton.hidden = true
-        inputUserName.hidden = true
-        submitButton.enabled = false
-        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
-        let loginView : FBSDKLoginButton = FBSDKLoginButton()
-        self.view.addSubview(loginView)
-        loginView.center = self.view.center
-        loginView.readPermissions = ["public_profile", "email"]
-        loginView.delegate = self
-        FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
-        
     }
     
     // Facebook Delegate Methods

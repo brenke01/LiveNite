@@ -41,6 +41,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var locationDictionary = [String: CLLocationCoordinate2D]()
     var currentUserName : String = ""
     var chosenLocation = ""
+    var userName = ""
     var submitButton = UIButton()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,7 +111,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         }else if (complete == true && saved == false){
             dismissViewControllerAnimated(true, completion: nil)
         }else{
-            var searchedTypes = ["bar", "night_club", "club"]
+            var searchedTypes = ["bar"]
             fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
             tableView.reloadData()
         }
@@ -172,20 +173,20 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
     func getBars() {
 
-        var searchedTypes = ["bar", "night_club", "club"]
+        var searchedTypes = ["bar"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
     }
     
     func getFood() {
 
-        var searchedTypes = ["food", "restaurant", "meal_delivery"]
+        var searchedTypes = ["food"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
     }
     func getLandmarks() {
 
-        var searchedTypes = ["establishment", "university"]
+        var searchedTypes = ["establishment"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
     }
@@ -233,9 +234,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func retrieveListOfPlaces(var listOfPlaces: [String]){
-        if (listOfPlaces == []){
-            listOfPlaces.append("No nearby places found")
-        }
+
         self.listOfPlaces = listOfPlaces
         tableView.reloadData()
         self.view.hidden = false
@@ -244,21 +243,27 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D, searchedTypes : [String]) {
-        let searchRadius:Double = 1000
+        
+        let searchRadius:Double = 10000
         print("Fetch nearby places")
         var list : [String] = []
         let dataProvider = GoogleDataProvider()
-        dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
-            for place: GooglePlace in places {
-                list.append(place.name as String)
-                self.locationDictionary.updateValue(place.coordinate, forKey: place.name)
+        //if (dataProvider.placesTask != nil){
+            dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
+                for place: GooglePlace in places {
+                    list.append(place.name as String)
+                    self.locationDictionary.updateValue(place.coordinate, forKey: place.name)
              
-                if (list.count == places.count){
+                    if (list.count == places.count){
                      self.retrieveListOfPlaces(list)
-                }
+                    }
                 
+                }
             }
-        }
+        //}else{
+            //list.append("No nearby locations found")
+            //self.retrieveListOfPlaces(list)
+        //}
     }
     func numberOfSectionsinTableView(tableView: UITableView) -> Int{
         return 1
@@ -284,7 +289,13 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         cell.backgroundColor = UIColor.clearColor()
         cell.opaque = false
         if (self.listOfPlaces.count != 0){
-            if (indexPath.row == listOfPlaces.count - 1){
+            if(listOfPlaces[0] == "No nearby locations found"){
+
+                tableView.layer.borderColor = UIColor.clearColor().CGColor
+                cell.layer.borderWidth = 2.0
+                cell.layer.borderColor = UIColor.clearColor().CGColor
+            }
+            if (indexPath.row == listOfPlaces.count - 1 && listOfPlaces.count > 1){
                 cell.textLabel?.text = ""
                 
                 cell.textLabel?.textColor = UIColor.whiteColor()
@@ -309,7 +320,24 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             
         
     }
-    func saveImageInfo(){
+
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool{
+
+        textField.resignFirstResponder()
+        submitButton = UIButton(frame: CGRect(x: 10, y: self.view.frame.height * (3/4),width: self.view.frame.width - 20, height: 40 ))
+        submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
+        submitButton.setTitle("Submit", forState: .Normal)
+        submitButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        submitButton.titleLabel!.font = UIFont(name:
+            "HelveticaNeue-Medium", size: 18)
+        submitButton.addTarget(self, action: "saveImageInfo:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        self.view.addSubview(submitButton)
+        //saveImageInfo()
+        return true
+    }
+    func saveImageInfo(sender: UIButton!){
         if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
             let tempImage = self.selectedImage
             let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
@@ -323,11 +351,12 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             newImage.setValue(setId, forKey: "id")
             newImage.setValue(setUpVotes, forKey: "upvotes")
             newImage.setValue(setImageTitle, forKey: "title")
+            newImage.setValue(self.textField.text, forKey: "caption")
             newImage.setValue(userLocation.latitude, forKey: "picTakenLatitude")
             newImage.setValue(userLocation.longitude, forKey: "picTakenLongitude")
             newImage.setValue(locationDictionary[setImageTitle]!.latitude, forKey: "titleLatitude")
             newImage.setValue(locationDictionary[setImageTitle]!.longitude, forKey: "titleLongitude")
-            newImage.setValue(currentUserName, forKey: "userOP")
+            newImage.setValue(userName, forKey: "userOP")
             do {
                 try context.save()
             } catch _ {
@@ -335,20 +364,6 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             print("saved successfully", terminator: "")
             dismissViewControllerAnimated(true, completion: nil)
         }
-    }
-
-    func textFieldShouldReturn(textField: UITextField) -> Bool{
-
-        textField.resignFirstResponder()
-        submitButton = UIButton(frame: CGRect(x: 10, y: self.view.frame.height * (3/4),width: self.view.frame.width - 20, height: 40 ))
-        submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
-        submitButton.setTitle("Submit", forState: .Normal)
-        submitButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        submitButton.titleLabel!.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
-        
-        self.view.addSubview(submitButton)
-        //saveImageInfo()
-        return true
     }
 
     func loadCaptionView(){

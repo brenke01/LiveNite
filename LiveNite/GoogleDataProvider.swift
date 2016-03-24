@@ -38,10 +38,11 @@ class GoogleDataProvider {
     
     func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double, types:[String], completion: (([GooglePlace]) -> Void)) -> ()
     {
-        var urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(coordinate.latitude),\(coordinate.longitude)&radius=\(radius)&rankby=prominence&sensor=true"
         let typesString = types.count > 0 ? types.joinWithSeparator("|") : "food"
-        urlString += "&types=\(typesString)"
-        urlString += "&key=AIzaSyAaeNBhv74tXovaha1NIQgcFuLSFfSnZ_Y"
+        var urlString = "https://maps.googleapis.com/maps/api/place/textsearch/json?type=\(typesString)&location=\(coordinate.latitude),\(coordinate.longitude)&radius=\(radius)&rankby=prominence&sensor=true"
+
+        
+        urlString += "&key=AIzaSyDvnIUWZMv_89O3BVnt8gJyYAasigs3hDQ"
         urlString = urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         
         if let task = placesTask where task.taskIdentifier > 0 && task.state == .Running {

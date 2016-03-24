@@ -17,6 +17,7 @@ import GoogleMaps
 
 class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate{
 
+    @IBOutlet weak var captionLabel: UILabel!
     var locationManager = CLLocationManager()
     var userLocation = CLLocation()
     var locationUpdated = false
@@ -139,10 +140,13 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBOutlet var downvoteButton: UIButton!
     @IBOutlet var navigationBar: UINavigationBar!
     
+    @IBOutlet weak var userNameLabel: UILabel!
     var imageTapped = UIImage()
     var imageID = 0
     var imageUpvotes = 0
     var imageTitle =  ""
+    var caption = ""
+    var userName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,7 +158,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func loadUIDetails() {
-        
+        detailView.backgroundColor = UIColor.clearColor()
         print(userID)
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         navigationBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
@@ -176,6 +180,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 }
             }
         }
+        captionLabel.text = caption
+        captionLabel.textColor = UIColor.whiteColor()
+        userNameLabel.text = userName
+        userNameLabel.textColor = UIColor.whiteColor()
         if userUpvoteStatus == 1{
             upvoteButton.alpha = 0.5
         } else if userUpvoteStatus == -1{
@@ -247,7 +255,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 let OPUserName = image.valueForKey("userOP") as! String
                 upvote = upvote + change
                 let OPFetchRequest = NSFetchRequest(entityName: "Users")
-                fetchRequest.predicate = NSPredicate(format: "id = %@", OPUserName)
+                fetchRequest.predicate = NSPredicate(format: "user_name = %@", OPUserName)
                 let OPUser = (try? context.executeFetchRequest(OPFetchRequest)) as! [NSManagedObject]?
                 if let OPUser = OPUser{
                     for user in OPUser{
@@ -302,7 +310,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("User: \(OP)")
         }
         let scoreFetchRequest = NSFetchRequest(entityName: "Users")
-        scoreFetchRequest.predicate = NSPredicate(format: "id = \(OP)")
+        scoreFetchRequest.predicate = NSPredicate(format: "user_name = %@", OP)
         let scores = (try? context.executeFetchRequest(scoreFetchRequest)) as! [NSManagedObject]?
         if let scores = scores{
             for score in scores{
@@ -358,7 +366,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 upvote = upvote + change
                 let OPUserName = loc.valueForKey("userOP") as! String
                 let OPFetchRequest = NSFetchRequest(entityName: "Users")
-                fetchRequest.predicate = NSPredicate(format: "id = %@", OPUserName)
+                fetchRequest.predicate = NSPredicate(format: "user_name = %@", OPUserName)
                 let OPUser = (try? context.executeFetchRequest(OPFetchRequest)) as! [NSManagedObject]?
                 if let OPUser = OPUser{
                     for user in OPUser{
