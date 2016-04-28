@@ -15,7 +15,8 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITextFieldDelegate{
+
+class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchDisplayDelegate{
     @IBOutlet var tableView: UITableView!
     
     @IBOutlet weak var pickLocNav: UINavigationBar!
@@ -26,7 +27,11 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var saved = false
     var locations = 1
     var selectedImage = UIImage()
-
+    var searchBar: UISearchBar?
+    var tableDataSource: GMSAutocompleteTableDataSource?
+    var srchDisplayController: UISearchDisplayController?
+    var placePicker : GMSPlacePicker!
+    var googleMapView: GMSMapView!
     var listOfPlaces : [String] = []
     //variable for accessing location
     var locationManager = CLLocationManager()
@@ -45,6 +50,14 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var submitButton = UIButton()
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchBar = UISearchBar(frame: CGRectMake(0, 10, 250.0, 44.0))
+        
+        tableDataSource = GMSAutocompleteTableDataSource()
+        tableDataSource?.delegate = self
+        
+        srchDisplayController = UISearchDisplayController(searchBar: searchBar!, contentsController: self)
+        srchDisplayController?.searchResultsDataSource = tableDataSource
+        srchDisplayController?.searchResultsDelegate = tableDataSource
         segmentedControl.tintColor = UIColor.whiteColor()
         segmentedControl.backgroundColor = UIColor.darkGrayColor()
         
@@ -96,6 +109,67 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         }
         
     }
+    
+    @IBAction func searchPlaces(sender: AnyObject) {
+        self.googleMapView = GMSMapView(frame: self.view.frame)
+        self.googleMapView.backgroundColor = UIColor.darkGrayColor()
+        googleMapView.tintColor = UIColor.darkGrayColor()
+
+        //self.view.addSubview(googleMapView)
+        let center = CLLocationCoordinate2DMake(userLocation.latitude, userLocation.longitude)
+        let northEast = CLLocationCoordinate2DMake(center.latitude + 0.001, center.longitude + 0.001)
+        let southWest = CLLocationCoordinate2DMake(center.latitude - 0.001, center.longitude - 0.001)
+        let viewport = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
+        let coordinates = self.userLocation
+        let marker = GMSMarker(position: coordinates)
+        marker.map = self.googleMapView
+        self.googleMapView.animateToLocation(coordinates)
+        let config = GMSPlacePickerConfig(viewport: viewport)
+        placePicker = GMSPlacePicker(config: config)
+
+        self.placePicker?.pickPlaceWithCallback({ (place: GMSPlace?, error: NSError?) -> Void in
+            if let error = error {
+                print("Pick Place error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let place = place {
+                print("Place name \(place.name)")
+                print("Place address \(place.formattedAddress)")
+                print("Place attributions \(place.attributions)")
+                print(place.coordinate)
+                let loc = CLLocation(latitude: self.userLocation.latitude, longitude: self.userLocation.longitude)
+                var placeLoc = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+                if (loc.distanceFromLocation(placeLoc) > 3000.0){
+                    let alertController = UIAlertController(title: "Error", message: "The selected location is too far away from your location", preferredStyle: UIAlertControllerStyle.Alert)
+                    alertController.addAction(UIAlertAction(title:"Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                }else{
+                    self.chosenLocation = place.name
+                }
+                
+            } else {
+                print("No place selected")
+            }
+        })
+    
+    
+    }
+    
+    func didUpdateAutocompletePredictionsForTableDataSource(tableDataSource: GMSAutocompleteTableDataSource) {
+        // Turn the network activity indicator off.
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        // Reload table data.
+        srchDisplayController?.searchResultsTableView.reloadData()
+    }
+    
+    func didRequestAutocompletePredictionsForTableDataSource(tableDataSource: GMSAutocompleteTableDataSource) {
+        // Turn the network activity indicator on.
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        // Reload table data.
+        srchDisplayController?.searchResultsTableView.reloadData()
+    }
+    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0].coordinate
         print("\(userLocation.latitude) Degrees Latitude, \(userLocation.longitude) Degrees Longitude")
@@ -391,4 +465,28 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
     }
     
+}
+
+extension PickLocationController: GMSAutocompleteTableDataSourceDelegate {
+    func tableDataSource(tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWithPlace place: GMSPlace) {
+        srchDisplayController?.active = false
+        // Do something with the selected place.
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+    }
+    
+    func searchDisplayController(controller: UISearchDisplayController, shouldReloadTableForSearchString searchString: String?) -> Bool {
+        tableDataSource?.sourceTextHasChanged(searchString)
+        return false
+    }
+    
+    func tableDataSource(tableDataSource: GMSAutocompleteTableDataSource, didFailAutocompleteWithError error: NSError) {
+        // TODO: Handle the error.
+        print("Error: \(error.description)")
+    }
+    
+    func tableDataSource(tableDataSource: GMSAutocompleteTableDataSource, didSelectPrediction prediction: GMSAutocompletePrediction) -> Bool {
+        return true
+    }
 }
