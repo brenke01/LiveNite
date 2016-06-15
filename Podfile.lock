@@ -1,13 +1,18 @@
 PODS:
   - GoogleMaps (1.11.1)
+  - JSSAlertView (1.1.4)
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
   - GoogleMaps
+  - JSSAlertView
   - SwiftyJSON
 
 SPEC CHECKSUMS:
   GoogleMaps: c947160008f414c66707a5ea60f35e92055c7670
+  JSSAlertView: f42fc4be811925cef72ea808746df5a6c27eb356
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: a9861ad9f6150df4cbb7facc778448df26db08a0
+
+COCOAPODS: 1.0.0

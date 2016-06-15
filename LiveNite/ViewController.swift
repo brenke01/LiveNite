@@ -14,6 +14,7 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
+
 var appDel = (UIApplication.sharedApplication().delegate as! AppDelegate)
 var context:NSManagedObjectContext = appDel.managedObjectContext!
 var upVoteInc : CGFloat = 5
@@ -113,6 +114,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }else{
                 id = result.valueForKey("id") as! String
                 self.userID = id
+                print("User id is")
+                print(self.userID)
                 let fetchRequest = NSFetchRequest(entityName: "Users")
                 fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID as NSString)
                 let users = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
@@ -377,11 +380,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         let userName : AnyObject? = img.valueForKey("userOP")
                         destinationVC.imageUpvotes = (imageUpvotes as? Int)!
                         print(imageID)
-                        destinationVC.userName = (userName as?String)!
+                        destinationVC.userName = String(self.userName)
+                        destinationVC.userNameOP = (userName as?String)!
                         destinationVC.imageTapped = UIImage(data: (imageData as? NSData)!)!
                         destinationVC.imageID = (imageID as? Int)!
                         destinationVC.imageTitle = (imageTitle as? String)!
                         destinationVC.caption = (caption as? String)!
+                        destinationVC.userID = Int(self.userID)!
                         
                     }
                 }

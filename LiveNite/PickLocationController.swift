@@ -47,7 +47,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var currentUserName : String = ""
     var chosenLocation = ""
     var userName = ""
+    var chosenLatitude :Double = 0.0
+    var chosenLongitude: Double = 0.0
     var submitButton = UIButton()
+    var mapPickedLocation = false
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar = UISearchBar(frame: CGRectMake(0, 10, 250.0, 44.0))
@@ -146,6 +149,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                     self.presentViewController(alertController, animated: true, completion: nil)
                 }else{
                     self.chosenLocation = place.name
+                    self.mapPickedLocation = true
+                    self.chosenLatitude = place.coordinate.latitude
+                    self.chosenLongitude = place.coordinate.longitude
+                    self.loadCaptionView()
                 }
                 
             } else {
@@ -387,6 +394,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         let cell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         let cellText : String = (cell.textLabel?.text)!
         self.chosenLocation = cellText
+        self.mapPickedLocation = false
         loadCaptionView()
 
             
@@ -396,21 +404,6 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
 
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool{
-
-        textField.resignFirstResponder()
-        submitButton = UIButton(frame: CGRect(x: 10, y: self.view.frame.height * (3/4),width: self.view.frame.width - 20, height: 40 ))
-        submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
-        submitButton.setTitle("Submit", forState: .Normal)
-        submitButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        submitButton.titleLabel!.font = UIFont(name:
-            "HelveticaNeue-Medium", size: 18)
-        submitButton.addTarget(self, action: "saveImageInfo:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        self.view.addSubview(submitButton)
-        //saveImageInfo()
-        return true
-    }
     func saveImageInfo(sender: UIButton!){
         if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
             let tempImage = self.selectedImage
@@ -428,8 +421,17 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             newImage.setValue(self.textField.text, forKey: "caption")
             newImage.setValue(userLocation.latitude, forKey: "picTakenLatitude")
             newImage.setValue(userLocation.longitude, forKey: "picTakenLongitude")
-            newImage.setValue(locationDictionary[setImageTitle]!.latitude, forKey: "titleLatitude")
-            newImage.setValue(locationDictionary[setImageTitle]!.longitude, forKey: "titleLongitude")
+            if (self.mapPickedLocation){
+                
+            }
+            if (self.mapPickedLocation){
+                newImage.setValue(self.chosenLatitude, forKey: "titleLatitude")
+                newImage.setValue(self.chosenLongitude, forKey: "titleLongitude")
+            }else{
+                newImage.setValue(locationDictionary[setImageTitle]!.latitude, forKey: "titleLatitude")
+                newImage.setValue(locationDictionary[setImageTitle]!.longitude, forKey: "titleLongitude")
+  
+            }
             newImage.setValue(userName, forKey: "userOP")
             do {
                 try context.save()
@@ -444,7 +446,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         self.captionView = 1
         pickLocNav.topItem!.title = "Add Caption"
         tableView.hidden = true
-        textField = UITextField(frame: CGRect(x: selectedImageView.frame.origin.x, y: self.view.frame.height, width: selectedImageView.frame.width, height: selectedImageView.frame.height + 40))
+        textField = UITextField(frame: CGRect(x: selectedImageView.frame.origin.x, y: self.view.frame.height, width: selectedImageView.frame.width, height: selectedImageView.frame.height - 50))
         textField.delegate = self
         textField.becomeFirstResponder()
         textField.placeholder = "What's happening here?"
@@ -453,16 +455,34 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         textField.borderStyle = UITextBorderStyle.None
         textField.autocorrectionType = UITextAutocorrectionType.Default
         textField.keyboardType = UIKeyboardType.Default
-        textField.returnKeyType = UIReturnKeyType.Done
         textField.font = UIFont (name: "HelveticaNeue", size: 24)
         textField.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
         UITextField.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
                 self.view.addSubview(self.textField)
                 self.textField.frame.origin.y =  (self.textField.frame.origin.y - self.view.frame.height - 5) + self.pickLocNav.frame.height
             }, completion: nil)
-            
+        
+        submitButton = UIButton(frame: CGRect(x: 10, y: self.view.frame.height * 0.45,width: self.view.frame.width - 20, height: 40 ))
+        submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
+        submitButton.setTitle("Submit", forState: .Normal)
+        submitButton.enabled = false
+        submitButton.layer.opacity = 0.4
+        submitButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+        submitButton.titleLabel!.font = UIFont(name:
+            "HelveticaNeue-Medium", size: 18)
+        submitButton.addTarget(self, action: "saveImageInfo:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(submitButton)
         
         
+        
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        if (textField.text?.isEmpty == false){
+            submitButton.enabled = true;
+            submitButton.layer.opacity = 1.0
+            submitButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        }
     }
     
 }

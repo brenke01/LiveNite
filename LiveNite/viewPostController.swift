@@ -14,6 +14,7 @@ import AVFoundation
 import CoreData
 import CoreLocation
 import GoogleMaps
+import JSSAlertView
 
 class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate{
 
@@ -21,6 +22,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var locationManager = CLLocationManager()
     var userLocation = CLLocation()
     var locationUpdated = false
+    var userID = 0
+    var userNameOP = ""
     
     @IBAction func checkIn(sender: AnyObject) {
         
@@ -29,6 +32,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         let imageLocationFetchResults = (try? context.executeFetchRequest(imageLocationFetchRequest)) as! [NSManagedObject]?
         if let imageLocationFetchResults = imageLocationFetchResults{
             for result in imageLocationFetchResults{
+                print(result)
                 //get distance between user and place
                 let latitude : AnyObject? = result.valueForKey("titleLatitude")
                 let imageLatitude = latitude as! Double
@@ -46,15 +50,15 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     let title = result.valueForKey("title") as! String
                     let currentDate = NSDate()
                     let checkInFetchRequest = NSFetchRequest(entityName: "UserCheckIns")
-                    print("Current User Name: \(userID)")
-                    checkInFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "locationTitle= %@",title), NSPredicate(format: "userName= %@", userID)])
+                    print("Current User Name: \(userNameOP)")
+                    checkInFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "locationTitle= %@",title), NSPredicate(format: "userName= %@", userNameOP)])
                     let checkInResult = (try? context.executeFetchRequest(checkInFetchRequest)) as! [NSManagedObject]?
                     //If the fetch request returns nothing, we know it is a new location they are checking into
                     if (checkInResult! == []){
                         //Make new check in in table
                         if let newCheckIn = NSEntityDescription.insertNewObjectForEntityForName("UserCheckIns", inManagedObjectContext:context) as? NSManagedObject{
                     
-                            newCheckIn.setValue(userID as NSString, forKey: "userName")
+                            newCheckIn.setValue(userNameOP as NSString, forKey: "userName")
                             newCheckIn.setValue(currentDate, forKey: "dateOfLastCheckIn")
                             newCheckIn.setValue(title as NSString, forKey: "locationTitle")
                             do {
@@ -74,6 +78,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                                 print("Score: \(score.valueForKey("score") as! Int)")
                             }
                         }
+                            JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
                     } else {
                         if let checkInResult = checkInResult{
                             for result in checkInResult{
@@ -96,7 +101,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                                     }
                                     //update check in date
                                     result.setValue(currentDate, forKey: "dateOfLastCheckIn")
+                                    JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
                                 } else{
+                                        JSSAlertView().show(self, title: "Sorry", text : "You have already checked in to this location is the past 24 hours.", buttonText: "OK", color: UIColorFromHex(0xff3333, alpha: 1))
                                     print("You've checked in within the last 24 hours")
                                 }
 
@@ -158,6 +165,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func loadUIDetails() {
+        
         detailView.backgroundColor = UIColor.clearColor()
         print(userID)
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
@@ -175,7 +183,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 let upvoteStatus = upvoteData as! Int
                 let userData : AnyObject? = result.valueForKey("user_name")
                 let userName = userData as! String
-                if userName == userID && id == imageID {
+                if userName == userNameOP && id == imageID {
                     userUpvoteStatus = upvoteStatus
                 }
             }
@@ -190,8 +198,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             downvoteButton.alpha = 0.5
         }
     }
-    
-    func loadImageDetail(){
+        func loadImageDetail(){
         imgView.image = imageTapped
         upvotesLabel.text = String(imageUpvotes)
         //Needs styling
@@ -214,7 +221,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         var userUpvoteStatus : Int = 0
         //get user upvote status
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
-        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", userID)])
+        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", userNameOP)])
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?
         if let userUpvoteStatusFetchResults = userUpvoteStatusFetchResults{
             for result in userUpvoteStatusFetchResults{
@@ -271,7 +278,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         print(imageID)
         //save data in core data
-        userVoted(imageID, user_name: userID, upvote_value: userUpvoteStatus)
+        userVoted(imageID, user_name: userNameOP, upvote_value: userUpvoteStatus)
         upvotesLabel.text = String(upvote)
         //self.collectionView!.reloadData()
         
@@ -381,7 +388,20 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
         }
         //save data in core data
-        userVoted(imageID, user_name: userID, upvote_value: userUpvoteStatus)
+        userVoted(imageID, user_name: userNameOP, upvote_value: userUpvoteStatus)
         upvotesLabel.text = String(upvote)
+    }
+    
+    @IBAction func viewComments(sender: AnyObject) {
+                self.performSegueWithIdentifier("viewComments", sender: sender.tag)
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "viewComments" {
+            if let destinationVC = segue.destinationViewController as? CommentController{
+                
+                destinationVC.imageID = (imageID as? Int)!
+            }
+        }
+        
     }
 }
