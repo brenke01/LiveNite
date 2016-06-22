@@ -546,20 +546,6 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background_Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="Yee-fg-CzO">
                                 <rect key="frame" x="0.0" y="64" width="350" height="536"/>
                             </imageView>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PDz-Rp-zmZ">
-                                <rect key="frame" x="0.0" y="0.0" width="350" height="64"/>
-                                <color key="backgroundColor" red="0.8862745098" green="0.76078431369999999" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.239938447" green="0.239938447" blue="0.239938447" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <navigationItem id="7py-0e-uch">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="kxE-Wp-Vq0">
-                                            <connections>
-                                                <action selector="exit:" destination="2vE-Gf-M0U" id="3aQ-gy-Vls"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="M9X-Wl-nHB">
                                 <rect key="frame" x="0.0" y="64" width="350" height="492"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -568,6 +554,25 @@
                                     <constraint firstAttribute="width" constant="350" id="TWo-Zq-tCo"/>
                                 </constraints>
                             </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PDz-Rp-zmZ">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="64"/>
+                                <color key="backgroundColor" red="0.8862745098" green="0.76078431369999999" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.239938447" green="0.239938447" blue="0.239938447" alpha="1" colorSpace="calibratedRGB"/>
+                                <items>
+                                    <navigationItem id="7py-0e-uch">
+                                        <barButtonItem key="leftBarButtonItem" image="back.png" id="kxE-Wp-Vq0">
+                                            <connections>
+                                                <action selector="exit:" destination="2vE-Gf-M0U" id="3aQ-gy-Vls"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="syJ-Jv-z8W">
+                                            <connections>
+                                                <segue destination="Fal-UV-Xkm" kind="show" identifier="postComment" id="3yX-Mi-DMn"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" red="0.25490196079999999" green="0.25490196079999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -598,6 +603,84 @@
             </objects>
             <point key="canvasLocation" x="1211" y="28"/>
         </scene>
+        <!--Post Comment Controller-->
+        <scene sceneID="NQw-ZQ-QWB">
+            <objects>
+                <viewController id="Fal-UV-Xkm" customClass="PostCommentController" customModule="LiveNite" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kqH-T1-xuN"/>
+                        <viewControllerLayoutGuide type="bottom" id="7qC-wh-KEb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pz0-OM-g1i">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background_Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="ztK-Sv-C42">
+                                <rect key="frame" x="0.0" y="64" width="350" height="536"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="350" id="N1J-Tx-1rZ"/>
+                                    <constraint firstAttribute="height" constant="536" id="iq0-s3-MmG"/>
+                                </constraints>
+                            </imageView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kzi-Tj-rZb">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="64"/>
+                                <color key="backgroundColor" red="0.8862745098" green="0.76078431369999999" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.239938447" green="0.239938447" blue="0.239938447" alpha="1" colorSpace="calibratedRGB"/>
+                                <items>
+                                    <navigationItem id="xrC-rU-OtW">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="s8b-7U-Z8S">
+                                            <connections>
+                                                <action selector="exit:" destination="Fal-UV-Xkm" id="L7g-Y9-i6V"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u3z-I3-FKC">
+                                <rect key="frame" x="247" y="267" width="103" height="35"/>
+                                <state key="normal" title="Post">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" red="0.88131953529999996" green="0.836718976" blue="0.29513508599999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TQ1-yA-Wyh">
+                                <rect key="frame" x="0.0" y="64" width="350" height="238"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.25490196079999999" green="0.25490196079999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="bottom" secondItem="u3z-I3-FKC" secondAttribute="bottom" id="38N-cg-W0A"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="trailing" secondItem="u3z-I3-FKC" secondAttribute="trailing" id="3Az-1r-pfx"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="trailing" secondItem="ztK-Sv-C42" secondAttribute="trailing" id="7r8-cP-dsA"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="top" secondItem="Kzi-Tj-rZb" secondAttribute="bottom" id="CDa-2l-36s"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="top" secondItem="ztK-Sv-C42" secondAttribute="top" id="EoB-Vm-aB8"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="trailing" secondItem="Kzi-Tj-rZb" secondAttribute="trailing" id="EtI-0Q-KsX"/>
+                            <constraint firstItem="7qC-wh-KEb" firstAttribute="top" secondItem="TQ1-yA-Wyh" secondAttribute="bottom" constant="254" id="Jw5-kD-lZK"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="leading" secondItem="Kzi-Tj-rZb" secondAttribute="leading" id="Pv7-wQ-m72"/>
+                            <constraint firstItem="Kzi-Tj-rZb" firstAttribute="leading" secondItem="pz0-OM-g1i" secondAttribute="leading" id="Y1i-oK-JiP"/>
+                            <constraint firstItem="Kzi-Tj-rZb" firstAttribute="top" secondItem="pz0-OM-g1i" secondAttribute="top" id="eiH-xx-lzU"/>
+                            <constraint firstAttribute="bottom" secondItem="ztK-Sv-C42" secondAttribute="bottom" id="f3W-Sp-UQh"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="leading" secondItem="ztK-Sv-C42" secondAttribute="leading" id="zc7-Sd-NG5"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="QGn-lV-6YN"/>
+                    </toolbarItems>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="350" height="600"/>
+                    <connections>
+                        <outlet property="commentNav" destination="Kzi-Tj-rZb" id="hp9-Cj-V6i"/>
+                        <outlet property="navBar" destination="Kzi-Tj-rZb" id="hSm-Fe-EVL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6DJ-oM-EMi" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1599" y="28"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Background_Gradient" width="748" height="1333"/>
@@ -611,6 +694,7 @@
         <image name="Recent" width="128" height="128"/>
         <image name="Restaurants" width="64" height="64"/>
         <image name="Upvote_Gold" width="51" height="28"/>
+        <image name="back.png" width="12" height="12"/>
         <image name="checkin" width="42" height="42"/>
     </resources>
 </document>

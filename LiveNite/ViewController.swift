@@ -388,6 +388,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         destinationVC.caption = (caption as? String)!
                         destinationVC.userID = Int(self.userID)!
                         
+                        
                     }
                 }
             }

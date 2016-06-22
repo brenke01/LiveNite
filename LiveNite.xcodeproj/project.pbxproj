@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0813DA1D0BA6DE00CE0C70 /* User.swift */; };
+		0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C705C1D1A268600795D20 /* PostCommentController.swift */; };
 		0A659ECC1D10CE5A0000E66D /* CommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A659ECB1D10CE5A0000E66D /* CommentController.swift */; };
 		0AA2AB5C1C86878A00488A56 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA2AB5B1C86878A00488A56 /* ProfileController.swift */; };
 		0AC989DC1C39C7F0008439B5 /* PickLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		0A0813DA1D0BA6DE00CE0C70 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0A4C705C1D1A268600795D20 /* PostCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentController.swift; sourceTree = "<group>"; };
 		0A659ECB1D10CE5A0000E66D /* CommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentController.swift; sourceTree = "<group>"; };
 		0AA2AB5B1C86878A00488A56 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickLocationController.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */,
 				0A0813DA1D0BA6DE00CE0C70 /* User.swift */,
 				0A659ECB1D10CE5A0000E66D /* CommentController.swift */,
+				0A4C705C1D1A268600795D20 /* PostCommentController.swift */,
 				0AD58B4E1C9264C70037F0F8 /* LiveNite */,
 				6B8C50C71C46EB5900BE715C /* FBLoginController.swift */,
 				6BA16BF41C6AE4F700707D2D /* ChooseUserNameController.swift */,
@@ -358,6 +361,7 @@
 				15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */,
 				0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */,
 				0AC989DC1C39C7F0008439B5 /* PickLocationController.swift in Sources */,
+				0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */,
 				15DDCC211B5F381F00E87EA1 /* LiveNite.xcdatamodeld in Sources */,
 				6B8C50C81C46EB5900BE715C /* FBLoginController.swift in Sources */,
 			);

@@ -13,6 +13,8 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentNav: UINavigationBar!
     var imageID = 0
+    var userNameOP = ""
+    var userName = ""
     
     override func viewDidLoad() {
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
@@ -58,6 +60,21 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
 
     @IBAction func exit(sender: AnyObject) {
          self.dismissViewControllerAnimated(false, completion: nil)
+    }
+    
+    @IBAction func postComment(sender: AnyObject) {
+        self.performSegueWithIdentifier("postComment", sender: sender.tag)
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "postComment" {
+            if let destinationVC = segue.destinationViewController as? CommentController{
+                
+                destinationVC.imageID = (imageID as? Int)!
+                destinationVC.userName = (userName as? String)!
+                destinationVC.userName = (userName as? String)!
+            }
+        }
+        
     }
 
 }

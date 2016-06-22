@@ -24,6 +24,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var locationUpdated = false
     var userID = 0
     var userNameOP = ""
+    var imageTapped = UIImage()
+    var imageID = 0
+    var imageUpvotes = 0
+    var imageTitle =  ""
+    var caption = ""
+    var userName = ""
     
     @IBAction func checkIn(sender: AnyObject) {
         
@@ -148,12 +154,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBOutlet var navigationBar: UINavigationBar!
     
     @IBOutlet weak var userNameLabel: UILabel!
-    var imageTapped = UIImage()
-    var imageID = 0
-    var imageUpvotes = 0
-    var imageTitle =  ""
-    var caption = ""
-    var userName = ""
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -400,6 +401,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             if let destinationVC = segue.destinationViewController as? CommentController{
                 
                 destinationVC.imageID = (imageID as? Int)!
+                destinationVC.userNameOP = (userNameOP as? String)!
+                destinationVC.userName = (userName as? String)!
             }
         }
         
