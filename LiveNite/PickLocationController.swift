@@ -465,8 +465,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         submitButton = UIButton(frame: CGRect(x: 10, y: self.view.frame.height * 0.45,width: self.view.frame.width - 20, height: 40 ))
         submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
         submitButton.setTitle("Submit", forState: .Normal)
-        submitButton.enabled = false
-        submitButton.layer.opacity = 0.4
+        submitButton.enabled = true
+        submitButton.layer.opacity = 1.0
         submitButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
         submitButton.titleLabel!.font = UIFont(name:
             "HelveticaNeue-Medium", size: 18)
