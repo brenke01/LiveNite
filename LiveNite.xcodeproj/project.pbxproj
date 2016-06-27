@@ -23,6 +23,7 @@
 		15DDCC281B5F381F00E87EA1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15DDCC271B5F381F00E87EA1 /* Images.xcassets */; };
 		15DDCC2B1B5F381F00E87EA1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15DDCC291B5F381F00E87EA1 /* LaunchScreen.xib */; };
 		15DDCC371B5F381F00E87EA1 /* LiveNiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DDCC361B5F381F00E87EA1 /* LiveNiteTests.swift */; };
+		316AC8C9D4106592D4D38261 /* Pods_LiveNite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD6962B081337754F04A3FC /* Pods_LiveNite.framework */; };
 		6B69ED921C321FF8000785EF /* viewPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED911C321FF8000785EF /* viewPostController.swift */; };
 		6B69ED981C34BA6C000785EF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6B69ED971C34BA6C000785EF /* Podfile */; };
 		6B69ED9A1C34BF0E000785EF /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */; };
@@ -30,7 +31,6 @@
 		6B8C50C81C46EB5900BE715C /* FBLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C50C71C46EB5900BE715C /* FBLoginController.swift */; };
 		6BA16BF51C6AE4F700707D2D /* ChooseUserNameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA16BF41C6AE4F700707D2D /* ChooseUserNameController.swift */; };
 		6BDCEDA31C210E68004C3029 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BDCEDA21C210E68004C3029 /* CoreLocation.framework */; };
-		82455AA47CBEBE8744F01982 /* Pods_LiveNite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6170B072EE83EE4FD098D7AB /* Pods_LiveNite.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +53,6 @@
 		0AD608BD1C45EAAA007D3A3B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "FacebookSDKs-iOS-20151111/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		0AD608BF1C45EABE007D3A3B /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "FacebookSDKs-iOS-20151111/Bolts.framework"; sourceTree = "<group>"; };
 		0ADCDEA01C44978400E05257 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "FacebookSDKs-iOS-20151111/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
-		104071ED66A08E4E97DD98E5 /* Pods-LiveNite.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveNite.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite.release.xcconfig"; sourceTree = "<group>"; };
 		15DDCC181B5F381F00E87EA1 /* LiveNite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveNite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15DDCC1C1B5F381F00E87EA1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15DDCC1D1B5F381F00E87EA1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,8 +64,8 @@
 		15DDCC301B5F381F00E87EA1 /* LiveNiteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveNiteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		15DDCC351B5F381F00E87EA1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15DDCC361B5F381F00E87EA1 /* LiveNiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveNiteTests.swift; sourceTree = "<group>"; };
-		351239AC33048B05CD29EB3D /* Pods-LiveNite.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveNite.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite.debug.xcconfig"; sourceTree = "<group>"; };
-		6170B072EE83EE4FD098D7AB /* Pods_LiveNite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveNite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AF796B654EAAC436C2D92BB /* Pods-LiveNite.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveNite.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite.debug.xcconfig"; sourceTree = "<group>"; };
+		5BB9C212900FA7B37753A30D /* Pods-LiveNite.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveNite.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite.release.xcconfig"; sourceTree = "<group>"; };
 		6B69ED911C321FF8000785EF /* viewPostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = viewPostController.swift; sourceTree = "<group>"; };
 		6B69ED971C34BA6C000785EF /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
@@ -76,6 +75,7 @@
 		6BA16BF41C6AE4F700707D2D /* ChooseUserNameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseUserNameController.swift; sourceTree = "<group>"; };
 		6BDCEDA21C210E68004C3029 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		85F2763A40152D1702DFD2E7 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAD6962B081337754F04A3FC /* Pods_LiveNite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveNite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +87,7 @@
 				6BDCEDA31C210E68004C3029 /* CoreLocation.framework in Frameworks */,
 				0ADCDEA11C44978400E05257 /* FBSDKCoreKit.framework in Frameworks */,
 				0AD608BE1C45EAAA007D3A3B /* FBSDKLoginKit.framework in Frameworks */,
-				82455AA47CBEBE8744F01982 /* Pods_LiveNite.framework in Frameworks */,
+				316AC8C9D4106592D4D38261 /* Pods_LiveNite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +110,7 @@
 				15DDCC331B5F381F00E87EA1 /* LiveNiteTests */,
 				15DDCC191B5F381F00E87EA1 /* Products */,
 				A95959DC0F62E5D6B726E554 /* Frameworks */,
-				AC12070A8A6036D67096E1EA /* Pods */,
+				DE5092B577DE1720792BCAD3 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,16 +181,16 @@
 				0AD608BD1C45EAAA007D3A3B /* FBSDKLoginKit.framework */,
 				0ADCDEA01C44978400E05257 /* FBSDKCoreKit.framework */,
 				85F2763A40152D1702DFD2E7 /* Pods.framework */,
-				6170B072EE83EE4FD098D7AB /* Pods_LiveNite.framework */,
+				AAD6962B081337754F04A3FC /* Pods_LiveNite.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AC12070A8A6036D67096E1EA /* Pods */ = {
+		DE5092B577DE1720792BCAD3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				351239AC33048B05CD29EB3D /* Pods-LiveNite.debug.xcconfig */,
-				104071ED66A08E4E97DD98E5 /* Pods-LiveNite.release.xcconfig */,
+				2AF796B654EAAC436C2D92BB /* Pods-LiveNite.debug.xcconfig */,
+				5BB9C212900FA7B37753A30D /* Pods-LiveNite.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -202,13 +202,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 15DDCC3A1B5F381F00E87EA1 /* Build configuration list for PBXNativeTarget "LiveNite" */;
 			buildPhases = (
-				F3D18F415DE68B6D4F2FE5B8 /* 📦 Check Pods Manifest.lock */,
+				5BC47469B32ABD1C182FBFB7 /* 📦 Check Pods Manifest.lock */,
 				15DDCC141B5F381F00E87EA1 /* Sources */,
 				15DDCC151B5F381F00E87EA1 /* Frameworks */,
 				15DDCC161B5F381F00E87EA1 /* Resources */,
-				24BBEC037CB217EF4FEEFA85 /* 📦 Embed Pods Frameworks */,
-				1FC426358F3FE2CA2E4E8AC7 /* 📦 Copy Pods Resources */,
-				67664678748EE3A12C79CFCB /* Embed Pods Frameworks */,
+				B7FAFC34FFC833D6C690ECD0 /* 📦 Embed Pods Frameworks */,
+				0327875D9117D13CF628E8D3 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -250,7 +249,7 @@
 				TargetAttributes = {
 					15DDCC171B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = 4P5R952TU2;
+						DevelopmentTeam = E9E49AR885;
 					};
 					15DDCC2F1B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
@@ -299,7 +298,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1FC426358F3FE2CA2E4E8AC7 /* 📦 Copy Pods Resources */ = {
+		0327875D9117D13CF628E8D3 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -314,37 +313,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		24BBEC037CB217EF4FEEFA85 /* 📦 Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		67664678748EE3A12C79CFCB /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F3D18F415DE68B6D4F2FE5B8 /* 📦 Check Pods Manifest.lock */ = {
+		5BC47469B32ABD1C182FBFB7 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -357,6 +326,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B7FAFC34FFC833D6C690ECD0 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -505,7 +489,7 @@
 		};
 		15DDCC3B1B5F381F00E87EA1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 351239AC33048B05CD29EB3D /* Pods-LiveNite.debug.xcconfig */;
+			baseConfigurationReference = 2AF796B654EAAC436C2D92BB /* Pods-LiveNite.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -531,7 +515,7 @@
 		};
 		15DDCC3C1B5F381F00E87EA1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 104071ED66A08E4E97DD98E5 /* Pods-LiveNite.release.xcconfig */;
+			baseConfigurationReference = 5BB9C212900FA7B37753A30D /* Pods-LiveNite.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
