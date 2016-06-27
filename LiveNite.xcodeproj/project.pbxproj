@@ -208,6 +208,7 @@
 				15DDCC161B5F381F00E87EA1 /* Resources */,
 				24BBEC037CB217EF4FEEFA85 /* 📦 Embed Pods Frameworks */,
 				1FC426358F3FE2CA2E4E8AC7 /* 📦 Copy Pods Resources */,
+				67664678748EE3A12C79CFCB /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -249,7 +250,7 @@
 				TargetAttributes = {
 					15DDCC171B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = E9E49AR885;
+						DevelopmentTeam = 4P5R952TU2;
 					};
 					15DDCC2F1B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
@@ -321,6 +322,21 @@
 			inputPaths = (
 			);
 			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		67664678748EE3A12C79CFCB /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
