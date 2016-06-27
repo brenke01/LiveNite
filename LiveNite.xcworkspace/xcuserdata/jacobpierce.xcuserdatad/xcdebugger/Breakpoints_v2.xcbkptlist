@@ -91,7 +91,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "283"
             endingLineNumber = "283"
-            landmarkName = "userVoted(_:user_name:upvote_value:)"
+            landmarkName = "UpVote(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

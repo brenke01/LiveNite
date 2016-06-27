@@ -199,7 +199,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             downvoteButton.alpha = 0.5
         }
     }
-        func loadImageDetail(){
+    
+    func loadImageDetail(){
         imgView.image = imageTapped
         upvotesLabel.text = String(imageUpvotes)
         //Needs styling
@@ -216,6 +217,40 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
     }
+    
+    /*
+     
+    Hot/Cold Score Algorithm Pseudocode
+    
+     When upvote or downvote occurs, store the time it occurred as well
+     Calculate time since upvote and downvote, apply decaying function to it
+     
+        Decaying function:
+            a*(1-r)^t
+        Where a is the initial value, r is the rate of decay, and t is the time that has passed
+     
+     Sum up resulting decayed votes to calculate final score
+     Store score somewhere near location of picture
+     Fetch location of picture
+     Fetch all pictures within the determined radius of comparison
+     Determine appropriate statistical values of the population of pictures
+        Need to determine how to set final score, potential options:
+            Base it on statistical deviation from the mean
+            Base it as a percentage of the maximum score
+            Base it as a percentage of the range
+     Assign picture to bucket values:
+     
+        1 - Frozen
+        2 - Cold
+        3 - Warm
+        4 - Hot
+        5 - Fire
+     
+     Display value on sliding bar or some other UI feature
+     
+    */
+    
+    
     
     func UpVote(sender: UIButton){
 
