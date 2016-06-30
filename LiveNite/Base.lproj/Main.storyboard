@@ -650,7 +650,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="350" height="600"/>
                     <connections>
-                        <outlet property="commentNav" destination="PDz-Rp-zmZ" id="rA4-uQ-mBx"/>
+                        <outlet property="navBar" destination="PDz-Rp-zmZ" id="SHI-de-a2W"/>
                         <outlet property="tableView" destination="M9X-Wl-nHB" id="aII-GH-aPa"/>
                     </connections>
                 </viewController>
@@ -677,9 +677,42 @@
                                     <constraint firstAttribute="height" constant="536" id="iq0-s3-MmG"/>
                                 </constraints>
                             </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TQ1-yA-Wyh">
+                                <rect key="frame" x="0.0" y="64" width="350" height="208"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="208" id="MEg-NU-6QX"/>
+                                    <constraint firstAttribute="width" constant="350" id="f5j-Xv-cuw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vLA-IC-eGh">
+                                <rect key="frame" x="0.0" y="268" width="350" height="128"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zsb-4j-YFg">
+                                        <rect key="frame" x="183" y="57" width="159" height="30"/>
+                                        <state key="normal" title="Post">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="postComment:" destination="Fal-UV-Xkm" eventType="touchUpInside" id="Vwb-ri-1OK"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="350" id="5po-GL-40c"/>
+                                    <constraint firstAttribute="height" constant="128" id="xie-vh-W46"/>
+                                </constraints>
+                            </view>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kzi-Tj-rZb">
                                 <rect key="frame" x="0.0" y="0.0" width="350" height="64"/>
                                 <color key="backgroundColor" red="0.8862745098" green="0.76078431369999999" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="BqB-Mo-cde"/>
+                                    <constraint firstAttribute="width" constant="350" id="JSu-92-dSn"/>
+                                </constraints>
                                 <color key="tintColor" red="0.239938447" green="0.239938447" blue="0.239938447" alpha="1" colorSpace="calibratedRGB"/>
                                 <items>
                                     <navigationItem id="xrC-rU-OtW">
@@ -691,34 +724,20 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u3z-I3-FKC">
-                                <rect key="frame" x="247" y="267" width="103" height="35"/>
-                                <state key="normal" title="Post">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" red="0.88131953529999996" green="0.836718976" blue="0.29513508599999999" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TQ1-yA-Wyh">
-                                <rect key="frame" x="0.0" y="64" width="350" height="238"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                         </subviews>
                         <color key="backgroundColor" red="0.25490196079999999" green="0.25490196079999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="bottom" secondItem="u3z-I3-FKC" secondAttribute="bottom" id="38N-cg-W0A"/>
-                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="trailing" secondItem="u3z-I3-FKC" secondAttribute="trailing" id="3Az-1r-pfx"/>
-                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="trailing" secondItem="ztK-Sv-C42" secondAttribute="trailing" id="7r8-cP-dsA"/>
-                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="top" secondItem="Kzi-Tj-rZb" secondAttribute="bottom" id="CDa-2l-36s"/>
-                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="top" secondItem="ztK-Sv-C42" secondAttribute="top" id="EoB-Vm-aB8"/>
-                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="trailing" secondItem="Kzi-Tj-rZb" secondAttribute="trailing" id="EtI-0Q-KsX"/>
-                            <constraint firstItem="7qC-wh-KEb" firstAttribute="top" secondItem="TQ1-yA-Wyh" secondAttribute="bottom" constant="254" id="Jw5-kD-lZK"/>
-                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="leading" secondItem="Kzi-Tj-rZb" secondAttribute="leading" id="Pv7-wQ-m72"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="top" secondItem="Kzi-Tj-rZb" secondAttribute="bottom" id="2t0-sS-Dcg"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="top" secondItem="ztK-Sv-C42" secondAttribute="top" id="GKg-wx-KMi"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="leading" secondItem="ztK-Sv-C42" secondAttribute="leading" id="I61-rj-aBe"/>
+                            <constraint firstItem="vLA-IC-eGh" firstAttribute="centerY" secondItem="ztK-Sv-C42" secondAttribute="centerY" id="SVK-zx-3cN"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="trailing" secondItem="vLA-IC-eGh" secondAttribute="trailing" id="Xph-o2-pI1"/>
                             <constraint firstItem="Kzi-Tj-rZb" firstAttribute="leading" secondItem="pz0-OM-g1i" secondAttribute="leading" id="Y1i-oK-JiP"/>
                             <constraint firstItem="Kzi-Tj-rZb" firstAttribute="top" secondItem="pz0-OM-g1i" secondAttribute="top" id="eiH-xx-lzU"/>
                             <constraint firstAttribute="bottom" secondItem="ztK-Sv-C42" secondAttribute="bottom" id="f3W-Sp-UQh"/>
-                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="leading" secondItem="ztK-Sv-C42" secondAttribute="leading" id="zc7-Sd-NG5"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="trailing" secondItem="Kzi-Tj-rZb" secondAttribute="trailing" id="obq-Hc-XHf"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="leading" secondItem="Kzi-Tj-rZb" secondAttribute="leading" id="v3T-i1-aUR"/>
+                            <constraint firstItem="TQ1-yA-Wyh" firstAttribute="leading" secondItem="vLA-IC-eGh" secondAttribute="leading" id="yeG-KY-gP1"/>
                         </constraints>
                     </view>
                     <toolbarItems>
@@ -728,8 +747,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="350" height="600"/>
                     <connections>
-                        <outlet property="commentNav" destination="Kzi-Tj-rZb" id="hp9-Cj-V6i"/>
+                        <outlet property="commentField" destination="TQ1-yA-Wyh" id="wAg-Gn-rcU"/>
                         <outlet property="navBar" destination="Kzi-Tj-rZb" id="hSm-Fe-EVL"/>
+                        <outlet property="postCommentButton" destination="Zsb-4j-YFg" id="pCl-dI-lpt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6DJ-oM-EMi" sceneMemberID="firstResponder"/>

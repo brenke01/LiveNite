@@ -9,17 +9,17 @@
 import Foundation
 
 class CommentController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate{
+    @IBOutlet weak var navBar: UINavigationBar!
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var commentNav: UINavigationBar!
     var imageID = 0
     var userNameOP = ""
     var userName = ""
     
     override func viewDidLoad() {
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
-        commentNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
-        commentNav.topItem!.title = "Comments"
+        navBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
+        navBar.topItem!.title = "Comments"
         super.viewDidLoad()
 
     }
@@ -54,6 +54,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         cell.backgroundColor = UIColor.clearColor()
         cell.opaque = false
         cell.textLabel?.text = "Be the first to comment"
+        cell.textLabel?.textColor = UIColor.whiteColor()
 
         return cell
     }
@@ -67,7 +68,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "postComment" {
-            if let destinationVC = segue.destinationViewController as? CommentController{
+            if let destinationVC = segue.destinationViewController as? PostCommentController{
                 
                 destinationVC.imageID = (imageID as? Int)!
                 destinationVC.userName = (userName as? String)!
