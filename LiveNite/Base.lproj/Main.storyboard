@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KGv-Qv-OEJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KGv-Qv-OEJ">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -145,6 +145,20 @@
                                     </mask>
                                 </variation>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Mh-OL-qxe">
+                                <rect key="frame" x="0.0" y="64" width="350" height="325"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="325" id="C7t-El-hYj"/>
+                                    <constraint firstAttribute="width" constant="350" id="Gew-4b-EZG"/>
+                                    <constraint firstAttribute="width" secondItem="6Mh-OL-qxe" secondAttribute="height" multiplier="14:13" id="emV-J1-tdS"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="C7t-El-hYj"/>
+                                        <exclude reference="Gew-4b-EZG"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
                             <navigationBar contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nHt-Wp-u4A">
                                 <rect key="frame" x="0.0" y="0.0" width="350" height="64"/>
                                 <color key="backgroundColor" red="0.88627450980392153" green="0.76078431372549016" blue="0.078431372549019607" alpha="1" colorSpace="calibratedRGB"/>
@@ -174,20 +188,6 @@
                                     </mask>
                                 </variation>
                             </navigationBar>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Mh-OL-qxe">
-                                <rect key="frame" x="0.0" y="64" width="350" height="325"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="325" id="C7t-El-hYj"/>
-                                    <constraint firstAttribute="width" constant="350" id="Gew-4b-EZG"/>
-                                    <constraint firstAttribute="width" secondItem="6Mh-OL-qxe" secondAttribute="height" multiplier="14:13" id="emV-J1-tdS"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="C7t-El-hYj"/>
-                                        <exclude reference="Gew-4b-EZG"/>
-                                    </mask>
-                                </variation>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -420,7 +420,7 @@
                                     <action selector="capVideo" destination="KGv-Qv-OEJ" eventType="touchUpInside" id="Wzk-F0-qCr"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eH8-8y-u1h">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eH8-8y-u1h">
                                 <rect key="frame" x="296" y="581" width="20" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="uYH-1v-JfM"/>
@@ -672,7 +672,7 @@
                                     <navigationItem id="7py-0e-uch">
                                         <barButtonItem key="leftBarButtonItem" image="back.png" id="kxE-Wp-Vq0">
                                             <connections>
-                                                <action selector="exit:" destination="2vE-Gf-M0U" id="3aQ-gy-Vls"/>
+                                                <action selector="back:" destination="2vE-Gf-M0U" id="c7a-Eo-6I9"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="syJ-Jv-z8W">
@@ -748,7 +748,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zsb-4j-YFg">
                                         <rect key="frame" x="183" y="57" width="159" height="30"/>
                                         <state key="normal" title="Post">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="postComment:" destination="Fal-UV-Xkm" eventType="touchUpInside" id="Vwb-ri-1OK"/>

@@ -12,6 +12,9 @@ import CoreData
 import CoreLocation
 
 class CommentController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate,UITableViewDataSource{
+    @IBAction func back(sender: AnyObject) {
+        self.dismissViewControllerAnimated(false, completion: nil)
+    }
     @IBOutlet weak var navBar: UINavigationBar!
     
     @IBOutlet weak var tableView: UITableView!
