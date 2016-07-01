@@ -7,19 +7,27 @@
 //
 
 import Foundation
+import MobileCoreServices
+import CoreData
+import CoreLocation
 
-class CommentController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate{
+class CommentController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate,UITableViewDataSource{
     @IBOutlet weak var navBar: UINavigationBar!
     
     @IBOutlet weak var tableView: UITableView!
     var imageID = 0
     var userNameOP = ""
     var userName = ""
+    var commentInfoArray : [[String:String]] = []
     
     override func viewDidLoad() {
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         navBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         navBar.topItem!.title = "Comments"
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.dataSource = self
+        tableView.delegate = self
+        loadComments()
         super.viewDidLoad()
 
     }
@@ -36,7 +44,28 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
-        return 0
+        return self.commentInfoArray.count
+    }
+    
+    func loadComments(){
+        let fetchRequest = NSFetchRequest(entityName: "Comments")
+        
+        fetchRequest.predicate = NSPredicate(format: "image_id= %i", imageID as! Int)
+        let comments = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        
+        if let comments = comments{
+            for comment in comments{
+                
+                let commentPosted: AnyObject? = comment.valueForKey("comment")
+                let owner : AnyObject? =
+                    comment.valueForKey("owner")
+                var commentInfo : [String: String] = [:]
+                commentInfo["owner"] = owner as? String
+                commentInfo["comment"] = commentPosted as! String
+                self.commentInfoArray.append(commentInfo)
+                
+            }
+        }
     }
     
     
@@ -45,6 +74,15 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         tableView.backgroundColor = UIColor.clearColor()
         let border = CALayer()
         let width = CGFloat(1.0)
+
+        
+     
+            cell.textLabel?.text = self.commentInfoArray[indexPath.row]["comment"]
+        
+        
+        
+        
+        
         border.borderColor = UIColor.whiteColor().CGColor
         border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
         border.borderWidth = width
@@ -53,7 +91,6 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         tableView.opaque = false
         cell.backgroundColor = UIColor.clearColor()
         cell.opaque = false
-        cell.textLabel?.text = "Be the first to comment"
         cell.textLabel?.textColor = UIColor.whiteColor()
 
         return cell
@@ -75,6 +112,14 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
                 destinationVC.userName = (userName as? String)!
             }
         }
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+            tableView.reloadData()
+        
         
     }
 

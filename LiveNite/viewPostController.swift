@@ -367,7 +367,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         var userUpvoteStatus : Int = 0
         //get upvote status
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
-        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", userID)])
+        userUpvoteStatusFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "image_id= %i",imageID), NSPredicate(format: "user_name= %@", userNameOP)])
         let userUpvoteStatusFetchResults = (try? context.executeFetchRequest(userUpvoteStatusFetchRequest)) as! [NSManagedObject]?
         if let userUpvoteStatusFetchResults = userUpvoteStatusFetchResults{
             for result in userUpvoteStatusFetchResults{

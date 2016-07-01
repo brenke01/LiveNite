@@ -54,6 +54,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var accessToken = ""
     var userID = ""
     var userName = ""
+
     
 
     
@@ -265,12 +266,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageButton.tag = idArray[indexPath.row]
         
         
-
+      
+        
+        print(imageButton.layer)
         let layer = imageButton.layer
         layer.shadowColor = UIColor.blackColor().CGColor
         layer.shadowOffset = CGSize(width: 0, height: 20)
         layer.shadowOpacity = 0.4
         layer.shadowRadius = 5
+        
+        
         cell.addSubview(imageButton)
         return cell
     }

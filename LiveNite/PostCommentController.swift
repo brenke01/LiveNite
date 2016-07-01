@@ -27,7 +27,8 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
                 try context.save()
             } catch _ {
             }
-            self.dismissMoviePlayerViewControllerAnimated()
+            dismissViewControllerAnimated(true, completion: nil)
+            
         }
     }
     
