@@ -20,6 +20,8 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
             let owner = self.userName
             let id = self.imageID
             let comment = commentField.text
+            let date = NSDate()
+            newComment.setValue(date, forKey: "time_posted")
             newComment.setValue(id, forKey: "image_id")
             newComment.setValue(owner, forKey: "owner")
             newComment.setValue(comment, forKey: "comment")
