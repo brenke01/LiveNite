@@ -15,6 +15,7 @@ import CoreLocation
 import GoogleMaps
 
 
+
 var appDel = (UIApplication.sharedApplication().delegate as! AppDelegate)
 var context:NSManagedObjectContext = appDel.managedObjectContext!
 var upVoteInc : CGFloat = 5
@@ -54,9 +55,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var accessToken = ""
     var userID = ""
     var userName = ""
-
+    var placesToggle = false
+    var displayPlacesAlbum = false
+    var chosenAlbumLocation = ""
+    var previousLocationName = ""
     
-
+    @IBAction func getPlacesView(sender: AnyObject) {
+        self.placesToggle = true
+        self.collectionView?.reloadData()
+    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -219,20 +226,44 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let fetchRequest = NSFetchRequest(entityName: "Entity")
+        var fetchRequest = NSFetchRequest(entityName: "Entity")
+        let placesViewController = PlacesViewController()
+        if(self.displayPlacesAlbum){
+            fetchRequest = placesViewController.getImagesForGroup(self.chosenAlbumLocation)
+            print(fetchRequest)
+        }
         let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        return locations!.count
+        var count = 0
+        self.previousLocationName = ""
+        if let locations = locations{
+            for loc in locations{
+                let titleData: AnyObject? = loc.valueForKey("title")
+                let title = titleData as? String
+                print(self.displayPlacesAlbum)
+                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
+                    count=count+1
+                    self.previousLocationName = title!
+                }
+            }
+        }
+        self.previousLocationName = ""
+        print(count)
+        return count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as UICollectionViewCell
         cell.backgroundColor = UIColor.yellowColor()
-        let fetchRequest = NSFetchRequest(entityName: "Entity")
+        var fetchRequest = NSFetchRequest(entityName: "Entity")
         cell.backgroundColor = UIColor.blackColor()
-        if (self.hotToggle == 1){
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "upvotes", ascending: false)]
+        
+        let placesViewController : PlacesViewController = PlacesViewController()
+        if (self.placesToggle && !self.displayPlacesAlbum){
+            fetchRequest = placesViewController.getGroupedImages()
+        }else if(self.placesToggle && self.displayPlacesAlbum){
+            fetchRequest = placesViewController.getImagesForGroup(self.chosenAlbumLocation)
         }else{
-             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
         }
         let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
         var idArray : [Int] = []
@@ -241,29 +272,41 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         var upVoteArray : [Int] = []
         if let locations = locations{
             for loc in locations{
-                
-                let imageData: AnyObject? = loc.valueForKey("imageData")
-                let imgData = UIImage(data: (imageData as? NSData)!)
-                imageArray.append(imgData!)
-                let idData : AnyObject? = loc.valueForKey("id")
-                let imageId = idData as? Int
-                idArray.append(imageId!)
-                let upVoteData : AnyObject? = loc.valueForKey("upvotes")
-                let upVotes = upVoteData as? Int
-                upVoteArray.append(upVotes!)
-
-                
-                
-                
-            
+                let titleData: AnyObject? = loc.valueForKey("title")
+                let title = titleData as? String
+                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
+                    let imageData: AnyObject? = loc.valueForKey("imageData")
+                    let imgData = UIImage(data: (imageData as? NSData)!)
+                    imageArray.append(imgData!)
+                    let idData : AnyObject? = loc.valueForKey("id")
+                    let imageId = idData as? Int
+                    idArray.append(imageId!)
+                    let upVoteData : AnyObject? = loc.valueForKey("upvotes")
+                    let upVotes = upVoteData as? Int
+                    upVoteArray.append(upVotes!)
+                    self.previousLocationName = title!
+                }
             }
         }
         let imageButton = UIButton(frame: CGRectMake(0, 0, CGFloat(imgWidth), CGFloat(imgHeight)))
         imageButton.setImage(imageArray[indexPath.row], forState: .Normal)
-        imageButton.addTarget(self, action: "viewPost:", forControlEvents: .TouchUpInside)
+        if (!self.placesToggle || self.displayPlacesAlbum){
+            imageButton.addTarget(self, action: "viewPost:", forControlEvents: .TouchUpInside)
+        }else{
+            imageButton.tag = idArray[indexPath.row]
+            imageButton.addTarget(self, action: "displayImagesForAlbum:", forControlEvents: .TouchUpInside)
+        }
+        
         imageButton.userInteractionEnabled = true
         
         imageButton.tag = idArray[indexPath.row]
+        if (self.placesToggle){
+            let albumImageView = UIImageView(frame: CGRectMake(imageButton.frame.width * (0.8), imageButton.frame.height * 0.8,  imageButton.frame.width * 0.15, imageButton.frame.height * 0.2));
+            let albumImage = UIImage(named : "Notif")
+            albumImageView.image = albumImage
+            imageButton.addSubview(albumImageView)
+        }
+        
         
         
       
@@ -280,6 +323,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return cell
     }
     
+    func displayImagesForAlbum(sender : UIButton){
+        var fetchRequest = NSFetchRequest(entityName: "Entity")
+        fetchRequest.predicate = NSPredicate(format: "id= %i", sender.tag)
+        let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        if let images = images{
+            for img in images{
+                let title: AnyObject? = img.valueForKey("title")
+                self.chosenAlbumLocation = title as! String
+            }
+        }
+        self.displayPlacesAlbum = true
+        self.collectionView?.reloadData()
+    }
     //begin auto layout code
     
     //set size of each square cell to imgSize
