@@ -30,6 +30,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var imageTitle =  ""
     var caption = ""
     var userName = ""
+    var hotColdScore = 0.0
     
     @IBAction func checkIn(sender: AnyObject) {
         
@@ -202,11 +203,29 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func loadImageDetail(){
         imgView.image = imageTapped
+        calculateHotColdScore()
         upvotesLabel.text = String(imageUpvotes)
         //Needs styling
         upvotesLabel.textColor = UIColor.whiteColor()
-        
-        
+    }
+    
+    func calculateHotColdScore(){
+        //retrieve all userUpvotes for imageID
+        var a = -1000.0
+        var flatnessFactor = 3.0
+        let fetchRequest = NSFetchRequest(entityName: "UserUpvotes")
+        fetchRequest.predicate = NSPredicate(format: "image_id= %i", imageID)
+        let imageVote = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        if let imageVote = imageVote{
+            for image in imageVote{
+                let timeVote = image.valueForKey("time") as! NSDate
+                let hoursSinceVote = Double(NSDate().timeIntervalSinceDate(timeVote))/3600.0
+                let userUpvoteValue = image.valueForKey("upvote_value") as! Double
+                let decayedValue = userUpvoteValue*max(a*pow(hoursSinceVote,flatnessFactor)+1, 0)
+                hotColdScore = hotColdScore + decayedValue
+            }
+        }
+        print(hotColdScore)
     }
     
     override func didReceiveMemoryWarning() {
@@ -222,11 +241,11 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
      
     Hot/Cold Score Algorithm Pseudocode
     
-     When upvote or downvote occurs, store the time it occurred as well
+     -When upvote or downvote occurs, store the time it occurred as well
      Calculate time since upvote and downvote, apply decaying function to it
      
         Decaying function:
-            a*(1-r)^t
+            -a * t^flatnessFactor + 1
         Where a is the initial value, r is the rate of decay, and t is the time that has passed
      
      Sum up resulting decayed votes to calculate final score
@@ -332,6 +351,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 newImageVote.setValue(imageID, forKey: "image_id")
                 newImageVote.setValue(user_name, forKey: "user_name")
                 newImageVote.setValue(upvote_value, forKey: "upvote_value")
+                let timeNow = NSDate()
+                newImageVote.setValue(timeNow, forKey: "time")
             }
         } else{
             //just change value for appropriate image user pair
