@@ -239,7 +239,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             for loc in locations{
                 let titleData: AnyObject? = loc.valueForKey("title")
                 let title = titleData as? String
-                print(self.displayPlacesAlbum)
                 if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
                     count=count+1
                     self.previousLocationName = title!
