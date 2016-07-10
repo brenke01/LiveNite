@@ -32,7 +32,7 @@ var imgHeight = 160
 
 
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, CLLocationManagerDelegate{
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, CLLocationManagerDelegate, UITabBarDelegate{
     
     @IBOutlet weak var scroller: UIScrollView!
 
@@ -60,7 +60,56 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var chosenAlbumLocation = ""
     var previousLocationName = ""
     
-    @IBAction func getPlacesView(sender: AnyObject) {
+    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+        if (item.tag == 1){
+            self.placesToggle = false
+            self.displayPlacesAlbum = false
+            self.collectionView?.reloadData()
+        }else if (item.tag == 2){
+            getPlacesView()
+            
+        }else if (item.tag == 3){
+            capVideo()
+        }else if (item.tag == 4){
+            
+        }else if (item.tag == 5){
+            profileView()
+        }
+    }
+    
+    @IBOutlet weak var toggleSortButton: UIBarButtonItem!
+    
+    @IBAction func toggleSort(sender: AnyObject) {
+        if (self.hotToggle == 0){
+            toggleSortButton.title = "Popular"
+            getHotImages()
+            
+            
+        }else{
+            toggleSortButton.title = "Recent"
+            getRecentImages()
+            
+            
+        }
+    }
+    
+    func getHotImages() {
+        
+        self.hotToggle = 1
+        collectionView?.reloadData()
+        
+    }
+    
+    func getRecentImages() {
+        
+        self.toggleState = 0
+        self.hotToggle = 0
+        
+        collectionView?.reloadData()
+    }
+
+    
+    func getPlacesView() {
         self.placesToggle = true
         self.collectionView?.reloadData()
     }
@@ -77,18 +126,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.accessToken = String(FBSDKAccessToken.currentAccessToken())
         }
     }
+    @IBOutlet weak var bottomTabBar: UITabBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-  
+        
         profileMenu.hidden = true
-
+        
+        //bottomTabBar.barTintColor = UIColor(red: 0.70, green: 0.7, blue: 0.00, alpha: 1.0)
+        bottomTabBar.tintColor = UIColor.blackColor()
+        bottomTabBar.selectedItem = bottomTabBar.items![0] as UITabBarItem
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionView?.dataSource = self
         collectionView!.delegate = self
-        
+        bottomTabBar.delegate = self
         collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         let nibname = UINib(nibName: "Cell", bundle: nil)
         collectionView!.registerNib(nibname, forCellWithReuseIdentifier: "Cell")
@@ -138,7 +191,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
-    @IBAction func profileView(sender: AnyObject) {
+    func profileView() {
     
         if (self.toggleState == 0){
             self.toggleState = 1
@@ -256,12 +309,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         cell.backgroundColor = UIColor.yellowColor()
         var fetchRequest = NSFetchRequest(entityName: "Entity")
         cell.backgroundColor = UIColor.blackColor()
-        
+
         let placesViewController : PlacesViewController = PlacesViewController()
         if (self.placesToggle && !self.displayPlacesAlbum){
             fetchRequest = placesViewController.getGroupedImages()
         }else if(self.placesToggle && self.displayPlacesAlbum){
             fetchRequest = placesViewController.getImagesForGroup(self.chosenAlbumLocation)
+        }else if (hotToggle == 1){
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "upvotes", ascending: false)]
         }else{
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
         }
@@ -302,7 +357,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageButton.tag = idArray[indexPath.row]
         if (self.placesToggle){
             let albumImageView = UIImageView(frame: CGRectMake(imageButton.frame.width * (0.8), imageButton.frame.height * 0.8,  imageButton.frame.width * 0.15, imageButton.frame.height * 0.2));
-            let albumImage = UIImage(named : "Notif")
+            let albumImage = UIImage(named : "album2")
             albumImageView.image = albumImage
             imageButton.addSubview(albumImageView)
         }
@@ -361,33 +416,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return offset
     }
     
-    @IBAction func getHotImages(sender: AnyObject) {
-        if (self.toggleState == 1){
-            let viewWithTag = self.view.viewWithTag(100)! as UIView?
-        
-            viewWithTag!.removeFromSuperview()
-        }
-        
-        
-        self.toggleState = 0
-        
-        self.hotToggle = 1
-        collectionView?.reloadData()
-        
-    }
-    
-    @IBAction func getRecentImages(sender: AnyObject) {
-        if (self.toggleState == 1){
-            let viewWithTag = self.view.viewWithTag(100)! as UIView?
-        
-            viewWithTag!.removeFromSuperview()
-        }
-        
-        self.toggleState = 0
-        self.hotToggle = 0
-        
-        collectionView?.reloadData()
-    }
+
     //end auto layout code
     
     //get user location function
@@ -500,4 +529,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
 }
+
+
 
