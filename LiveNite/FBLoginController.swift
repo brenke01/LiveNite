@@ -120,6 +120,9 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 submitButton.hidden = false
                 inputUserName.hidden = false
                 submitButton.enabled = true
+                submitButton.backgroundColor = UIColor.grayColor()
+                submitButton.layer.cornerRadius = 5
+                
                 
                 do {
                     try context.save()

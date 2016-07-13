@@ -16,9 +16,10 @@ import CoreLocation
 import GoogleMaps
 
 
-class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchDisplayDelegate{
+class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UISearchDisplayDelegate{
     @IBOutlet var tableView: UITableView!
     
+    @IBOutlet weak var textField: UITextView!
     @IBOutlet weak var pickLocNav: UINavigationBar!
     @IBOutlet weak var stopButton: UINavigationBar!
     @IBOutlet weak var selectedImageView: UIImageView!
@@ -38,8 +39,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var userLocation = CLLocationCoordinate2D()
     var locationUpdated = false
     var complete = false
-    var captionView = 0
-    var textField = UITextField()
+    //var textField = UITextField()
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
@@ -54,15 +54,15 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar = UISearchBar(frame: CGRectMake(0, 10, 250.0, 44.0))
-        
-        tableDataSource = GMSAutocompleteTableDataSource()
-        tableDataSource?.delegate = self
+        self.view.addSubview(textField)
+       // tableDataSource = GMSAutocompleteTableDataSource()
+        //tableDataSource?.delegate = self
         
         srchDisplayController = UISearchDisplayController(searchBar: searchBar!, contentsController: self)
         srchDisplayController?.searchResultsDataSource = tableDataSource
         srchDisplayController?.searchResultsDelegate = tableDataSource
-        segmentedControl.tintColor = UIColor.whiteColor()
-        segmentedControl.backgroundColor = UIColor.darkGrayColor()
+        //segmentedControl.tintColor = UIColor.whiteColor()
+        //segmentedControl.backgroundColor = UIColor.darkGrayColor()
         
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         pickLocNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
@@ -73,14 +73,14 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        tableView.dataSource = self
-        tableView.delegate = self
+        //tableView.dataSource = self
+        //tableView.delegate = self
         if #available(iOS 8.0, *) {
             locationManager.requestWhenInUseAuthorization()
         } else {
             // Fallback on earlier versions
         }
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        //self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"])
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
@@ -100,20 +100,16 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
     }
     @IBAction func exit(sender: AnyObject) {
-        if (self.captionView == 1){
+     
             tableView.hidden = false
             pickLocNav.topItem!.title = "Pick Location"
-            self.captionView = 0
             self.submitButton.removeFromSuperview()
             self.textField.removeFromSuperview()
             
-        }else{
-           self.dismissViewControllerAnimated(false, completion: nil)
-        }
         
     }
     
-    @IBAction func searchPlaces(sender: AnyObject) {
+    func searchPlaces() {
         self.googleMapView = GMSMapView(frame: self.view.frame)
         self.googleMapView.backgroundColor = UIColor.darkGrayColor()
         googleMapView.tintColor = UIColor.darkGrayColor()
@@ -185,16 +181,21 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         print(complete)
         print(saved)
         if (complete == false){
             takeAndSave()
         }else if (complete == true && saved == false){
+            
             dismissViewControllerAnimated(true, completion: nil)
+            
         }else{
             var searchedTypes = ["bar"]
-            fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
-            tableView.reloadData()
+            //fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
+            //tableView.reloadData()
+            
+            searchPlaces()
         }
 
     }
@@ -231,7 +232,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     
-    @IBAction func segmentedControlAction(sender: AnyObject) {
+/*    @IBAction func segmentedControlAction(sender: AnyObject) {
         if (segmentedControl.selectedSegmentIndex == 0){
             var subViewOfSegment: UIView = segmentedControl.subviews[0] as UIView
             subViewOfSegment.tintColor = UIColor.whiteColor()
@@ -270,14 +271,16 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         var searchedTypes = ["establishment"]
         fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
         //tableView.reloadData()
-    }
+    }*/
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : AnyObject]) {
         
         self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        selectedImageView.image = self.selectedImage
+        //selectedImageView.image = self.selectedImage
         dismissViewControllerAnimated(true, completion: nil)
         saved = true
         locationManager.stopUpdatingLocation()
+        
+        
         
         
         
@@ -314,7 +317,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    func retrieveListOfPlaces(var listOfPlaces: [String]){
+   /* func retrieveListOfPlaces(var listOfPlaces: [String]){
 
         self.listOfPlaces = listOfPlaces
         tableView.reloadData()
@@ -401,7 +404,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             
             
         
-    }
+    }*/
 
 
     func saveImageInfo(sender: UIButton!){
@@ -443,28 +446,26 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
 
     func loadCaptionView(){
-        self.captionView = 1
+        self.view.hidden = false
         pickLocNav.topItem!.title = "Add Caption"
-        tableView.hidden = true
-        textField = UITextField(frame: CGRect(x: selectedImageView.frame.origin.x, y: self.view.frame.height, width: selectedImageView.frame.width, height: selectedImageView.frame.height - 50))
-        textField.delegate = self
+        //tableView.hidden = true
+        //textField = UITextField(frame: CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height * 0.5))
         textField.becomeFirstResponder()
-        textField.placeholder = "What's happening here?"
         textField.textColor = UIColor.blackColor()
         textField.backgroundColor = UIColor.whiteColor()
-        textField.borderStyle = UITextBorderStyle.None
         textField.autocorrectionType = UITextAutocorrectionType.Default
         textField.keyboardType = UIKeyboardType.Default
-        textField.font = UIFont (name: "HelveticaNeue", size: 24)
-        textField.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
-        UITextField.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-                self.view.addSubview(self.textField)
+        textField.font = UIFont (name: "HelveticaNeue", size: 20)
+        /*UITextField.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            
                 self.textField.frame.origin.y =  (self.textField.frame.origin.y - self.view.frame.height - 5) + self.pickLocNav.frame.height
-            }, completion: nil)
+            }, completion: nil)*/
         
-        submitButton = UIButton(frame: CGRect(x: 10, y: self.view.frame.height * 0.45,width: self.view.frame.width - 20, height: 40 ))
+        
+        submitButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.50, y: self.view.frame.height * 0.50,width: self.view.frame.width * 0.5 - 10, height: 40 ))
         submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
-        submitButton.setTitle("Submit", forState: .Normal)
+        submitButton.setTitle("Post", forState: .Normal)
+        submitButton.layer.cornerRadius = 5
         submitButton.enabled = true
         submitButton.layer.opacity = 1.0
         submitButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)

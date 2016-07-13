@@ -52,6 +52,7 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         commentField.keyboardType = UIKeyboardType.Default
         commentField.font = UIFont (name: "HelveticaNeue", size: 20)
         postCommentButton.backgroundColor = UIColor.yellowColor()
+        postCommentButton.layer.cornerRadius = 5
         
 
         

@@ -247,9 +247,6 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Background_Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="cbu-tA-fIB">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="592"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hrw-0b-NGW">
-                                <rect key="frame" x="0.0" y="59" width="320" height="307"/>
-                            </imageView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YSW-tI-50P">
                                 <rect key="frame" x="0.0" y="-5" width="320" height="64"/>
                                 <color key="backgroundColor" red="0.8862745098" green="0.76078431369999999" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -264,66 +261,33 @@
                                                 <action selector="exit:" destination="SQT-NH-12I" id="FuJ-u3-KnV"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="RFC-hC-iwb">
-                                            <connections>
-                                                <action selector="searchPlaces:" destination="SQT-NH-12I" id="iJa-KJ-Ud5"/>
-                                            </connections>
-                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Oeb-5V-URR">
-                                <rect key="frame" x="101" y="374" width="149" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="kca-WD-1ZP"/>
-                                    <constraint firstAttribute="width" constant="149" id="pMk-kj-M8A"/>
-                                </constraints>
-                                <segments>
-                                    <segment title="" image="Bars"/>
-                                    <segment title="" image="Restaurants"/>
-                                    <segment title="" image="Landmarks"/>
-                                </segments>
-                                <connections>
-                                    <action selector="segmentedControlAction:" destination="SQT-NH-12I" eventType="valueChanged" id="F6O-sf-HKi"/>
-                                </connections>
-                            </segmentedControl>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Nlv-Zp-cAm">
-                                <rect key="frame" x="0.0" y="410" width="350" height="164"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="What's going on here? " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="j5F-Nu-gKX">
+                                <rect key="frame" x="0.0" y="59" width="320" height="306"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="158" id="CCA-gT-yp9"/>
-                                    <constraint firstAttribute="width" constant="350" id="Lg3-hs-ecl"/>
-                                </constraints>
-                                <color key="sectionIndexBackgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" red="0.26069286616161613" green="0.26069286616161613" blue="0.26069286616161613" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Oeb-5V-URR" firstAttribute="top" secondItem="hrw-0b-NGW" secondAttribute="bottom" constant="8" symbolic="YES" id="1NF-XV-UNY"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="leading" secondItem="BRW-SO-Y4q" secondAttribute="leading" id="5dL-tc-K9c"/>
-                            <constraint firstItem="hrw-0b-NGW" firstAttribute="leading" secondItem="Nlv-Zp-cAm" secondAttribute="leading" id="5ne-zE-uJh"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="top" secondItem="BRW-SO-Y4q" secondAttribute="topMargin" constant="-5" id="Eqi-9v-15W"/>
-                            <constraint firstItem="hrw-0b-NGW" firstAttribute="top" secondItem="YSW-tI-50P" secondAttribute="bottom" id="OV8-mc-OTJ"/>
                             <constraint firstItem="cbu-tA-fIB" firstAttribute="centerX" secondItem="BRW-SO-Y4q" secondAttribute="centerX" id="OeY-mL-bDQ"/>
                             <constraint firstItem="AhC-0y-UuD" firstAttribute="top" secondItem="cbu-tA-fIB" secondAttribute="bottom" constant="8" symbolic="YES" id="QwY-2q-rTx"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="trailing" secondItem="cbu-tA-fIB" secondAttribute="trailing" id="X0q-2E-AtB"/>
                             <constraint firstItem="YSW-tI-50P" firstAttribute="leading" secondItem="cbu-tA-fIB" secondAttribute="leading" id="Xn0-F2-Stt"/>
-                            <constraint firstItem="hrw-0b-NGW" firstAttribute="trailing" secondItem="YSW-tI-50P" secondAttribute="trailing" id="dXD-Ep-onG"/>
-                            <constraint firstItem="hrw-0b-NGW" firstAttribute="leading" secondItem="YSW-tI-50P" secondAttribute="leading" id="jaG-dM-0mc"/>
                             <constraint firstItem="cbu-tA-fIB" firstAttribute="centerY" secondItem="BRW-SO-Y4q" secondAttribute="centerY" id="jbL-4T-Kyg"/>
-                            <constraint firstItem="Oeb-5V-URR" firstAttribute="centerX" secondItem="Nlv-Zp-cAm" secondAttribute="centerX" id="kDW-7C-KIC"/>
-                            <constraint firstItem="Nlv-Zp-cAm" firstAttribute="bottom" secondItem="AhC-0y-UuD" secondAttribute="top" id="oVD-yu-6Gv"/>
-                            <constraint firstItem="Nlv-Zp-cAm" firstAttribute="top" secondItem="Oeb-5V-URR" secondAttribute="bottom" constant="8" symbolic="YES" id="xVB-4h-FWP"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
                         <outlet property="pickLocNav" destination="YSW-tI-50P" id="zpA-2O-e1A"/>
-                        <outlet property="segmentedControl" destination="Oeb-5V-URR" id="tTO-9B-Ozq"/>
-                        <outlet property="selectedImageView" destination="hrw-0b-NGW" id="Q8x-Sb-wNa"/>
                         <outlet property="stopButton" destination="YSW-tI-50P" id="F8v-Ww-zC7"/>
-                        <outlet property="tableView" destination="Nlv-Zp-cAm" id="TOL-ly-cug"/>
+                        <outlet property="textField" destination="j5F-Nu-gKX" id="bzP-sb-dhi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vTl-xe-zqT" sceneMemberID="firstResponder"/>
@@ -342,6 +306,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loadingImage" translatesAutoresizingMaskIntoConstraints="NO" id="R4c-yZ-GSy">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Choose a User Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qgy-JJ-TGa">
                                 <rect key="frame" x="60" y="120" width="200" height="30"/>
                                 <constraints>
@@ -351,13 +318,15 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KWU-YT-DAH">
-                                <rect key="frame" x="135" y="158" width="50" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KWU-YT-DAH">
+                                <rect key="frame" x="117" y="158" width="89" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="LGl-oO-Fgd"/>
                                     <constraint firstAttribute="width" constant="50" id="tLo-wK-QUw"/>
                                 </constraints>
-                                <state key="normal" title="Submit"/>
+                                <state key="normal" title="Submit">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="submitAction:" destination="o6U-yY-ghQ" eventType="touchUpInside" id="pr0-T6-Jff"/>
                                 </connections>
@@ -767,18 +736,16 @@
     </scenes>
     <resources>
         <image name="Background_Gradient" width="748" height="1333"/>
-        <image name="Bars" width="128" height="128"/>
         <image name="Cam" width="27" height="22"/>
         <image name="Downvote_Gold" width="51" height="28"/>
         <image name="Home" width="26" height="22"/>
         <image name="Image" width="101" height="106"/>
-        <image name="Landmarks" width="128" height="128"/>
         <image name="Notifications " width="30" height="29"/>
         <image name="Places " width="30" height="30"/>
         <image name="ProfilePerson" width="25" height="25"/>
-        <image name="Restaurants" width="64" height="64"/>
         <image name="Upvote_Gold" width="51" height="28"/>
         <image name="back.png" width="12" height="12"/>
         <image name="checkin" width="42" height="42"/>
+        <image name="loadingImage" width="640" height="799"/>
     </resources>
 </document>
