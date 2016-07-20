@@ -32,7 +32,7 @@ var imgHeight = 160
 
 
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, CLLocationManagerDelegate, UITabBarDelegate{
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, CLLocationManagerDelegate{
     
     @IBOutlet weak var scroller: UIScrollView!
 
@@ -66,7 +66,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.displayPlacesAlbum = false
             self.collectionView?.reloadData()
         }else if (item.tag == 2){
-            getPlacesView()
             
         }else if (item.tag == 3){
             capVideo()
@@ -77,16 +76,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    @IBOutlet weak var toggleSortButton: UIBarButtonItem!
     
+    @IBOutlet weak var sortBtn: UIButton!
     @IBAction func toggleSort(sender: AnyObject) {
         if (self.hotToggle == 0){
-            toggleSortButton.title = "Popular"
+            sortBtn.setTitle("Popular", forState: UIControlState.Normal)
             getHotImages()
             
             
         }else{
-            toggleSortButton.title = "Recent"
+            sortBtn.setTitle("Recent", forState: UIControlState.Normal)
             getRecentImages()
             
             
@@ -107,12 +106,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         collectionView?.reloadData()
     }
+    @IBOutlet weak var imagesTypeBtn: UIButton!
 
-    
-    func getPlacesView() {
-        self.placesToggle = true
+    @IBAction func getPlacesView(sender: AnyObject) {
+        if (!self.placesToggle){
+            self.placesToggle = true
+            imagesTypeBtn.setTitle("Places", forState: UIControlState.Normal)
+        }else{
+            imagesTypeBtn.setTitle("People", forState: UIControlState.Normal)
+            self.placesToggle = false
+        }
         self.collectionView?.reloadData()
     }
+    
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -126,22 +133,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.accessToken = String(FBSDKAccessToken.currentAccessToken())
         }
     }
-    @IBOutlet weak var bottomTabBar: UITabBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         profileMenu.hidden = true
-        
-        //bottomTabBar.barTintColor = UIColor(red: 0.70, green: 0.7, blue: 0.00, alpha: 1.0)
-        bottomTabBar.tintColor = UIColor.blackColor()
-        bottomTabBar.selectedItem = bottomTabBar.items![0] as UITabBarItem
+
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionView?.dataSource = self
         collectionView!.delegate = self
-        bottomTabBar.delegate = self
         collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         let nibname = UINib(nibName: "Cell", bundle: nil)
         collectionView!.registerNib(nibname, forCellWithReuseIdentifier: "Cell")

@@ -442,6 +442,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             }
             print("saved successfully", terminator: "")
             dismissViewControllerAnimated(true, completion: nil)
+            tabBarController?.selectedIndex = 0
         }
     }
 
