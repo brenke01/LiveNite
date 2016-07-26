@@ -7,19 +7,26 @@
 //
 
 import Foundation
+import AWSDynamoDB
 
-class User {
+class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var userID : Int = 0
-    var accessToken : String = "";
-    var age : Int = 0
-    var email : String = ""
-    var gender : String = ""
-    var firstName : String = ""
-    var currentLongitude : Double = 0.0
-    var currentLatitude : Double = 0.0
+    var userID: Int
+    var userName: String
+    var gender: String
+    var age: Int
+    var email: String
+    var score: Int
+    var accessToken: String
     
+    class func dynamoDBTableName() -> String{
+        return "Users"
+    }
     
+    class func primaryKeyAttribute() -> String{
+        return "userID"
+    }
     
-    
+
 }
+

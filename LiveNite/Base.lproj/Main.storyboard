@@ -524,7 +524,7 @@
                                         <state key="normal" title="Search"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xic-R6-yKC">
-                                        <rect key="frame" x="20" y="26" width="71" height="30"/>
+                                        <rect key="frame" x="20" y="26" width="85" height="30"/>
                                         <state key="normal" title="Recent">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -853,6 +853,6 @@
         <image name="loadingImage" width="640" height="799"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lgQ-mK-qrS"/>
+        <segue reference="lOC-7T-djj"/>
     </inferredMetricsTieBreakers>
 </document>

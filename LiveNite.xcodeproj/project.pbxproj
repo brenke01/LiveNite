@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0813DA1D0BA6DE00CE0C70 /* User.swift */; };
 		0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C705C1D1A268600795D20 /* PostCommentController.swift */; };
+		0A6014B91D458CC300AE5AF6 /* AWSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6014B81D458CC300AE5AF6 /* AWSService.swift */; };
 		0A659ECC1D10CE5A0000E66D /* CommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A659ECB1D10CE5A0000E66D /* CommentController.swift */; };
 		0AA2AB5C1C86878A00488A56 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA2AB5B1C86878A00488A56 /* ProfileController.swift */; };
 		0AC989DC1C39C7F0008439B5 /* PickLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		0A0813DA1D0BA6DE00CE0C70 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0A4C705C1D1A268600795D20 /* PostCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentController.swift; sourceTree = "<group>"; };
+		0A6014B81D458CC300AE5AF6 /* AWSService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSService.swift; sourceTree = "<group>"; };
 		0A659ECB1D10CE5A0000E66D /* CommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentController.swift; sourceTree = "<group>"; };
 		0AA2AB5B1C86878A00488A56 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickLocationController.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				6B69EDA41C34CCCA000785EF /* LiveNite-Bridging-Header.h */,
 				15DDCC1D1B5F381F00E87EA1 /* AppDelegate.swift */,
 				6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */,
+				0A6014B81D458CC300AE5AF6 /* AWSService.swift */,
 				6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */,
 				15DDCC221B5F381F00E87EA1 /* ViewController.swift */,
 				6B69ED911C321FF8000785EF /* viewPostController.swift */,
@@ -360,6 +363,7 @@
 				0AD58B4F1C9264C70037F0F8 /* LiveNite in Sources */,
 				6B69ED9D1C34C1F2000785EF /* GooglePlace.swift in Sources */,
 				15DDCC231B5F381F00E87EA1 /* ViewController.swift in Sources */,
+				0A6014B91D458CC300AE5AF6 /* AWSService.swift in Sources */,
 				0AA2AB5C1C86878A00488A56 /* ProfileController.swift in Sources */,
 				15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */,
 				0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */,

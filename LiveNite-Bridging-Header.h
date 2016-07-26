@@ -12,5 +12,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <AWSDynamoDB/AWSDynamoDB.h>
+#import <AWSCognito/AWSCognito.h>
 
 #endif /* LiveNite_Bridging_Header_h */
