@@ -132,20 +132,11 @@
 			children = (
 				6B69EDA41C34CCCA000785EF /* LiveNite-Bridging-Header.h */,
 				15DDCC1D1B5F381F00E87EA1 /* AppDelegate.swift */,
-				6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */,
-				0A6014B81D458CC300AE5AF6 /* AWSService.swift */,
-				6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */,
-				15DDCC221B5F381F00E87EA1 /* ViewController.swift */,
-				6B69ED911C321FF8000785EF /* viewPostController.swift */,
-				0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */,
+				6B7122DF1D49236600EB0A30 /* View_Controller_Classes */,
+				6B7122E01D49239400EB0A30 /* Google_Classes */,
+				6B7122DC1D49231600EB0A30 /* AWS_Classes */,
 				0A0813DA1D0BA6DE00CE0C70 /* User.swift */,
-				0A659ECB1D10CE5A0000E66D /* CommentController.swift */,
-				6BB362831D31849A00096F5E /* PlacesViewController.swift */,
-				0A4C705C1D1A268600795D20 /* PostCommentController.swift */,
 				0AD58B4E1C9264C70037F0F8 /* LiveNite */,
-				6B8C50C71C46EB5900BE715C /* FBLoginController.swift */,
-				6BA16BF41C6AE4F700707D2D /* ChooseUserNameController.swift */,
-				0AA2AB5B1C86878A00488A56 /* ProfileController.swift */,
 				15DDCC241B5F381F00E87EA1 /* Main.storyboard */,
 				15DDCC271B5F381F00E87EA1 /* Images.xcassets */,
 				15DDCC291B5F381F00E87EA1 /* LaunchScreen.xib */,
@@ -187,6 +178,39 @@
 				B789183D9DBCFC867AD712D9 /* Pods-LiveNite.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		6B7122DC1D49231600EB0A30 /* AWS_Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0A6014B81D458CC300AE5AF6 /* AWSService.swift */,
+			);
+			name = AWS_Classes;
+			sourceTree = "<group>";
+		};
+		6B7122DF1D49236600EB0A30 /* View_Controller_Classes */ = {
+			isa = PBXGroup;
+			children = (
+				6BA16BF41C6AE4F700707D2D /* ChooseUserNameController.swift */,
+				0A659ECB1D10CE5A0000E66D /* CommentController.swift */,
+				6B8C50C71C46EB5900BE715C /* FBLoginController.swift */,
+				0AC989DB1C39C7F0008439B5 /* PickLocationController.swift */,
+				6BB362831D31849A00096F5E /* PlacesViewController.swift */,
+				0A4C705C1D1A268600795D20 /* PostCommentController.swift */,
+				0AA2AB5B1C86878A00488A56 /* ProfileController.swift */,
+				15DDCC221B5F381F00E87EA1 /* ViewController.swift */,
+				6B69ED911C321FF8000785EF /* viewPostController.swift */,
+			);
+			name = View_Controller_Classes;
+			sourceTree = "<group>";
+		};
+		6B7122E01D49239400EB0A30 /* Google_Classes */ = {
+			isa = PBXGroup;
+			children = (
+				6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */,
+				6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */,
+			);
+			name = Google_Classes;
 			sourceTree = "<group>";
 		};
 		A95959DC0F62E5D6B726E554 /* Frameworks */ = {
