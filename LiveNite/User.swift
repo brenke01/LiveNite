@@ -26,7 +26,6 @@ class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     class func primaryKeyAttribute() -> String{
         return "userID"
     }
-    
-
 }
 
+    

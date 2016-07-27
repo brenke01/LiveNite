@@ -28,6 +28,11 @@
 		6B69ED981C34BA6C000785EF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6B69ED971C34BA6C000785EF /* Podfile */; };
 		6B69ED9A1C34BF0E000785EF /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */; };
 		6B69ED9D1C34C1F2000785EF /* GooglePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */; };
+		6B7122F01D49275400EB0A30 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7122EF1D49275400EB0A30 /* Image.swift */; };
+		6B7122F21D49275E00EB0A30 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7122F11D49275E00EB0A30 /* Comment.swift */; };
+		6B7122F41D49276700EB0A30 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7122F31D49276700EB0A30 /* Event.swift */; };
+		6B7122F61D49277100EB0A30 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7122F51D49277100EB0A30 /* Vote.swift */; };
+		6B7122F81D49279300EB0A30 /* CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7122F71D49279300EB0A30 /* CheckIn.swift */; };
 		6B8C50C81C46EB5900BE715C /* FBLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C50C71C46EB5900BE715C /* FBLoginController.swift */; };
 		6BA16BF51C6AE4F700707D2D /* ChooseUserNameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA16BF41C6AE4F700707D2D /* ChooseUserNameController.swift */; };
 		6BB362841D31849A00096F5E /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB362831D31849A00096F5E /* PlacesViewController.swift */; };
@@ -74,6 +79,11 @@
 		6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
 		6B69ED9C1C34C1F2000785EF /* GooglePlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlace.swift; sourceTree = "<group>"; };
 		6B69EDA41C34CCCA000785EF /* LiveNite-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "LiveNite-Bridging-Header.h"; path = "../LiveNite-Bridging-Header.h"; sourceTree = "<group>"; };
+		6B7122EF1D49275400EB0A30 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		6B7122F11D49275E00EB0A30 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		6B7122F31D49276700EB0A30 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		6B7122F51D49277100EB0A30 /* Vote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
+		6B7122F71D49279300EB0A30 /* CheckIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckIn.swift; sourceTree = "<group>"; };
 		6B8C50C71C46EB5900BE715C /* FBLoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBLoginController.swift; sourceTree = "<group>"; };
 		6BA16BF41C6AE4F700707D2D /* ChooseUserNameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseUserNameController.swift; sourceTree = "<group>"; };
 		6BB362831D31849A00096F5E /* PlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesViewController.swift; sourceTree = "<group>"; };
@@ -135,7 +145,6 @@
 				6B7122DF1D49236600EB0A30 /* View_Controller_Classes */,
 				6B7122E01D49239400EB0A30 /* Google_Classes */,
 				6B7122DC1D49231600EB0A30 /* AWS_Classes */,
-				0A0813DA1D0BA6DE00CE0C70 /* User.swift */,
 				0AD58B4E1C9264C70037F0F8 /* LiveNite */,
 				15DDCC241B5F381F00E87EA1 /* Main.storyboard */,
 				15DDCC271B5F381F00E87EA1 /* Images.xcassets */,
@@ -184,6 +193,12 @@
 			isa = PBXGroup;
 			children = (
 				0A6014B81D458CC300AE5AF6 /* AWSService.swift */,
+				6B7122F71D49279300EB0A30 /* CheckIn.swift */,
+				6B7122F11D49275E00EB0A30 /* Comment.swift */,
+				6B7122F31D49276700EB0A30 /* Event.swift */,
+				6B7122EF1D49275400EB0A30 /* Image.swift */,
+				0A0813DA1D0BA6DE00CE0C70 /* User.swift */,
+				6B7122F51D49277100EB0A30 /* Vote.swift */,
 			);
 			name = AWS_Classes;
 			sourceTree = "<group>";
@@ -386,15 +401,20 @@
 				0A659ECC1D10CE5A0000E66D /* CommentController.swift in Sources */,
 				0AD58B4F1C9264C70037F0F8 /* LiveNite in Sources */,
 				6B69ED9D1C34C1F2000785EF /* GooglePlace.swift in Sources */,
+				6B7122F41D49276700EB0A30 /* Event.swift in Sources */,
+				6B7122F61D49277100EB0A30 /* Vote.swift in Sources */,
 				15DDCC231B5F381F00E87EA1 /* ViewController.swift in Sources */,
+				6B7122F21D49275E00EB0A30 /* Comment.swift in Sources */,
 				0A6014B91D458CC300AE5AF6 /* AWSService.swift in Sources */,
 				0AA2AB5C1C86878A00488A56 /* ProfileController.swift in Sources */,
 				15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */,
 				0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */,
+				6B7122F01D49275400EB0A30 /* Image.swift in Sources */,
 				0AC989DC1C39C7F0008439B5 /* PickLocationController.swift in Sources */,
 				0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */,
 				6BB362841D31849A00096F5E /* PlacesViewController.swift in Sources */,
 				15DDCC211B5F381F00E87EA1 /* LiveNite.xcdatamodeld in Sources */,
+				6B7122F81D49279300EB0A30 /* CheckIn.swift in Sources */,
 				6B8C50C81C46EB5900BE715C /* FBLoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
