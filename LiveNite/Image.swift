@@ -12,19 +12,19 @@ import AWSDynamoDB
 class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     
-    var timePosted : String
-    var picTakenLat : Double
-    var picTakenLong : Double
-    var placeLat : Double
-    var placeLong : Double
-    var hotColdScore : Double
-    var imageID : Int
-    var totalScore : Int
-    var url : String
-    var placeTitle : String
-    var caption : String
-    var owner : String
-    var eventID : Int
+    var timePosted : String = ""
+    var picTakenLat : Double = 0
+    var picTakenLong : Double = 0
+    var placeLat : Double = 0
+    var placeLong : Double = 0
+    var hotColdScore : Double = 0
+    var imageID : Int = 0
+    var totalScore : Int = 0
+    var url : String = ""
+    var placeTitle : String = ""
+    var caption : String = ""
+    var owner : String = ""
+    var eventID : Int = 0
     
     class func dynamoDBTableName() -> String{
         return "Images"
@@ -32,5 +32,9 @@ class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     class func primaryKeyAttribute() -> String{
         return "imageID"
+    }
+    
+    class func hashKeyAttribute() -> String {
+        return ""
     }
 }

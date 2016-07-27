@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
             endingLineNumber = "83"
-            landmarkName = "viewDidLoad()"
+            landmarkName = "toggleSort(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "85"
             endingLineNumber = "85"
-            landmarkName = "viewDidLoad()"
+            landmarkName = "toggleSort(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
             endingLineNumber = "89"
-            landmarkName = "viewDidLoad()"
+            landmarkName = "toggleSort(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -139,7 +139,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "207"
             endingLineNumber = "207"
-            landmarkName = "profileView(_:)"
+            landmarkName = "profileView()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -155,7 +155,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "209"
             endingLineNumber = "209"
-            landmarkName = "profileView(_:)"
+            landmarkName = "profileView()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

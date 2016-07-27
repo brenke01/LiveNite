@@ -11,13 +11,13 @@ import AWSDynamoDB
 
 class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var userID: Int
-    var userName: String
-    var gender: String
-    var age: Int
-    var email: String
-    var score: Int
-    var accessToken: String
+    var userID: Int = 0
+    var userName: String = ""
+    var gender: String = ""
+    var age: Int = 0
+    var email: String = ""
+    var score: Int = 0
+    var accessToken: String = ""
     
     class func dynamoDBTableName() -> String{
         return "Users"
@@ -25,6 +25,10 @@ class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     class func primaryKeyAttribute() -> String{
         return "userID"
+    }
+    
+    class func hashKeyAttribute() -> String {
+        return ""
     }
 }
 

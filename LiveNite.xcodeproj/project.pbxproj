@@ -33,11 +33,11 @@
 		6B7122F41D49276700EB0A30 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7122F31D49276700EB0A30 /* Event.swift */; };
 		6B7122F61D49277100EB0A30 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7122F51D49277100EB0A30 /* Vote.swift */; };
 		6B7122F81D49279300EB0A30 /* CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7122F71D49279300EB0A30 /* CheckIn.swift */; };
+		6B7122F91D49347B00EB0A30 /* Pods_LiveNite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123281B56E58B4466C9C0A17 /* Pods_LiveNite.framework */; };
 		6B8C50C81C46EB5900BE715C /* FBLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C50C71C46EB5900BE715C /* FBLoginController.swift */; };
 		6BA16BF51C6AE4F700707D2D /* ChooseUserNameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA16BF41C6AE4F700707D2D /* ChooseUserNameController.swift */; };
 		6BB362841D31849A00096F5E /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB362831D31849A00096F5E /* PlacesViewController.swift */; };
 		6BDCEDA31C210E68004C3029 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BDCEDA21C210E68004C3029 /* CoreLocation.framework */; };
-		922144C7961F1A7BE1D9E51C /* Pods_LiveNite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123281B56E58B4466C9C0A17 /* Pods_LiveNite.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,11 +97,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B7122F91D49347B00EB0A30 /* Pods_LiveNite.framework in Frameworks */,
 				0AD608C01C45EABE007D3A3B /* Bolts.framework in Frameworks */,
 				6BDCEDA31C210E68004C3029 /* CoreLocation.framework in Frameworks */,
 				0ADCDEA11C44978400E05257 /* FBSDKCoreKit.framework in Frameworks */,
 				0AD608BE1C45EAAA007D3A3B /* FBSDKLoginKit.framework in Frameworks */,
-				922144C7961F1A7BE1D9E51C /* Pods_LiveNite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +253,7 @@
 				15DDCC161B5F381F00E87EA1 /* Resources */,
 				9A41D4999147405C0C99BB02 /* 📦 Embed Pods Frameworks */,
 				0AE1982CB90F3BA894DC99AD /* 📦 Copy Pods Resources */,
+				91CDC52A026287C2092DB620 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -294,7 +295,7 @@
 				TargetAttributes = {
 					15DDCC171B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = E9E49AR885;
+						DevelopmentTeam = 4P5R952TU2;
 					};
 					15DDCC2F1B5F381F00E87EA1 = {
 						CreatedOnToolsVersion = 6.4;
@@ -371,6 +372,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		91CDC52A026287C2092DB620 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveNite/Pods-LiveNite-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9A41D4999147405C0C99BB02 /* 📦 Embed Pods Frameworks */ = {
@@ -553,7 +569,7 @@
 					"$(PROJECT_DIR)/FacebookSDKs-iOS-20151111",
 				);
 				INFOPLIST_FILE = LiveNite/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				New_Setting = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
@@ -579,7 +595,7 @@
 					"$(PROJECT_DIR)/FacebookSDKs-iOS-20151111",
 				);
 				INFOPLIST_FILE = LiveNite/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				New_Setting = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
@@ -592,6 +608,7 @@
 		};
 		15DDCC3E1B5F381F00E87EA1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35E834297598A19165C16B1B /* Pods-LiveNite.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -612,6 +629,7 @@
 		};
 		15DDCC3F1B5F381F00E87EA1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B789183D9DBCFC867AD712D9 /* Pods-LiveNite.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

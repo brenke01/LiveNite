@@ -18,4 +18,8 @@ class Comment :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     class func primaryKeyAttribute() -> String{
         return ""
     }
+    
+    class func hashKeyAttribute() -> String {
+        return ""
+    }
 }
