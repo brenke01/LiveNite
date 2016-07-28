@@ -11,12 +11,25 @@ import AWSDynamoDB
 
 class Event :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
+    var eventLat: Double = 0
+    var eventLong: Double = 0
+    var publicStatus: Bool = false
+    var eventStartTime: String = ""
+    var eventEndTime: String = ""
+    var placeTitle: String = ""
+    var eventTitle: String = ""
+    var information: String = ""
+    var hotColdScore: Double = 0
+    var eventID: Int = 0
+    var url: String = ""
+    var timePosted: String = ""
+    
     class func dynamoDBTableName() -> String{
         return "Events"
     }
     
     class func primaryKeyAttribute() -> String{
-        return ""
+        return "eventID"
     }
     
     class func hashKeyAttribute() -> String {

@@ -11,15 +11,22 @@ import AWSDynamoDB
 
 class Vote :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
+    var imageID: Int = 0
+    var timeVoted: String = ""
+    var voteValue: Int = 0
+    var owner: String = ""
+    var voteID: Int = 0
+    
     class func dynamoDBTableName() -> String{
         return "Votes"
     }
     
     class func primaryKeyAttribute() -> String{
-        return ""
+        return "voteID"
     }
     
     class func hashKeyAttribute() -> String {
         return ""
     }
+    
 }

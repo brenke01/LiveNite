@@ -11,7 +11,6 @@ import AWSDynamoDB
 
 class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    
     var timePosted : String = ""
     var picTakenLat : Double = 0
     var picTakenLong : Double = 0
