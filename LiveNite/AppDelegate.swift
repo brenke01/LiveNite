@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             region: DefaultServiceRegionType,
             credentialsProvider: credentialsProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
-        GMSServices.provideAPIKey("AIzaSyCUAW-G5i2J_ihVVdbFejcO0cvkt0c2abo")
+        GMSServices.provideAPIKey("AIzaSyDvnIUWZMv_89O3BVnt8gJyYAasigs3hDQ")
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
