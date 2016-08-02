@@ -16,6 +16,7 @@ import GoogleMaps
 
 
 
+
 var appDel = (UIApplication.sharedApplication().delegate as! AppDelegate)
 var context:NSManagedObjectContext = appDel.managedObjectContext!
 var upVoteInc : CGFloat = 5

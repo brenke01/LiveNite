@@ -19,9 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var locationManager = CLLocationManager()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        let CognitoRegionType = AWSRegionType.Unknown  // e.g. AWSRegionType.USEast1
-        let DefaultServiceRegionType = AWSRegionType.Unknown // e.g. AWSRegionType.USEast1
-        let CognitoIdentityPoolId = "YourCognitoIdentityPoolId"
+        let CognitoRegionType = AWSRegionType.USEast1  // e.g. AWSRegionType.USEast1
+        let DefaultServiceRegionType = AWSRegionType.USEast1 // e.g. AWSRegionType.USEast1
+        let CognitoIdentityPoolId = "us-east-1_ckAXnJWGd"
         // Override point for customization after application launch.
         let credentialsProvider = AWSCognitoCredentialsProvider(
             regionType: CognitoRegionType,
@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             region: DefaultServiceRegionType,
             credentialsProvider: credentialsProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
-        GMSServices.provideAPIKey("koLEWpLbEn7MZrJuVCNwH42dUXcUcvL54Cb8zyGm")
+        GMSServices.provideAPIKey("AIzaSyCUAW-G5i2J_ihVVdbFejcO0cvkt0c2abo")
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 

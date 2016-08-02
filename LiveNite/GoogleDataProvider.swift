@@ -42,7 +42,7 @@ class GoogleDataProvider {
         var urlString = "https://maps.googleapis.com/maps/api/place/textsearch/json?type=\(typesString)&location=\(coordinate.latitude),\(coordinate.longitude)&radius=\(radius)&rankby=prominence&sensor=true"
 
         
-        urlString += "&key=AIzaSyDvnIUWZMv_89O3BVnt8gJyYAasigs3hDQ"
+        urlString += "&key=AIzaSyCUAW-G5i2J_ihVVdbFejcO0cvkt0c2abo"
         urlString = urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         
         if let task = placesTask where task.taskIdentifier > 0 && task.state == .Running {

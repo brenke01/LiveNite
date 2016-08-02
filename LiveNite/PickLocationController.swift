@@ -440,6 +440,12 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 try context.save()
             } catch _ {
             }
+            var myImage : Image = Image()
+            myImage.imageID = setId
+            myImage.placeTitle = setImageTitle
+            AWSService().saveImage(myImage)
+            
+            
             print("saved successfully", terminator: "")
             dismissViewControllerAnimated(true, completion: nil)
             tabBarController?.selectedIndex = 0
