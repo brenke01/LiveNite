@@ -26,7 +26,7 @@ class Vote :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
     
     class func hashKeyAttribute() -> String {
-        return ""
+        return "voteID"
     }
     
 }

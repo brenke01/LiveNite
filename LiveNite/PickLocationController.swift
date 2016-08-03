@@ -50,6 +50,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var chosenLatitude :Double = 0.0
     var chosenLongitude: Double = 0.0
     var submitButton = UIButton()
+    var chosenLongFromMap = 0.0
+    var chosenLatFromMap = 0.0
     var mapPickedLocation = false
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,6 +139,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 print("Place address \(place.formattedAddress)")
                 print("Place attributions \(place.attributions)")
                 print(place.coordinate)
+                self.chosenLatFromMap = place.coordinate.latitude
+                self.chosenLongFromMap = place.coordinate.longitude
                 let loc = CLLocation(latitude: self.userLocation.latitude, longitude: self.userLocation.longitude)
                 var placeLoc = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
                 if (loc.distanceFromLocation(placeLoc) > 3000.0){
@@ -440,9 +444,24 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 try context.save()
             } catch _ {
             }
-            var myImage : Image = Image()
+            let myImage : Image = Image()
+            
             myImage.imageID = setId
             myImage.placeTitle = setImageTitle
+            myImage.caption = self.textField.text
+            myImage.eventID = 0
+            myImage.picTakenLat = userLocation.latitude
+            myImage.picTakenLong = userLocation.longitude
+            myImage.owner = "kev"
+            myImage.hotColdScore = 0
+            myImage.placeLat = self.chosenLatFromMap
+            myImage.placeLong = self.chosenLongFromMap
+            myImage.url = "url"
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            myImage.timePosted = formatter.stringFromDate(date)
+            myImage.totalScore = 0
+           
             AWSService().saveImage(myImage)
             
             

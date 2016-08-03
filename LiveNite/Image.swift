@@ -34,6 +34,6 @@ class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
     
     class func hashKeyAttribute() -> String {
-        return ""
+        return "imageID"
     }
 }

@@ -27,6 +27,6 @@ class Comment :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
     
     class func hashKeyAttribute() -> String {
-        return ""
+        return "commentID"
     }
 }

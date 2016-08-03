@@ -28,7 +28,7 @@ class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
     
     class func hashKeyAttribute() -> String {
-        return ""
+        return "userID"
     }
 }
 

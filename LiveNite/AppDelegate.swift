@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let CognitoRegionType = AWSRegionType.USEast1  // e.g. AWSRegionType.USEast1
         let DefaultServiceRegionType = AWSRegionType.USEast1 // e.g. AWSRegionType.USEast1
-        let CognitoIdentityPoolId = "us-east-1_ckAXnJWGd"
+        let CognitoIdentityPoolId = "us-east-1:e1aeaebd-d0b9-4349-aaaa-6b83d10b4cbb"
         // Override point for customization after application launch.
         let credentialsProvider = AWSCognitoCredentialsProvider(
             regionType: CognitoRegionType,

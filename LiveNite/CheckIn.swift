@@ -25,6 +25,6 @@ class CheckIn :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
     
     class func hashKeyAttribute() -> String {
-        return ""
+        return "checkInID"
     }
 }

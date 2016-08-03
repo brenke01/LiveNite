@@ -187,6 +187,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     for user in users{
                         let name : AnyObject? = user.valueForKey("user_name")
                         self.userName = (name as? String)!
+                        let user : User = User()
+                        user.userName = self.userName
+                        
                     }
                 }
             }
@@ -489,7 +492,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if let destinationVC = segue.destinationViewController as? PickLocationController{
                 
                 destinationVC.locations = 1
-                destinationVC.userName = self.userName
+                destinationVC.userName = userName
             }
         }else if segue.identifier == "login"{
             if let destinationVC = segue.destinationViewController as? FBLoginController{

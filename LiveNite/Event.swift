@@ -33,6 +33,6 @@ class Event :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
     
     class func hashKeyAttribute() -> String {
-        return ""
+        return "eventID"
     }
 }
