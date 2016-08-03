@@ -462,7 +462,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             myImage.timePosted = formatter.stringFromDate(date)
             myImage.totalScore = 0
            
-            AWSService().saveImage(myImage)
+            AWSService().save(myImage)
             
             
             print("saved successfully", terminator: "")

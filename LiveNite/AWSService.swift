@@ -10,22 +10,19 @@ import Foundation
 import AWSDynamoDB
 class AWSService {
     
-
-    
-    
-    func saveImage(myImage : Image){
-        var dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-    dynamoDBObjectMapper.save(myImage).continueWithBlock({(task: AWSTask) -> AnyObject in
-    if ((task.error) != nil){
-    print("error")
-    }
-    if ((task.exception) != nil){
-    print("exception")
-    }
-    if ((task.result) != nil){
-    print("save")
-    }
-    return "success"
+    func save(myObject : AnyObject){
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper.save(myObject as! AWSDynamoDBObjectModel).continueWithBlock({(task: AWSTask) -> AnyObject in
+            if ((task.error) != nil){
+                print("error: \(task.error)")
+            }
+            if ((task.exception) != nil){
+                print("exception: \(task.exception)")
+            }
+            if ((task.result) != nil){
+                print("save")
+            }
+            return "success"
         })
     }
   
