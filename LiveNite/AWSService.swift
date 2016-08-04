@@ -25,5 +25,25 @@ class AWSService {
             return "success"
         })
     }
-  
+    
+    //Retrieving 
+    func loadImage(primaryKeyValue: String) -> Image{
+        var image : Image = Image()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper.load(Image.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+            if (task.error != nil){
+                print("error")
+    
+            }
+            if (task.exception != nil){
+                print("exception")
+            }
+            if (task.result != nil){
+                
+                image = task.result as! Image
+            }
+            return image
+        })
+        return image
+    }
 }
