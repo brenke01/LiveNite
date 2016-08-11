@@ -1317,7 +1317,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "57"
             endingLineNumber = "57"
-            landmarkName = "saveImageToBucket(_:id:placeName:)"
+            landmarkName = "loadComment(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1333,8 +1333,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "54"
             endingLineNumber = "54"
-            landmarkName = "saveImageToBucket(_:id:placeName:)"
-            landmarkType = "5">
+            landmarkName = "AWSService"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1381,7 +1381,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
             endingLineNumber = "83"
-            landmarkName = "saveImageToBucket(_:id:placeName:)"
+            landmarkName = "loadEvent(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1397,7 +1397,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "64"
             endingLineNumber = "64"
-            landmarkName = "getImageFromUrl(_:)"
+            landmarkName = "loadComment(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
