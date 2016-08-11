@@ -335,16 +335,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 let titleData: AnyObject? = loc.valueForKey("title")
                 let title = titleData as? String
                 if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
-                    let imageData: AnyObject? = loc.valueForKey("imageData")
-                    let imgData = UIImage(data: (imageData as? NSData)!)
-                    imageArray.append(imgData!)
                     let idData : AnyObject? = loc.valueForKey("id")
                     let imageId = idData as? Int
+                    self.previousLocationName = title!
                     idArray.append(imageId!)
+                    let imageData: AnyObject? = loc.valueForKey("imageData")
+                    var imgData = UIImage(data: (imageData as? NSData)!)
+                    //Retrieving the image file from S3 example
+                    //imgData = AWSService().getImageFromUrl(String(imageId) + "_" + self.previousLocationName)
+                    imageArray.append(imgData!)
+
+
                     let upVoteData : AnyObject? = loc.valueForKey("upvotes")
                     let upVotes = upVoteData as? Int
                     upVoteArray.append(upVotes!)
-                    self.previousLocationName = title!
+                    
                 }
             }
         }

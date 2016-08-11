@@ -444,7 +444,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 try context.save()
             } catch _ {
             }
-            //AWSService().saveImageToBucket(dataImage, id: setId)
+            var imageURL :String = AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle)
             let myImage : Image = Image()
             
             myImage.imageID = setId
