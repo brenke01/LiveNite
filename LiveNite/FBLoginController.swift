@@ -46,20 +46,9 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBAction func submitAction(sender: AnyObject) {
         print("submit")
         print(userID)
-        let fetchRequest = NSFetchRequest(entityName: "Users")
-        fetchRequest.predicate = NSPredicate(format: "id= %@", userID as NSString)
-        let users = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        if let users = users{
-            for user in users{
-                user.setValue(inputUserName.text, forKey: "user_name")
-                do {
-                    try context.save()
-                } catch _ {
-                }
-            }
-        } else {
-            print("User Name storage failed")
-        }
+        var user : User = AWSService().loadUser(userID, newUserName: inputUserName.text!)
+        
+
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -92,61 +81,49 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     func saveUserToCoreData(result : AnyObject){
-        
-        let fetchRequest = NSFetchRequest(entityName: "Users")
+        var newUser : Bool = true
+        var userObj : User = AWSService().loadUser(userID, newUserName: "")
+        if (userObj.userID != ""){
+            newUser = false
+        }
         //The result from the Facebook request is an object that works like a Dictionary 
         //First we grab all of the fields
         userID = result.valueForKey("id") as! String
         let firstName = result.valueForKey("first_name") as! AnyObject?
+        let email = result.valueForKey("email") as! String
         let gender = result.valueForKey("gender") as! AnyObject?
         let ageRange = result.valueForKey("age_range")?.valueForKey("min") as! AnyObject?
         //This is our predicate for the table that will ask for a record that has an id of userID
         
-        fetchRequest.predicate = NSPredicate(format: "id= %i", userID as! NSString)
-        let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        //If the fetch request returns nothing, we know that they are a new user
-        if (user! == []){
-            //This is how you declare your "table"
-            if let newUser = NSEntityDescription.insertNewObjectForEntityForName("Users", inManagedObjectContext:context) as? NSManagedObject{
-                
-                //For each "column" set your values
-                newUser.setValue(userID as! NSString, forKey: "id")
-                newUser.setValue(firstName as! NSString, forKey: "first_name")
-                newUser.setValue(gender as! NSString, forKey: "gender")
-                newUser.setValue(ageRange as! Int, forKey: "age")
-                newUser.setValue(0, forKey: "score")
-                newUser.setValue(String(FBSDKAccessToken.currentAccessToken()), forKey: "access_token")
-                //let them pick a username
-                submitButton.hidden = false
-                inputUserName.hidden = false
-                submitButton.enabled = true
-                submitButton.backgroundColor = UIColor.grayColor()
-                submitButton.layer.cornerRadius = 5
-                
-                
-                do {
-                    try context.save()
-                } catch _ {
-                }
-                
-            }
+
+        
+        if (newUser){
+            var newUserObj : User = User()
+            newUserObj.userID = userID
+            newUserObj.age = ageRange as! Int
+            newUserObj.gender = String(gender)
+            newUserObj.accessToken = String(FBSDKAccessToken.currentAccessToken())
+            newUserObj.score = 0
+            newUserObj.email = email
+            newUserObj.userName = "temp"
+            AWSService().save(newUserObj)
+            submitButton.hidden = false
+            inputUserName.hidden = false
+            submitButton.enabled = true
+            submitButton.backgroundColor = UIColor.grayColor()
+            submitButton.layer.cornerRadius = 5
+
         }else{
-            if let user = user{
-                for u in user{
-                    u.setValue(FBSDKAccessToken.currentAccessToken(), forKey: "access_token")
-                    do {
-                        try context.save()
-                    } catch _ {
-                    }
-                }
-            }
+            userObj.accessToken = FBSDKAccessToken.currentAccessToken() as! String
+            AWSService().save(userObj)
         }
+        
     }
     func returnUserData()
     {
         //The graphRequest is Facebooks Graph API. If you want to grab more parameters, look up the fields
         // on their documentation and add them
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range"])
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range, email"])
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil)

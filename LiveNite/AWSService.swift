@@ -145,12 +145,38 @@ class AWSService {
         return downloadedImage
     }
     
-    func loadUser(primaryKeyValue: String) -> User{
+    func loadUser(primaryKeyValue: String, newUserName : String) -> User{
         var user : User = User()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
+                
+                
+            }
+            if (task.exception != nil){
+                print("exception")
+            }
+            if (task.result != nil){
+                
+                user = task.result as! User
+                if (newUserName != ""){
+                    user.userName = newUserName
+                    AWSService().save(user)
+                }
+            }
+            return user
+        })
+        return user
+    }
+    
+    func loadUserAndSaveUserName(primaryKeyValue: String, newUserName : String) -> User{
+        var user : User = User()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+            if (task.error != nil){
+                print("error")
+                
                 
             }
             if (task.exception != nil){
@@ -164,6 +190,8 @@ class AWSService {
         })
         return user
     }
+    
+    
     
     func loadVote(primaryKeyValue: String) -> Vote{
         var vote : Vote = Vote()

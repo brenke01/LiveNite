@@ -11,7 +11,7 @@ import AWSDynamoDB
 
 class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var userID: Int = 0
+    var userID: String = ""
     var userName: String = ""
     var gender: String = ""
     var age: Int = 0
