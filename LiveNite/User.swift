@@ -18,6 +18,7 @@ class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var email: String = ""
     var score: Int = 0
     var accessToken: String = ""
+    var distanceChosen : Int = 5 
     
     class func dynamoDBTableName() -> String{
         return "Users"

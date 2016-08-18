@@ -16,22 +16,32 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     
     
     @IBAction func postComment(sender: AnyObject) {
-        if let newComment = NSEntityDescription.insertNewObjectForEntityForName("Comments", inManagedObjectContext:context) as? NSManagedObject{
-            let owner = self.userName
-            let id = self.imageID
-            let comment = commentField.text
-            let date = NSDate()
-            newComment.setValue(date, forKey: "time_posted")
-            newComment.setValue(id, forKey: "image_id")
-            newComment.setValue(owner, forKey: "owner")
-            newComment.setValue(comment, forKey: "comment")
-            do {
-                try context.save()
-            } catch _ {
-            }
-            dismissViewControllerAnimated(true, completion: nil)
-            
-        }
+        var comment : Comment = Comment()
+        var uuid = NSUUID().UUIDString()
+        comment.commentID = uuid
+        comment.imageID = self.imageID
+        comment.comment = commentField.text
+        comment.owner = self.userName
+        comment.date = String(NSDate())
+        comment.eventID = 0
+        AWSService().save(comment)
+        dismissViewControllerAnimated(true, completion: nil)
+//        if let newComment = NSEntityDescription.insertNewObjectForEntityForName("Comments", inManagedObjectContext:context) as? NSManagedObject{
+//            let owner = self.userName
+//            let id = self.imageID
+//            let comment = commentField.text
+//            let date = NSDate()
+//            newComment.setValue(date, forKey: "time_posted")
+//            newComment.setValue(id, forKey: "image_id")
+//            newComment.setValue(owner, forKey: "owner")
+//            newComment.setValue(comment, forKey: "comment")
+//            do {
+//                try context.save()
+//            } catch _ {
+//            }
+//            
+//            
+//        }
     }
     
     @IBOutlet weak var postCommentButton: UIButton!

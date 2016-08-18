@@ -15,7 +15,7 @@ class Comment :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var imageID: Int = 0
     var owner: String = ""
     var timePosted: String = ""
-    var commentID: Int = 0
+    var commentID: String = ""
     var eventID: Int = 0
     
     class func dynamoDBTableName() -> String{
