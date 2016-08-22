@@ -180,18 +180,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.userID = id
                 print("User id is")
                 print(self.userID)
-                let fetchRequest = NSFetchRequest(entityName: "Users")
-                fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID as NSString)
-                let users = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-                if let users = users{
-                    for user in users{
-                        let name : AnyObject? = user.valueForKey("user_name")
-                        self.userName = (name as? String)!
-                        let user : User = User()
-                        user.userName = self.userName
-                        
-                    }
-                }
+                
+                let user : User = AWSService().loadUser(self.userID, newUserName: "")
+                self.userName = user.userName
+                
             }
         })
         

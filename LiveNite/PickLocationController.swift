@@ -291,6 +291,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func getImageId()-> Int{
+        
         var currentID = 1
         let fetchRequest = NSFetchRequest(entityName: "CurrentID")
         let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
@@ -412,64 +413,37 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
 
 
     func saveImageInfo(sender: UIButton!){
-        if let newImage = NSEntityDescription.insertNewObjectForEntityForName("Entity", inManagedObjectContext:context) as? NSManagedObject{
-            let tempImage = self.selectedImage
-            let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
-            newImage.setValue(dataImage, forKey: "imageData")
-            let date = NSDate()
-            newImage.setValue(date, forKey: "time")
-            let setImageTitle : String = self.chosenLocation
-            let setUpVotes : Int = 0
-            let setId : Int = getImageId()
-            print(setId, terminator: "")
-            newImage.setValue(setId, forKey: "id")
-            newImage.setValue(setUpVotes, forKey: "upvotes")
-            newImage.setValue(setImageTitle, forKey: "title")
-            newImage.setValue(self.textField.text, forKey: "caption")
-            newImage.setValue(userLocation.latitude, forKey: "picTakenLatitude")
-            newImage.setValue(userLocation.longitude, forKey: "picTakenLongitude")
-            if (self.mapPickedLocation){
-                
-            }
-            if (self.mapPickedLocation){
-                newImage.setValue(self.chosenLatitude, forKey: "titleLatitude")
-                newImage.setValue(self.chosenLongitude, forKey: "titleLongitude")
-            }else{
-                newImage.setValue(locationDictionary[setImageTitle]!.latitude, forKey: "titleLatitude")
-                newImage.setValue(locationDictionary[setImageTitle]!.longitude, forKey: "titleLongitude")
-  
-            }
-            newImage.setValue(userName, forKey: "userOP")
-            do {
-                try context.save()
-            } catch _ {
-            }
-            var imageURL :String = AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle)
-            let myImage : Image = Image()
+        let tempImage = self.selectedImage
+        let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
+        let date = NSDate()
+        let setImageTitle : String = self.chosenLocation
+        let setId : Int = getImageId()
+
+        var imageURL :String = AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle)
+        let myImage : Image = Image()
             
-            myImage.imageID = setId
-            myImage.placeTitle = setImageTitle
-            myImage.caption = self.textField.text
-            myImage.eventID = 0
-            myImage.picTakenLat = userLocation.latitude
-            myImage.picTakenLong = userLocation.longitude
-            myImage.owner = "kev"
-            myImage.hotColdScore = 0
-            myImage.placeLat = self.chosenLatFromMap
-            myImage.placeLong = self.chosenLongFromMap
-            myImage.url = "url"
-            let formatter = NSDateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            myImage.timePosted = formatter.stringFromDate(date)
-            myImage.totalScore = 0
-           
-            AWSService().save(myImage)
-            
-            
-            print("saved successfully", terminator: "")
-            dismissViewControllerAnimated(true, completion: nil)
-            tabBarController?.selectedIndex = 0
-        }
+        myImage.imageID = setId
+        myImage.placeTitle = setImageTitle
+        myImage.caption = self.textField.text
+        myImage.eventID = 0
+        myImage.picTakenLat = userLocation.latitude
+        myImage.picTakenLong = userLocation.longitude
+        myImage.owner = "kev"
+        myImage.hotColdScore = 0
+        myImage.placeLat = self.chosenLatFromMap
+        myImage.placeLong = self.chosenLongFromMap
+        myImage.url = "url"
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        myImage.timePosted = formatter.stringFromDate(date)
+        myImage.totalScore = 0
+        
+        AWSService().save(myImage)
+        
+        
+        print("saved successfully", terminator: "")
+        dismissViewControllerAnimated(true, completion: nil)
+        tabBarController?.selectedIndex = 0
     }
 
     func loadCaptionView(){
