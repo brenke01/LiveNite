@@ -13,7 +13,7 @@ class CheckIn :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var checkInTime: String = ""
     var placeTitle: String = ""
-    var user: String = ""
+    var userID: String = ""
     var checkInID: String = ""
     
     class func dynamoDBTableName() -> String{

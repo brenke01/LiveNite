@@ -15,6 +15,8 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 import JSSAlertView
+import AWSDynamoDB
+import AWSS3
 
 class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate{
 
@@ -22,10 +24,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var locationManager = CLLocationManager()
     var userLocation = CLLocation()
     var locationUpdated = false
-    var userID = 0
+    var userID = ""
     var userNameOP = ""
     var imageTapped = UIImage()
-    var imageID = 0
+    var imageID = ""
     var imageUpvotes = 0
     var imageTitle =  ""
     var caption = ""
@@ -34,96 +36,85 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     @IBAction func checkIn(sender: AnyObject) {
         
-        let imageLocationFetchRequest = NSFetchRequest(entityName: "Entity")
-        imageLocationFetchRequest.predicate = NSPredicate(format: "id = %i", imageID)
-        let imageLocationFetchResults = (try? context.executeFetchRequest(imageLocationFetchRequest)) as! [NSManagedObject]?
-        if let imageLocationFetchResults = imageLocationFetchResults{
-            for result in imageLocationFetchResults{
-                print(result)
-                //get distance between user and place
-                let latitude : AnyObject? = result.valueForKey("titleLatitude")
-                let imageLatitude = latitude as! Double
-                let longitude : AnyObject? = result.valueForKey("titleLongitude")
-                let imageLongitude = longitude as! Double
-                let titleLocation = CLLocation(latitude: imageLatitude, longitude: imageLongitude)
-                let distanceBetweenUserandTitle : CLLocationDistance = titleLocation.distanceFromLocation(userLocation)
-                let maxAllowableDistance : CLLocationDistance = 2500
-                print(distanceBetweenUserandTitle)
+        //create date formatter to allow conversion of dates to string and vice versa throughout function
+        //set current date
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let currentDate = NSDate()
+        
+        //fetch image data for post
+        let imageData : Image = AWSService().loadImage(imageID)
+        
+        //determine distance between user and place and set maxAllowableDistance
+        let imagePlaceLocation = CLLocation(latitude: imageData.placeLat, longitude: imageData.placeLong)
+        let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distanceFromLocation(userLocation)
+        let maxAllowableDistance : CLLocationDistance = 2500
+        
+        //if within range, check if they've checked in recently
+        if distanceBetweenUserAndPlace < maxAllowableDistance {
+
+            //fetch check in
+            let checkInRequest : CheckIn = AWSService().loadCheckIn(self.userID + "_" + imageData.placeTitle)
+            
+            //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
+            if (checkInRequest.userID == ""){
                 
-                //if within range, check if they've checked in recently
-                if distanceBetweenUserandTitle < maxAllowableDistance {
+                //Make new check in in table
+                let checkIn : CheckIn = CheckIn()
+                checkIn.checkInID = self.userID + "_" + imageData.placeTitle
+                checkIn.checkInTime = dateFormatter.stringFromDate(currentDate)
+                checkIn.placeTitle = imageData.placeTitle
+                checkIn.userID = self.userID
+                AWSService().save(checkIn)
+                
+                //Award user points
+                print("userID: \(userID)")
+                let user : User = AWSService().loadUser(self.userID, newUserName: "")
+                user.score += 5
+                AWSService().save(user)
+                print("Score: \(user.score)")
+                JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
+                
+            } else {
+                //if it did set the userID, they've checked in there before so we need to see how long it's been
+                
+                //get last check in date
+                let lastCheckIn : NSDate = dateFormatter.dateFromString(checkInRequest.checkInTime)!
+                
+                //get the difference in date components
+                var diffDateComponents = NSCalendar.currentCalendar().components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second], fromDate: lastCheckIn, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+                
+                 print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
+                
+                //if it has been more than a day award the user points and update the check in time
+                if (diffDateComponents.year > 0 || diffDateComponents.month > 0 || diffDateComponents.day > 0){
+                    print("It's been a while")
                     
-                    //get title of location and date of last check in
-                    let title = result.valueForKey("title") as! String
-                    let currentDate = NSDate()
-                    let checkInFetchRequest = NSFetchRequest(entityName: "UserCheckIns")
-                    print("Current User Name: \(userNameOP)")
-                    checkInFetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "locationTitle= %@",title), NSPredicate(format: "userName= %@", userNameOP)])
-                    let checkInResult = (try? context.executeFetchRequest(checkInFetchRequest)) as! [NSManagedObject]?
-                    //If the fetch request returns nothing, we know it is a new location they are checking into
-                    if (checkInResult! == []){
-                        //Make new check in in table
-                        if let newCheckIn = NSEntityDescription.insertNewObjectForEntityForName("UserCheckIns", inManagedObjectContext:context) as? NSManagedObject{
+                    //Award user points
+                    print("userID: \(userID)")
+                    let user : User = AWSService().loadUser(self.userID, newUserName: "")
+                    user.score += 5
+                    AWSService().save(user)
+                    print("Score: \(user.score)")
                     
-                            newCheckIn.setValue(userNameOP as NSString, forKey: "userName")
-                            newCheckIn.setValue(currentDate, forKey: "dateOfLastCheckIn")
-                            newCheckIn.setValue(title as NSString, forKey: "locationTitle")
-                            do {
-                                try context.save()
-                            } catch _ {
-                            }
-                            
-                        }
-                        //Award user points
-                        print("userID: \(userID)")
-                        let scoreFetchRequest = NSFetchRequest(entityName: "Users")
-                        scoreFetchRequest.predicate = NSPredicate(format: "id = \(userID)")
-                        let scores = (try? context.executeFetchRequest(scoreFetchRequest)) as! [NSManagedObject]?
-                        if let scores = scores{
-                            for score in scores{
-                                score.setValue(score.valueForKey("score") as! Int + 5, forKey: "score")
-                                print("Score: \(score.valueForKey("score") as! Int)")
-                            }
-                        }
-                            JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
-                    } else {
-                        if let checkInResult = checkInResult{
-                            for result in checkInResult{
-                                let lastCheckIn : NSDate = result.valueForKey("dateOfLastCheckIn") as! NSDate
-                                var diffDateComponents = NSCalendar.currentCalendar().components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second], fromDate: lastCheckIn, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
-                                
-                                print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
-                                if (diffDateComponents.year > 0 || diffDateComponents.month > 0 || diffDateComponents.day > 0){
-                                    print("It's been a while")
-                                    //award points
-                                    print("userID: \(userID)")
-                                    let scoreFetchRequest = NSFetchRequest(entityName: "Users")
-                                    scoreFetchRequest.predicate = NSPredicate(format: "id = \(userID)")
-                                    let scores = (try? context.executeFetchRequest(scoreFetchRequest)) as! [NSManagedObject]?
-                                    if let scores = scores{
-                                        for score in scores{
-                                            score.setValue(score.valueForKey("score") as! Int + 5, forKey: "score")
-                                            print("Score: \(score.valueForKey("score") as! Int)")
-                                        }
-                                    }
-                                    //update check in date
-                                    result.setValue(currentDate, forKey: "dateOfLastCheckIn")
-                                    JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
-                                } else{
-                                        JSSAlertView().show(self, title: "Sorry", text : "You have already checked in to this location is the past 24 hours.", buttonText: "OK", color: UIColorFromHex(0xff3333, alpha: 1))
-                                    print("You've checked in within the last 24 hours")
-                                }
-
-                            }
-                        }
-
-                    }
+                    //Update check in date
+                    checkInRequest.checkInTime = dateFormatter.stringFromDate(currentDate)
+                    AWSService().save(checkInRequest)
+                    
+                    //Notify user of successful check in
+                    JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
                     
                 } else {
-                    print("not close enough to check in")
+                    //if it's been less than a day, let them know they've checked in too recently
+                    JSSAlertView().show(self, title: "Sorry", text : "You have already checked in to this location is the past 24 hours.", buttonText: "OK", color: UIColorFromHex(0xff3333, alpha: 1))
+                    print("You've checked in within the last 24 hours")
                 }
                 
             }
+        }else {
+            //if they aren't within range, let them know they aren't close enough to check in
+            JSSAlertView().show(self, title: "Sorry", text : "You are not close enough to check in.", buttonText: "OK", color: UIColorFromHex(0xff3333, alpha: 1))
+            print("not close enough to check in")
         }
     }
     
