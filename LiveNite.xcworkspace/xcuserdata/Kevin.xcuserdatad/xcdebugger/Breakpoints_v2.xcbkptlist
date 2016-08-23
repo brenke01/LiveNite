@@ -157,8 +157,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "441"
             endingLineNumber = "441"
-            landmarkName = "locationManager(_:didUpdateLocations:)"
-            landmarkType = "5">
+            landmarkName = "ViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -253,7 +253,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "385"
             endingLineNumber = "385"
-            landmarkName = "collectionView(_:cellForItemAtIndexPath:)"
+            landmarkName = "displayImagesForAlbum(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -554,7 +554,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "427"
             endingLineNumber = "427"
-            landmarkName = "collectionView(_:layout:minimumLineSpacingForSectionAtIndex:)"
+            landmarkName = "locationManager(_:didUpdateLocations:)"
             landmarkType = "5">
             <Locations>
                <Location
@@ -651,54 +651,6 @@
             startingLineNumber = "84"
             endingLineNumber = "84"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LiveNite/CommentController.swift"
-            timestampString = "489636875.902108"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "loadComments()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LiveNite/CommentController.swift"
-            timestampString = "489637065.010921"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "loadComments()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LiveNite/CommentController.swift"
-            timestampString = "489637074.850743"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "loadComments()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1205,7 +1157,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "469"
             endingLineNumber = "469"
-            landmarkName = "saveImageInfo(_:)"
+            landmarkName = "loadCaptionView()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1237,7 +1189,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "463"
             endingLineNumber = "463"
-            landmarkName = "saveImageInfo(_:)"
+            landmarkName = "loadCaptionView()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1253,8 +1205,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "495"
             endingLineNumber = "495"
-            landmarkName = "prepareForSegue(_:sender:)"
-            landmarkType = "5">
+            landmarkName = "ViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1269,7 +1221,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "455"
             endingLineNumber = "455"
-            landmarkName = "saveImageInfo(_:)"
+            landmarkName = "loadCaptionView()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1543,6 +1495,22 @@
                   offsetFromSymbolStart = "28">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/PlacesViewController.swift"
+            timestampString = "493609899.842896"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "getGroupedImages()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

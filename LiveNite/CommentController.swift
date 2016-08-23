@@ -10,6 +10,7 @@ import Foundation
 import MobileCoreServices
 import CoreData
 import CoreLocation
+import AWSDynamoDB
 
 class CommentController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate,UITableViewDataSource{
     @IBAction func back(sender: AnyObject) {
@@ -52,35 +53,39 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         return self.commentInfoArray.count
     }
     
-    func loadComments(){
-        let fetchRequest = NSFetchRequest(entityName: "Comments")
-        
-        fetchRequest.predicate = NSPredicate(format: "image_id= %i", imageID as! Int)
-        let comments = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        
-        if let comments = comments{
-            for comment in comments{
-                
-                let commentPosted: AnyObject? = comment.valueForKey("comment")
-                let owner : AnyObject? =
-                    comment.valueForKey("owner")
-                let time = comment.valueForKey("time_posted")
-                var commentInfo : [String: String] = [:]
-                commentInfo["owner"] = owner as? String
-                commentInfo["comment"] = commentPosted as! String
-                let formatter = NSDateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-              
-                
-                commentInfo["time"] = formatter.stringFromDate(time as! NSDate)
-                self.commentInfoArray.append(commentInfo)
-                
+    func loadComments()-> [Comment]{
+
+        var commentArray = [Comment]()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        var queryExpression = AWSDynamoDBQueryExpression()
+        queryExpression.hashKeyAttribute = "commentID"
+        queryExpression.rangeKeyConditionExpression = "imageID = :val"
+        queryExpression.expressionAttributeValues = [":val": imageID]
+        dynamoDBObjectMapper.query(Image.self, expression: queryExpression).continueWithBlock({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
             }
-        }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                var output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                for comment  in output.items {
+                    let comment : Comment = comment as! Comment
+                    commentArray.append(comment)
+                }
+            }
+            return commentArray
+        })
+        
+        return commentArray
+
     }
     
     
-    func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell{
+    func tableView(tableView:UITableView, cellForRowAtIndexPath
+        indexPath: NSIndexPath)-> UITableViewCell{
+        var commentArr = loadComments()
         let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("CommentList")! as UITableViewCell
         tableView.backgroundColor = UIColor.clearColor()
         let border = CALayer()
@@ -112,13 +117,13 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         var nameLabel : UILabel = (cell.viewWithTag(100) as! UILabel)
         var commentLabel : UILabel = (cell.viewWithTag(200) as! UILabel)
         var timeLabel : UILabel = (cell.viewWithTag(300) as! UILabel)
-        let timePosted = self.commentInfoArray[indexPath.row]["time"]
+        let timePosted = commentArr[indexPath.row].timePosted
        
         let dateFormatter = NSDateFormatter()
         let localeStr = "us"
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         dateFormatter.locale = NSLocale(localeIdentifier: localeStr)
-        let timePostedFormatted = dateFormatter.dateFromString(timePosted!)
+        let timePostedFormatted = dateFormatter.dateFromString(timePosted)
         let now = NSDate()
         var interval = now.timeIntervalSinceDate(timePostedFormatted!)
         var intervalStr = ""
@@ -133,8 +138,8 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         }
         timeLabel.text = intervalStr
         timeLabel.textColor = UIColor.whiteColor()
-        nameLabel.text = self.commentInfoArray[indexPath.row]["owner"]
-        commentLabel.text = self.commentInfoArray[indexPath.row]["comment"]
+        nameLabel.text = commentArr[indexPath.row].owner
+        commentLabel.text = commentArr[indexPath.row].comment
         border.borderColor = UIColor.whiteColor().CGColor
         border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
         border.borderWidth = width
