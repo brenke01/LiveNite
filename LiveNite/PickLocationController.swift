@@ -290,33 +290,6 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
     }
     
-    func getImageId()-> Int{
-        
-        var currentID = 1
-        let fetchRequest = NSFetchRequest(entityName: "CurrentID")
-        let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        if let images = images{
-            for image in images{
-                let idData : AnyObject? = image.valueForKey("id")
-                if (idData == nil){
-                    currentID = 1
-                }else{
-                    currentID = (idData as? Int)!
-                }
-                
-                
-                
-            }}
-        if let newId = NSEntityDescription.insertNewObjectForEntityForName("CurrentID", inManagedObjectContext:context) as? NSManagedObject{
-            currentID = currentID + 1
-            newId.setValue(currentID, forKey: "id")
-            do {
-                try context.save()
-            } catch _ {
-            }
-        }
-        return currentID
-    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -417,7 +390,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
         let date = NSDate()
         let setImageTitle : String = self.chosenLocation
-        let setId : Int = getImageId()
+        let setId : String = NSUUID().UUIDString
 
         var imageURL :String = AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle)
         let myImage : Image = Image()

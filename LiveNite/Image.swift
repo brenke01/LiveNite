@@ -17,7 +17,7 @@ class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var placeLat : Double = 0
     var placeLong : Double = 0
     var hotColdScore : Double = 0
-    var imageID : Int = 0
+    var imageID : String = ""
     var totalScore : Int = 0
     var url : String = ""
     var placeTitle : String = ""
