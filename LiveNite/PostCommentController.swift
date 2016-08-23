@@ -17,13 +17,13 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     
     @IBAction func postComment(sender: AnyObject) {
         var comment : Comment = Comment()
-        var uuid = NSUUID().UUIDString()
+        var uuid = NSUUID().UUIDString
         comment.commentID = uuid
         comment.imageID = self.imageID
         comment.comment = commentField.text
         comment.owner = self.userName
         comment.date = String(NSDate())
-        comment.eventID = 0
+        comment.eventID = ""
         AWSService().save(comment)
         dismissViewControllerAnimated(true, completion: nil)
 //        if let newComment = NSEntityDescription.insertNewObjectForEntityForName("Comments", inManagedObjectContext:context) as? NSManagedObject{
@@ -47,7 +47,7 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     @IBOutlet weak var postCommentButton: UIButton!
     @IBOutlet weak var commentField: UITextView!
     @IBOutlet weak var navBar: UINavigationBar!
-    var imageID = 0;
+    var imageID = "";
     var userName = "";
     
     override func viewDidLoad() {

@@ -12,11 +12,12 @@ import AWSDynamoDB
 class Comment :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var comment: String = ""
-    var imageID: Int = 0
+    var imageID: String = ""
     var owner: String = ""
     var timePosted: String = ""
     var commentID: String = ""
-    var eventID: Int = 0
+    var eventID: String = ""
+    var date: String = ""
     
     class func dynamoDBTableName() -> String{
         return "Comments"

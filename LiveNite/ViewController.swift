@@ -83,13 +83,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if (self.hotToggle == 0){
             sortBtn.setTitle("Popular", forState: UIControlState.Normal)
             getHotImages()
-            
-            
         }else{
             sortBtn.setTitle("Recent", forState: UIControlState.Normal)
             getRecentImages()
-            
-            
         }
     }
     
@@ -107,6 +103,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         collectionView?.reloadData()
     }
+    
     @IBOutlet weak var imagesTypeBtn: UIButton!
 
     @IBAction func getPlacesView(sender: AnyObject) {
@@ -119,8 +116,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         self.collectionView?.reloadData()
     }
-    
-
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)

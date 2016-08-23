@@ -20,7 +20,7 @@ class Event :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var eventTitle: String = ""
     var information: String = ""
     var hotColdScore: Double = 0
-    var eventID: Int = 0
+    var eventID: String = ""
     var url: String = ""
     var timePosted: String = ""
     

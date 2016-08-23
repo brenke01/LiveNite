@@ -11,11 +11,11 @@ import AWSDynamoDB
 
 class Vote :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var imageID: Int = 0
+    var imageID: String = ""
     var timeVoted: String = ""
     var voteValue: Int = 0
     var owner: String = ""
-    var voteID: Int = 0
+    var voteID: String = ""
     
     class func dynamoDBTableName() -> String{
         return "Votes"

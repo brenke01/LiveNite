@@ -23,7 +23,7 @@ class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var placeTitle : String = ""
     var caption : String = ""
     var owner : String = ""
-    var eventID : Int = 0
+    var eventID : String = ""
     
     class func dynamoDBTableName() -> String{
         return "Images"

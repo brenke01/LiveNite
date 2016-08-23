@@ -173,6 +173,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         navigationBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
         navigationBar.topItem!.title = imageTitle
+        
         var userUpvoteStatus : Int = 0
         
         let userUpvoteStatusFetchRequest = NSFetchRequest(entityName: "UserUpvotes")
