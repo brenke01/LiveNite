@@ -19,7 +19,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
     @IBOutlet weak var navBar: UINavigationBar!
     
     @IBOutlet weak var tableView: UITableView!
-    var imageID = 0
+    var imageID = ""
     var userNameOP = ""
     var userName = ""
     var commentInfoArray : [[String:String]] = []
