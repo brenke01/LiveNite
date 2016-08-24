@@ -398,10 +398,11 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         myImage.imageID = setId
         myImage.placeTitle = setImageTitle
         myImage.caption = self.textField.text
-        myImage.eventID = 0
+        myImage.eventID = NSUUID().UUIDString
         myImage.picTakenLat = userLocation.latitude
         myImage.picTakenLong = userLocation.longitude
         myImage.owner = "kev"
+        myImage.userID = userID
         myImage.hotColdScore = 0
         myImage.placeLat = self.chosenLatFromMap
         myImage.placeLong = self.chosenLongFromMap

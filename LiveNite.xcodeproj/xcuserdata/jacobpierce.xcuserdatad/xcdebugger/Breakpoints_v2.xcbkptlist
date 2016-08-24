@@ -155,7 +155,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "160"
             endingLineNumber = "160"
-            landmarkName = "viewDidLoad()"
+            landmarkName = "downvoteAction(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -171,7 +171,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "160"
             endingLineNumber = "160"
-            landmarkName = "viewDidLoad()"
+            landmarkName = "downvoteAction(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
