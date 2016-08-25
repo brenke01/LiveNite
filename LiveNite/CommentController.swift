@@ -164,9 +164,9 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         if segue.identifier == "postComment" {
             if let destinationVC = segue.destinationViewController as? PostCommentController{
                 
-                destinationVC.imageID = (imageID as? Int)!
-                destinationVC.userName = (userName as? String)!
-                destinationVC.userName = (userName as? String)!
+                destinationVC.imageID = imageID
+                destinationVC.userName = userName
+                destinationVC.userName = userName
             }
         }
         

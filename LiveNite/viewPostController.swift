@@ -92,7 +92,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 
                 //Award user points
                 print("userID: \(userID)")
-                let user : User = AWSService().loadUser(self.userID, newUserName: "")
+                let user : User = AWSService().loadUser(self.userID)
                 user.score += 5
                 AWSService().save(user)
                 print("Score: \(user.score)")
@@ -115,7 +115,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     
                     //Award user points
                     print("userID: \(userID)")
-                    let user : User = AWSService().loadUser(self.userID, newUserName: "")
+                    let user : User = AWSService().loadUser(self.userID)
                     user.score += 5
                     AWSService().save(user)
                     print("Score: \(user.score)")
@@ -264,7 +264,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         //update owner of images score
         let imageData : Image = AWSService().loadImage(imageID)
         imageData.totalScore += change
-        let user : User = AWSService().loadUser(imageData.userID, newUserName: "")
+        let user : User = AWSService().loadUser(imageData.userID)
         user.score += change
         AWSService().save(user)
         AWSService().save(imageData)

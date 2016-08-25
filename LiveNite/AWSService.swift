@@ -170,6 +170,26 @@ class AWSService {
         return user
     }
     
+    func loadUser(primaryKeyValue: String) -> User{
+        var user : User = User()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+            if (task.error != nil){
+                print("error")
+                
+                
+            }
+            if (task.exception != nil){
+                print("exception")
+            }
+            if (task.result != nil){
+                user = task.result as! User
+            }
+            return user
+        })
+        return user
+    }
+    
     func loadUserAndSaveUserName(primaryKeyValue: String, newUserName : String) -> User{
         var user : User = User()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
