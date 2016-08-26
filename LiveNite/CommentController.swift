@@ -19,7 +19,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
     @IBOutlet weak var navBar: UINavigationBar!
     
     @IBOutlet weak var tableView: UITableView!
-    var imageID = 0
+    var imageID = ""
     var userNameOP = ""
     var userName = ""
     var commentInfoArray : [[String:String]] = []
@@ -164,9 +164,9 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         if segue.identifier == "postComment" {
             if let destinationVC = segue.destinationViewController as? PostCommentController{
                 
-                destinationVC.imageID = (imageID as? Int)!
-                destinationVC.userName = (userName as? String)!
-                destinationVC.userName = (userName as? String)!
+                destinationVC.imageID = imageID
+                destinationVC.userName = userName
+                destinationVC.userName = userName
             }
         }
         

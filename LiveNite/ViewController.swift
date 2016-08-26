@@ -177,7 +177,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 print("User id is")
                 print(self.userID)
                 
-                let user : User = AWSService().loadUser(self.userID, newUserName: "")
+                let user : User = AWSService().loadUser(self.userID)
                 self.userName = user.userName
                 
             }

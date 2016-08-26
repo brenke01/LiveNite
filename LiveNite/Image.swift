@@ -22,6 +22,7 @@ class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var url : String = ""
     var placeTitle : String = ""
     var caption : String = ""
+    var userID : String = ""
     var owner : String = ""
     var eventID : String = ""
     
