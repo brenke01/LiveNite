@@ -31,8 +31,8 @@ class PlacesViewController{
                     imagesArray.append(image)
                 }
                 let sortedArray = (imagesArray as NSArray).sortedArrayUsingDescriptors([
-                    NSSortDescriptor(key: "placeTitle", ascending: true),
-                    NSSortDescriptor(key: "totalScore", ascending: true)
+                    NSSortDescriptor(key: "placeTitle", ascending: false),
+                    NSSortDescriptor(key: "totalScore", ascending: false)
                     ]) as! [Image]
                 return sortedArray
                 

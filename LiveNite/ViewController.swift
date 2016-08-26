@@ -60,6 +60,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var displayPlacesAlbum = false
     var chosenAlbumLocation = ""
     var previousLocationName = ""
+    var idArray : [String] = []
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         if (item.tag == 1){
@@ -272,31 +273,41 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        var user = AWSService().loadUser(userID, newUserName: "")
+        var imagesArr = [Image]()
         var fetchRequest = NSFetchRequest(entityName: "Entity")
         let placesViewController = PlacesViewController()
         if(self.displayPlacesAlbum){
-            fetchRequest = placesViewController.getImagesForGroup(self.chosenAlbumLocation)
+            imagesArr = placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user)
             print(fetchRequest)
         }
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+//        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
         var count = 0
         self.previousLocationName = ""
-        if let locations = locations{
-            for loc in locations{
-                let titleData: AnyObject? = loc.valueForKey("title")
-                let title = titleData as? String
-                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
-                    count=count+1
-                    self.previousLocationName = title!
-                }
+        for image in imagesArr{
+            if(self.previousLocationName != image.placeTitle || !self.placesToggle || self.displayPlacesAlbum){
+                count=count+1
+                self.previousLocationName = image.placeTitle
             }
         }
+//        if let locations = locations{
+//            for loc in locations{
+//                let titleData: AnyObject? = loc.valueForKey("title")
+//                let title = titleData as? String
+//                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
+//                    count=count+1
+//                    self.previousLocationName = title!
+//                }
+//            }
+//        }
         self.previousLocationName = ""
         print(count)
         return count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        var user = AWSService().loadUser(userID, newUserName: "")
+        var imageArr = [Image]()
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as UICollectionViewCell
         cell.backgroundColor = UIColor.yellowColor()
         var fetchRequest = NSFetchRequest(entityName: "Entity")
@@ -304,54 +315,66 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         let placesViewController : PlacesViewController = PlacesViewController()
         if (self.placesToggle && !self.displayPlacesAlbum){
-            fetchRequest = placesViewController.getGroupedImages()
+            imageArr = placesViewController.getGroupedImages()
         }else if(self.placesToggle && self.displayPlacesAlbum){
-            fetchRequest = placesViewController.getImagesForGroup(self.chosenAlbumLocation)
+            imageArr = placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user)
         }else if (hotToggle == 1){
+            imageArr = (imageArr as NSArray).sortedArrayUsingDescriptors([
+                NSSortDescriptor(key: "totalScore", ascending: false)
+                ]) as! [Image]
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "upvotes", ascending: false)]
         }else{
+            imageArr = (imageArr as NSArray).sortedArrayUsingDescriptors([
+                NSSortDescriptor(key: "totalScore", ascending: false)
+                ]) as! [Image]
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
         }
         let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        var idArray : [Int] = []
+        idArray = []
         var imageArray : [UIImage] = []
-        
         var upVoteArray : [Int] = []
-        if let locations = locations{
-            for loc in locations{
-                let titleData: AnyObject? = loc.valueForKey("title")
-                let title = titleData as? String
-                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
-                    let idData : AnyObject? = loc.valueForKey("id")
-                    let imageId = idData as? Int
-                    self.previousLocationName = title!
-                    idArray.append(imageId!)
-                    let imageData: AnyObject? = loc.valueForKey("imageData")
-                    var imgData = UIImage(data: (imageData as? NSData)!)
-                    //Retrieving the image file from S3 example
-                    //imgData = AWSService().getImageFromUrl(String(imageId) + "_" + self.previousLocationName)
-                    imageArray.append(imgData!)
-
-
-                    let upVoteData : AnyObject? = loc.valueForKey("upvotes")
-                    let upVotes = upVoteData as? Int
-                    upVoteArray.append(upVotes!)
-                    
-                }
+        for img in imageArr{
+            let titleData = img.placeTitle
+            if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
+                let imageID = img.imageID
+                self.previousLocationName = titleData
+                idArray.append(imageID)
+                //Retrieving the image file from S3 example
+                let imgData = AWSService().getImageFromUrl(String(imageID) + "_" + self.previousLocationName)
+                imageArray.append(imgData)
             }
         }
+        
+        
+//        if let locations = locations{
+//            for loc in locations{
+//                let titleData: AnyObject? = loc.valueForKey("title")
+//                let title = titleData as? String
+//                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
+//                    let idData : AnyObject? = loc.valueForKey("id")
+//                    let imageId = idData as? Int
+//                    self.previousLocationName = title!
+//                    idArray.append(imageId!)
+//                    let imageData: AnyObject? = loc.valueForKey("imageData")
+//                    var imgData = UIImage(data: (imageData as? NSData)!)
+//                    //Retrieving the image file from S3 example
+//                    //imgData = AWSService().getImageFromUrl(String(imageId) + "_" + self.previousLocationName)
+//                    imageArray.append(imgData!)
+//
+//
+//                    let upVoteData : AnyObject? = loc.valueForKey("upvotes")
+//                    let upVotes = upVoteData as? Int
+//                    upVoteArray.append(upVotes!)
+//                    
+//                }
+//            }
+//        }
         let imageButton = UIButton(frame: CGRectMake(0, 0, CGFloat(imgWidth), CGFloat(imgHeight)))
         imageButton.setImage(imageArray[indexPath.row], forState: .Normal)
-        if (!self.placesToggle || self.displayPlacesAlbum){
-            imageButton.addTarget(self, action: "viewPost:", forControlEvents: .TouchUpInside)
-        }else{
-            imageButton.tag = idArray[indexPath.row]
-            imageButton.addTarget(self, action: "displayImagesForAlbum:", forControlEvents: .TouchUpInside)
-        }
+
         
         imageButton.userInteractionEnabled = true
         
-        imageButton.tag = idArray[indexPath.row]
         if (self.placesToggle){
             let albumImageView = UIImageView(frame: CGRectMake(imageButton.frame.width * (0.8), imageButton.frame.height * 0.8,  imageButton.frame.width * 0.15, imageButton.frame.height * 0.2));
             let albumImage = UIImage(named : "album2")
@@ -375,16 +398,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return cell
     }
     
-    func displayImagesForAlbum(sender : UIButton){
-        var fetchRequest = NSFetchRequest(entityName: "Entity")
-        fetchRequest.predicate = NSPredicate(format: "id= %i", sender.tag)
-        let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-        if let images = images{
-            for img in images{
-                let title: AnyObject? = img.valueForKey("title")
-                self.chosenAlbumLocation = title as! String
-            }
+    func collectionView(collection: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+        if (!self.placesToggle || self.displayPlacesAlbum){
+            viewPost(idArray[indexPath.row])
+        }else{
+            displayImagesForAlbum(idArray[indexPath.row])
         }
+       
+    }
+    
+    func displayImagesForAlbum(id: String){
+        var image : Image = AWSService().loadImage(id)
+        self.chosenAlbumLocation = image.placeTitle
+//        var fetchRequest = NSFetchRequest(entityName: "Entity")
+//        fetchRequest.predicate = NSPredicate(format: "id= %i", sender.tag)
+//        let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+//        if let images = images{
+//            for img in images{
+//                let title: AnyObject? = img.valueForKey("title")
+//                
+//            }
+//        }
         self.displayPlacesAlbum = true
         self.collectionView?.reloadData()
     }
@@ -439,15 +473,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
     
-    func viewPost(sender: AnyObject){
-        print(sender)
-        self.performSegueWithIdentifier("viewPost", sender: sender.tag)
+    func viewPost(id : String){
+        self.performSegueWithIdentifier("viewPost", sender: id)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         print(segue.identifier)
         if segue.identifier == "viewPost" {
-            print("test")
+            var image : Image = AWSService().loadImage(String(sender))
             if let destinationVC = segue.destinationViewController as? viewPostController{
                 
                 let fetchRequest = NSFetchRequest(entityName: "Entity")
@@ -478,6 +511,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         
                     }
                 }
+                let imgData = AWSService().getImageFromUrl(String(image.imageID) + "_" + self.previousLocationName)
+                destinationVC.imageUpvotes = image.totalScore
+                destinationVC.userName = String(self.userName)
+                destinationVC.userNameOP = (userName as?String)!
+                destinationVC.imageTapped = imgData
+                //destinationVC.imageID = image.imageID
+                destinationVC.imageTitle = image.placeTitle
+                destinationVC.caption = image.caption
+                destinationVC.userID = Int(self.userID)!
             }
         }else if segue.identifier == "PickLocation"{
             
