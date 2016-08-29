@@ -50,6 +50,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var caption = ""
     var userName = ""
     var hotColdScore = 0.0
+    var user = User()
+    var imageData = Image()
+    var checkInRequest = CheckIn()
     
     //end var zone
     
@@ -66,33 +69,36 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         let currentDate = NSDate()
         
         //fetch image data for post
-        let imageData : Image = AWSService().loadImage(imageID)
+
         
         //determine distance between user and place and set maxAllowableDistance
-        let imagePlaceLocation = CLLocation(latitude: imageData.placeLat, longitude: imageData.placeLong)
+        let imagePlaceLocation = CLLocation(latitude: self.imageData.placeLat, longitude: self.imageData.placeLong)
         let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distanceFromLocation(userLocation)
         let maxAllowableDistance : CLLocationDistance = 2500
         
         //if within range, check if they've checked in recently
         if distanceBetweenUserAndPlace < maxAllowableDistance {
 
-            //fetch check in
-            let checkInRequest : CheckIn = AWSService().loadCheckIn(self.userID + "_" + imageData.placeTitle)
+            
             
             //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
-            if (checkInRequest.userID == ""){
+            if (self.checkInRequest.userID == ""){
                 
                 //Make new check in in table
                 let checkIn : CheckIn = CheckIn()
-                checkIn.checkInID = self.userID + "_" + imageData.placeTitle
+                checkIn.checkInID = self.userID + "_" + self.imageData.placeTitle
                 checkIn.checkInTime = dateFormatter.stringFromDate(currentDate)
-                checkIn.placeTitle = imageData.placeTitle
+                checkIn.placeTitle = self.imageData.placeTitle
                 checkIn.userID = self.userID
                 AWSService().save(checkIn)
                 
                 //Award user points
                 print("userID: \(userID)")
-                let user : User = AWSService().loadUser(self.userID)
+                AWSService().loadUser(self.userID,completion: {(result)->Void in
+                    self.user = result
+                    print("user id is ")
+                    print(self.user.userID)
+                })
                 user.score += 5
                 AWSService().save(user)
                 print("Score: \(user.score)")
@@ -102,7 +108,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 //if it did set the userID, they've checked in there before so we need to see how long it's been
                 
                 //get last check in date
-                let lastCheckIn : NSDate = dateFormatter.dateFromString(checkInRequest.checkInTime)!
+                let lastCheckIn : NSDate = dateFormatter.dateFromString(self.checkInRequest.checkInTime)!
                 
                 //get the difference in date components
                 let diffDateComponents = NSCalendar.currentCalendar().components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second], fromDate: lastCheckIn, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
@@ -115,14 +121,17 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     
                     //Award user points
                     print("userID: \(userID)")
-                    let user : User = AWSService().loadUser(self.userID)
+                    AWSService().loadUser(self.userID,completion: {(result)->Void in
+                        self.user = result
+                    })
+
                     user.score += 5
                     AWSService().save(user)
                     print("Score: \(user.score)")
                     
                     //Update check in date
-                    checkInRequest.checkInTime = dateFormatter.stringFromDate(currentDate)
-                    AWSService().save(checkInRequest)
+                    self.checkInRequest.checkInTime = dateFormatter.stringFromDate(currentDate)
+                    AWSService().save(self.checkInRequest)
                     
                     //Notify user of successful check in
                     JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
@@ -262,15 +271,17 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         AWSService().save(vote)
         
         //update owner of images score
-        let imageData : Image = AWSService().loadImage(imageID)
-        imageData.totalScore += change
-        let user : User = AWSService().loadUser(imageData.userID)
+        self.imageData.totalScore += change
+        AWSService().loadUser(self.imageData.userID,completion: {(result)->Void in
+            self.user = result
+        })
+
         user.score += change
         AWSService().save(user)
-        AWSService().save(imageData)
+        AWSService().save(self.imageData)
         
         //update label with correct score
-        upvotesLabel.text = String(imageData.totalScore)
+        upvotesLabel.text = String(self.imageData.totalScore)
         
     }
     
@@ -310,9 +321,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
             return self.hotColdScore
         })
-        let imageData : Image = AWSService().loadImage(imageID)
-        imageData.hotColdScore = self.hotColdScore
-        AWSService().save(imageData)
+
+        
+        self.imageData.hotColdScore = self.hotColdScore
+        AWSService().save(self.imageData)
     }
     
     //end func zone
@@ -323,6 +335,14 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        AWSService().loadImage(imageID, completion: {(result)->Void in
+            self.imageData = result
+        })
+
+        //fetch check in
+        AWSService().loadCheckIn(self.userID + "_" + self.imageData.placeTitle, completion: {(result)->Void in
+            self.checkInRequest = result
+        })
         loadUIDetails()
         loadImageDetail()
         locationManager.startUpdatingLocation()

@@ -56,11 +56,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var accessToken = ""
     var userID = ""
     var userName = ""
+    var user = User()
     var placesToggle = false
     var displayPlacesAlbum = false
     var chosenAlbumLocation = ""
     var previousLocationName = ""
     var idArray : [String] = []
+    var fbUserID = dispatch_group_create()
+    var awsUser = dispatch_group_create()
+    var imageArrLength = 0
+    var imageArr = [Image]()
+    var uiImageArr = [UIImage]()
+    var doneLoading = false
+    typealias FinishedDownloaded = () -> ()
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         if (item.tag == 1){
@@ -119,8 +127,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
 
+        super.viewDidAppear(animated)
+        
         self.view.hidden = false
         if (FBSDKAccessToken.currentAccessToken() == nil)
         {
@@ -133,6 +142,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         profileMenu.hidden = true
 
@@ -158,10 +168,35 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         } else {
             // Fallback on earlier versions
         }
-        retrieveUserID()
+        let barViewControllers = self.tabBarController?.viewControllers
+        let svc = barViewControllers![2] as! PickLocationController
+        
+        //dispatch_group_enter(fbUserID)
+        retrieveUserID({(result)->Void in
+            self.userID = result
+            AWSService().loadUser(self.userID,completion: {(result)->Void in
+                self.user = result
+                svc.user = result
+                print("user id is ")
+                print(self.user.userID)
+            })
+            
+        })
+        var placesViewController = PlacesViewController()
+        placesViewController.getImages({(result)->Void in
+            self.imageArr = result
+            self.doneLoading = true
+            self.imageArrLength = self.imageArr.count
+            self.collectionView!.reloadData()
+        })
+
+       
+        //self.user = AWSService().loadUser(self.userID)
+
+
     }
     
-    func retrieveUserID(){
+    func retrieveUserID(completion:(result:String)->Void){
         var id = ""
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range"])
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
@@ -172,16 +207,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 print("Error: \(error)")
                 
             }else{
-                id = result.valueForKey("id") as! String
-                self.userID = id
-                print("User id is")
-                print(self.userID)
-                
-                let user : User = AWSService().loadUser(self.userID)
-                self.userName = user.userName
+                let userID = result.valueForKey("id") as! String
+                completion(result:userID)
                 
             }
+            
         })
+        
         
     }
     
@@ -273,16 +305,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var user = AWSService().loadUser(userID, newUserName: "")
-        var imagesArr = [Image]()
-        var fetchRequest = NSFetchRequest(entityName: "Entity")
-        let placesViewController = PlacesViewController()
-        if(self.displayPlacesAlbum){
-            imagesArr = placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user)
-            print(fetchRequest)
-        }
-//        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
         var count = 0
+        var imagesArr = [Image]()
+        let placesViewController = PlacesViewController()
+        if (self.placesToggle && !self.displayPlacesAlbum){
+            placesViewController.getGroupedImages({(result)->Void in
+                imagesArr = result
+            })
+        }else if(self.placesToggle && self.displayPlacesAlbum){
+            placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user, completion: {(result)->Void in
+                imagesArr = result
+            })
+        }
+        
         self.previousLocationName = ""
         for image in imagesArr{
             if(self.previousLocationName != image.placeTitle || !self.placesToggle || self.displayPlacesAlbum){
@@ -290,87 +325,69 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.previousLocationName = image.placeTitle
             }
         }
-//        if let locations = locations{
-//            for loc in locations{
-//                let titleData: AnyObject? = loc.valueForKey("title")
-//                let title = titleData as? String
-//                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
-//                    count=count+1
-//                    self.previousLocationName = title!
-//                }
-//            }
-//        }
         self.previousLocationName = ""
         print(count)
-        return count
+        return self.imageArrLength
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var user = AWSService().loadUser(userID, newUserName: "")
+        var doneLoading = false
         var imageArr = [Image]()
+        self.uiImageArr = []
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as UICollectionViewCell
         cell.backgroundColor = UIColor.yellowColor()
         var fetchRequest = NSFetchRequest(entityName: "Entity")
         cell.backgroundColor = UIColor.blackColor()
-
+        
+        var imageArray : [UIImage] = []
+        
         let placesViewController : PlacesViewController = PlacesViewController()
         if (self.placesToggle && !self.displayPlacesAlbum){
-            imageArr = placesViewController.getGroupedImages()
+            placesViewController.getGroupedImages({(result)->Void in
+                imageArr = result
+                doneLoading = true
+                collectionView.reloadData()
+            })
         }else if(self.placesToggle && self.displayPlacesAlbum){
-            imageArr = placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user)
-        }else if (hotToggle == 1){
+            placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user, completion: {(result)->Void in
+                imageArr = result
+                doneLoading = true
+                collectionView.reloadData()
+            })
+        }
+        if (self.doneLoading){
+        if (hotToggle == 1){
             imageArr = (imageArr as NSArray).sortedArrayUsingDescriptors([
                 NSSortDescriptor(key: "totalScore", ascending: false)
                 ]) as! [Image]
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "upvotes", ascending: false)]
         }else{
-            imageArr = (imageArr as NSArray).sortedArrayUsingDescriptors([
+            
+            self.imageArr = (self.imageArr as NSArray).sortedArrayUsingDescriptors([
                 NSSortDescriptor(key: "totalScore", ascending: false)
                 ]) as! [Image]
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
         }
-        let locations = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
         idArray = []
-        var imageArray : [UIImage] = []
+        
         var upVoteArray : [Int] = []
-        for img in imageArr{
+        for img in self.imageArr{
             let titleData = img.placeTitle
             if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
                 let imageID = img.imageID
                 self.previousLocationName = titleData
                 idArray.append(imageID)
                 //Retrieving the image file from S3 example
-                let imgData = AWSService().getImageFromUrl(String(imageID) + "_" + self.previousLocationName)
-                imageArray.append(imgData)
+                AWSService().getImageFromUrl(String(imageID), completion: {(result)->Void in
+                    self.uiImageArr.append(result)
+                    //self.collectionView?.reloadData()
+                    })
+                
             }
         }
-        
-        
-//        if let locations = locations{
-//            for loc in locations{
-//                let titleData: AnyObject? = loc.valueForKey("title")
-//                let title = titleData as? String
-//                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
-//                    let idData : AnyObject? = loc.valueForKey("id")
-//                    let imageId = idData as? Int
-//                    self.previousLocationName = title!
-//                    idArray.append(imageId!)
-//                    let imageData: AnyObject? = loc.valueForKey("imageData")
-//                    var imgData = UIImage(data: (imageData as? NSData)!)
-//                    //Retrieving the image file from S3 example
-//                    //imgData = AWSService().getImageFromUrl(String(imageId) + "_" + self.previousLocationName)
-//                    imageArray.append(imgData!)
-//
-//
-//                    let upVoteData : AnyObject? = loc.valueForKey("upvotes")
-//                    let upVotes = upVoteData as? Int
-//                    upVoteArray.append(upVotes!)
-//                    
-//                }
-//            }
-//        }
+        if (self.uiImageArr.count > 0){
         let imageButton = UIButton(frame: CGRectMake(0, 0, CGFloat(imgWidth), CGFloat(imgHeight)))
-        imageButton.setImage(imageArray[indexPath.row], forState: .Normal)
+        imageButton.setImage(self.uiImageArr[indexPath.row], forState: .Normal)
 
         
         imageButton.userInteractionEnabled = true
@@ -383,7 +400,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
         
-        
+        //
       
         
         print(imageButton.layer)
@@ -395,6 +412,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         
         cell.addSubview(imageButton)
+        }
+        }
         return cell
     }
     
@@ -408,7 +427,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func displayImagesForAlbum(id: String){
-        var image : Image = AWSService().loadImage(id)
+        var image = Image()
+        AWSService().loadImage(id, completion: {(result)->Void in
+            image = result
+        })
         self.chosenAlbumLocation = image.placeTitle
 //        var fetchRequest = NSFetchRequest(entityName: "Entity")
 //        fetchRequest.predicate = NSPredicate(format: "id= %i", sender.tag)
@@ -480,46 +502,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         print(segue.identifier)
         if segue.identifier == "viewPost" {
-            var image : Image = AWSService().loadImage(String(sender))
+            var image = Image()
+            AWSService().loadImage(String(sender), completion: {(result)->Void in
+                image = result
+            })
             if let destinationVC = segue.destinationViewController as? viewPostController{
-                
-                let fetchRequest = NSFetchRequest(entityName: "Entity")
-                
-                fetchRequest.predicate = NSPredicate(format: "id= %i", sender as! Int)
-                let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-                
-                if let images = images{
-                    for img in images{
-                        
-                        let imageID: AnyObject? = img.valueForKey("id")
-                        let imageUpvotes : AnyObject? =
-                            img.valueForKey("upvotes")
-                        let imageData : AnyObject? = img.valueForKey("imageData")
-                        let imageTitle : AnyObject? = img.valueForKey("title")
-                        let caption : AnyObject? = img.valueForKey("caption")
-                        let userName : AnyObject? = img.valueForKey("userOP")
-                        destinationVC.imageUpvotes = (imageUpvotes as? Int)!
-                        print(imageID)
-                        destinationVC.userName = String(self.userName)
-                        destinationVC.userNameOP = (userName as?String)!
-                        destinationVC.imageTapped = UIImage(data: (imageData as? NSData)!)!
-                        destinationVC.imageID = (imageID as? Int)!
-                        destinationVC.imageTitle = (imageTitle as? String)!
-                        destinationVC.caption = (caption as? String)!
-                        destinationVC.userID = Int(self.userID)!
-                        
-                        
-                    }
-                }
-                let imgData = AWSService().getImageFromUrl(String(image.imageID) + "_" + self.previousLocationName)
+                var imgData = UIImage()
+                AWSService().getImageFromUrl(String(image.imageID) + "_" + self.previousLocationName, completion: {(result)->Void in
+                    imgData = result
+                })
                 destinationVC.imageUpvotes = image.totalScore
                 destinationVC.userName = String(self.userName)
                 destinationVC.userNameOP = (userName as?String)!
                 destinationVC.imageTapped = imgData
-                //destinationVC.imageID = image.imageID
+                destinationVC.imageID = image.imageID
                 destinationVC.imageTitle = image.placeTitle
                 destinationVC.caption = image.caption
-                destinationVC.userID = Int(self.userID)!
+                destinationVC.userID = self.userID
             }
         }else if segue.identifier == "PickLocation"{
             

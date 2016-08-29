@@ -26,6 +26,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     var vc = ViewController()
     var saved = false
+    var user = User()
     var locations = 1
     var selectedImage = UIImage()
     var searchBar: UISearchBar?
@@ -53,8 +54,11 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var chosenLongFromMap = 0.0
     var chosenLatFromMap = 0.0
     var mapPickedLocation = false
+    var userID = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
         searchBar = UISearchBar(frame: CGRectMake(0, 10, 250.0, 44.0))
         self.view.addSubview(textField)
        // tableDataSource = GMSAutocompleteTableDataSource()
@@ -232,50 +236,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             print("Camera not available.")
         }
     }
-    
-    
-    
-    
-/*    @IBAction func segmentedControlAction(sender: AnyObject) {
-        if (segmentedControl.selectedSegmentIndex == 0){
-            var subViewOfSegment: UIView = segmentedControl.subviews[0] as UIView
-            subViewOfSegment.tintColor = UIColor.whiteColor()
-            /*var subViewOfSegment1: UIView = segmentedControl.subviews[1] as UIView
-            subViewOfSegment.tintColor = UIColor.darkGrayColor()
-            var subViewOfSegment2: UIView = segmentedControl.subviews[2] as UIView
-            subViewOfSegment.tintColor = UIColor.darkGrayColor()*/
-            getBars()
-        }else if (segmentedControl.selectedSegmentIndex == 1){
-            var subViewOfSegment: UIView = segmentedControl.subviews[1] as UIView
-            subViewOfSegment.tintColor = UIColor.whiteColor()
 
-            getFood()
-        }else if (segmentedControl.selectedSegmentIndex == 2){
-            var subViewOfSegment: UIView = segmentedControl.subviews[2] as UIView
-            subViewOfSegment.tintColor = UIColor.whiteColor()
-
-            getLandmarks()
-        }
-    }
-    func getBars() {
-
-        var searchedTypes = ["bar"]
-        fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
-        //tableView.reloadData()
-    }
-    
-    func getFood() {
-
-        var searchedTypes = ["food"]
-        fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
-        //tableView.reloadData()
-    }
-    func getLandmarks() {
-
-        var searchedTypes = ["establishment"]
-        fetchNearbyPlaces(userLocation, searchedTypes: searchedTypes)
-        //tableView.reloadData()
-    }*/
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : AnyObject]) {
         
         self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
@@ -295,94 +256,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-   /* func retrieveListOfPlaces(var listOfPlaces: [String]){
 
-        self.listOfPlaces = listOfPlaces
-        tableView.reloadData()
-        self.view.hidden = false
-       
-    }
-    
-    
-    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D, searchedTypes : [String]) {
-        
-        let searchRadius:Double = 10000
-        print("Fetch nearby places")
-        var list : [String] = []
-        let dataProvider = GoogleDataProvider()
-        //if (dataProvider.placesTask != nil){
-            dataProvider.fetchPlacesNearCoordinate(coordinate,radius: searchRadius,types: searchedTypes) { places in
-                for place: GooglePlace in places {
-                    list.append(place.name as String)
-                    self.locationDictionary.updateValue(place.coordinate, forKey: place.name)
-             
-                    if (list.count == places.count){
-                     self.retrieveListOfPlaces(list)
-                    }
-                
-                }
-            }
-        //}else{
-            //list.append("No nearby locations found")
-            //self.retrieveListOfPlaces(list)
-        //}
-    }
-    func numberOfSectionsinTableView(tableView: UITableView) -> Int{
-        return 1
-    }
-    
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
-        return self.listOfPlaces.count
-    }
-    
-    
-    func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)-> UITableViewCell{
-        let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        tableView.backgroundColor = UIColor.clearColor()
-        let border = CALayer()
-        let width = CGFloat(1.0)
-        border.borderColor = UIColor.whiteColor().CGColor
-        border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
-        border.borderWidth = width
-        tableView.layer.addSublayer(border)
-        
-        tableView.opaque = false
-        cell.backgroundColor = UIColor.clearColor()
-        cell.opaque = false
-        if (self.listOfPlaces.count != 0){
-            if(listOfPlaces[0] == "No nearby locations found"){
-
-                tableView.layer.borderColor = UIColor.clearColor().CGColor
-                cell.layer.borderWidth = 2.0
-                cell.layer.borderColor = UIColor.clearColor().CGColor
-            }
-            if (indexPath.row == listOfPlaces.count - 1 && listOfPlaces.count > 1){
-                cell.textLabel?.text = ""
-                
-                cell.textLabel?.textColor = UIColor.whiteColor()
-            }else{
-                cell.textLabel?.text = self.listOfPlaces[indexPath.row]
-                cell.textLabel?.font = UIFont(name: "HelveticaNeue", size: 14)
-                cell.textLabel?.textColor = UIColor.whiteColor()
-            }
-        }
-        return cell
-    }
-    
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        let cell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
-        let cellText : String = (cell.textLabel?.text)!
-        self.chosenLocation = cellText
-        self.mapPickedLocation = false
-        loadCaptionView()
-
-            
-            
-            
-        
-    }*/
 
 
     func saveImageInfo(sender: UIButton!){
@@ -391,28 +265,31 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         let date = NSDate()
         let setImageTitle : String = self.chosenLocation
         let setId : String = NSUUID().UUIDString
-
-        var imageURL :String = AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle)
+        var imageURL = ""
         let myImage : Image = Image()
+        AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle, completion: {(result)->Void in
+            imageURL = result
+            myImage.imageID = setId
+            myImage.placeTitle = setImageTitle
+            myImage.caption = self.textField.text
+            myImage.eventID = NSUUID().UUIDString
+            myImage.picTakenLat = self.userLocation.latitude
+            myImage.picTakenLong = self.userLocation.longitude
+            myImage.owner = self.user.userName
+            myImage.userID = self.user.userID
+            myImage.hotColdScore = 0
+            myImage.placeLat = self.chosenLatFromMap
+            myImage.placeLong = self.chosenLongFromMap
+            myImage.url = imageURL
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            myImage.timePosted = formatter.stringFromDate(date)
+            myImage.totalScore = 0
             
-        myImage.imageID = setId
-        myImage.placeTitle = setImageTitle
-        myImage.caption = self.textField.text
-        myImage.eventID = NSUUID().UUIDString
-        myImage.picTakenLat = userLocation.latitude
-        myImage.picTakenLong = userLocation.longitude
-        myImage.owner = "kev"
-        myImage.userID = userID
-        myImage.hotColdScore = 0
-        myImage.placeLat = self.chosenLatFromMap
-        myImage.placeLong = self.chosenLongFromMap
-        myImage.url = "url"
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        myImage.timePosted = formatter.stringFromDate(date)
-        myImage.totalScore = 0
+            AWSService().save(myImage)
+        })
         
-        AWSService().save(myImage)
+
         
         
         print("saved successfully", terminator: "")

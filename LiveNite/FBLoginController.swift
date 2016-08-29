@@ -82,7 +82,11 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     func saveUserToCoreData(result : AnyObject){
         var newUser : Bool = true
-        var userObj : User = AWSService().loadUser(userID)
+        var userObj = User()
+        AWSService().loadUser(userID,completion: {(result)->Void in
+            userObj = result
+        })
+
         if (userObj.userID != ""){
             newUser = false
         }
