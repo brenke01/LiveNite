@@ -517,18 +517,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if segue.identifier == "viewPost" {
             var image = Image()
             print(sender!["image"] as! UIImage)
-            AWSService().loadImage(sender!["id"] as! String, completion: {(result: Image) in
-                image = result
-                print("IMAGE ID: " + image.imageID)
-                if let destinationVC = segue.destinationViewController as? viewPostController{
-                    destinationVC.imageUpvotes = image.totalScore
-                    destinationVC.userName = String(self.userName)
-                    destinationVC.userNameOP = (self.userName as?String)!
-                    destinationVC.imageTitle = image.placeTitle
-                    destinationVC.caption = image.caption
-                    destinationVC.userID = self.userID
-                }
-            })
             if let destinationVC = segue.destinationViewController as? viewPostController{
                 print(sender!["image"] as! UIImage)
                 destinationVC.imageTapped = sender!["image"] as! UIImage
