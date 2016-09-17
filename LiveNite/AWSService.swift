@@ -90,6 +90,7 @@ class AWSService {
     
     func loadImage(primaryKeyValue: String, completion:(result: Image)->Void) -> Image{
         var image : Image = Image()
+        print("Image ID: " + primaryKeyValue)
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         dynamoDBObjectMapper.load(Image.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
@@ -100,9 +101,9 @@ class AWSService {
                 print("exception")
             }
             if (task.result != nil){
-                
+                print("Image found")
                 image = task.result as! Image
-                completion(result:image)
+                completion(result: image)
             }
             return image
         })

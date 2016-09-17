@@ -506,7 +506,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     
     func viewPost(id : String, image : UIImage){
-        var imageObj : [String: AnyObject] = ["id": id, "image": image]
+        var imageObj : [String : AnyObject] = ["id": id, "image": image]
+        print(imageObj["id"])
+        print(imageObj["image"])
         self.performSegueWithIdentifier("viewPost", sender: imageObj)
     }
     
@@ -514,24 +516,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         print(segue.identifier)
         if segue.identifier == "viewPost" {
             var image = Image()
-            AWSService().loadImage(sender!["id"] as! String, completion: {(result)->Void in
+            print(sender!["image"] as! UIImage)
+            AWSService().loadImage(sender!["id"] as! String, completion: {(result: Image) in
                 image = result
+                print("IMAGE ID: " + image.imageID)
                 if let destinationVC = segue.destinationViewController as? viewPostController{
                     destinationVC.imageUpvotes = image.totalScore
                     destinationVC.userName = String(self.userName)
                     destinationVC.userNameOP = (self.userName as?String)!
-                    destinationVC.imgView.image = sender!["image"] as! UIImage
-                    destinationVC.imageID = image.imageID
                     destinationVC.imageTitle = image.placeTitle
                     destinationVC.caption = image.caption
                     destinationVC.userID = self.userID
                 }
-                
-
-
-                
-
             })
+            if let destinationVC = segue.destinationViewController as? viewPostController{
+                print(sender!["image"] as! UIImage)
+                destinationVC.imageTapped = sender!["image"] as! UIImage
+                print("IMAGE ID: " + image.imageID)
+                destinationVC.imageID = sender!["id"] as! String
+            }
+            print("IMAGE ID: " + image.imageID)
+            
+            
         }else if segue.identifier == "PickLocation"{
             
             if let destinationVC = segue.destinationViewController as? PickLocationController{
