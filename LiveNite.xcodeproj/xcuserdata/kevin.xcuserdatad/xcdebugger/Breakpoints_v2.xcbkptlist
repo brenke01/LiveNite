@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "494111743.074385"
+            timestampString = "495423034.416455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "441"
-            endingLineNumber = "441"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
             landmarkName = "displayImagesForAlbum(_:)"
             landmarkType = "5">
          </BreakpointContent>

@@ -42,6 +42,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 
     @IBOutlet var collectionView: UICollectionView?
+    @IBOutlet weak var activityLoader: UIActivityIndicatorView!
 
     //variable for accessing location
     var locationManager = CLLocationManager()
@@ -145,7 +146,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         
         profileMenu.hidden = true
-
+        
         self.view.hidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -401,8 +402,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         
         //
-      
-        
+            let imagePressed :Selector = "imagePressed:"
+        let tap = UITapGestureRecognizer(target: self, action: imagePressed)
+        tap.numberOfTapsRequired = 1
+        imageButton.addGestureRecognizer(tap)
         print(imageButton.layer)
         let layer = imageButton.layer
         layer.shadowColor = UIColor.blackColor().CGColor
@@ -417,12 +420,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return cell
     }
     
-    func collectionView(collection: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+    @IBAction func imagePressed(sender: UITapGestureRecognizer){
+        let tapLocation = sender.locationInView(self.collectionView)
+        let indexPath = self.collectionView?.indexPathForItemAtPoint(tapLocation)
         if (!self.placesToggle || self.displayPlacesAlbum){
-            viewPost(idArray[indexPath.row])
+            viewPost(idArray[indexPath!.row], image: self.uiImageArr[indexPath!.row])
         }else{
-            displayImagesForAlbum(idArray[indexPath.row])
+            displayImagesForAlbum(idArray[indexPath!.row])
         }
+    }
+    
+    func collectionView(collection: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+
        
     }
     
@@ -461,6 +470,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return sectionInset
     }
     
+
     //calculate offset based on screensize, number of columns, and size of cell then use it to set space between lines
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat{
         let screenSize: CGRect = UIScreen.mainScreen().bounds
@@ -495,31 +505,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
     
-    func viewPost(id : String){
-        self.performSegueWithIdentifier("viewPost", sender: id)
+    func viewPost(id : String, image : UIImage){
+        var imageObj : [String: AnyObject] = ["id": id, "image": image]
+        self.performSegueWithIdentifier("viewPost", sender: imageObj)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         print(segue.identifier)
         if segue.identifier == "viewPost" {
             var image = Image()
-            AWSService().loadImage(String(sender), completion: {(result)->Void in
+            AWSService().loadImage(sender!["id"] as! String, completion: {(result)->Void in
                 image = result
+                if let destinationVC = segue.destinationViewController as? viewPostController{
+                    destinationVC.imageUpvotes = image.totalScore
+                    destinationVC.userName = String(self.userName)
+                    destinationVC.userNameOP = (self.userName as?String)!
+                    destinationVC.imgView.image = sender!["image"] as! UIImage
+                    destinationVC.imageID = image.imageID
+                    destinationVC.imageTitle = image.placeTitle
+                    destinationVC.caption = image.caption
+                    destinationVC.userID = self.userID
+                }
+                
+
+
+                
+
             })
-            if let destinationVC = segue.destinationViewController as? viewPostController{
-                var imgData = UIImage()
-                AWSService().getImageFromUrl(String(image.imageID) + "_" + self.previousLocationName, completion: {(result)->Void in
-                    imgData = result
-                })
-                destinationVC.imageUpvotes = image.totalScore
-                destinationVC.userName = String(self.userName)
-                destinationVC.userNameOP = (userName as?String)!
-                destinationVC.imageTapped = imgData
-                destinationVC.imageID = image.imageID
-                destinationVC.imageTitle = image.placeTitle
-                destinationVC.caption = image.caption
-                destinationVC.userID = self.userID
-            }
         }else if segue.identifier == "PickLocation"{
             
             if let destinationVC = segue.destinationViewController as? PickLocationController{

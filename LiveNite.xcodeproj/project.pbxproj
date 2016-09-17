@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0813DA1D0BA6DE00CE0C70 /* User.swift */; };
+		0A48A2941D8A1D9C00E70833 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48A2931D8A1D9C00E70833 /* EventController.swift */; };
 		0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C705C1D1A268600795D20 /* PostCommentController.swift */; };
 		0A6014B91D458CC300AE5AF6 /* AWSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6014B81D458CC300AE5AF6 /* AWSService.swift */; };
 		0A659ECC1D10CE5A0000E66D /* CommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A659ECB1D10CE5A0000E66D /* CommentController.swift */; };
@@ -52,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		0A0813DA1D0BA6DE00CE0C70 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0A48A2931D8A1D9C00E70833 /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		0A4C705C1D1A268600795D20 /* PostCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentController.swift; sourceTree = "<group>"; };
 		0A6014B81D458CC300AE5AF6 /* AWSService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSService.swift; sourceTree = "<group>"; };
 		0A659ECB1D10CE5A0000E66D /* CommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentController.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				15DDCC221B5F381F00E87EA1 /* ViewController.swift */,
 				6B69ED911C321FF8000785EF /* viewPostController.swift */,
 				6B69ED991C34BF0E000785EF /* GoogleDataProvider.swift */,
+				0A48A2931D8A1D9C00E70833 /* EventController.swift */,
 			);
 			name = View_Controller_Classes;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				6B7122F21D49275E00EB0A30 /* Comment.swift in Sources */,
 				0A6014B91D458CC300AE5AF6 /* AWSService.swift in Sources */,
 				0AA2AB5C1C86878A00488A56 /* ProfileController.swift in Sources */,
+				0A48A2941D8A1D9C00E70833 /* EventController.swift in Sources */,
 				15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */,
 				0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */,
 				6B7122F01D49275400EB0A30 /* Image.swift in Sources */,

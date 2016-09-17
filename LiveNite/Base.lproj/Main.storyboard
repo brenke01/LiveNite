@@ -235,7 +235,7 @@
         <!--Events -->
         <scene sceneID="Tvm-t7-xQi">
             <objects>
-                <viewController title="Events " id="F4t-Tb-Llf" sceneMemberID="viewController">
+                <viewController title="Events " id="F4t-Tb-Llf" customClass="EventController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ko0-1f-6Di"/>
                         <viewControllerLayoutGuide type="bottom" id="tlm-bx-Mac"/>
@@ -243,6 +243,31 @@
                     <view key="view" contentMode="scaleToFill" id="xEE-DK-Tpz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2XU-Ty-rX2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kVi-I8-4uL">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Cz-a1-R08">
+                                                <rect key="frame" x="126" y="14" width="68" height="42"/>
+                                                <state key="normal" title="Add"/>
+                                                <connections>
+                                                    <segue destination="ctm-SE-zUG" kind="show" id="L1u-PB-IlK"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.08235294118" green="0.08235294118" blue="0.08235294118" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="142" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lUg-JV-mSz">
+                                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="Places " id="WFl-Do-U4G">
@@ -253,6 +278,9 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
+                    <connections>
+                        <outlet property="tableView" destination="lUg-JV-mSz" id="tnu-aG-vnl"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7cf-rz-aIB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -315,7 +343,8 @@
         <scene sceneID="Z93-GK-q7N">
             <objects>
                 <tabBarController storyboardIdentifier="tabBarController" id="vv2-Bv-Itn" sceneMemberID="viewController">
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="568"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="fy1-Qs-6Gf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -334,6 +363,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEb-5Q-joi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1076" y="504"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="xEy-oO-ReP">
+            <objects>
+                <viewController id="ctm-SE-zUG" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fx9-ka-Doa"/>
+                        <viewControllerLayoutGuide type="bottom" id="jvR-oO-OZj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2Ty-Uq-CH4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vwL-O5-fZP">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <subviews>
+                                    <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RFM-xl-X8R">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <color key="barTintColor" red="0.8079392997" green="0.76382453100000003" blue="0.27771585910000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <items>
+                                            <navigationItem title="Add Event " id="4Kq-eG-LMj"/>
+                                        </items>
+                                    </navigationBar>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="568"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="atu-A1-lNd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-150" y="1405"/>
         </scene>
         <!--Camera-->
         <scene sceneID="BeN-rJ-Idf">
@@ -487,10 +551,10 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <imageView key="backgroundView" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Background_Gradient" id="LZI-4K-ESU">
+                                <activityIndicatorView key="backgroundView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" id="eqe-8U-C42">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="452"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </imageView>
+                                </activityIndicatorView>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionViewCell" id="9KN-Q6-PXq">
                                         <rect key="frame" x="0.0" y="0.0" width="120" height="209"/>
@@ -508,7 +572,7 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UIL-5m-K2c">
-                                <rect key="frame" x="0.0" y="1" width="320" height="64"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F1R-nd-wG5">
                                         <rect key="frame" x="137" y="26" width="47" height="30"/>
@@ -550,6 +614,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
+                        <outlet property="activityLoader" destination="eqe-8U-C42" id="Wgh-WV-qKk"/>
                         <outlet property="collectionView" destination="JNH-rE-kyH" id="x07-VO-fX6"/>
                         <outlet property="imagesTypeBtn" destination="F1R-nd-wG5" id="5ZO-el-pt7"/>
                         <outlet property="sortBtn" destination="xic-R6-yKC" id="FTZ-ha-hQa"/>
@@ -853,6 +918,6 @@
         <image name="loadingImage" width="640" height="799"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lOC-7T-djj"/>
+        <segue reference="lgQ-mK-qrS"/>
     </inferredMetricsTieBreakers>
 </document>

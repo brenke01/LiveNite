@@ -202,8 +202,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func loadImageDetail(){
-        imgView.image = imageTapped
-        calculateHotColdScore()
+        imgView.image = self.imageTapped
+        //calculateHotColdScore()
         upvotesLabel.text = String(imageUpvotes)
         //Needs styling
         upvotesLabel.textColor = UIColor.whiteColor()
@@ -335,9 +335,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        AWSService().loadImage(imageID, completion: {(result)->Void in
-            self.imageData = result
-        })
+//        AWSService().loadImage(imageID, completion: {(result)->Void in
+//            self.imageData = result
+//        })
 
         //fetch check in
         AWSService().loadCheckIn(self.userID + "_" + self.imageData.placeTitle, completion: {(result)->Void in
