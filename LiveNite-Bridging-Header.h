@@ -15,5 +15,7 @@
 #import <AWSDynamoDB/AWSDynamoDB.h>
 #import <AWSCognito/AWSCognito.h>
 #import <AWSS3/AWSS3.h>
+#import "AWSConstants.h"
+#import "SendGeoRequest.h"
 
 #endif /* LiveNite_Bridging_Header_h */

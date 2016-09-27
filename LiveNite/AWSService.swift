@@ -100,9 +100,12 @@ class AWSService {
                 print("exception")
             }
             if (task.result != nil){
-                
+
                 image = task.result as! Image
-                completion(result:image)
+                dispatch_async(dispatch_get_main_queue(), {
+                    completion(result:image)
+                })
+                
             }
             return image
         })
@@ -197,7 +200,9 @@ class AWSService {
                 print("USER id is ")
                 
                 print(user.userID)
-                completion(result: user)
+                dispatch_async(dispatch_get_main_queue(), {
+                    completion(result:user)
+                })
 
             }
             return user

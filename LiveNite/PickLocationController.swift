@@ -281,12 +281,23 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             myImage.placeLat = self.chosenLatFromMap
             myImage.placeLong = self.chosenLongFromMap
             myImage.url = imageURL
+            
             let formatter = NSDateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             myImage.timePosted = formatter.stringFromDate(date)
             myImage.totalScore = 0
+            var geoCoder = CLGeocoder()
+            geoCoder.reverseGeocodeLocation(self.locationManager.location!, completionHandler: {(placemarks, error) -> Void in
+                if (error != nil){
+                    return
+                }
+                var placemark = placemarks![0]
+                var zipcode = placemark.postalCode
+                myImage.zipcode = zipcode!
+                AWSService().save(myImage)
+            })
             
-            AWSService().save(myImage)
+            
         })
         
 

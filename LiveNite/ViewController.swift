@@ -44,6 +44,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet var collectionView: UICollectionView?
     @IBOutlet weak var activityLoader: UIActivityIndicatorView!
 
+    
+    var messageFrame = UIView()
+    var stringLabel = UILabel()
+    var activityIndicator = UIActivityIndicatorView()
     //variable for accessing location
     var locationManager = CLLocationManager()
     var userLocation = CLLocationCoordinate2D()
@@ -144,7 +148,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        progressBarDisplayer("Loading", true)
         profileMenu.hidden = true
         
         self.view.hidden = true
@@ -183,14 +187,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             })
             
         })
-        var placesViewController = PlacesViewController()
+        let placesViewController = PlacesViewController()
+
         placesViewController.getImages({(result)->Void in
             self.imageArr = result
             self.doneLoading = true
             self.imageArrLength = self.imageArr.count
             self.collectionView!.reloadData()
         })
-
        
         //self.user = AWSService().loadUser(self.userID)
 
@@ -331,7 +335,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return self.imageArrLength
     }
     
+    func progressBarDisplayer(msg:String, _ indicator:Bool ) {
+        stringLabel = UILabel(frame: CGRect(x: 50, y: 0, width: 175, height: 50))
+        stringLabel.text = msg
+        stringLabel.textColor = UIColor.whiteColor()
+        messageFrame = UIView(frame: CGRect(x: self.collectionView!.frame.midX - 90, y: self.collectionView!.frame.midY - 100, width: 180, height: 50))
+        messageFrame.layer.cornerRadius = 15
+        messageFrame.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        if indicator {
+            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.White)
+            activityIndicator.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            activityIndicator.startAnimating()
+            messageFrame.addSubview(activityIndicator)
+        }
+        messageFrame.addSubview(stringLabel)
+        self.collectionView!.addSubview(messageFrame)
+    }
+    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
         var doneLoading = false
         var imageArr = [Image]()
         self.uiImageArr = []
@@ -355,7 +377,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 doneLoading = true
                 collectionView.reloadData()
             })
+        }else{
+            placesViewController.getImages({(result)->Void in
+                self.imageArr = result
+                self.doneLoading = true
+                self.imageArrLength = self.imageArr.count
+                self.collectionView!.reloadData()
+            })
         }
+    
         if (self.doneLoading){
         if (hotToggle == 1){
             imageArr = (imageArr as NSArray).sortedArrayUsingDescriptors([
@@ -417,6 +447,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         cell.addSubview(imageButton)
         }
         }
+        self.messageFrame.removeFromSuperview()
         return cell
     }
     
