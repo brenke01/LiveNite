@@ -186,11 +186,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(userID)
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
         navigationBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
-        navigationBar.topItem!.title = imageTitle
         
-        captionLabel.text = caption
         captionLabel.textColor = UIColor.whiteColor()
-        userNameLabel.text = userName
         userNameLabel.textColor = UIColor.whiteColor()
         
         let vote : Vote = AWSService().loadVote(userID+"_"+imageID)
@@ -204,9 +201,17 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     func loadImageDetail(){
         imgView.image = self.imageTapped
         //calculateHotColdScore()
-        upvotesLabel.text = String(imageUpvotes)
+        upvotesLabel.text = String(imageData.totalScore)
         //Needs styling
         upvotesLabel.textColor = UIColor.whiteColor()
+    }
+    
+    func imageData_DisplayToUI()
+    {
+        upvotesLabel.text = String(imageData.totalScore)
+        captionLabel.text = imageData.caption
+        userNameLabel.text = imageData.owner
+        navigationBar.topItem!.title = imageData.placeTitle
     }
     
     func registerVote(sender: UIButton)
@@ -226,7 +231,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             //set all parameters in case it is a new vote
             vote.voteValue = modifier
             vote.voteID = userID + "_" + imageID
-            vote.owner = userName
+            vote.owner = userID
             vote.imageID = imageID
             
             if modifier == 1 {
@@ -275,7 +280,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         AWSService().loadUser(self.imageData.userID,completion: {(result)->Void in
             self.user = result
         })
-
+        print("User ID = " + userID)
         user.score += change
         AWSService().save(user)
         AWSService().save(self.imageData)
@@ -335,16 +340,18 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        AWSService().loadImage(imageID, completion: {(result)->Void in
-//            self.imageData = result
-//        })
+        print("IMAGE ID: "+self.imageID)
+        AWSService().loadImage(imageID, completion: {(result: Image) in
+            self.imageData = result
+            self.imageData_DisplayToUI()
+        })
 
         //fetch check in
         AWSService().loadCheckIn(self.userID + "_" + self.imageData.placeTitle, completion: {(result)->Void in
             self.checkInRequest = result
         })
-        loadUIDetails()
         loadImageDetail()
+        loadUIDetails()
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest

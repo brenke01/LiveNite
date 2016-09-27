@@ -90,6 +90,7 @@ class AWSService {
     
     func loadImage(primaryKeyValue: String, completion:(result: Image)->Void) -> Image{
         var image : Image = Image()
+        print("Image ID: " + primaryKeyValue)
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         dynamoDBObjectMapper.load(Image.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
@@ -101,11 +102,11 @@ class AWSService {
             }
             if (task.result != nil){
 
+
                 image = task.result as! Image
                 dispatch_async(dispatch_get_main_queue(), {
                     completion(result:image)
                 })
-                
             }
             return image
         })
