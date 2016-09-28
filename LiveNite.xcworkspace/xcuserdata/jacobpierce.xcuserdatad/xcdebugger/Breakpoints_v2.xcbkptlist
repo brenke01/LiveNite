@@ -267,7 +267,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "30"
             endingLineNumber = "30"
-            landmarkName = "getGroupedImages()"
+            landmarkName = "getGroupedImages(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -347,8 +347,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "516"
             endingLineNumber = "516"
-            landmarkName = "prepareForSegue(_:sender:)"
-            landmarkType = "5">
+            landmarkName = "ViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -363,7 +363,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "510"
             endingLineNumber = "510"
-            landmarkName = "viewPost(_:image:)"
+            landmarkName = "collectionView(_:layout:minimumLineSpacingForSectionAtIndex:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
