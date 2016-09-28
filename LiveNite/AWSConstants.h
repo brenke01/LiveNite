@@ -6,8 +6,6 @@
 //  Copyright © 2016 LiveNite. All rights reserved.
 //
 
-
-@end
 #import <Foundation/Foundation.h>
 
 extern NSString *const AWSElasticBeanstalkEndpoint;

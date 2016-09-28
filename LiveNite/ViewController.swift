@@ -552,7 +552,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 print(sender!["image"] as! UIImage)
                 destinationVC.imageTapped = sender!["image"] as! UIImage
                 print("IMAGE ID: " + image.imageID)
-                destinationVC.imageID = sender!["id"] as! String
+                destinationVC.imageID = sender!["id"] as! String!
             }
             print("IMAGE ID: " + image.imageID)
             

@@ -8,4 +8,6 @@
 
 - (void) someMethod;
 
+- (void)sendRequest:(NSDictionary *)requestDictionary;
+
 @end

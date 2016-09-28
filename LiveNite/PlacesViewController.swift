@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import AWSDynamoDB
 import SwiftyJSON
+
 class PlacesViewController{
     
     var bounds = [CLLocation]()
@@ -174,7 +175,7 @@ class PlacesViewController{
     
     
     func sendGeo() {
-        var sendreq : SendGeoRequest = SendGeoRequest()
+        var sendReq : SendGeoRequest = SendGeoRequest()
         var loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
         var requestDictionary = ["action": "query-radius", "request": ["lat": Int(loc.latitude), "lng": Int(loc.longitude), "radiusInMeter": Int(5000)]]
         sendReq.sendRequest(requestDictionary)

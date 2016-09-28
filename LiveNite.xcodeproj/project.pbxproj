@@ -62,7 +62,6 @@
 		0A4C705C1D1A268600795D20 /* PostCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentController.swift; sourceTree = "<group>"; };
 		0A55220B1D9A12BC00D1330E /* SendGeoRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendGeoRequest.h; sourceTree = "<group>"; };
 		0A55220C1D9A12BC00D1330E /* SendGeoRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendGeoRequest.m; sourceTree = "<group>"; };
-		0A55220F1D9A173200D1330E /* SendGeoRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SendGeoRequest.m; path = LiveNite/SendGeoRequest.m; sourceTree = "<group>"; };
 		0A6014B81D458CC300AE5AF6 /* AWSService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSService.swift; sourceTree = "<group>"; };
 		0A659ECB1D10CE5A0000E66D /* CommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentController.swift; sourceTree = "<group>"; };
 		0AA2AB5B1C86878A00488A56 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
@@ -130,7 +129,6 @@
 		15DDCC0F1B5F381F00E87EA1 = {
 			isa = PBXGroup;
 			children = (
-				0A55220F1D9A173200D1330E /* SendGeoRequest.m */,
 				6B69ED971C34BA6C000785EF /* Podfile */,
 				6BDCEDA21C210E68004C3029 /* CoreLocation.framework */,
 				15DDCC1A1B5F381F00E87EA1 /* LiveNite */,
@@ -597,12 +595,13 @@
 				INFOPLIST_FILE = LiveNite/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				"LIBRARY_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				New_Setting = "";
 				New_Setting2 = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "/LiveNite/LiveNite-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "LiveNite/LiveNite-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -624,12 +623,13 @@
 				INFOPLIST_FILE = LiveNite/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				"LIBRARY_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				New_Setting = "";
 				New_Setting2 = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "/LiveNite/LiveNite-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "LiveNite/LiveNite-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
