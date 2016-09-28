@@ -6,8 +6,6 @@
 //
 //
 
-#ifndef LiveNite_Bridging_Header_h
-#define LiveNite_Bridging_Header_h
 
 #import <GoogleMaps/GoogleMaps.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -18,4 +16,3 @@
 #import "AWSConstants.h"
 #import "SendGeoRequest.h"
 
-#endif /* LiveNite_Bridging_Header_h */
