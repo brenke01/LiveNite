@@ -178,7 +178,7 @@ class PlacesViewController{
         var sendReq : SendGeoRequest = SendGeoRequest()
         var loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
         var requestDictionary = ["action": "query-radius", "request": ["lat": Int(loc.latitude), "lng": Int(loc.longitude), "radiusInMeter": Int(5000)]]
-        sendReq.sendRequest(requestDictionary)
+        sendReq.sendRequest(loc, arg2: 1000)
 //        do{
 //
 //        var request = NSMutableURLRequest(URL: NSURL(string: AWSElasticBeanstalkEndpoint)!)

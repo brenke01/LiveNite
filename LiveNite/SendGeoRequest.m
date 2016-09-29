@@ -20,7 +20,15 @@
 }
 
 
-- (void)sendRequest:(NSDictionary *)requestDictionary {
+- (void)sendRequest:(CLLocationCoordinate2D)location arg2:(double)radius {
+    
+    NSDictionary *requestDictionary = @{@"action" : @"query-radius",
+                          @"request" : @{
+                                  @"lat" : [NSNumber numberWithDouble:location.latitude],
+                                  @"lng" : [NSNumber numberWithDouble:location.longitude],
+                                  @"radiusInMeter" : [NSNumber numberWithDouble:radius]
+                                  }
+                          };
     NSLog(@"Request:\n%@", requestDictionary);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://livenitegeohash-env.us-east-1.elasticbeanstalk.com"]
@@ -33,8 +41,28 @@
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (conn) {
         self.data = [NSMutableData data];
-        NSLog(self.data);
+        NSDictionary *resultDictionary = [NSJSONSerialization JSONObjectWithData:self.data
+                                                                         options:kNilOptions
+                                                                           error:nil];
+        self.resultDict = resultDictionary;
+
     }
+    
+    
 }
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [self.data appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSDictionary *resultDictionary = [NSJSONSerialization JSONObjectWithData:self.data
+                                                                     options:kNilOptions
+                                                                       error:nil];
+    NSLog(@"Response:\n%@", resultDictionary);
+    
+
+}
+
 
 @end

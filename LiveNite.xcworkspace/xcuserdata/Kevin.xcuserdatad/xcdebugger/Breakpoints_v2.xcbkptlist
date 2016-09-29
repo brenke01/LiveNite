@@ -1253,7 +1253,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "161"
             endingLineNumber = "161"
-            landmarkName = "getImageFromUrl(_:completion:)"
+            landmarkName = "loadUser(_:newUserName:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1285,7 +1285,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "162"
             endingLineNumber = "162"
-            landmarkName = "getImageFromUrl(_:completion:)"
+            landmarkName = "loadUser(_:newUserName:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1301,7 +1301,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "163"
             endingLineNumber = "163"
-            landmarkName = "getImageFromUrl(_:completion:)"
+            landmarkName = "loadUser(_:newUserName:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1317,8 +1317,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "219"
             endingLineNumber = "219"
-            landmarkName = "AWSService"
-            landmarkType = "3">
+            landmarkName = "loadUserAndSaveUserName(_:newUserName:)"
+            landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1420,31 +1420,31 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.FBLoginController.saveUserToCoreData (Swift.AnyObject) -&gt; ()"
+                  symbolName = "function signature specialization &lt;Arg[0] = Owned To Guaranteed&gt; of LiveNite.FBLoginController.saveUserToCoreData (Swift.AnyObject) -&gt; ()"
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/FBLoginController.swift"
-                  timestampString = "496630581.181041"
+                  timestampString = "496804878.134094"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "86"
                   endingLineNumber = "86"
-                  offsetFromSymbolStart = "120">
+                  offsetFromSymbolStart = "84">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.FBLoginController.(saveUserToCoreData (Swift.AnyObject) -&gt; ()).(closure #1)"
+                  symbolName = "function signature specialization &lt;Arg[0] = Owned To Guaranteed&gt; of LiveNite.FBLoginController.saveUserToCoreData (Swift.AnyObject) -&gt; ()"
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/FBLoginController.swift"
-                  timestampString = "496630581.181168"
+                  timestampString = "496804878.134203"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "16">
+                  startingLineNumber = "86"
+                  endingLineNumber = "86"
+                  offsetFromSymbolStart = "144">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1815,6 +1815,38 @@
             endingLineNumber = "419"
             landmarkName = "collectionView(_:cellForItemAtIndexPath:)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[0] = Owned To Guaranteed, Arg[1] = Owned To Guaranteed&gt; of LiveNite.ViewController.collectionView (__ObjC.UICollectionView, cellForItemAtIndexPath : __ObjC.NSIndexPath) -&gt; __ObjC.UICollectionViewCell"
+                  moduleName = "LiveNite"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewController.swift"
+                  timestampString = "496804878.136544"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "419"
+                  endingLineNumber = "419"
+                  offsetFromSymbolStart = "4948">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[0] = Owned To Guaranteed, Arg[1] = Owned To Guaranteed&gt; of LiveNite.ViewController.collectionView (__ObjC.UICollectionView, cellForItemAtIndexPath : __ObjC.NSIndexPath) -&gt; __ObjC.UICollectionViewCell"
+                  moduleName = "LiveNite"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewController.swift"
+                  timestampString = "496804878.136628"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "419"
+                  endingLineNumber = "419"
+                  offsetFromSymbolStart = "5128">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1829,7 +1861,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "118"
             endingLineNumber = "118"
-            landmarkName = "loadImage(_:completion:)"
+            landmarkName = "getImageFromUrl(_:completion:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1943,38 +1975,6 @@
             endingLineNumber = "546"
             landmarkName = "prepareForSegue(_:sender:)"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.ViewController.prepareForSegue (__ObjC.UIStoryboardSegue, sender : Swift.Optional&lt;Swift.AnyObject&gt;) -&gt; ()"
-                  moduleName = "LiveNite"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewController.swift"
-                  timestampString = "496630581.186935"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "546"
-                  endingLineNumber = "546"
-                  offsetFromSymbolStart = "644">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.ViewController.(prepareForSegue (__ObjC.UIStoryboardSegue, sender : Swift.Optional&lt;Swift.AnyObject&gt;) -&gt; ()).(closure #1)"
-                  moduleName = "LiveNite"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewController.swift"
-                  timestampString = "496630581.187038"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "546"
-                  endingLineNumber = "546"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2087,38 +2087,6 @@
             endingLineNumber = "302"
             landmarkName = "calculateHotColdScore()"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.viewPostController.calculateHotColdScore () -&gt; ()"
-                  moduleName = "LiveNite"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/viewPostController.swift"
-                  timestampString = "496630581.191214"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "302"
-                  endingLineNumber = "302"
-                  offsetFromSymbolStart = "536">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.viewPostController.(calculateHotColdScore () -&gt; ()).(closure #1)"
-                  moduleName = "LiveNite"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/viewPostController.swift"
-                  timestampString = "496630581.191291"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "303"
-                  endingLineNumber = "303"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2135,6 +2103,38 @@
             endingLineNumber = "205"
             landmarkName = "loadImageDetail()"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LiveNite.viewPostController.loadImageDetail () -&gt; ()"
+                  moduleName = "LiveNite"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/viewPostController.swift"
+                  timestampString = "496804878.145389"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "206"
+                  endingLineNumber = "206"
+                  offsetFromSymbolStart = "412">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LiveNite.viewPostController.viewDidLoad () -&gt; ()"
+                  moduleName = "LiveNite"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/viewPostController.swift"
+                  timestampString = "496804878.145467"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "206"
+                  endingLineNumber = "206"
+                  offsetFromSymbolStart = "1496">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2240,11 +2240,109 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/SendGeoRequest.h"
-            timestampString = "496637894.151184"
+            timestampString = "496803620.995345"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "12"
-            endingLineNumber = "12">
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "@interface SendGeoRequest"
+            landmarkType = "2">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/SendGeoRequest.m"
+            timestampString = "496803620.995345"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "-sendRequest:arg2:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/SendGeoRequest.m"
+            timestampString = "496800455.017971"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "-sendRequest:arg2:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/PlacesViewController.swift"
+            timestampString = "496800712.494808"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
+            landmarkName = "sendGeo()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/SendGeoRequest.m"
+            timestampString = "496804617.351816"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "-connectionDidFinishLoading:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/SendGeoRequest.m"
+            timestampString = "496804618.879965"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "-connection:didReceiveData:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/SendGeoRequest.m"
+            timestampString = "496804923.14786"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "-connectionDidFinishLoading:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
