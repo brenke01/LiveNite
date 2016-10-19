@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0813DA1D0BA6DE00CE0C70 /* User.swift */; };
+		0A3F302A1D9CAE69007AFB06 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F30291D9CAE69007AFB06 /* Geohash.swift */; };
 		0A48A2941D8A1D9C00E70833 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48A2931D8A1D9C00E70833 /* EventController.swift */; };
 		0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C705C1D1A268600795D20 /* PostCommentController.swift */; };
 		0A55220E1D9A16E300D1330E /* SendGeoRequest.h in Sources */ = {isa = PBXBuildFile; fileRef = 0A55220B1D9A12BC00D1330E /* SendGeoRequest.h */; };
@@ -56,6 +57,7 @@
 
 /* Begin PBXFileReference section */
 		0A0813DA1D0BA6DE00CE0C70 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0A3F30291D9CAE69007AFB06 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Geohash.swift; path = LiveNite/Geohash.swift; sourceTree = "<group>"; };
 		0A48A2931D8A1D9C00E70833 /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		0A4C705C1D1A268600795D20 /* PostCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentController.swift; sourceTree = "<group>"; };
 		0A55220B1D9A12BC00D1330E /* SendGeoRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendGeoRequest.h; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 		15DDCC0F1B5F381F00E87EA1 = {
 			isa = PBXGroup;
 			children = (
+				0A3F30291D9CAE69007AFB06 /* Geohash.swift */,
 				6B69ED971C34BA6C000785EF /* Podfile */,
 				6BDCEDA21C210E68004C3029 /* CoreLocation.framework */,
 				15DDCC1A1B5F381F00E87EA1 /* LiveNite */,
@@ -410,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A3F302A1D9CAE69007AFB06 /* Geohash.swift in Sources */,
 				0A55220E1D9A16E300D1330E /* SendGeoRequest.h in Sources */,
 				0ADD5D841D94ACD300DCC3C5 /* AWSConstants.swift in Sources */,
 				6B69ED9A1C34BF0E000785EF /* GoogleDataProvider.swift in Sources */,
@@ -584,7 +588,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LiveNite/LiveNite-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -612,7 +616,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LiveNite/LiveNite-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

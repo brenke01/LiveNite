@@ -234,7 +234,8 @@ class AWSService {
     
     
     
-    func loadVote(primaryKeyValue: String) -> Vote{
+    func loadVote(primaryKeyValue: String, completion:(result: Vote)->Void) -> Vote{
+
         var vote : Vote = Vote()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         dynamoDBObjectMapper.load(Vote.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
@@ -248,6 +249,9 @@ class AWSService {
             if (task.result != nil){
                 
                 vote = task.result as! Vote
+                dispatch_async(dispatch_get_main_queue(), {
+                    completion(result:vote)
+                })
             }
             return vote
         })

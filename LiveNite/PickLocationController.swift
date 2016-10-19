@@ -268,6 +268,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         var imageURL = ""
         let myImage : Image = Image()
         AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle, completion: {(result)->Void in
+             dispatch_async(dispatch_get_main_queue(), {
             imageURL = result
             myImage.imageID = setId
             myImage.placeTitle = setImageTitle
@@ -286,17 +287,13 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             myImage.timePosted = formatter.stringFromDate(date)
             myImage.totalScore = 0
-            var geoCoder = CLGeocoder()
-            geoCoder.reverseGeocodeLocation(self.locationManager.location!, completionHandler: {(placemarks, error) -> Void in
-                if (error != nil){
-                    return
-                }
-                var placemark = placemarks![0]
-                var zipcode = placemark.postalCode
-                myImage.zipcode = zipcode!
-                AWSService().save(myImage)
+            var geo :Geohash = Geohash()
+           let l =  CLLocationCoordinate2DMake((self.locationManager.location?.coordinate.latitude)!, (self.locationManager.location?.coordinate.longitude)!)
+            let s = l.geohash(10)
+            let index = s.endIndex.advancedBy(-7)
+            myImage.geohash = s.substringToIndex(index)
+            AWSService().save(myImage)
             })
-            
             
         })
         

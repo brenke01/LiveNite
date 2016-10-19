@@ -73,13 +73,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var imageArr = [Image]()
     var uiImageArr = [UIImage]()
     var doneLoading = false
+    var chosenImage = UIImage()
+    var chosenImageObj = Image()
+    var sort = false
     typealias FinishedDownloaded = () -> ()
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         if (item.tag == 1){
             self.placesToggle = false
             self.displayPlacesAlbum = false
-            self.collectionView?.reloadData()
+            //self.collectionView?.reloadData()
         }else if (item.tag == 2){
             
         }else if (item.tag == 3){
@@ -104,14 +107,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func getHotImages() {
-        
+        self.sort = true
         self.hotToggle = 1
         collectionView?.reloadData()
         
     }
     
     func getRecentImages() {
-        
+        self.sort = true
         self.toggleState = 0
         self.hotToggle = 0
         
@@ -128,7 +131,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imagesTypeBtn.setTitle("People", forState: UIControlState.Normal)
             self.placesToggle = false
         }
-        self.collectionView?.reloadData()
+        determineQuery()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -187,14 +190,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             })
             
         })
-        let placesViewController = PlacesViewController()
-
-        placesViewController.getImages({(result)->Void in
-            self.imageArr = result
-            self.doneLoading = true
-            self.imageArrLength = self.imageArr.count
-            self.collectionView!.reloadData()
-        })
+        determineQuery()
        
         //self.user = AWSService().loadUser(self.userID)
 
@@ -311,28 +307,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
-        var imagesArr = [Image]()
-        let placesViewController = PlacesViewController()
-        if (self.placesToggle && !self.displayPlacesAlbum){
-            placesViewController.getGroupedImages({(result)->Void in
-                imagesArr = result
-            })
-        }else if(self.placesToggle && self.displayPlacesAlbum){
-            placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user, completion: {(result)->Void in
-                imagesArr = result
-            })
+        if (self.imageArrLength == 0){
+            return 1
+        }else{
+            return self.imageArrLength
         }
-        
-        self.previousLocationName = ""
-        for image in imagesArr{
-            if(self.previousLocationName != image.placeTitle || !self.placesToggle || self.displayPlacesAlbum){
-                count=count+1
-                self.previousLocationName = image.placeTitle
-            }
-        }
-        self.previousLocationName = ""
-        print(count)
-        return self.imageArrLength
+//        var imagesArr = [Image]()
+//        let placesViewController = PlacesViewController()
+//        if (self.placesToggle && !self.displayPlacesAlbum){
+//            placesViewController.getGroupedImages({(result)->Void in
+//                imagesArr = result
+//            })
+//        }else if(self.placesToggle && self.displayPlacesAlbum){
+//            placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user, completion: {(result)->Void in
+//                imagesArr = result
+//            })
+//        }
+//        
+//        self.previousLocationName = ""
+//        for image in imagesArr{
+//            if(self.previousLocationName != image.placeTitle || !self.placesToggle || self.displayPlacesAlbum){
+//                count=count+1
+//                self.previousLocationName = image.placeTitle
+//            }
+//        }
+//        self.previousLocationName = ""
+//        print(count)
+        return 1
     }
     
     func progressBarDisplayer(msg:String, _ indicator:Bool ) {
@@ -352,76 +353,136 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.collectionView!.addSubview(messageFrame)
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
-        var doneLoading = false
-        var imageArr = [Image]()
-        self.uiImageArr = []
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as UICollectionViewCell
-        cell.backgroundColor = UIColor.yellowColor()
-        var fetchRequest = NSFetchRequest(entityName: "Entity")
-        cell.backgroundColor = UIColor.blackColor()
-        
-        var imageArray : [UIImage] = []
-        
+    func determineQuery(){
         let placesViewController : PlacesViewController = PlacesViewController()
         if (self.placesToggle && !self.displayPlacesAlbum){
-            placesViewController.getGroupedImages({(result)->Void in
-                imageArr = result
-                doneLoading = true
-                collectionView.reloadData()
+            var groupedArr = [Image]()
+            placesViewController.getImages({(result)->Void in
+                var imgArr = result
+                
+                var sortedArray = (imgArr as NSArray).sortedArrayUsingDescriptors([
+                    NSSortDescriptor(key: "placeTitle", ascending: false),
+                    NSSortDescriptor(key: "totalScore", ascending: false)
+                    ]) as! [Image]
+                var found = false
+                for img in sortedArray{
+                    found = false
+                    for var index = 0; index < groupedArr.count; ++index{
+                        if (img.placeTitle == groupedArr[index].placeTitle){
+                            found = true
+                            break
+                        }
+                    }
+                    if (!found){
+                        groupedArr.append(img)
+                    }
+                }
+                self.sort = false
+                self.uiImageArr = []
+                self.idArray = []
+                self.imageArr = []
+                self.imageArr = result
+                self.imageArrLength = groupedArr.count
+                self.doneLoading = true
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.collectionView!.reloadData()
+                })
+                
             })
         }else if(self.placesToggle && self.displayPlacesAlbum){
             placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user, completion: {(result)->Void in
-                imageArr = result
-                doneLoading = true
-                collectionView.reloadData()
+                self.sort = false
+                self.idArray = []
+                self.uiImageArr = []
+                self.imageArr = []
+                self.imageArr = result
+                self.imageArrLength = self.imageArr.count
+                self.doneLoading = true
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.collectionView!.reloadData()
+                })
             })
         }else{
             placesViewController.getImages({(result)->Void in
+                self.sort = false
+                self.uiImageArr = []
+                self.imageArr = []
+                self.idArray = []
                 self.imageArr = result
+                self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
                 self.imageArrLength = self.imageArr.count
+                dispatch_async(dispatch_get_main_queue(), {
                 self.collectionView!.reloadData()
+                })
             })
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        
+        
+        self.uiImageArr = []
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as UICollectionViewCell
+        cell.backgroundColor = UIColor.yellowColor()
+        cell.backgroundColor = UIColor.blackColor()
+        
+        var imageArray : [UIImage] = []
     
         if (self.doneLoading){
         if (hotToggle == 1){
-            imageArr = (imageArr as NSArray).sortedArrayUsingDescriptors([
-                NSSortDescriptor(key: "totalScore", ascending: false)
-                ]) as! [Image]
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "upvotes", ascending: false)]
-        }else{
-            
             self.imageArr = (self.imageArr as NSArray).sortedArrayUsingDescriptors([
                 NSSortDescriptor(key: "totalScore", ascending: false)
                 ]) as! [Image]
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
+        }else{
+            
+            self.imageArr = (self.imageArr as NSArray).sortedArrayUsingDescriptors([
+                NSSortDescriptor(key: "timePosted", ascending: false)
+                ]) as! [Image]
         }
         idArray = []
-        
-        var upVoteArray : [Int] = []
-        for img in self.imageArr{
-            let titleData = img.placeTitle
-            if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
-                let imageID = img.imageID
-                self.previousLocationName = titleData
-                idArray.append(imageID)
-                //Retrieving the image file from S3 example
-                AWSService().getImageFromUrl(String(imageID), completion: {(result)->Void in
-                    self.uiImageArr.append(result)
-                    //self.collectionView?.reloadData()
+        if (!self.sort){
+            var upVoteArray : [Int] = []
+            for img in self.imageArr{
+                let titleData = img.placeTitle
+                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
+                    let imageID = img.imageID
+                    self.previousLocationName = titleData
+                    idArray.append(imageID)
+                    //Retrieving the image file from S3 example
+                    AWSService().getImageFromUrl(String(imageID), completion: {(result)->Void in
+                    
+                        self.uiImageArr.append(result)
+                        //self.collectionView?.reloadData()
+                    
                     })
                 
+                }
             }
         }
+            
         if (self.uiImageArr.count > 0){
+            if (self.placesToggle){
+                imgHeight = 240
+                imgWidth = 240
+                noColumns = 1
+            }else{
+                imgHeight = 160
+                imgWidth = 120
+                noColumns = 2
+            }
         let imageButton = UIButton(frame: CGRectMake(0, 0, CGFloat(imgWidth), CGFloat(imgHeight)))
         imageButton.setImage(self.uiImageArr[indexPath.row], forState: .Normal)
 
-        
+            var titleView = UILabel(frame: CGRectMake(0, imageButton.frame.height * 0.9, imageButton.frame.width, imageButton.frame.height * 0.1))
+            titleView.text = self.imageArr[indexPath.row].placeTitle
+            titleView.textColor = UIColor.whiteColor()
+            titleView.backgroundColor = UIColor.blackColor()
+            titleView.font = UIFont (name: "Helvetica Neue", size: 12)
+            imageButton.addSubview(titleView)
         imageButton.userInteractionEnabled = true
+            imageButton.layer.masksToBounds = true
         
         if (self.placesToggle){
             let albumImageView = UIImageView(frame: CGRectMake(imageButton.frame.width * (0.8), imageButton.frame.height * 0.8,  imageButton.frame.width * 0.15, imageButton.frame.height * 0.2));
@@ -442,9 +503,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         layer.shadowOffset = CGSize(width: 0, height: 20)
         layer.shadowOpacity = 0.4
         layer.shadowRadius = 5
+            layer.masksToBounds = true
+            imageButton.clipsToBounds = true
         
         
         cell.addSubview(imageButton)
+        cell.layer.cornerRadius = 5
+            cell.layer.masksToBounds = true
+            cell.clipsToBounds = true
         }
         }
         self.messageFrame.removeFromSuperview()
@@ -452,12 +518,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func imagePressed(sender: UITapGestureRecognizer){
-        let tapLocation = sender.locationInView(self.collectionView)
+        let tapLocation = sender.locationInView(self.view)
         let indexPath = self.collectionView?.indexPathForItemAtPoint(tapLocation)
         if (!self.placesToggle || self.displayPlacesAlbum){
-            viewPost(idArray[indexPath!.row], image: self.uiImageArr[indexPath!.row])
+            self.chosenImageObj = self.imageArr[indexPath!.row]
+            self.chosenImage = self.uiImageArr[indexPath!.row]
+            self.performSegueWithIdentifier("viewPost", sender: nil)
         }else{
-            displayImagesForAlbum(idArray[indexPath!.row])
+            displayImagesForAlbum(self.imageArr[indexPath!.row])
         }
     }
     
@@ -466,12 +534,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
        
     }
     
-    func displayImagesForAlbum(id: String){
-        var image = Image()
-        AWSService().loadImage(id, completion: {(result)->Void in
-            image = result
-        })
-        self.chosenAlbumLocation = image.placeTitle
+    func displayImagesForAlbum(img: Image){
+
+        self.chosenAlbumLocation = img.placeTitle
+        self.displayPlacesAlbum = true
+        determineQuery()
 //        var fetchRequest = NSFetchRequest(entityName: "Entity")
 //        fetchRequest.predicate = NSPredicate(format: "id= %i", sender.tag)
 //        let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
@@ -481,13 +548,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 //                
 //            }
 //        }
-        self.displayPlacesAlbum = true
-        self.collectionView?.reloadData()
+
     }
+    
     //begin auto layout code
     
     //set size of each square cell to imgSize
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        if (self.placesToggle){
+            imgHeight = 240
+            imgWidth = 240
+            noColumns = 1
+        }else{
+            imgHeight = 160
+            imgWidth = 120
+            noColumns = 2
+        }
         let size = CGSize(width: imgWidth, height: imgHeight)
         return size
     }
@@ -496,7 +572,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width
-        let offset = (screenWidth - CGFloat(noColumns*imgWidth)) / CGFloat(noColumns+1)
+        var offset = CGFloat(0.0)
+        if (noColumns == 2){
+            offset = (screenWidth - CGFloat(noColumns*imgWidth)) / CGFloat(noColumns+1)
+        }else{
+            offset = 25
+        }
         let sectionInset = UIEdgeInsets(top: offset/2, left: offset, bottom: offset/2, right: offset)
         return sectionInset
     }
@@ -506,7 +587,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat{
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width
-        let offset = (screenWidth - CGFloat(noColumns*imgWidth)) / CGFloat(2*(noColumns+1))
+        var offset = CGFloat(0.0)
+        if (noColumns == 2){
+            offset = (screenWidth - CGFloat(noColumns*imgWidth)) / CGFloat(2*(noColumns+1))
+        }else{
+            offset = 25
+
+        }
         return offset
     }
     
@@ -534,25 +621,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.performSegueWithIdentifier("PickLocation", sender: 1)
         
     }
-
-    
-    func viewPost(id : String, image : UIImage){
-        var imageObj : [String : AnyObject] = ["id": id, "image": image]
-        print(imageObj["id"])
-        print(imageObj["image"])
-        self.performSegueWithIdentifier("viewPost", sender: imageObj)
-    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         print(segue.identifier)
         if segue.identifier == "viewPost" {
             var image = Image()
-            print(sender!["image"] as! UIImage)
+          
             if let destinationVC = segue.destinationViewController as? viewPostController{
-                print(sender!["image"] as! UIImage)
-                destinationVC.imageTapped = sender!["image"] as! UIImage
+               
+                destinationVC.imageTapped = self.chosenImage
                 print("IMAGE ID: " + image.imageID)
-                destinationVC.imageID = sender!["id"] as! String!
+                destinationVC.imageObj = self.chosenImageObj
+                destinationVC.imageID = self.chosenImageObj.imageID
             }
             print("IMAGE ID: " + image.imageID)
             
@@ -594,7 +674,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.collectionView?.reloadData()
+        //self.collectionView?.reloadData()
         
     }
     

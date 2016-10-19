@@ -53,6 +53,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var user = User()
     var imageData = Image()
     var checkInRequest = CheckIn()
+    var imageObj = Image()
+    var vote = Vote()
     
     //end var zone
     
@@ -190,20 +192,66 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         captionLabel.textColor = UIColor.whiteColor()
         userNameLabel.textColor = UIColor.whiteColor()
         
-        let vote : Vote = AWSService().loadVote(userID+"_"+imageID)
-        if vote.voteValue == 1{
-            upvoteButton.alpha = 0.5
-        } else if vote.voteValue == -1{
-            downvoteButton.alpha = 0.5
+        
+        AWSService().loadVote(userID + "_" + imageID,completion: {(result)->Void in
+            self.vote = result
+        if self.vote.voteValue == 1{
+            self.upvoteButton.alpha = 0.5
+        } else if self.vote.voteValue == -1{
+            self.downvoteButton.alpha = 0.5
         }
+        })
+        
     }
     
     func loadImageDetail(){
+        //Query to check if user can vote
+        hasVoted({(result)->Void in
+            var voteArr = result
+            if (voteArr.count > 0){
+               var vote = voteArr[0]
+                var voteValue = vote.voteValue
+                
+            }
+
+        })
         imgView.image = self.imageTapped
         //calculateHotColdScore()
         upvotesLabel.text = String(imageData.totalScore)
         //Needs styling
         upvotesLabel.textColor = UIColor.whiteColor()
+        
+    }
+    
+    func hasVoted(completion:(result:[Vote])->Void)->[Vote]{
+        var votesArray = [Vote]()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        var queryExpression = AWSDynamoDBQueryExpression()
+        queryExpression.indexName = "imageID-owner-index"
+        queryExpression.hashKeyAttribute = "imageID"
+        queryExpression.hashKeyValues = self.imageObj.imageID
+        queryExpression.rangeKeyConditionExpression = "owner = :val"
+        queryExpression.filterExpression = "placeTitle = :placeTitle"
+        queryExpression.expressionAttributeValues = [":val": self.imageObj.owner]
+        dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continueWithBlock({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                var output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                for vote  in output.items {
+                    let vote : Vote = vote as! Vote
+                    votesArray.append(vote)
+                }
+                completion(result:votesArray)
+            }
+            return votesArray
+        })
+        return votesArray
+
     }
     
     func imageData_DisplayToUI()
@@ -220,73 +268,74 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         let currentDate = NSDate()
-        
-        let vote : Vote = AWSService().loadVote(userID + "_" + imageID)
-        
-        //change vote status appropriately based on current vote state
-        var change = 0
-        if vote.voteValue == 0 {
-            
-            change = modifier
-            //set all parameters in case it is a new vote
-            vote.voteValue = modifier
-            vote.voteID = userID + "_" + imageID
-            vote.owner = userID
-            vote.imageID = imageID
-            
-            if modifier == 1 {
-                upvoteButton.alpha = 0.5
-            } else if modifier == -1 {
-                downvoteButton.alpha = 0.5
+
+            //change vote status appropriately based on current vote state
+            var change = 0
+            if vote.voteValue == 0 {
+                
+                change = modifier
+                //set all parameters in case it is a new vote
+                vote.voteValue = modifier
+                vote.voteID = self.userID + "_" + self.imageID
+                vote.owner = self.userID
+                vote.imageID = self.imageID
+                
+                if modifier == 1 {
+                    self.upvoteButton.alpha = 0.5
+                } else if modifier == -1 {
+                    self.downvoteButton.alpha = 0.5
+                }
+                
+            } else if vote.voteValue == 1 {
+                
+                if modifier == 1 {
+                    change = -1
+                    self.upvoteButton.alpha = 1.0
+                    self.downvoteButton.alpha = 1.0
+                } else if modifier == -1 {
+                    change = -2
+                    self.upvoteButton.alpha = 0.5
+                    self.downvoteButton.alpha = 1.0
+                }
+                vote.voteValue += change
+                
+            } else if vote.voteValue == -1 {
+                
+                if modifier == 1 {
+                    change = 2
+                    self.upvoteButton.alpha = 0.5
+                    self.downvoteButton.alpha = 1.0
+                } else if modifier == -1 {
+                    change = 1
+                    self.upvoteButton.alpha = 1.0
+                    self.downvoteButton.alpha = 1.0
+                }
+                vote.voteValue += change
+                
+                
+            } else {
+                print("vote.voteValue is not a valid number")
             }
+            //update time of vote regardless of initial state
+            vote.timeVoted = dateFormatter.stringFromDate(currentDate)
+            vote.owner = self.imageObj.owner
+            AWSService().save(vote)
             
-        } else if vote.voteValue == 1 {
+            //update owner of images score
+            self.imageData.totalScore += change
+            AWSService().loadUser(self.imageData.userID,completion: {(result)->Void in
+                self.user = result
+            })
+            print("User ID = " + self.userID)
+            self.user.score += change
+            AWSService().save(self.user)
+            AWSService().save(self.imageData)
             
-            if modifier == 1 {
-                change = -1
-                upvoteButton.alpha = 1.0
-                downvoteButton.alpha = 1.0
-            } else if modifier == -1 {
-                change = -2
-                upvoteButton.alpha = 0.5
-                downvoteButton.alpha = 1.0
-            }
-            vote.voteValue += change
-            
-        } else if vote.voteValue == -1 {
-            
-            if modifier == 1 {
-                change = 2
-                upvoteButton.alpha = 0.5
-                downvoteButton.alpha = 1.0
-            } else if modifier == -1 {
-                change = 1
-                upvoteButton.alpha = 1.0
-                downvoteButton.alpha = 1.0
-            }
-            vote.voteValue += change
-            
-            
-        } else {
-            print("vote.voteValue is not a valid number")
-        }
-        //update time of vote regardless of initial state
-        vote.timeVoted = dateFormatter.stringFromDate(currentDate)
+            //update label with correct score
+            self.upvotesLabel.text = String(self.imageData.totalScore)
+
         
-        AWSService().save(vote)
         
-        //update owner of images score
-        self.imageData.totalScore += change
-        AWSService().loadUser(self.imageData.userID,completion: {(result)->Void in
-            self.user = result
-        })
-        print("User ID = " + userID)
-        user.score += change
-        AWSService().save(user)
-        AWSService().save(self.imageData)
-        
-        //update label with correct score
-        upvotesLabel.text = String(self.imageData.totalScore)
         
     }
     

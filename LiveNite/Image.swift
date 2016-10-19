@@ -25,7 +25,7 @@ class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var userID : String = ""
     var owner : String = ""
     var eventID : String = ""
-    var zipcode: String = ""
+    var geohash: String = ""
     
     class func dynamoDBTableName() -> String{
         return "Images"
