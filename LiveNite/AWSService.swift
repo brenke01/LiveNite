@@ -268,8 +268,8 @@ let testFileURL1 = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathCom
         uploadRequest.body = testFileURL1
         transferManager.upload(uploadRequest).continue(with: AWSExecutor.mainThread(), with: {(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
-                if (task.error!.domain == AWSS3TransferManagerErrorDomain) {
-                    switch task.error!.code {
+                if (task.error!._domain == AWSS3TransferManagerErrorDomain) {
+                    switch task.error!._code {
 
              
                     default:

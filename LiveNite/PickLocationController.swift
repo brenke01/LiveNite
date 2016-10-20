@@ -14,6 +14,8 @@ import AVFoundation
 import CoreData
 import CoreLocation
 import GoogleMaps
+import GooglePlaces
+import GooglePlacePicker
 
 
 class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UISearchDisplayDelegate{
@@ -133,7 +135,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         let config = GMSPlacePickerConfig(viewport: viewport)
         placePicker = GMSPlacePicker(config: config)
 
-        self.placePicker?.pickPlace(callback: { (place: GMSPlace?, error: NSError?) -> Void in
+        placePicker?.pickPlaceWithCallback({ (place: GMSPlace?, error: NSError?)-> Void in
             if let error = error {
                 print("Pick Place error: \(error.localizedDescription)")
                 return
