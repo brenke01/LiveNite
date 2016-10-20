@@ -11,9 +11,9 @@ import AWSDynamoDB
 import AWSS3
 class AWSService {
     
-    func save(myObject : AnyObject){
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.save(myObject as! AWSDynamoDBObjectModel).continueWithBlock({(task: AWSTask) -> AnyObject in
+    func save(_ myObject : AnyObject){
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.save(myObject as! AWSDynamoDBObjectModel).continue({(task: AWSTask) -> AnyObject in
             if ((task.error) != nil){
                 print("error: \(task.error)")
             }
@@ -23,14 +23,14 @@ class AWSService {
             if ((task.result) != nil){
                 print("save")
             }
-            return "success"
+            return "success" as AnyObject
         })
     }
     
-    func loadCheckIn(primaryKeyValue: String, completion:(result:CheckIn)->Void) -> CheckIn{
+    func loadCheckIn(_ primaryKeyValue: String, completion:@escaping (_ result:CheckIn)->Void) -> CheckIn{
         var checkIn : CheckIn = CheckIn()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(CheckIn.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(CheckIn.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
                 
@@ -41,17 +41,17 @@ class AWSService {
             if (task.result != nil){
                 
                 checkIn = task.result as! CheckIn
-                completion(result:checkIn)
+                completion(checkIn)
             }
             return checkIn
         })
         return checkIn
     }
     
-    func loadComment(primaryKeyValue: String) -> Comment{
+    func loadComment(_ primaryKeyValue: String) -> Comment{
         var comment : Comment = Comment()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(Comment.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(Comment.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
                 
@@ -68,10 +68,10 @@ class AWSService {
         return comment
     }
     
-    func loadEvent(primaryKeyValue: String) -> Event{
+    func loadEvent(_ primaryKeyValue: String) -> Event{
         var event : Event = Event()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(Event.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(Event.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
                 
@@ -88,11 +88,11 @@ class AWSService {
         return event
     }
     
-    func loadImage(primaryKeyValue: String, completion:(result: Image)->Void) -> Image{
+    func loadImage(_ primaryKeyValue: String, completion:@escaping (_ result: Image)->Void) -> Image{
         var image : Image = Image()
         print("Image ID: " + primaryKeyValue)
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(Image.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(Image.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
                 
@@ -104,8 +104,8 @@ class AWSService {
 
 
                 image = task.result as! Image
-                dispatch_async(dispatch_get_main_queue(), {
-                    completion(result:image)
+                DispatchQueue.main.async(execute: {
+                    completion(image)
                 })
             }
             return image
@@ -115,17 +115,17 @@ class AWSService {
     
 
     // Retrieving image file from S3
-    func getImageFromUrl(fileName : String, completion:(result:UIImage)->Void) -> UIImage{
-        var transferManager: AWSS3TransferManager = AWSS3TransferManager.defaultS3TransferManager()
+    func getImageFromUrl(_ fileName : String, completion:(_ result:UIImage)->Void) -> UIImage{
+        var transferManager: AWSS3TransferManager = AWSS3TransferManager.default()
         var downloadedImage : UIImage = UIImage()
-        let downloadingFilePath: String = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("FQQhOWsL.jpg")!.absoluteString!
-        let downloadingFileURL: NSURL = NSURL.fileURLWithPath(downloadingFilePath)
+        let downloadingFilePath: String = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("FQQhOWsL.jpg").absoluteString
+        let downloadingFileURL: URL = URL(fileURLWithPath: downloadingFilePath)
         // Construct the download request.
         let downloadRequest: AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
         downloadRequest.bucket = "liveniteimages"
         let url = "https://s3.amazonaws.com/liveniteimages/" + fileName
-        let urlFormat = NSURL(string: url)
-        let imgFromURL = UIImage(data: NSData(contentsOfURL: urlFormat!)!)
+        let urlFormat = URL(string: url)
+        let imgFromURL = UIImage(data: try! Data(contentsOf: urlFormat!))
         downloadRequest.key = fileName
         //let downloadImg = UIImage(data: NSData(contentsOfURL: urlFormat!)!)
         downloadRequest.downloadingFileURL = downloadingFileURL
@@ -153,14 +153,14 @@ class AWSService {
 //            }
 //            return imgFromURL!
 //        })
-        completion(result: imgFromURL!)
+        completion(imgFromURL!)
         return imgFromURL!
     }
     
-    func loadUser(primaryKeyValue: String, newUserName : String) -> User{
+    func loadUser(_ primaryKeyValue: String, newUserName : String) -> User{
         var user : User = User()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
                 
@@ -182,10 +182,10 @@ class AWSService {
         return user
     }
     
-    func loadUser(primaryKeyValue: String, completion:(result:User)->Void) -> User{
+    func loadUser(_ primaryKeyValue: String, completion:@escaping (_ result:User)->Void) -> User{
         var user : User = User()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
                 
@@ -201,8 +201,8 @@ class AWSService {
                 print("USER id is ")
                 
                 print(user.userID)
-                dispatch_async(dispatch_get_main_queue(), {
-                    completion(result:user)
+                DispatchQueue.main.async(execute: {
+                    completion(user)
                 })
 
             }
@@ -211,10 +211,10 @@ class AWSService {
         return user
     }
     
-    func loadUserAndSaveUserName(primaryKeyValue: String, newUserName : String) -> User{
+    func loadUserAndSaveUserName(_ primaryKeyValue: String, newUserName : String) -> User{
         var user : User = User()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
                 
@@ -234,11 +234,11 @@ class AWSService {
     
     
     
-    func loadVote(primaryKeyValue: String, completion:(result: Vote)->Void) -> Vote{
+    func loadVote(_ primaryKeyValue: String, completion:@escaping (_ result: Vote)->Void) -> Vote{
 
         var vote : Vote = Vote()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(Vote.self, hashKey: primaryKeyValue, rangeKey: nil).continueWithBlock({(task: AWSTask) -> AnyObject in
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(Vote.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil){
                 print("error")
                 
@@ -249,8 +249,8 @@ class AWSService {
             if (task.result != nil){
                 
                 vote = task.result as! Vote
-                dispatch_async(dispatch_get_main_queue(), {
-                    completion(result:vote)
+                DispatchQueue.main.async(execute: {
+                    completion(vote)
                 })
             }
             return vote
@@ -258,15 +258,15 @@ class AWSService {
         return vote
     }
     
-    func saveImageToBucket (selectedImage : NSData, id : String, placeName: String, completion:(result:String)->Void) -> String{
-        let transferManager: AWSS3TransferManager = AWSS3TransferManager.defaultS3TransferManager()
+    func saveImageToBucket (_ selectedImage : Data, id : String, placeName: String, completion:@escaping (_ result:String)->Void) -> String{
+        let transferManager: AWSS3TransferManager = AWSS3TransferManager.default()
         let uploadRequest : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
-let testFileURL1 = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("temp")
-        selectedImage.writeToURL(testFileURL1!, atomically: true)
+let testFileURL1 = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("temp")
+        try? selectedImage.write(to: testFileURL1, options: [.atomic])
         uploadRequest.bucket = "liveniteimages"
         uploadRequest.key = id
         uploadRequest.body = testFileURL1
-        transferManager.upload(uploadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: {(task: AWSTask) -> AnyObject in
+        transferManager.upload(uploadRequest).continue(with: AWSExecutor.mainThread(), with: {(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 if (task.error!.domain == AWSS3TransferManagerErrorDomain) {
                     switch task.error!.code {
@@ -283,11 +283,11 @@ let testFileURL1 = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppending
             }
             if (task.result != nil) {
                 var uploadOutput: AWSS3TransferManagerUploadOutput = task.result as! AWSS3TransferManagerUploadOutput
-                completion(result:uploadRequest.key!)
+                completion(uploadRequest.key!)
                 // The file uploaded successfully.
                 // The file uploaded successfully.
             }
-           return uploadRequest.key!
+           return uploadRequest.key! as AnyObject
         })
         return "success"
     }

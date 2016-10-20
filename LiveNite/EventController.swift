@@ -21,18 +21,18 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section : Int) -> Int{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section : Int) -> Int{
         return 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell{
         return UITableViewCell()
     }
     
-    func tableView(tableView : UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+    func tableView(_ tableView : UITableView, didSelectRowAtIndexPath indexPath: IndexPath){
         
     }
 }

@@ -15,17 +15,17 @@ import GoogleMaps
 class PostCommentController: UIViewController,  UINavigationControllerDelegate,  UIScrollViewDelegate,  UITextFieldDelegate {
     
     
-    @IBAction func postComment(sender: AnyObject) {
+    @IBAction func postComment(_ sender: AnyObject) {
         let comment : Comment = Comment()
-        let uuid = NSUUID().UUIDString
+        let uuid = UUID().uuidString
         comment.commentID = uuid
         comment.imageID = self.imageID
         comment.comment = commentField.text
         comment.owner = self.userName
-        comment.date = String(NSDate())
+        comment.date = String(describing: Date())
         comment.eventID = ""
         AWSService().save(comment)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
 //        if let newComment = NSEntityDescription.insertNewObjectForEntityForName("Comments", inManagedObjectContext:context) as? NSManagedObject{
 //            let owner = self.userName
 //            let id = self.imageID
@@ -52,16 +52,16 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     
     override func viewDidLoad() {
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
-        navBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
+        navBar.setBackgroundImage(navBarBGImage, for: .default)
         navBar.topItem!.title = "Post Comment"
         super.viewDidLoad()
         commentField.becomeFirstResponder()
-        commentField.textColor = UIColor.blackColor()
-        commentField.backgroundColor = UIColor.whiteColor()
-        commentField.autocorrectionType = UITextAutocorrectionType.Default
-        commentField.keyboardType = UIKeyboardType.Default
+        commentField.textColor = UIColor.black
+        commentField.backgroundColor = UIColor.white
+        commentField.autocorrectionType = UITextAutocorrectionType.default
+        commentField.keyboardType = UIKeyboardType.default
         commentField.font = UIFont (name: "HelveticaNeue", size: 20)
-        postCommentButton.backgroundColor = UIColor.yellowColor()
+        postCommentButton.backgroundColor = UIColor.yellow
         postCommentButton.layer.cornerRadius = 5
         
 

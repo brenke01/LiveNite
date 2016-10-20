@@ -25,10 +25,10 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.view.hidden = false
+        self.view.isHidden = false
         
     }
     

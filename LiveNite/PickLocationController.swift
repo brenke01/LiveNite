@@ -59,7 +59,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         
 
-        searchBar = UISearchBar(frame: CGRectMake(0, 10, 250.0, 44.0))
+        searchBar = UISearchBar(frame: CGRect(x: 0, y: 10, width: 250.0, height: 44.0))
         self.view.addSubview(textField)
        // tableDataSource = GMSAutocompleteTableDataSource()
         //tableDataSource?.delegate = self
@@ -71,10 +71,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         //segmentedControl.backgroundColor = UIColor.darkGrayColor()
         
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
-        pickLocNav.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
+        pickLocNav.setBackgroundImage(navBarBGImage, for: .default)
         pickLocNav.topItem!.title = "Pick Location"
        
-        self.view.hidden = true
+        self.view.isHidden = true
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
@@ -89,7 +89,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         //self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"])
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+        graphRequest.start(completionHandler: { (connection, result, error) -> Void in
             
             if ((error) != nil)
             {
@@ -99,15 +99,16 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             }
             else
             {
-                self.currentUserName = result.valueForKey("id") as! String
+                
+                self.currentUserName = (result as AnyObject).object(forKey: "id") as! String
             }
         })
         
         
     }
-    @IBAction func exit(sender: AnyObject) {
+    @IBAction func exit(_ sender: AnyObject) {
      
-            tableView.hidden = false
+            tableView.isHidden = false
             pickLocNav.topItem!.title = "Pick Location"
             self.submitButton.removeFromSuperview()
             self.textField.removeFromSuperview()
@@ -117,8 +118,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     func searchPlaces() {
         self.googleMapView = GMSMapView(frame: self.view.frame)
-        self.googleMapView.backgroundColor = UIColor.darkGrayColor()
-        googleMapView.tintColor = UIColor.darkGrayColor()
+        self.googleMapView.backgroundColor = UIColor.darkGray
+        googleMapView.tintColor = UIColor.darkGray
 
         //self.view.addSubview(googleMapView)
         let center = CLLocationCoordinate2DMake(userLocation.latitude, userLocation.longitude)
@@ -128,11 +129,11 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         let coordinates = self.userLocation
         let marker = GMSMarker(position: coordinates)
         marker.map = self.googleMapView
-        self.googleMapView.animateToLocation(coordinates)
+        self.googleMapView.animate(toLocation: coordinates)
         let config = GMSPlacePickerConfig(viewport: viewport)
         placePicker = GMSPlacePicker(config: config)
 
-        self.placePicker?.pickPlaceWithCallback({ (place: GMSPlace?, error: NSError?) -> Void in
+        self.placePicker?.pickPlace(callback: { (place: GMSPlace?, error: NSError?) -> Void in
             if let error = error {
                 print("Pick Place error: \(error.localizedDescription)")
                 return
@@ -147,10 +148,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 self.chosenLongFromMap = place.coordinate.longitude
                 let loc = CLLocation(latitude: self.userLocation.latitude, longitude: self.userLocation.longitude)
                 let placeLoc = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
-                if (loc.distanceFromLocation(placeLoc) > 3000.0){
-                    let alertController = UIAlertController(title: "Error", message: "The selected location is too far away from your location", preferredStyle: UIAlertControllerStyle.Alert)
-                    alertController.addAction(UIAlertAction(title:"Dismiss", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                if (loc.distance(from: placeLoc) > 3000.0){
+                    let alertController = UIAlertController(title: "Error", message: "The selected location is too far away from your location", preferredStyle: UIAlertControllerStyle.alert)
+                    alertController.addAction(UIAlertAction(title:"Dismiss", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
                 }else{
                     self.chosenLocation = place.name
                     self.mapPickedLocation = true
@@ -167,27 +168,27 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     }
     
-    func didUpdateAutocompletePredictionsForTableDataSource(tableDataSource: GMSAutocompleteTableDataSource) {
+    @objc(didUpdateAutocompletePredictionsForTableDataSource:) func didUpdateAutocompletePredictions(for tableDataSource: GMSAutocompleteTableDataSource) {
         // Turn the network activity indicator off.
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         // Reload table data.
         srchDisplayController?.searchResultsTableView.reloadData()
     }
     
-    func didRequestAutocompletePredictionsForTableDataSource(tableDataSource: GMSAutocompleteTableDataSource) {
+    @objc(didRequestAutocompletePredictionsForTableDataSource:) func didRequestAutocompletePredictions(for tableDataSource: GMSAutocompleteTableDataSource) {
         // Turn the network activity indicator on.
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         // Reload table data.
         srchDisplayController?.searchResultsTableView.reloadData()
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0].coordinate
         print("\(userLocation.latitude) Degrees Latitude, \(userLocation.longitude) Degrees Longitude")
         locationUpdated = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         print(complete)
@@ -196,7 +197,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             takeAndSave()
         }else if (complete == true && saved == false){
             
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
             
         }else{
             var searchedTypes = ["bar"]
@@ -214,20 +215,20 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func takeAndSave(){
         
         
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
             
             print("captureVideoPressed and camera available.")
             
             let imagePicker = UIImagePickerController()
             
             imagePicker.delegate = self
-            imagePicker.sourceType = .Camera;
+            imagePicker.sourceType = .camera;
             //imagePicker.mediaTypes = [kUTTypeMovie!]
             imagePicker.allowsEditing = false
             
             imagePicker.showsCameraControls = true
 
-            self.presentViewController(imagePicker, animated: true, completion: nil)
+            self.present(imagePicker, animated: true, completion: nil)
             complete = true
             
         }
@@ -237,11 +238,11 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
 
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : Any]) {
         
         self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         //selectedImageView.image = self.selectedImage
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         saved = true
         locationManager.stopUpdatingLocation()
         
@@ -259,39 +260,39 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
 
 
 
-    func saveImageInfo(sender: UIButton!){
+    func saveImageInfo(_ sender: UIButton!){
         let tempImage = self.selectedImage
-        let dataImage:NSData = UIImageJPEGRepresentation(tempImage, 0.0)!
-        let date = NSDate()
+        let dataImage:Data = UIImageJPEGRepresentation(tempImage, 0.0)!
+        let date = Date()
         let setImageTitle : String = self.chosenLocation
-        let setId : String = NSUUID().UUIDString
+        let setId : String = UUID().uuidString
         var imageURL = ""
         let myImage : Image = Image()
         AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle, completion: {(result)->Void in
-             dispatch_async(dispatch_get_main_queue(), {
+             DispatchQueue.main.async(execute: {
             imageURL = result
             myImage.imageID = setId
             myImage.placeTitle = setImageTitle
             myImage.caption = self.textField.text
-            myImage.eventID = NSUUID().UUIDString
+            myImage.eventID = UUID().uuidString
             myImage.picTakenLat = self.userLocation.latitude
             myImage.picTakenLong = self.userLocation.longitude
-            myImage.owner = self.user.userName
-            myImage.userID = self.user.userID
+            myImage.owner = (self.user?.userName)!
+            myImage.userID = (self.user?.userID)!
             myImage.hotColdScore = 0
             myImage.placeLat = self.chosenLatFromMap
             myImage.placeLong = self.chosenLongFromMap
             myImage.url = imageURL
             
-            let formatter = NSDateFormatter()
+            let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            myImage.timePosted = formatter.stringFromDate(date)
+            myImage.timePosted = formatter.string(from: date)
             myImage.totalScore = 0
             var geo :Geohash = Geohash()
            let l =  CLLocationCoordinate2DMake((self.locationManager.location?.coordinate.latitude)!, (self.locationManager.location?.coordinate.longitude)!)
             let s = l.geohash(10)
-            let index = s.endIndex.advancedBy(-7)
-            myImage.geohash = s.substringToIndex(index)
+            let index = s.characters.index(s.endIndex, offsetBy: -7)
+            myImage.geohash = s.substring(to: index)
             AWSService().save(myImage)
             })
             
@@ -301,20 +302,20 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
         
         print("saved successfully", terminator: "")
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         tabBarController?.selectedIndex = 0
     }
 
     func loadCaptionView(){
-        self.view.hidden = false
+        self.view.isHidden = false
         pickLocNav.topItem!.title = "Add Caption"
         //tableView.hidden = true
         //textField = UITextField(frame: CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height * 0.5))
         textField.becomeFirstResponder()
-        textField.textColor = UIColor.blackColor()
-        textField.backgroundColor = UIColor.whiteColor()
-        textField.autocorrectionType = UITextAutocorrectionType.Default
-        textField.keyboardType = UIKeyboardType.Default
+        textField.textColor = UIColor.black
+        textField.backgroundColor = UIColor.white
+        textField.autocorrectionType = UITextAutocorrectionType.default
+        textField.keyboardType = UIKeyboardType.default
         textField.font = UIFont (name: "HelveticaNeue", size: 20)
         /*UITextField.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             
@@ -324,50 +325,50 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
         submitButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.50, y: self.view.frame.height * 0.50,width: self.view.frame.width * 0.5 - 10, height: 40 ))
         submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
-        submitButton.setTitle("Post", forState: .Normal)
+        submitButton.setTitle("Post", for: UIControlState())
         submitButton.layer.cornerRadius = 5
-        submitButton.enabled = true
+        submitButton.isEnabled = true
         submitButton.layer.opacity = 1.0
-        submitButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+        submitButton.setTitleColor(UIColor.gray, for: UIControlState())
         submitButton.titleLabel!.font = UIFont(name:
             "HelveticaNeue-Medium", size: 18)
-        submitButton.addTarget(self, action: #selector(PickLocationController.saveImageInfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        submitButton.addTarget(self, action: #selector(PickLocationController.saveImageInfo(_:)), for: UIControlEvents.touchUpInside)
         self.view.addSubview(submitButton)
         
         
         
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField.text?.isEmpty == false){
-            submitButton.enabled = true;
+            submitButton.isEnabled = true;
             submitButton.layer.opacity = 1.0
-            submitButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+            submitButton.setTitleColor(UIColor.black, for: UIControlState())
         }
     }
     
 }
 
 extension PickLocationController: GMSAutocompleteTableDataSourceDelegate {
-    func tableDataSource(tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWithPlace place: GMSPlace) {
-        srchDisplayController?.active = false
+    func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWith place: GMSPlace) {
+        srchDisplayController?.isActive = false
         // Do something with the selected place.
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
     }
     
-    func searchDisplayController(controller: UISearchDisplayController, shouldReloadTableForSearchString searchString: String?) -> Bool {
+    @objc(searchDisplayController:shouldReloadTableForSearchString:) func searchDisplayController(_ controller: UISearchDisplayController, shouldReloadTableForSearch searchString: String?) -> Bool {
         tableDataSource?.sourceTextHasChanged(searchString)
         return false
     }
     
-    func tableDataSource(tableDataSource: GMSAutocompleteTableDataSource, didFailAutocompleteWithError error: NSError) {
+    func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didFailAutocompleteWithError error: Error) {
         // TODO: Handle the error.
-        print("Error: \(error.description)")
+        print("Error: \(error.localizedDescription)")
     }
     
-    func tableDataSource(tableDataSource: GMSAutocompleteTableDataSource, didSelectPrediction prediction: GMSAutocompletePrediction) -> Bool {
+    func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didSelect prediction: GMSAutocompletePrediction) -> Bool {
         return true
     }
 }

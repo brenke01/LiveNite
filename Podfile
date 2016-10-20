@@ -3,8 +3,7 @@ platform :ios, '9.3'
 use_frameworks!
 target “LiveNite” do
 	pod 'GoogleMaps'
-	pod 'SwiftyJSON'
-	pod ‘JSSAlertView’ 
+	pod 'SwiftyJSON', '3.0.0'
 	pod 'AWSAutoScaling'
     	pod 'AWSCloudWatch'
     	pod 'AWSCognito'

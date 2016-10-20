@@ -13,8 +13,8 @@ import CoreLocation
 import AWSDynamoDB
 
 class CommentController: UIViewController, UITableViewDelegate, CLLocationManagerDelegate,UITableViewDataSource{
-    @IBAction func back(sender: AnyObject) {
-        self.dismissViewControllerAnimated(false, completion: nil)
+    @IBAction func back(_ sender: AnyObject) {
+        self.dismiss(animated: false, completion: nil)
     }
     @IBOutlet weak var navBar: UINavigationBar!
     
@@ -26,7 +26,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
     
     override func viewDidLoad() {
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
-        navBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
+        navBar.setBackgroundImage(navBarBGImage, for: .default)
         navBar.topItem!.title = "Comments"
         //self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "CommentList")
         tableView.dataSource = self
@@ -38,30 +38,30 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
 
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        let cell : UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        let cell : UITableViewCell = tableView.cellForRow(at: indexPath)!
         let cellText : String = (cell.textLabel?.text)!
         
     }
     
-    func numberOfSectionsinTableView(tableView: UITableView) -> Int{
+    func numberOfSectionsinTableView(_ tableView: UITableView) -> Int{
         return 1
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
         return self.commentInfoArray.count
     }
     
     func loadComments()-> [Comment]{
 
         var commentArray = [Comment]()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
         queryExpression.hashKeyAttribute = "commentID"
         queryExpression.rangeKeyConditionExpression = "imageID = :val"
         queryExpression.expressionAttributeValues = [":val": imageID]
-        dynamoDBObjectMapper.query(Image.self, expression: queryExpression).continueWithBlock({(task: AWSTask) -> AnyObject in
+        dynamoDBObjectMapper.query(Image.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
             }
@@ -69,13 +69,13 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
                 print("The request failed. Exception: [\(task.exception)]")
             }
             if (task.result != nil) {
-                let output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                let output : AWSDynamoDBPaginatedOutput = task.result! 
                 for comment  in output.items {
                     let comment : Comment = comment as! Comment
                     commentArray.append(comment)
                 }
             }
-            return commentArray
+            return commentArray as AnyObject
         })
         
         return commentArray
@@ -83,11 +83,11 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
     }
     
     
-    func tableView(tableView:UITableView, cellForRowAtIndexPath
-        indexPath: NSIndexPath)-> UITableViewCell{
+    func tableView(_ tableView:UITableView, cellForRowAt
+        indexPath: IndexPath)-> UITableViewCell{
         var commentArr = loadComments()
-        let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("CommentList")! as UITableViewCell
-        tableView.backgroundColor = UIColor.clearColor()
+        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "CommentList")! as UITableViewCell
+        tableView.backgroundColor = UIColor.clear
         let border = CALayer()
         let width = CGFloat(1.0)
 
@@ -117,15 +117,15 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         let nameLabel : UILabel = (cell.viewWithTag(100) as! UILabel)
         let commentLabel : UILabel = (cell.viewWithTag(200) as! UILabel)
         let timeLabel : UILabel = (cell.viewWithTag(300) as! UILabel)
-        let timePosted = commentArr[indexPath.row].timePosted
+        let timePosted = commentArr[(indexPath as NSIndexPath).row].timePosted
        
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         let localeStr = "us"
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        dateFormatter.locale = NSLocale(localeIdentifier: localeStr)
-        let timePostedFormatted = dateFormatter.dateFromString(timePosted)
-        let now = NSDate()
-        var interval = now.timeIntervalSinceDate(timePostedFormatted!)
+        dateFormatter.locale = Locale(identifier: localeStr)
+        let timePostedFormatted = dateFormatter.date(from: timePosted)
+        let now = Date()
+        var interval = now.timeIntervalSince(timePostedFormatted!)
         var intervalStr = ""
         interval = interval / 3600
         if (interval < 1){
@@ -137,32 +137,32 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
             intervalStr = String(intervalInt) + "h"
         }
         timeLabel.text = intervalStr
-        timeLabel.textColor = UIColor.whiteColor()
-        nameLabel.text = commentArr[indexPath.row].owner
-        commentLabel.text = commentArr[indexPath.row].comment
-        border.borderColor = UIColor.whiteColor().CGColor
+        timeLabel.textColor = UIColor.white
+        nameLabel.text = commentArr[(indexPath as NSIndexPath).row].owner
+        commentLabel.text = commentArr[(indexPath as NSIndexPath).row].comment
+        border.borderColor = UIColor.white.cgColor
         border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
         border.borderWidth = width
         tableView.layer.addSublayer(border)
         
-        tableView.opaque = false
-        cell.backgroundColor = UIColor.clearColor()
-        cell.opaque = false
-        cell.textLabel?.textColor = UIColor.whiteColor()
+        tableView.isOpaque = false
+        cell.backgroundColor = UIColor.clear
+        cell.isOpaque = false
+        cell.textLabel?.textColor = UIColor.white
 
         return cell
     }
 
-    @IBAction func exit(sender: AnyObject) {
-         self.dismissViewControllerAnimated(false, completion: nil)
+    @IBAction func exit(_ sender: AnyObject) {
+         self.dismiss(animated: false, completion: nil)
     }
     
-    @IBAction func postComment(sender: AnyObject) {
-        self.performSegueWithIdentifier("postComment", sender: sender.tag)
+    @IBAction func postComment(_ sender: AnyObject) {
+        self.performSegue(withIdentifier: "postComment", sender: sender.tag)
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "postComment" {
-            if let destinationVC = segue.destinationViewController as? PostCommentController{
+            if let destinationVC = segue.destination as? PostCommentController{
                 
                 destinationVC.imageID = imageID
                 destinationVC.userName = userName
@@ -172,7 +172,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
             tableView.reloadData()
@@ -180,7 +180,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         tableView.reloadData()

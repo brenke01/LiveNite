@@ -31,30 +31,30 @@ import SwiftyJSON
 
 class GoogleDataProvider {
     var photoCache = [String:UIImage]()
-    var placesTask: NSURLSessionDataTask?
-    var session: NSURLSession {
-        return NSURLSession.sharedSession()
+    var placesTask: URLSessionDataTask?
+    var session: URLSession {
+        return URLSession.shared
     }
     
-    func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double, types:[String], completion: (([GooglePlace]) -> Void)) -> ()
+    func fetchPlacesNearCoordinate(_ coordinate: CLLocationCoordinate2D, radius: Double, types:[String], completion: @escaping (([GooglePlace]) -> Void)) -> ()
     {
-        let typesString = types.count > 0 ? types.joinWithSeparator("|") : "food"
+        let typesString = types.count > 0 ? types.joined(separator: "|") : "food"
         var urlString = "https://maps.googleapis.com/maps/api/place/textsearch/json?type=\(typesString)&location=\(coordinate.latitude),\(coordinate.longitude)&radius=\(radius)&rankby=prominence&sensor=true"
 
         
         urlString += "&key=AIzaSyCUAW-G5i2J_ihVVdbFejcO0cvkt0c2abo"
-        urlString = urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        urlString = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         
-        if let task = placesTask where task.taskIdentifier > 0 && task.state == .Running {
+        if let task = placesTask , task.taskIdentifier > 0 && task.state == .running {
             task.cancel()
         }
         
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        placesTask = session.dataTaskWithURL(NSURL(string: urlString)!) {data, response, error in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        placesTask = session.dataTask(with: URL(string: urlString)!, completionHandler: {data, response, error in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             var placesArray = [GooglePlace]()
             if let aData = data {
-                let json = JSON(data:aData, options:NSJSONReadingOptions.MutableContainers, error:nil)
+                let json = JSON(data:aData, options:JSONSerialization.ReadingOptions.mutableContainers, error:nil)
                 if let results = json["results"].arrayObject as? [[String : AnyObject]] {
                     for rawPlace in results {
                         let place = GooglePlace(dictionary: rawPlace, acceptedTypes: types)
@@ -67,35 +67,35 @@ class GoogleDataProvider {
                     }
                 }
             }
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completion(placesArray)
             }
-        }
+        }) 
         placesTask?.resume()
     }
     
     
-    func fetchPhotoFromReference(reference: String, completion: ((UIImage?) -> Void)) -> () {
+    func fetchPhotoFromReference(_ reference: String, completion: @escaping ((UIImage?) -> Void)) -> () {
         if let photo = photoCache[reference] as UIImage? {
             completion(photo)
         } else {
             let urlString = "http://localhost:10000/maps/api/place/photo?maxwidth=200&photoreference=\(reference)"
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-            session.downloadTaskWithURL(NSURL(string: urlString)!) {url, response, error in
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            session.downloadTask(with: URL(string: urlString)!, completionHandler: {url, response, error in
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 if let url = url {
-                    let downloadedPhoto = UIImage(data: NSData(contentsOfURL: url)!)
+                    let downloadedPhoto = UIImage(data: try! Data(contentsOf: url))
                     self.photoCache[reference] = downloadedPhoto
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completion(downloadedPhoto)
                     }
                 }
                 else {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completion(nil)
                     }
                 }
-                }.resume()
+                }) .resume()
         }
     }
 }

@@ -30,31 +30,31 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        submitButton.hidden = true
-        inputUserName.hidden = true
-        submitButton.enabled = false
+        submitButton.isHidden = true
+        inputUserName.isHidden = true
+        submitButton.isEnabled = false
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
         let loginView : FBSDKLoginButton = FBSDKLoginButton()
         self.view.addSubview(loginView)
         loginView.center = self.view.center
         loginView.readPermissions = ["public_profile", "email"]
         loginView.delegate = self
-        FBSDKProfile.enableUpdatesOnAccessTokenChange(true)
+        FBSDKProfile.enableUpdates(onAccessTokenChange: true)
         
     }
     
-    @IBAction func submitAction(sender: AnyObject) {
+    @IBAction func submitAction(_ sender: AnyObject) {
         print("submit")
         print(userID)
         var user : User = AWSService().loadUser(userID, newUserName: inputUserName.text!)
         
 
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     // Facebook Delegate Methods
     
-    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
         
         if ((error) != nil)
@@ -76,27 +76,27 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         }
     }
     
-    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         
     }
     
-    func saveUserToCoreData(result : AnyObject){
+    func saveUserToCoreData(_ result : AnyObject){
         var newUser : Bool = true
         var userObj = User()
         AWSService().loadUser(userID,completion: {(result)->Void in
             userObj = result
         })
 
-        if (userObj.userID != ""){
+        if (userObj?.userID != ""){
             newUser = false
         }
         //The result from the Facebook request is an object that works like a Dictionary 
         //First we grab all of the fields
-        userID = result.valueForKey("id") as! String
-        let firstName = result.valueForKey("first_name") 
-        let email = result.valueForKey("email") as! String
-        let gender = result.valueForKey("gender") 
-        let ageRange = result.valueForKey("age_range")?.valueForKey("min") 
+        userID = result.value(forKey: "id") as! String
+        let firstName = result.value(forKey: "first_name") 
+        let email = result.value(forKey: "email") as! String
+        let gender = result.value(forKey: "gender") 
+        let ageRange = (result.value(forKey: "age_range") as AnyObject).value(forKey: "min") 
         //This is our predicate for the table that will ask for a record that has an id of userID
         
 
@@ -105,21 +105,21 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             let newUserObj : User = User()
             newUserObj.userID = userID
             newUserObj.age = ageRange as! Int
-            newUserObj.gender = String(gender)
-            newUserObj.accessToken = String(FBSDKAccessToken.currentAccessToken())
+            newUserObj.gender = String(describing: gender)
+            newUserObj.accessToken = String(describing: FBSDKAccessToken.current())
             newUserObj.score = 0
             newUserObj.email = email
             newUserObj.userName = "temp"
             AWSService().save(newUserObj)
-            submitButton.hidden = false
-            inputUserName.hidden = false
-            submitButton.enabled = true
-            submitButton.backgroundColor = UIColor.grayColor()
+            submitButton.isHidden = false
+            inputUserName.isHidden = false
+            submitButton.isEnabled = true
+            submitButton.backgroundColor = UIColor.gray
             submitButton.layer.cornerRadius = 5
 
         }else{
-            userObj.accessToken = FBSDKAccessToken.currentAccessToken() as! String
-            AWSService().save(userObj)
+            userObj?.accessToken = FBSDKAccessToken.current() as! String
+            AWSService().save(userObj!)
         }
         
     }
@@ -128,7 +128,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         //The graphRequest is Facebooks Graph API. If you want to grab more parameters, look up the fields
         // on their documentation and add them
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range, email"])
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+        graphRequest.start(completionHandler: { (connection, result, error) -> Void in
             
             if ((error) != nil)
             {
@@ -138,9 +138,9 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             }
             else
             {   //Save the user to the Users table
-                self.saveUserToCoreData(result)
-                if (self.submitButton.enabled == false) {
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                self.saveUserToCoreData(result as AnyObject)
+                if (self.submitButton.isEnabled == false) {
+                    self.dismiss(animated: true, completion: nil)
                 }
 
             }
@@ -152,11 +152,11 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         // Dispose of any resources that can be recreated.
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField!) -> Bool {
         inputUserName.resignFirstResponder()
         return true
     }

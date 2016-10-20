@@ -22,11 +22,11 @@ class ChooseUserNameController: UIViewController, UIImagePickerControllerDelegat
     
     var userID : String = ""
     
-    @IBAction func submitUserName(sender: AnyObject) {
+    @IBAction func submitUserName(_ sender: AnyObject) {
         print("submit")
-        let fetchRequest = NSFetchRequest(entityName: "Users")
+       /* let fetchRequest = NSFetchRequest(entityName: "Users")
         fetchRequest.predicate = NSPredicate(format: "id= %@", userID as NSString)
-        let users = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
+        let users = (try? context.fetch(fetchRequest)) as! [NSManagedObject]?
         if let users = users{
             for user in users{
                 user.setValue(userNameText.text, forKey: "user_name")
@@ -34,12 +34,12 @@ class ChooseUserNameController: UIViewController, UIImagePickerControllerDelegat
                     try context.save()
                 } catch _ {
                 }
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         } else {
             print("User Name storage failed")
-            self.dismissViewControllerAnimated(true, completion: nil)   
-        }
+            self.dismiss(animated: true, completion: nil)   
+        }*/
     }
     
     override func viewDidLoad() {
@@ -47,7 +47,7 @@ class ChooseUserNameController: UIViewController, UIImagePickerControllerDelegat
         print(userID)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
     }
@@ -57,11 +57,11 @@ class ChooseUserNameController: UIViewController, UIImagePickerControllerDelegat
         // Dispose of any resources that can be recreated.
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField!) -> Bool {
         userNameText.resignFirstResponder()
         return true
     }

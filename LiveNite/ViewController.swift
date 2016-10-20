@@ -17,10 +17,10 @@ import GoogleMaps
 
 
 
-var appDel = (UIApplication.sharedApplication().delegate as! AppDelegate)
+var appDel = (UIApplication.shared.delegate as! AppDelegate)
 var context:NSManagedObjectContext = appDel.managedObjectContext!
 var upVoteInc : CGFloat = 5
-var imageUpvotes = UILabel(frame: CGRectMake(150, upVoteInc, 30, 25))
+var imageUpvotes = UILabel(frame: CGRect(x: 150, y: upVoteInc, width: 30, height: 25))
 var idInc : Int = 1
 
 //variables for auto layout code
@@ -67,8 +67,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var chosenAlbumLocation = ""
     var previousLocationName = ""
     var idArray : [String] = []
-    var fbUserID = dispatch_group_create()
-    var awsUser = dispatch_group_create()
+    var fbUserID = DispatchGroup()
+    var awsUser = DispatchGroup()
     var imageArrLength = 0
     var imageArr = [Image]()
     var uiImageArr = [UIImage]()
@@ -78,7 +78,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var sort = false
     typealias FinishedDownloaded = () -> ()
     
-    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+    func tabBar(_ tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         if (item.tag == 1){
             self.placesToggle = false
             self.displayPlacesAlbum = false
@@ -90,18 +90,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }else if (item.tag == 4){
             
         }else if (item.tag == 5){
-            profileView()
+            //profileView()
         }
     }
     
     
     @IBOutlet weak var sortBtn: UIButton!
-    @IBAction func toggleSort(sender: AnyObject) {
+    @IBAction func toggleSort(_ sender: AnyObject) {
         if (self.hotToggle == 0){
-            sortBtn.setTitle("Popular", forState: UIControlState.Normal)
+            sortBtn.setTitle("Popular", for: UIControlState())
             getHotImages()
         }else{
-            sortBtn.setTitle("Recent", forState: UIControlState.Normal)
+            sortBtn.setTitle("Recent", for: UIControlState())
             getRecentImages()
         }
     }
@@ -123,28 +123,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet weak var imagesTypeBtn: UIButton!
 
-    @IBAction func getPlacesView(sender: AnyObject) {
+    @IBAction func getPlacesView(_ sender: AnyObject) {
         if (!self.placesToggle){
             self.placesToggle = true
-            imagesTypeBtn.setTitle("Places", forState: UIControlState.Normal)
+            imagesTypeBtn.setTitle("Places", for: UIControlState())
         }else{
-            imagesTypeBtn.setTitle("People", forState: UIControlState.Normal)
+            imagesTypeBtn.setTitle("People", for: UIControlState())
             self.placesToggle = false
         }
         determineQuery()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
 
         super.viewDidAppear(animated)
         
-        self.view.hidden = false
-        if (FBSDKAccessToken.currentAccessToken() == nil)
+        self.view.isHidden = false
+        if (FBSDKAccessToken.current() == nil)
         {
             print("is nil")
-            self.performSegueWithIdentifier("login", sender: nil)
+            self.performSegue(withIdentifier: "login", sender: nil)
         }else{
-            self.accessToken = String(FBSDKAccessToken.currentAccessToken())
+            self.accessToken = String(describing: FBSDKAccessToken.current())
         }
     }
     
@@ -152,17 +152,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
 
         progressBarDisplayer("Loading", true)
-        profileMenu.hidden = true
+        profileMenu.isHidden = true
         
-        self.view.hidden = true
+        self.view.isHidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionView?.dataSource = self
         collectionView!.delegate = self
-        collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         let nibname = UINib(nibName: "Cell", bundle: nil)
-        collectionView!.registerNib(nibname, forCellWithReuseIdentifier: "Cell")
-        collectionView!.registerClass(NSClassFromString("GalleryCell"),forCellWithReuseIdentifier:"CELL");
+        collectionView!.register(nibname, forCellWithReuseIdentifier: "Cell")
+        collectionView!.register(NSClassFromString("GalleryCell"),forCellWithReuseIdentifier:"CELL");
 
         //collectionView!.backgroundColor = UIColor(red: 42/255, green: 34/255, blue: 34/255, alpha: 1)
         self.view.addSubview(collectionView!)
@@ -186,7 +186,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.user = result
                 svc.user = result
                 print("user id is ")
-                print(self.user.userID)
+                print(self.user?.userID)
             })
             
         })
@@ -197,10 +197,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     }
     
-    func retrieveUserID(completion:(_ result:String)->Void){
+    func retrieveUserID(_ completion:@escaping (_ result: String)->Void){
         var id = ""
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range"])
-        graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+        graphRequest.start(completionHandler: { (connection, result, error) -> Void in
             
             if ((error) != nil)
             {
@@ -208,8 +208,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 print("Error: \(error)")
                 
             }else{
-                let userID = result.valueForKey("id") as! String
-                completion(result:userID)
+                let userID = (result as AnyObject).object(forKey: "id") as! String
+                completion(userID)
                 
             }
             
@@ -218,94 +218,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
-    func profileView() {
-    
-        if (self.toggleState == 0){
-            self.toggleState = 1
-        profileMenu = UIView(frame: CGRect(x: 0, y: 0, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
-        //profileMenu.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
-        profileMenu.backgroundColor = UIColor(red: 0.3216, green: 0.3294, blue: 0.3137, alpha: 1.0)
-        let backgroundImage = UIImageView(frame: CGRect(x: 0, y: 0, width: (collectionView?.frame.maxX)!, height: ((collectionView?.bounds.height)!)))
-        backgroundImage.image = UIImage(named: "Background_Gradient")
-        profileMenu.addSubview(backgroundImage)
-      
-        profileMenu.tag = 100
-        
-        let profileLabel = UILabel(frame: CGRect(x: 0, y: 0, width: profileMenu.frame.width, height: profileMenu.frame.height / 5))
-        
-        let myFriendsLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3, width: profileMenu.frame.width, height: profileMenu.frame.height / 10))
-        
-        let moreLabel = UILabel(frame: CGRect(x: 0, y: profileMenu.frame.height / 3 + myFriendsLabel.frame.height, width: profileMenu.frame.width, height: profileMenu.frame.height / 10))
-        
-            let fetchRequest = NSFetchRequest(entityName: "Users")
-            fetchRequest.predicate = NSPredicate(format: "id= %@", self.userID)
-            
-            let user = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-            let userName = user![0].valueForKey("user_name")
-            let score = user![0].valueForKey("score")
-            
-            let medalImage : UIImage = getRankMedal(Int(score! as! NSNumber))
-            
-            
-            let nameLabel = UITextField(frame: CGRectMake(profileLabel.frame.width / 4, profileLabel.frame.height / 3, profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
-            nameLabel.text = userName as! String
-            
-            nameLabel.textColor = UIColor.whiteColor()
-            profileLabel.addSubview(nameLabel)
-            
-            let medalLabel = UIImageView(frame: CGRectMake(15, profileLabel.frame.height / 3, profileLabel.frame.width / 5, profileLabel.frame.height / 2 + 10))
-            medalLabel.image = medalImage
-            profileLabel.addSubview(medalLabel)
-            
-            let scoreLabel = UITextField(frame: CGRectMake(profileLabel.frame.width / 4, profileLabel.frame.height * (2/3), profileLabel.frame.width * (3/4), profileLabel.frame.height / 4))
-            
-            scoreLabel.text = String(score!)
-            scoreLabel.textColor = UIColor.whiteColor()
-            profileLabel.addSubview(scoreLabel)
-            
-            let topFriendsBorder = CALayer()
-            topFriendsBorder.frame = CGRectMake(0, 0, myFriendsLabel.bounds.size.width, 1)
-            topFriendsBorder.backgroundColor = UIColor.darkGrayColor().CGColor
-            myFriendsLabel.layer.addSublayer(topFriendsBorder)
-            let myFriendsTextLabel = UITextField(frame: CGRectMake(15, myFriendsLabel.frame.height / 4, myFriendsLabel.frame.width * (3/4), myFriendsLabel.frame.height / 2))
-            myFriendsTextLabel.text = "My VIP"
-            myFriendsTextLabel.textColor = UIColor.whiteColor()
-            myFriendsTextLabel.font = UIFont(name: "Helvetica Neue", size: 20)
-            myFriendsLabel.addSubview(myFriendsTextLabel)
-            
-            let topMoreBorder = CALayer()
-            topMoreBorder.frame = CGRectMake(0, 0, myFriendsLabel.bounds.size.width, 1)
-            topMoreBorder.backgroundColor = UIColor.darkGrayColor().CGColor
-            moreLabel.layer.addSublayer(topMoreBorder)
-            let moreTextLabel = UITextField(frame: CGRectMake(15, moreLabel.frame.height / 4, moreLabel.frame.width * (3/4), moreLabel.frame.height / 2))
-            moreTextLabel.text = "More..."
-            moreTextLabel.textColor = UIColor.whiteColor()
-            moreTextLabel.font = UIFont(name: "Helvetica Neue", size: 20)
-            moreLabel.addSubview(moreTextLabel)
-            
-          
-            nameLabel.font = UIFont(name: "Helvetica Neue", size: 18)
-            scoreLabel.font = UIFont(name: "Helvetica Neue", size: 14)
 
-            profileMenu.addSubview(profileLabel)
-            profileMenu.addSubview(myFriendsLabel)
-            profileMenu.addSubview(moreLabel)
-            self.view.addSubview(self.profileMenu)
-            self.profileMenu.hidden = false
-        
-        }
-        
-            
     
-
-        
-    }
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
         if (self.imageArrLength == 0){
             return 1
@@ -336,15 +255,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return 1
     }
     
-    func progressBarDisplayer(msg:String, _ indicator:Bool ) {
+    func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
         stringLabel = UILabel(frame: CGRect(x: 50, y: 0, width: 175, height: 50))
         stringLabel.text = msg
-        stringLabel.textColor = UIColor.whiteColor()
+        stringLabel.textColor = UIColor.white
         messageFrame = UIView(frame: CGRect(x: self.collectionView!.frame.midX - 90, y: self.collectionView!.frame.midY - 100, width: 180, height: 50))
         messageFrame.layer.cornerRadius = 15
         messageFrame.backgroundColor = UIColor(white: 0, alpha: 0.7)
         if indicator {
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.White)
+            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
             activityIndicator.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
             activityIndicator.startAnimating()
             messageFrame.addSubview(activityIndicator)
@@ -357,18 +276,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let placesViewController : PlacesViewController = PlacesViewController()
         if (self.placesToggle && !self.displayPlacesAlbum){
             var groupedArr = [Image]()
-            placesViewController.getImages({(result)->Void in
+            placesViewController.getImages(completion: {(result)->Void in
                 let imgArr = result
                 
-                let sortedArray = (imgArr as NSArray).sortedArrayUsingDescriptors([
+                let sortedArray = (imgArr as NSArray).sortedArray(using: [
                     NSSortDescriptor(key: "placeTitle", ascending: false),
                     NSSortDescriptor(key: "totalScore", ascending: false)
                     ]) as! [Image]
                 var found = false
                 for img in sortedArray{
                     found = false
-                    for index in 0 ..< groupedArr.count += 1{
-                        if (img.placeTitle == groupedArr[index].placeTitle){
+                    for i in 0 ..< groupedArr.count{
+                        if (img.placeTitle == groupedArr[i].placeTitle){
                             found = true
                             break
                         }
@@ -384,13 +303,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageArr = result
                 self.imageArrLength = groupedArr.count
                 self.doneLoading = true
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.collectionView!.reloadData()
                 })
                 
             })
         }else if(self.placesToggle && self.displayPlacesAlbum){
-            placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user, completion: {(result)->Void in
+            placesViewController.getImagesForGroup(placeName: self.chosenAlbumLocation, user: user!, completion: {(result)->Void in
                 self.sort = false
                 self.idArray = []
                 self.uiImageArr = []
@@ -398,12 +317,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageArr = result
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.collectionView!.reloadData()
                 })
             })
         }else{
-            placesViewController.getImages({(result)->Void in
+            placesViewController.getImages(completion: {(result)->Void in
                 self.sort = false
                 self.uiImageArr = []
                 self.imageArr = []
@@ -412,32 +331,32 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
                 self.imageArrLength = self.imageArr.count
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                 self.collectionView!.reloadData()
                 })
             })
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
         
         self.uiImageArr = []
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as UICollectionViewCell
-        cell.backgroundColor = UIColor.yellowColor()
-        cell.backgroundColor = UIColor.blackColor()
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
+        cell.backgroundColor = UIColor.yellow
+        cell.backgroundColor = UIColor.black
         
         var imageArray : [UIImage] = []
     
         if (self.doneLoading){
         if (hotToggle == 1){
-            self.imageArr = (self.imageArr as NSArray).sortedArrayUsingDescriptors([
+            self.imageArr = (self.imageArr as NSArray).sortedArray(using: [
                 NSSortDescriptor(key: "totalScore", ascending: false)
                 ]) as! [Image]
         }else{
             
-            self.imageArr = (self.imageArr as NSArray).sortedArrayUsingDescriptors([
+            self.imageArr = (self.imageArr as NSArray).sortedArray(using: [
                 NSSortDescriptor(key: "timePosted", ascending: false)
                 ]) as! [Image]
         }
@@ -472,20 +391,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 imgWidth = 120
                 noColumns = 2
             }
-        let imageButton = UIButton(frame: CGRectMake(0, 0, CGFloat(imgWidth), CGFloat(imgHeight)))
-        imageButton.setImage(self.uiImageArr[indexPath.row], forState: .Normal)
+        let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(imgWidth), height: CGFloat(imgHeight)))
+        imageButton.setImage(self.uiImageArr[(indexPath as NSIndexPath).row], for: UIControlState())
 
-            let titleView = UILabel(frame: CGRectMake(0, imageButton.frame.height * 0.9, imageButton.frame.width, imageButton.frame.height * 0.1))
-            titleView.text = self.imageArr[indexPath.row].placeTitle
-            titleView.textColor = UIColor.whiteColor()
-            titleView.backgroundColor = UIColor.blackColor()
+            let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
+            titleView.text = self.imageArr[(indexPath as NSIndexPath).row].placeTitle
+            titleView.textColor = UIColor.white
+            titleView.backgroundColor = UIColor.black
             titleView.font = UIFont (name: "Helvetica Neue", size: 12)
             imageButton.addSubview(titleView)
-        imageButton.userInteractionEnabled = true
+        imageButton.isUserInteractionEnabled = true
             imageButton.layer.masksToBounds = true
         
         if (self.placesToggle){
-            let albumImageView = UIImageView(frame: CGRectMake(imageButton.frame.width * (0.8), imageButton.frame.height * 0.8,  imageButton.frame.width * 0.15, imageButton.frame.height * 0.2));
+            let albumImageView = UIImageView(frame: CGRect(x: imageButton.frame.width * (0.8), y: imageButton.frame.height * 0.8,  width: imageButton.frame.width * 0.15, height: imageButton.frame.height * 0.2));
             let albumImage = UIImage(named : "album2")
             albumImageView.image = albumImage
             imageButton.addSubview(albumImageView)
@@ -499,7 +418,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageButton.addGestureRecognizer(tap)
         print(imageButton.layer)
         let layer = imageButton.layer
-        layer.shadowColor = UIColor.blackColor().CGColor
+        layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 20)
         layer.shadowOpacity = 0.4
         layer.shadowRadius = 5
@@ -517,24 +436,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return cell
     }
     
-    @IBAction func imagePressed(sender: UITapGestureRecognizer){
-        let tapLocation = sender.locationInView(self.view)
-        let indexPath = self.collectionView?.indexPathForItemAtPoint(tapLocation)
+    @IBAction func imagePressed(_ sender: UITapGestureRecognizer){
+        let tapLocation = sender.location(in: self.view)
+        let indexPath = self.collectionView?.indexPathForItem(at: tapLocation)
         if (!self.placesToggle || self.displayPlacesAlbum){
-            self.chosenImageObj = self.imageArr[indexPath!.row]
-            self.chosenImage = self.uiImageArr[indexPath!.row]
-            self.performSegueWithIdentifier("viewPost", sender: nil)
+            self.chosenImageObj = self.imageArr[(indexPath! as NSIndexPath).row]
+            self.chosenImage = self.uiImageArr[(indexPath! as NSIndexPath).row]
+            self.performSegue(withIdentifier: "viewPost", sender: nil)
         }else{
-            displayImagesForAlbum(self.imageArr[indexPath!.row])
+            displayImagesForAlbum(self.imageArr[(indexPath! as NSIndexPath).row])
         }
     }
     
-    func collectionView(collection: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+    func collectionView(_ collection: UICollectionView, didSelectItemAt indexPath: IndexPath){
 
        
     }
     
-    func displayImagesForAlbum(img: Image){
+    func displayImagesForAlbum(_ img: Image){
 
         self.chosenAlbumLocation = img.placeTitle
         self.displayPlacesAlbum = true
@@ -554,7 +473,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //begin auto layout code
     
     //set size of each square cell to imgSize
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if (self.placesToggle){
             imgHeight = 240
             imgWidth = 240
@@ -569,8 +488,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //calculate offset based on screensize, number of columns, and size of cell then use it to apply the inset
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let screenSize: CGRect = UIScreen.main.bounds
         let screenWidth = screenSize.width
         var offset = CGFloat(0.0)
         if (noColumns == 2){
@@ -584,8 +503,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 
     //calculate offset based on screensize, number of columns, and size of cell then use it to set space between lines
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat{
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat{
+        let screenSize: CGRect = UIScreen.main.bounds
         let screenWidth = screenSize.width
         var offset = CGFloat(0.0)
         if (noColumns == 2){
@@ -608,7 +527,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //call locationManager.stopUpdatingLocation once location has been stored and reset locationUpdated to false
 
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0].coordinate
         print("\(userLocation.latitude) Degrees Latitude, \(userLocation.longitude) Degrees Longitude")
         locationUpdated = true
@@ -618,40 +537,40 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func capVideo() {
         
         
-        self.performSegueWithIdentifier("PickLocation", sender: 1)
+        self.performSegue(withIdentifier: "PickLocation", sender: 1)
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print(segue.identifier)
         if segue.identifier == "viewPost" {
             let image = Image()
           
-            if let destinationVC = segue.destinationViewController as? viewPostController{
+            if let destinationVC = segue.destination as? viewPostController{
                
                 destinationVC.imageTapped = self.chosenImage
-                print("IMAGE ID: " + image.imageID)
+                print("IMAGE ID: " + (image?.imageID)!)
                 destinationVC.imageObj = self.chosenImageObj
-                destinationVC.imageID = self.chosenImageObj.imageID
+                destinationVC.imageID = (self.chosenImageObj?.imageID)!
             }
-            print("IMAGE ID: " + image.imageID)
+            print("IMAGE ID: " + (image?.imageID)!)
             
             
         }else if segue.identifier == "PickLocation"{
             
-            if let destinationVC = segue.destinationViewController as? PickLocationController{
+            if let destinationVC = segue.destination as? PickLocationController{
                 
                 destinationVC.locations = 1
                 destinationVC.userName = userName
             }
         }else if segue.identifier == "login"{
-            if let destinationVC = segue.destinationViewController as? FBLoginController{
+            if let destinationVC = segue.destination as? FBLoginController{
                 destinationVC.locations = 1
             }
         }
     }
     
-    func getRankMedal(score : Int) -> UIImage{
+    func getRankMedal(_ score : Int) -> UIImage{
         let score = 750
         var medal : UIImage
         if score < 100{
@@ -672,7 +591,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //self.collectionView?.reloadData()
         

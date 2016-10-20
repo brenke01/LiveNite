@@ -14,7 +14,6 @@ import AVFoundation
 import CoreData
 import CoreLocation
 import GoogleMaps
-import JSSAlertView
 import AWSDynamoDB
 import AWSS3
 
@@ -62,20 +61,20 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     //IBAction zone
     
-    @IBAction func checkIn(sender: AnyObject) {
+    @IBAction func checkIn(_ sender: AnyObject) {
         
         //create date formatter to allow conversion of dates to string and vice versa throughout function
         //set current date
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        let currentDate = NSDate()
+        let currentDate = Date()
         
         //fetch image data for post
 
         
         //determine distance between user and place and set maxAllowableDistance
-        let imagePlaceLocation = CLLocation(latitude: self.imageData.placeLat, longitude: self.imageData.placeLong)
-        let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distanceFromLocation(userLocation)
+        let imagePlaceLocation = CLLocation(latitude: (self.imageData?.placeLat)!, longitude: (self.imageData?.placeLong)!)
+        let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
         let maxAllowableDistance : CLLocationDistance = 2500
         
         //if within range, check if they've checked in recently
@@ -84,13 +83,13 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             
             //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
-            if (self.checkInRequest.userID == ""){
+            if (self.checkInRequest?.userID == ""){
                 
                 //Make new check in in table
                 let checkIn : CheckIn = CheckIn()
-                checkIn.checkInID = self.userID + "_" + self.imageData.placeTitle
-                checkIn.checkInTime = dateFormatter.stringFromDate(currentDate)
-                checkIn.placeTitle = self.imageData.placeTitle
+                checkIn.checkInID = self.userID + "_" + (self.imageData?.placeTitle)!
+                checkIn.checkInTime = dateFormatter.string(from: currentDate)
+                checkIn.placeTitle = (self.imageData?.placeTitle)!
                 checkIn.userID = self.userID
                 AWSService().save(checkIn)
                 
@@ -99,26 +98,25 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 AWSService().loadUser(self.userID,completion: {(result)->Void in
                     self.user = result
                     print("user id is ")
-                    print(self.user.userID)
+                    print(self.user?.userID)
                 })
-                user.score += 5
-                AWSService().save(user)
-                print("Score: \(user.score)")
-                JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
+                user?.score += 5
+                AWSService().save(user!)
+                print("Score: \(user?.score)")
                 
             } else {
                 //if it did set the userID, they've checked in there before so we need to see how long it's been
                 
                 //get last check in date
-                let lastCheckIn : NSDate = dateFormatter.dateFromString(self.checkInRequest.checkInTime)!
+                let lastCheckIn : Date = dateFormatter.date(from: self.checkInRequest!.checkInTime)!
                 
                 //get the difference in date components
-                let diffDateComponents = NSCalendar.currentCalendar().components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second], fromDate: lastCheckIn, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+                let diffDateComponents = (Calendar.current as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day, NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second], from: lastCheckIn, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
                 
                  print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
                 
                 //if it has been more than a day award the user points and update the check in time
-                if (diffDateComponents.year > 0 || diffDateComponents.month > 0 || diffDateComponents.day > 0){
+                if (diffDateComponents.year! > 0 || diffDateComponents.month! > 0 || diffDateComponents.day! > 0){
                     print("It's been a while")
                     
                     //Award user points
@@ -127,47 +125,45 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                         self.user = result
                     })
 
-                    user.score += 5
-                    AWSService().save(user)
-                    print("Score: \(user.score)")
+                    user?.score += 5
+                    AWSService().save(user!)
+                    print("Score: \(user?.score)")
                     
                     //Update check in date
-                    self.checkInRequest.checkInTime = dateFormatter.stringFromDate(currentDate)
-                    AWSService().save(self.checkInRequest)
+                    self.checkInRequest?.checkInTime = dateFormatter.string(from: currentDate)
+                    AWSService().save(self.checkInRequest!)
                     
                     //Notify user of successful check in
-                    JSSAlertView().show(self, title: "Congrats", text : "You have just been awarded five points!", buttonText: "OK", color: UIColorFromHex(0x33cc33, alpha: 1))
                     
                 } else {
                     //if it's been less than a day, let them know they've checked in too recently
-                    JSSAlertView().show(self, title: "Sorry", text : "You have already checked in to this location is the past 24 hours.", buttonText: "OK", color: UIColorFromHex(0xff3333, alpha: 1))
                     print("You've checked in within the last 24 hours")
                 }
                 
             }
         } else {
             //if they aren't within range, let them know they aren't close enough to check in
-            JSSAlertView().show(self, title: "Sorry", text : "You are not close enough to check in.", buttonText: "OK", color: UIColorFromHex(0xff3333, alpha: 1))
+
             print("not close enough to check in")
         }
     }
     
-    @IBAction func exit(sender: AnyObject) {
-        self.dismissViewControllerAnimated(false, completion: nil)
+    @IBAction func exit(_ sender: AnyObject) {
+        self.dismiss(animated: false, completion: nil)
     }
     
-    @IBAction func upvoteAction(sender: AnyObject) {
+    @IBAction func upvoteAction(_ sender: AnyObject) {
         upvoteButton.tag = 1
         registerVote(upvoteButton)
     }
     
-    @IBAction func downvoteAction(sender: AnyObject) {
+    @IBAction func downvoteAction(_ sender: AnyObject) {
         downvoteButton.tag = -1
         registerVote(downvoteButton)
     }
     
-    @IBAction func viewComments(sender: AnyObject) {
-                self.performSegueWithIdentifier("viewComments", sender: sender.tag)
+    @IBAction func viewComments(_ sender: AnyObject) {
+                self.performSegue(withIdentifier: "viewComments", sender: sender.tag)
     }
     
     //end IBAction zone
@@ -176,7 +172,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     //func zone
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         userLocation = locations[0]
         print("\(userLocation.coordinate.latitude) Degrees Latitude, \(userLocation.coordinate.longitude) Degrees Longitude")
         locationUpdated = true
@@ -184,20 +180,20 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func loadUIDetails() {
         
-        detailView.backgroundColor = UIColor.clearColor()
+        detailView.backgroundColor = UIColor.clear
         print(userID)
         let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
-        navigationBar.setBackgroundImage(navBarBGImage, forBarMetrics: .Default)
+        navigationBar.setBackgroundImage(navBarBGImage, for: .default)
         
-        captionLabel.textColor = UIColor.whiteColor()
-        userNameLabel.textColor = UIColor.whiteColor()
+        captionLabel.textColor = UIColor.white
+        userNameLabel.textColor = UIColor.white
         
         
         AWSService().loadVote(userID + "_" + imageID,completion: {(result)->Void in
             self.vote = result
-        if self.vote.voteValue == 1{
+        if self.vote?.voteValue == 1{
             self.upvoteButton.alpha = 0.5
-        } else if self.vote.voteValue == -1{
+        } else if self.vote?.voteValue == -1{
             self.downvoteButton.alpha = 0.5
         }
         })
@@ -217,23 +213,23 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         })
         imgView.image = self.imageTapped
         //calculateHotColdScore()
-        upvotesLabel.text = String(imageData.totalScore)
+        upvotesLabel.text = String(describing: imageData?.totalScore)
         //Needs styling
-        upvotesLabel.textColor = UIColor.whiteColor()
+        upvotesLabel.textColor = UIColor.white
         
     }
     
-    func hasVoted(completion:(_ result:[Vote])->Void)->[Vote]{
+    func hasVoted(_ completion:@escaping (_ result:[Vote])->Void)->[Vote]{
         var votesArray = [Vote]()
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
         queryExpression.indexName = "imageID-owner-index"
         queryExpression.hashKeyAttribute = "imageID"
-        queryExpression.hashKeyValues = self.imageObj.imageID
+        queryExpression.hashKeyValues = self.imageObj?.imageID
         queryExpression.rangeKeyConditionExpression = "owner = :val"
         queryExpression.filterExpression = "placeTitle = :placeTitle"
-        queryExpression.expressionAttributeValues = [":val": self.imageObj.owner]
-        dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continueWithBlock({(task: AWSTask) -> AnyObject in
+        queryExpression.expressionAttributeValues = [":val": self.imageObj?.owner]
+        dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
             }
@@ -241,14 +237,14 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 print("The request failed. Exception: [\(task.exception)]")
             }
             if (task.result != nil) {
-                let output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                let output : AWSDynamoDBPaginatedOutput = (task.result!)
                 for vote  in output.items {
                     let vote : Vote = vote as! Vote
                     votesArray.append(vote)
                 }
-                completion(result:votesArray)
+                completion(votesArray)
             }
-            return votesArray
+            return votesArray as AnyObject
         })
         return votesArray
 
@@ -256,29 +252,29 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func imageData_DisplayToUI()
     {
-        upvotesLabel.text = String(imageData.totalScore)
-        captionLabel.text = imageData.caption
-        userNameLabel.text = imageData.owner
-        navigationBar.topItem!.title = imageData.placeTitle
+        upvotesLabel.text = String(describing: imageData?.totalScore)
+        captionLabel.text = imageData?.caption
+        userNameLabel.text = imageData?.owner
+        navigationBar.topItem!.title = imageData?.placeTitle
     }
     
-    func registerVote(sender: UIButton)
+    func registerVote(_ sender: UIButton)
     {
         let modifier = sender.tag
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        let currentDate = NSDate()
+        let currentDate = Date()
 
             //change vote status appropriately based on current vote state
             var change = 0
-            if vote.voteValue == 0 {
+            if vote?.voteValue == 0 {
                 
                 change = modifier
                 //set all parameters in case it is a new vote
-                vote.voteValue = modifier
-                vote.voteID = self.userID + "_" + self.imageID
-                vote.owner = self.userID
-                vote.imageID = self.imageID
+                vote?.voteValue = modifier
+                vote?.voteID = self.userID + "_" + self.imageID
+                vote?.owner = self.userID
+                vote?.imageID = self.imageID
                 
                 if modifier == 1 {
                     self.upvoteButton.alpha = 0.5
@@ -286,7 +282,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.downvoteButton.alpha = 0.5
                 }
                 
-            } else if vote.voteValue == 1 {
+            } else if vote?.voteValue == 1 {
                 
                 if modifier == 1 {
                     change = -1
@@ -297,9 +293,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.upvoteButton.alpha = 0.5
                     self.downvoteButton.alpha = 1.0
                 }
-                vote.voteValue += change
+                vote?.voteValue += change
                 
-            } else if vote.voteValue == -1 {
+            } else if vote?.voteValue == -1 {
                 
                 if modifier == 1 {
                     change = 2
@@ -310,29 +306,29 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.upvoteButton.alpha = 1.0
                     self.downvoteButton.alpha = 1.0
                 }
-                vote.voteValue += change
+                vote?.voteValue += change
                 
                 
             } else {
                 print("vote.voteValue is not a valid number")
             }
             //update time of vote regardless of initial state
-            vote.timeVoted = dateFormatter.stringFromDate(currentDate)
-            vote.owner = self.imageObj.owner
-            AWSService().save(vote)
+            vote?.timeVoted = dateFormatter.string(from: currentDate)
+            vote?.owner = (self.imageObj?.owner)!
+            AWSService().save(vote!)
             
             //update owner of images score
-            self.imageData.totalScore += change
-            AWSService().loadUser(self.imageData.userID,completion: {(result)->Void in
+            self.imageData?.totalScore += change
+            AWSService().loadUser((self.imageData?.userID)!,completion: {(result)->Void in
                 self.user = result
             })
             print("User ID = " + self.userID)
-            self.user.score += change
-            AWSService().save(self.user)
-            AWSService().save(self.imageData)
+            self.user?.score += change
+            AWSService().save(self.user!)
+            AWSService().save(self.imageData!)
             
             //update label with correct score
-            self.upvotesLabel.text = String(self.imageData.totalScore)
+            self.upvotesLabel.text = String(describing: self.imageData?.totalScore)
 
         
         
@@ -341,7 +337,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func calculateHotColdScore(){
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //factors for decaying function
@@ -350,10 +346,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         //retrieve all votes for image
         hotColdScore = 0
-        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
         queryExpression.filterExpression = "imageID = "+imageID
-        dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continueWithBlock({(task: AWSTask) -> AnyObject in
+        dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
             }
@@ -361,24 +357,24 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 print("The request failed. Exception: [\(task.exception)]")
             }
             if (task.result != nil) {
-                let output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                let output : AWSDynamoDBPaginatedOutput = (task.result!)
                 //for each vote, calculate the decayed value and add it to the hotColdScore
                 for vote  in output.items {
                     let vote : Vote = vote as! Vote
-                    let timeVote = dateFormatter.dateFromString(vote.timeVoted)!
-                    let hoursSinceVote = Double(NSDate().timeIntervalSinceDate(timeVote))/3600.0
+                    let timeVote = dateFormatter.date(from: vote.timeVoted)!
+                    let hoursSinceVote = Double(Date().timeIntervalSince(timeVote))/3600.0
                     let decayedValue = Double(vote.voteValue)*max(a*pow(hoursSinceVote,flatnessFactor)+1, 0)
                     self.hotColdScore += decayedValue
                 }
                 print("The request succeeded. HotColdScore = " + String(self.hotColdScore))
-                return self.hotColdScore
+                return self.hotColdScore as AnyObject
             }
-            return self.hotColdScore
+            return self.hotColdScore as AnyObject
         })
 
         
-        self.imageData.hotColdScore = self.hotColdScore
-        AWSService().save(self.imageData)
+        self.imageData?.hotColdScore = self.hotColdScore
+        AWSService().save(self.imageData!)
     }
     
     //end func zone
@@ -396,7 +392,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         })
 
         //fetch check in
-        AWSService().loadCheckIn(self.userID + "_" + self.imageData.placeTitle, completion: {(result)->Void in
+        AWSService().loadCheckIn(self.userID + "_" + (self.imageData?.placeTitle)!, completion: {(result)->Void in
             self.checkInRequest = result
         })
         loadImageDetail()
@@ -411,13 +407,13 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "viewComments" {
-            if let destinationVC = segue.destinationViewController as? CommentController{
+            if let destinationVC = segue.destination as? CommentController{
                 
                 destinationVC.imageID = imageID
                 destinationVC.userNameOP = userNameOP
