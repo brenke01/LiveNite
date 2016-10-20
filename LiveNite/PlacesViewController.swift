@@ -18,19 +18,19 @@ class PlacesViewController{
     var data = NSData()
     var geoHashArr:[String] = []
     
-    func getGroupedImages(completion:(result:[Image])->Void)->[Image]{
+    func getGroupedImages(completion:(_ result:[Image])->Void)->[Image]{
         var groupedArr = [Image]()
         getGroupedImages({(result)->Void in
-            var imgArr = result
+            let imgArr = result
             
-            var sortedArray = (imgArr as NSArray).sortedArrayUsingDescriptors([
+            let sortedArray = (imgArr as NSArray).sortedArrayUsingDescriptors([
                 NSSortDescriptor(key: "placeTitle", ascending: false),
                 NSSortDescriptor(key: "totalScore", ascending: false)
                 ]) as! [Image]
             var found = false
             for img in sortedArray{
                 found = false
-                for var index = 0; index < groupedArr.count; ++index{
+                for index in 0 ..< groupedArr.count += 1{
                     if (img.placeTitle == groupedArr[index].placeTitle){
                         found = true
                         break
@@ -47,16 +47,16 @@ class PlacesViewController{
 
     }
     
-    func getNearbyZipcodes(completion: (result: Int)->Void){
-        var geoCoder = CLGeocoder()
-        var count = 0
+    func getNearbyZipcodes(completion: (_ result: Int)->Void){
+        let geoCoder = CLGeocoder()
+        let count = 0
       
             geoCoder.reverseGeocodeLocation(self.bounds[count], completionHandler: {(placemarks, error) -> Void in
                 if (error != nil){
                     return
                 }
-                var placemark = placemarks![0]
-                var zipcode = placemark.postalCode
+                let placemark = placemarks![0]
+                let zipcode = placemark.postalCode
                 self.nearbyZipCodes.append(zipcode!)
                 completion(result: self.nearbyZipCodes.count)
             })
@@ -65,19 +65,19 @@ class PlacesViewController{
     }
     
     
-    func getImages(completion:(result:[Image])->Void)->[Image]{
+    func getImages(completion:(_ result:[Image])->Void)->[Image]{
         //sendGeo()
         var imagesArray = [Image]()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        var queryExpression = AWSDynamoDBQueryExpression()
+        let queryExpression = AWSDynamoDBQueryExpression()
         let radius : Int = 5
-        var latTraveledDeg : Double = (1 / 110.54) * Double(radius)
-        var loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
-        var  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude)))
-        var latBoundPos = loc.latitude + latTraveledDeg
-        var latBoundNeg = loc.latitude - latTraveledDeg
-        var longBoundPos = loc.longitude + longTraveledDeg
-        var longBoundNeg = loc.longitude - longTraveledDeg
+        let latTraveledDeg : Double = (1 / 110.54) * Double(radius)
+        let loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
+        let  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude)))
+        let latBoundPos = loc.latitude + latTraveledDeg
+        let latBoundNeg = loc.latitude - latTraveledDeg
+        let longBoundPos = loc.longitude + longTraveledDeg
+        let longBoundNeg = loc.longitude - longTraveledDeg
         self.bounds = [CLLocation(latitude: latBoundPos, longitude: longBoundPos), CLLocation(latitude: latBoundPos, longitude: longBoundNeg), CLLocation(latitude: latBoundNeg, longitude: longBoundPos), CLLocation(latitude: latBoundNeg, longitude: longBoundNeg)]
         var locationManager = CLLocationManager()
         
@@ -115,7 +115,7 @@ class PlacesViewController{
                 print("The request failed. Exception: [\(task.exception)]")
             }
             if (task.result != nil) {
-                var output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                let output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
                 for image  in output.items {
                     let image : Image = image as! Image
                     imagesArray.append(image)
@@ -135,15 +135,15 @@ class PlacesViewController{
     }
 
     
-    func getImagesForGroup(placeName: String, user: User, completion:(result:[Image])->Void)->[Image]{
+    func getImagesForGroup(placeName: String, user: User, completion:(_ result:[Image])->Void)->[Image]{
         let radius : Int = 5
-        var latTraveledDeg : Double = (1 / 110.54) * Double(radius)
-        var loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
-        var  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude)))
-        var latBoundPos = loc.latitude + latTraveledDeg
-        var latBoundNeg = loc.latitude - latTraveledDeg
-        var longBoundPos = loc.longitude + longTraveledDeg
-        var longBoundNeg = loc.longitude - longTraveledDeg
+        let latTraveledDeg : Double = (1 / 110.54) * Double(radius)
+        let loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
+        let  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude)))
+        let latBoundPos = loc.latitude + latTraveledDeg
+        let latBoundNeg = loc.latitude - latTraveledDeg
+        let longBoundPos = loc.longitude + longTraveledDeg
+        let longBoundNeg = loc.longitude - longTraveledDeg
         self.bounds = [CLLocation(latitude: latBoundPos, longitude: longBoundPos), CLLocation(latitude: latBoundPos, longitude: longBoundNeg), CLLocation(latitude: latBoundNeg, longitude: longBoundPos), CLLocation(latitude: latBoundNeg, longitude: longBoundNeg)]
         var locationManager = CLLocationManager()
         
@@ -158,7 +158,7 @@ class PlacesViewController{
         }
         var imagesArray = [Image]()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        var queryExpression = AWSDynamoDBQueryExpression()
+        let queryExpression = AWSDynamoDBQueryExpression()
         queryExpression.indexName = "geohash-index"
         queryExpression.hashKeyAttribute = "geohash"
         queryExpression.hashKeyValues = self.geoHashArr[0].substringToIndex(self.geoHashArr[0].endIndex.advancedBy(-7))
@@ -172,7 +172,7 @@ class PlacesViewController{
                 print("The request failed. Exception: [\(task.exception)]")
             }
             if (task.result != nil) {
-                var output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                let output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
                 for image  in output.items {
                     let image : Image = image as! Image
                     imagesArray.append(image)
@@ -194,7 +194,7 @@ class PlacesViewController{
     
     func sendGeo() {
         var sendReq : SendGeoRequest = SendGeoRequest()
-        var loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
+        let loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
         var requestDictionary = ["action": "query-radius", "request": ["lat": Int(loc.latitude), "lng": Int(loc.longitude), "radiusInMeter": Int(5000)]]
        // sendReq.sendRequest(loc, arg2: 1000)
 //        do{

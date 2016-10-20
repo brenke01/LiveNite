@@ -146,7 +146,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 self.chosenLatFromMap = place.coordinate.latitude
                 self.chosenLongFromMap = place.coordinate.longitude
                 let loc = CLLocation(latitude: self.userLocation.latitude, longitude: self.userLocation.longitude)
-                var placeLoc = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+                let placeLoc = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
                 if (loc.distanceFromLocation(placeLoc) > 3000.0){
                     let alertController = UIAlertController(title: "Error", message: "The selected location is too far away from your location", preferredStyle: UIAlertControllerStyle.Alert)
                     alertController.addAction(UIAlertAction(title:"Dismiss", style: UIAlertActionStyle.Default, handler: nil))
@@ -331,7 +331,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         submitButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
         submitButton.titleLabel!.font = UIFont(name:
             "HelveticaNeue-Medium", size: 18)
-        submitButton.addTarget(self, action: "saveImageInfo:", forControlEvents: UIControlEvents.TouchUpInside)
+        submitButton.addTarget(self, action: #selector(PickLocationController.saveImageInfo(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(submitButton)
         
         

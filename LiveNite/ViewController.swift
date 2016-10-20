@@ -197,7 +197,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     }
     
-    func retrieveUserID(completion:(result:String)->Void){
+    func retrieveUserID(completion:(_ result:String)->Void){
         var id = ""
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range"])
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
@@ -358,16 +358,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if (self.placesToggle && !self.displayPlacesAlbum){
             var groupedArr = [Image]()
             placesViewController.getImages({(result)->Void in
-                var imgArr = result
+                let imgArr = result
                 
-                var sortedArray = (imgArr as NSArray).sortedArrayUsingDescriptors([
+                let sortedArray = (imgArr as NSArray).sortedArrayUsingDescriptors([
                     NSSortDescriptor(key: "placeTitle", ascending: false),
                     NSSortDescriptor(key: "totalScore", ascending: false)
                     ]) as! [Image]
                 var found = false
                 for img in sortedArray{
                     found = false
-                    for var index = 0; index < groupedArr.count; ++index{
+                    for index in 0 ..< groupedArr.count += 1{
                         if (img.placeTitle == groupedArr[index].placeTitle){
                             found = true
                             break
@@ -475,7 +475,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let imageButton = UIButton(frame: CGRectMake(0, 0, CGFloat(imgWidth), CGFloat(imgHeight)))
         imageButton.setImage(self.uiImageArr[indexPath.row], forState: .Normal)
 
-            var titleView = UILabel(frame: CGRectMake(0, imageButton.frame.height * 0.9, imageButton.frame.width, imageButton.frame.height * 0.1))
+            let titleView = UILabel(frame: CGRectMake(0, imageButton.frame.height * 0.9, imageButton.frame.width, imageButton.frame.height * 0.1))
             titleView.text = self.imageArr[indexPath.row].placeTitle
             titleView.textColor = UIColor.whiteColor()
             titleView.backgroundColor = UIColor.blackColor()
@@ -493,7 +493,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         
         //
-            let imagePressed :Selector = "imagePressed:"
+            let imagePressed :Selector = #selector(ViewController.imagePressed(_:))
         let tap = UITapGestureRecognizer(target: self, action: imagePressed)
         tap.numberOfTapsRequired = 1
         imageButton.addGestureRecognizer(tap)
@@ -625,7 +625,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         print(segue.identifier)
         if segue.identifier == "viewPost" {
-            var image = Image()
+            let image = Image()
           
             if let destinationVC = segue.destinationViewController as? viewPostController{
                

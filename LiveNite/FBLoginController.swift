@@ -93,16 +93,16 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         //The result from the Facebook request is an object that works like a Dictionary 
         //First we grab all of the fields
         userID = result.valueForKey("id") as! String
-        let firstName = result.valueForKey("first_name") as! AnyObject?
+        let firstName = result.valueForKey("first_name") 
         let email = result.valueForKey("email") as! String
-        let gender = result.valueForKey("gender") as! AnyObject?
-        let ageRange = result.valueForKey("age_range")?.valueForKey("min") as! AnyObject?
+        let gender = result.valueForKey("gender") 
+        let ageRange = result.valueForKey("age_range")?.valueForKey("min") 
         //This is our predicate for the table that will ask for a record that has an id of userID
         
 
         
         if (newUser){
-            var newUserObj : User = User()
+            let newUserObj : User = User()
             newUserObj.userID = userID
             newUserObj.age = ageRange as! Int
             newUserObj.gender = String(gender)

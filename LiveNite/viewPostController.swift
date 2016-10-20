@@ -209,7 +209,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         hasVoted({(result)->Void in
             var voteArr = result
             if (voteArr.count > 0){
-               var vote = voteArr[0]
+               let vote = voteArr[0]
                 var voteValue = vote.voteValue
                 
             }
@@ -223,10 +223,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
     }
     
-    func hasVoted(completion:(result:[Vote])->Void)->[Vote]{
+    func hasVoted(completion:(_ result:[Vote])->Void)->[Vote]{
         var votesArray = [Vote]()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        var queryExpression = AWSDynamoDBQueryExpression()
+        let queryExpression = AWSDynamoDBQueryExpression()
         queryExpression.indexName = "imageID-owner-index"
         queryExpression.hashKeyAttribute = "imageID"
         queryExpression.hashKeyValues = self.imageObj.imageID
@@ -241,7 +241,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 print("The request failed. Exception: [\(task.exception)]")
             }
             if (task.result != nil) {
-                var output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                let output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
                 for vote  in output.items {
                     let vote : Vote = vote as! Vote
                     votesArray.append(vote)

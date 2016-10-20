@@ -16,8 +16,8 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     
     
     @IBAction func postComment(sender: AnyObject) {
-        var comment : Comment = Comment()
-        var uuid = NSUUID().UUIDString
+        let comment : Comment = Comment()
+        let uuid = NSUUID().UUIDString
         comment.commentID = uuid
         comment.imageID = self.imageID
         comment.comment = commentField.text

@@ -118,10 +118,10 @@ class AWSService {
     func getImageFromUrl(fileName : String, completion:(result:UIImage)->Void) -> UIImage{
         var transferManager: AWSS3TransferManager = AWSS3TransferManager.defaultS3TransferManager()
         var downloadedImage : UIImage = UIImage()
-        var downloadingFilePath: String = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("FQQhOWsL.jpg").absoluteString
-        var downloadingFileURL: NSURL = NSURL.fileURLWithPath(downloadingFilePath)
+        let downloadingFilePath: String = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("FQQhOWsL.jpg")!.absoluteString!
+        let downloadingFileURL: NSURL = NSURL.fileURLWithPath(downloadingFilePath)
         // Construct the download request.
-        var downloadRequest: AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+        let downloadRequest: AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
         downloadRequest.bucket = "liveniteimages"
         let url = "https://s3.amazonaws.com/liveniteimages/" + fileName
         let urlFormat = NSURL(string: url)
@@ -196,7 +196,7 @@ class AWSService {
             }
             if (task.result != nil){
                 user = task.result as! User
-                var vc : ViewController = ViewController()
+                let vc : ViewController = ViewController()
                 vc.user = user
                 print("USER id is ")
                 
@@ -259,10 +259,10 @@ class AWSService {
     }
     
     func saveImageToBucket (selectedImage : NSData, id : String, placeName: String, completion:(result:String)->Void) -> String{
-        var transferManager: AWSS3TransferManager = AWSS3TransferManager.defaultS3TransferManager()
-        var uploadRequest : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
+        let transferManager: AWSS3TransferManager = AWSS3TransferManager.defaultS3TransferManager()
+        let uploadRequest : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
 let testFileURL1 = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("temp")
-        selectedImage.writeToURL(testFileURL1, atomically: true)
+        selectedImage.writeToURL(testFileURL1!, atomically: true)
         uploadRequest.bucket = "liveniteimages"
         uploadRequest.key = id
         uploadRequest.body = testFileURL1

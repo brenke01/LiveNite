@@ -57,7 +57,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
 
         var commentArray = [Comment]()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        var queryExpression = AWSDynamoDBQueryExpression()
+        let queryExpression = AWSDynamoDBQueryExpression()
         queryExpression.hashKeyAttribute = "commentID"
         queryExpression.rangeKeyConditionExpression = "imageID = :val"
         queryExpression.expressionAttributeValues = [":val": imageID]
@@ -69,7 +69,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
                 print("The request failed. Exception: [\(task.exception)]")
             }
             if (task.result != nil) {
-                var output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                let output : AWSDynamoDBPaginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
                 for comment  in output.items {
                     let comment : Comment = comment as! Comment
                     commentArray.append(comment)
@@ -114,9 +114,9 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         
         cell.addSubview(commentInfoContainer)*/
         
-        var nameLabel : UILabel = (cell.viewWithTag(100) as! UILabel)
-        var commentLabel : UILabel = (cell.viewWithTag(200) as! UILabel)
-        var timeLabel : UILabel = (cell.viewWithTag(300) as! UILabel)
+        let nameLabel : UILabel = (cell.viewWithTag(100) as! UILabel)
+        let commentLabel : UILabel = (cell.viewWithTag(200) as! UILabel)
+        let timeLabel : UILabel = (cell.viewWithTag(300) as! UILabel)
         let timePosted = commentArr[indexPath.row].timePosted
        
         let dateFormatter = NSDateFormatter()
