@@ -89,22 +89,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             // Fallback on earlier versions
         }
         //self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"])
-        graphRequest.start(completionHandler: { (connection, result, error) -> Void in
-            
-            if ((error) != nil)
-            {
-                // Process error
-                print("Error: \(error)")
-                
-            }
-            else
-            {
-                
-                self.currentUserName = (result as AnyObject).object(forKey: "id") as! String
-            }
-        })
+        self.currentUserName = (self.user?.userID)!
         
         
     }
@@ -134,8 +119,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         self.googleMapView.animate(toLocation: coordinates)
         let config = GMSPlacePickerConfig(viewport: viewport)
         placePicker = GMSPlacePicker(config: config)
-
-        placePicker?.pickPlaceWithCallback({ (place: GMSPlace?, error: NSError?)-> Void in
+        placePicker?.pickPlace(callback: {(place: GMSPlace?, error) in
+    
             if let error = error {
                 print("Pick Place error: \(error.localizedDescription)")
                 return

@@ -11,6 +11,8 @@ import CoreData
 import GoogleMaps
 import CoreLocation
 import AWSCore
+import GooglePlaces
+import GooglePlacePicker
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
@@ -30,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             region: DefaultServiceRegionType,
             credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
+       GMSPlacesClient.provideAPIKey("AIzaSyDvnIUWZMv_89O3BVnt8gJyYAasigs3hDQ")
         GMSServices.provideAPIKey("AIzaSyDvnIUWZMv_89O3BVnt8gJyYAasigs3hDQ")
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }

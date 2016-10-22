@@ -74,6 +74,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var uiImageArr = [UIImage]()
     var doneLoading = false
     var chosenImage = UIImage()
+    var titleCountArr = [Int]()
     var chosenImageObj = Image()
     var sort = false
     typealias FinishedDownloaded = () -> ()
@@ -96,6 +97,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     @IBOutlet weak var sortBtn: UIButton!
+    @IBOutlet weak var topNavBar: UIView!
     @IBAction func toggleSort(_ sender: AnyObject) {
         if (self.hotToggle == 0){
             sortBtn.setTitle("Popular", for: UIControlState())
@@ -134,6 +136,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         determineQuery()
     }
     
+   
     override func viewDidAppear(_ animated: Bool) {
 
         super.viewDidAppear(animated)
@@ -176,8 +179,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         } else {
             // Fallback on earlier versions
         }
+        locationManager.startUpdatingLocation()
         let barViewControllers = self.tabBarController?.viewControllers
         let svc = barViewControllers![2] as! PickLocationController
+        self.collectionView?.frame = CGRect(x: 0, y: self.topNavBar.frame.height, width: self.view.frame.width, height: self.view.frame.height * 0.9)
         
         //dispatch_group_enter(fbUserID)
         retrieveUserID({(result)->Void in
@@ -187,10 +192,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 svc.user = result
                 print("user id is ")
                 print(self.user?.userID)
+                self.determineQuery()
             })
             
         })
-        determineQuery()
+
+       
        
         //self.user = AWSService().loadUser(self.userID)
 
@@ -208,8 +215,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 print("Error: \(error)")
                 
             }else{
-                let userID = (result as AnyObject).object(forKey: "id") as! String
-                completion(userID)
+                let data:[String:AnyObject] = result as! [String: AnyObject]
+                let userID = data["id"] as? String
+                completion(userID!)
                 
             }
             
@@ -255,6 +263,64 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return 1
     }
     
+    @IBOutlet weak var sortButton: UIButton!
+    @IBOutlet weak var searchBtn: UIButton!
+    @IBOutlet weak var imgTypeBtn: UIButton!
+    func switchNavBar(albumView:Bool){
+        let altNavBar = UIView(frame: CGRect(x: 0, y: 0, width: self.topNavBar.frame.width, height: self.topNavBar.frame.height))
+        let exitButton = UIButton(frame: CGRect(x: self.topNavBar.frame.width * 0.1, y: self.topNavBar.frame.height * 0.1, width: self.topNavBar.frame.width * 0.1, height: self.topNavBar.frame.height * 0.8))
+        var placeTitleLabel = UILabel(frame: CGRect(x: self.topNavBar.frame.width * 0.4, y: self.topNavBar.frame.height * 0.1, width: self.topNavBar.frame.width * 0.6, height: self.topNavBar.frame.height * 0.8))
+        altNavBar.isHidden = true
+
+        DispatchQueue.main.async(execute: {
+            
+
+            if (albumView){
+
+                
+                self.sortBtn.isHidden = false
+                self.searchBtn.isHidden = false
+                self.imgTypeBtn.isHidden = false
+                self.topNavBar.isHidden = false
+                altNavBar.bringSubview(toFront: placeTitleLabel)
+                placeTitleLabel.text = ""
+                self.view.bringSubview(toFront: self.topNavBar)
+                altNavBar.isHidden = true
+               
+                
+               
+                
+            }else{
+                
+                self.topNavBar.isHidden = true
+                self.sortBtn.isHidden = true
+                self.searchBtn.isHidden = true
+                self.imgTypeBtn.isHidden = true
+                altNavBar.isHidden = false
+
+                placeTitleLabel.textColor = UIColor.white
+                placeTitleLabel.text = self.chosenAlbumLocation
+
+                exitButton.setTitle("X", for: .normal)
+                exitButton.setTitleColor(UIColor.white, for: .normal)
+                exitButton.addTarget(self, action: #selector(self.backToAlbumView(_:)), for: .touchUpInside)
+                altNavBar.addSubview(exitButton)
+                altNavBar.addSubview(placeTitleLabel)
+                self.view.addSubview(altNavBar)
+            
+                
+            }
+        })
+
+        
+    }
+    
+    func backToAlbumView(_ sender: UIButton!){
+        self.placesToggle = true
+        self.displayPlacesAlbum = false
+        determineQuery()
+    }
+    
     func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
         stringLabel = UILabel(frame: CGRect(x: 50, y: 0, width: 175, height: 50))
         stringLabel.text = msg
@@ -275,6 +341,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func determineQuery(){
         let placesViewController : PlacesViewController = PlacesViewController()
         if (self.placesToggle && !self.displayPlacesAlbum){
+            var groupedImageDictionary = [String: AnyObject]()
+           
             var groupedArr = [Image]()
             placesViewController.getImages(completion: {(result)->Void in
                 let imgArr = result
@@ -284,7 +352,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     NSSortDescriptor(key: "totalScore", ascending: false)
                     ]) as! [Image]
                 var found = false
+                var titleCount = 0
+                var previousTitle = ""
                 for img in sortedArray{
+                    if (img.placeTitle != previousTitle && previousTitle != ""){
+                        groupedArr[groupedArr.count - 1].groupedCount = titleCount
+                        titleCount = 0
+                    }
+                    titleCount += 1
+                    previousTitle = img.placeTitle
                     found = false
                     for i in 0 ..< groupedArr.count{
                         if (img.placeTitle == groupedArr[i].placeTitle){
@@ -296,20 +372,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         groupedArr.append(img)
                     }
                 }
+                if (titleCount != 0){
+                    groupedArr[groupedArr.count - 1].groupedCount = titleCount
+                }
                 self.sort = false
                 self.uiImageArr = []
                 self.idArray = []
                 self.imageArr = []
-                self.imageArr = result
+                self.imageArr = groupedArr
                 self.imageArrLength = groupedArr.count
                 self.doneLoading = true
+                
                 DispatchQueue.main.async(execute: {
+                    self.switchNavBar(albumView: true)
                     self.collectionView!.reloadData()
                 })
                 
             })
         }else if(self.placesToggle && self.displayPlacesAlbum){
             placesViewController.getImagesForGroup(placeName: self.chosenAlbumLocation, user: user!, completion: {(result)->Void in
+                self.placesToggle = false
+                
                 self.sort = false
                 self.idArray = []
                 self.uiImageArr = []
@@ -318,6 +401,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
                 DispatchQueue.main.async(execute: {
+                    self.switchNavBar(albumView: false)
                     self.collectionView!.reloadData()
                 })
             })
@@ -404,9 +488,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imageButton.layer.masksToBounds = true
         
         if (self.placesToggle){
-            let albumImageView = UIImageView(frame: CGRect(x: imageButton.frame.width * (0.8), y: imageButton.frame.height * 0.8,  width: imageButton.frame.width * 0.15, height: imageButton.frame.height * 0.2));
-            let albumImage = UIImage(named : "album2")
-            albumImageView.image = albumImage
+            let albumImageView = UIView(frame: CGRect(x: imageButton.frame.width * (0.8), y: imageButton.frame.height * 0.7,  width: imageButton.frame.width * 0.15, height: imageButton.frame.height * 0.15));
+            albumImageView.layer.cornerRadius = 5
+            let albumCount = UILabel(frame: CGRect(x: albumImageView.frame.width * 0.4, y: 0,  width: albumImageView.frame.width, height: albumImageView.frame.height))
+            albumCount.text = String(self.imageArr[indexPath.row].groupedCount)
+            albumCount.textColor = UIColor.white
+            albumImageView.backgroundColor = UIColor.black
+            albumImageView.addSubview(albumCount)
             imageButton.addSubview(albumImageView)
         }
         
@@ -531,6 +619,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         userLocation = locations[0].coordinate
         print("\(userLocation.latitude) Degrees Latitude, \(userLocation.longitude) Degrees Longitude")
         locationUpdated = true
+        locationManager.stopUpdatingLocation()
     }
     
     

@@ -213,7 +213,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         })
         imgView.image = self.imageTapped
         //calculateHotColdScore()
-        upvotesLabel.text = String(describing: imageData?.totalScore)
+        upvotesLabel.text = String(imageObj!.totalScore)
         //Needs styling
         upvotesLabel.textColor = UIColor.white
         
@@ -252,7 +252,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func imageData_DisplayToUI()
     {
-        upvotesLabel.text = String(describing: imageData?.totalScore)
+        upvotesLabel.text = String(imageObj!.totalScore)
         captionLabel.text = imageData?.caption
         userNameLabel.text = imageData?.owner
         navigationBar.topItem!.title = imageData?.placeTitle
@@ -328,7 +328,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             AWSService().save(self.imageData!)
             
             //update label with correct score
-            self.upvotesLabel.text = String(describing: self.imageData?.totalScore)
+            self.upvotesLabel.text = String(self.imageData!.totalScore)
 
         
         

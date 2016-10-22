@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import AWSDynamoDB
+import CoreLocation
 
 
 class PlacesViewController{
@@ -17,9 +18,13 @@ class PlacesViewController{
     var nearbyZipCodes = [String]()
     var data = Data()
     var geoHashArr:[String] = []
+    var userLocation = CLLocationCoordinate2D()
+    var locationUpdated = false
     
     func getGroupedImages(_ completion:(_ result:[Image])->Void)->[Image]{
         var groupedArr = [Image]()
+
+        
         getGroupedImages({(result)->Void in
             let imgArr = result
             
@@ -31,6 +36,7 @@ class PlacesViewController{
             for img in sortedArray{
                 found = false
                 for i in 0 ..< groupedArr.count{
+                   
                     if (img.placeTitle == groupedArr[i].placeTitle){
                         found = true
                         break
@@ -40,6 +46,7 @@ class PlacesViewController{
                     groupedArr.append(img)
                 }
             }
+
 
         })
         return groupedArr
@@ -64,6 +71,12 @@ class PlacesViewController{
        
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        userLocation = locations[0].coordinate
+        print("\(userLocation.latitude) Degrees Latitude, \(userLocation.longitude) Degrees Longitude")
+        locationUpdated = true
+    }
+    
     
     func getImages(completion:@escaping ([Image])->Void)->[Image]{
         //sendGeo()
@@ -72,14 +85,22 @@ class PlacesViewController{
         let queryExpression = AWSDynamoDBQueryExpression()
         let radius : Int = 5
         let latTraveledDeg : Double = (1 / 110.54) * Double(radius)
-        let loc :  CLLocationCoordinate2D = CLLocationManager().location!.coordinate
+        var locationManager = CLLocationManager()
+        if #available(iOS 8.0, *) {
+            locationManager.requestWhenInUseAuthorization()
+        } else {
+            // Fallback on earlier versions
+        }
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.stopUpdatingLocation()
+        let loc :  CLLocationCoordinate2D = locationManager.location!.coordinate
         let  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude)))
         let latBoundPos = loc.latitude + latTraveledDeg
         let latBoundNeg = loc.latitude - latTraveledDeg
         let longBoundPos = loc.longitude + longTraveledDeg
         let longBoundNeg = loc.longitude - longTraveledDeg
         self.bounds = [CLLocation(latitude: latBoundPos, longitude: longBoundPos), CLLocation(latitude: latBoundPos, longitude: longBoundNeg), CLLocation(latitude: latBoundNeg, longitude: longBoundPos), CLLocation(latitude: latBoundNeg, longitude: longBoundNeg)]
-        var locationManager = CLLocationManager()
+        
         
         for i in self.bounds{
             
