@@ -57,6 +57,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var chosenLatFromMap = 0.0
     var mapPickedLocation = false
     var userID = ""
+    var fromEvent = false
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -144,7 +145,13 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                     self.mapPickedLocation = true
                     self.chosenLatitude = place.coordinate.latitude
                     self.chosenLongitude = place.coordinate.longitude
-                    self.loadCaptionView()
+                    if (self.fromEvent){
+                        self.performSegue(withIdentifier: "addEventDesc", sender: 1)
+
+                    }else{
+                        self.loadCaptionView()
+                    }
+                    
                 }
                 
             } else {
@@ -154,6 +161,24 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "addEventDesc"{
+            
+            if let destinationVC = segue.destination as? AddEventController{
+                
+                destinationVC.selectedImg = self.selectedImage
+                destinationVC.userID = (self.user?.userID)!
+                destinationVC.placeTitle = self.chosenLocation
+                destinationVC.placeLat = self.chosenLatitude
+                destinationVC.placeLong = self.chosenLongitude
+            
+            }
+        }
+    }
+    
+    
     
     @objc(didUpdateAutocompletePredictionsForTableDataSource:) func didUpdateAutocompletePredictions(for tableDataSource: GMSAutocompleteTableDataSource) {
         // Turn the network activity indicator off.
