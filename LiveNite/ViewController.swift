@@ -428,7 +428,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         self.uiImageArr = []
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
-        cell.backgroundColor = UIColor.yellow
         cell.backgroundColor = UIColor.black
         
         var imageArray : [UIImage] = []

@@ -34,8 +34,16 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         imgView.image = selectedImg
         locLabel.text = placeTitle
+        let tap = UITapGestureRecognizer(target: self, action: "dissmissKeyboard")
+        view.addGestureRecognizer(tap)
+        
        
     }
+    
+    func dissmissKeyboard(){
+        view.endEditing(true)
+    }
+    
     func saveImageToBucket(){
         let setId : String = UUID().uuidString
         let dataImage:Data = UIImageJPEGRepresentation(self.selectedImg, 0.0)!
@@ -50,18 +58,27 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             event?.eventLong = self.placeLong
             event?.information = self.descInput.text
             event?.publicStatus = self.privateToggle.isOn
+            event?.placeTitle = self.placeTitle
+            event?.eventTitle = self.titleInput.text!
             let date = Date()
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             event?.timePosted = formatter.string(from: date)
             event?.eventStartTime = formatter.string(from: date)
             event?.eventEndTime = formatter.string(from: date)
+            AWSService().save(event!)
+            dismiss(animated: true, completion: nil)
+            tabBarController?.selectedIndex = 1
         })
         })
     }
+    func textFieldShouldReturn(textField: UITextField) -> Bool{
+        self.view.endEditing(true)
+        return false
+    }
     
     @IBAction func postEvent(_ sender: AnyObject) {
-
+        saveImageToBucket()
         
     }
     
