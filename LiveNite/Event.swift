@@ -19,6 +19,7 @@ class Event :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var placeTitle: String = ""
     var eventTitle: String = ""
     var information: String = ""
+    var geohash = ""
     var hotColdScore: Double = 0
     var eventID: String = ""
     var url: String = ""

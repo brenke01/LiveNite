@@ -16,15 +16,16 @@ import CoreLocation
 import GoogleMaps
 import AWSDynamoDB
 
-class EventController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate{
+class EventController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource{
 
     @IBOutlet weak var tableView: UITableView!
     var user = User()
     var userID = ""
-    
+    var eventsArr = [Event]()
     var bounds = [CLLocation]()
     var nearbyZipCodes = [String]()
     var data = Data()
+    var locationManager = CLLocationManager()
     var geoHashArr:[String] = []
     var userLocation = CLLocationCoordinate2D()
     var locationUpdated = false
@@ -39,7 +40,6 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         if segue.identifier == "addEvent"{
             
             if let destinationVC = segue.destination as? PickLocationController{
-                
                 destinationVC.locations = 1
                 destinationVC.userName = (self.user?.userID)!
                 destinationVC.fromEvent = true
@@ -49,7 +49,17 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        
+        if #available(iOS 8.0, *) {
+            self.locationManager.requestWhenInUseAuthorization()
+        } else {
+            // Fallback on earlier versions
+        }
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.stopUpdatingLocation()
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         if (self.user?.userID == ""){
             retrieveUserID({(result)->Void in
                 self.userID = result
@@ -60,6 +70,13 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 
             })
         }
+        
+        self.getEvents(completion: {(result)->Void in
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+            
+        })
+        })
     }
     
     func retrieveUserID(_ completion:@escaping (_ result: String)->Void){
@@ -84,22 +101,17 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         
     }
     
-    func getEvents(completion:@escaping ([Event])->Void)->[Event]{
+    func getEvents(completion:@escaping ([Event])->Void)->Void{
         //sendGeo()
         var eventsArray = [Event]()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
         let radius : Int = 5
         let latTraveledDeg : Double = (1 / 110.54) * Double(radius)
-        var locationManager = CLLocationManager()
-        if #available(iOS 8.0, *) {
-            locationManager.requestWhenInUseAuthorization()
-        } else {
-            // Fallback on earlier versions
-        }
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.stopUpdatingLocation()
-        let loc :  CLLocationCoordinate2D = locationManager.location!.coordinate
+
+
+
+        let loc :  CLLocationCoordinate2D = self.locationManager.location!.coordinate
         let  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude)))
         let latBoundPos = loc.latitude + latTraveledDeg
         let latBoundNeg = loc.latitude - latTraveledDeg
@@ -137,33 +149,50 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                     let event : Event = e as! Event
                     eventsArray.append(event)
                 }
+                self.eventsArr = (eventsArray as AnyObject) as! [Event]
+
                 completion(eventsArray)
-                return eventsArray as AnyObject
+
                 
             }
             return eventsArray as AnyObject
         })
         
         
-        return eventsArray
+        
 
     }
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section : Int) -> Int{
-        return 0
+        return self.eventsArr.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
         cell.backgroundColor = UIColor.black
           self.uiImageArr = []
+        var upVoteArray : [Int] = []
+        for event in self.eventsArr{
+            let titleData = event.placeTitle
+         
+            let eventID = event.eventID
+            //Retrieving the image file from S3 example
+            AWSService().getImageFromUrl(String(event.url), completion: {(result)->Void in
+                
+                self.uiImageArr.append(result)
+                //self.collectionView?.reloadData()
+                
+            })
+            
+            
+        }
         let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(self.view.frame.width), height: CGFloat(self.view.frame.height * 0.3)))
         imageButton.setImage(self.uiImageArr[(indexPath as NSIndexPath).row], for: UIControlState())
         return cell
     }
     
-    func tableView(_ tableView : UITableView, didSelectRowAtIndexPath indexPath: IndexPath){
+    func tableView(_ tableView : UITableView, didSelectRowAt indexPath: IndexPath){
         
     }
     

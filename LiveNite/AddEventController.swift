@@ -28,6 +28,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     var placeTitle = ""
     var placeLat = 0.0
     var placeLong = 0.0
+    var userLocation = CLLocationCoordinate2D()
     
     
     override func viewDidLoad(){
@@ -66,9 +67,14 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             event?.timePosted = formatter.string(from: date)
             event?.eventStartTime = formatter.string(from: date)
             event?.eventEndTime = formatter.string(from: date)
+            var geo :Geohash = Geohash()
+            let l =  self.userLocation
+            let s = l.geohash(10)
+            let index = s.characters.index(s.endIndex, offsetBy: -7)
+            event?.geohash = s.substring(to: index)
             AWSService().save(event!)
-            dismiss(animated: true, completion: nil)
-            tabBarController?.selectedIndex = 1
+            self.dismiss(animated: true, completion: nil)
+            self.tabBarController?.selectedIndex = 1
         })
         })
     }

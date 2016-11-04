@@ -167,7 +167,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         if segue.identifier == "addEventDesc"{
             
             if let destinationVC = segue.destination as? AddEventController{
-                
+                destinationVC.userLocation = self.userLocation
                 destinationVC.selectedImg = self.selectedImage
                 destinationVC.userID = (self.user?.userID)!
                 destinationVC.placeTitle = self.chosenLocation
