@@ -18,6 +18,7 @@ import AWSDynamoDB
 
 class EventController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource{
 
+    @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     var user = User()
     var userID = ""
@@ -30,6 +31,9 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     var userLocation = CLLocationCoordinate2D()
     var locationUpdated = false
     var uiImageArr = [UIImage]()
+    var hotToggle = 0
+    var selectedEvent = Event()
+    var selectedEventImg = UIImage()
     @IBAction func addEvent(_ sender: AnyObject) {
         
         self.performSegue(withIdentifier: "addEvent", sender: 1)
@@ -43,6 +47,13 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 destinationVC.locations = 1
                 destinationVC.userName = (self.user?.userID)!
                 destinationVC.fromEvent = true
+            }
+        }else if segue.identifier == "viewEvent"{
+            
+            if let destinationVC = segue.destination as? ViewEventController{
+                destinationVC.user = (self.user)!
+                destinationVC.selectedEvent = self.selectedEvent
+                destinationVC.img = self.selectedEventImg
             }
         }
     }
@@ -99,6 +110,18 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         })
         
         
+    }
+    
+    @IBAction func toggleSort(_ sender: AnyObject) {
+        if (self.hotToggle == 0){
+            sortButton.setTitle("Popular", for: UIControlState())
+            self.hotToggle = 1
+            self.tableView.reloadData()
+        }else{
+            sortButton.setTitle("Recent", for: UIControlState())
+            self.hotToggle = 0
+            self.tableView.reloadData()
+        }
     }
     
     func getEvents(completion:@escaping ([Event])->Void)->Void{
@@ -173,6 +196,18 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         cell.backgroundColor = UIColor.black
           self.uiImageArr = []
         var upVoteArray : [Int] = []
+        var sortedArray = [Event]()
+        if self.hotToggle == 1{
+            sortedArray = (eventsArr as NSArray).sortedArray(using: [
+                NSSortDescriptor(key: "totalScore", ascending: false)
+                ]) as! [Event]
+            eventsArr = sortedArray as! [Event]
+        }else{
+            sortedArray = (eventsArr as NSArray).sortedArray(using: [
+                NSSortDescriptor(key: "timePosted", ascending: false)
+                ]) as! [Event]
+            eventsArr = sortedArray as! [Event]
+        }
         for event in self.eventsArr{
             let titleData = event.placeTitle
          
@@ -181,18 +216,35 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             AWSService().getImageFromUrl(String(event.url), completion: {(result)->Void in
                 
                 self.uiImageArr.append(result)
-                //self.collectionView?.reloadData()
+                
                 
             })
             
             
         }
+        if (self.uiImageArr.count > 0){
         let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(self.view.frame.width), height: CGFloat(self.view.frame.height * 0.3)))
         imageButton.setImage(self.uiImageArr[(indexPath as NSIndexPath).row], for: UIControlState())
+            cell.addSubview(imageButton)
+            let imagePressed :Selector = #selector(ViewController.imagePressed(_:))
+            let tap = UITapGestureRecognizer(target: self, action: imagePressed)
+            tap.numberOfTapsRequired = 1
+            imageButton.addGestureRecognizer(tap)
+        }
         return cell
     }
     
+    @IBAction func imagePressed(_ sender: UITapGestureRecognizer){
+        let tapLocation = sender.location(in: self.view)
+        let indexPath = self.tableView.indexPathForRow(at: tapLocation)
+        self.selectedEvent = self.eventsArr[(indexPath?.row)!]
+        self.selectedEventImg = self.uiImageArr[(indexPath?.row)!]
+        self.performSegue(withIdentifier: "viewEvent", sender: 1)
+    }
+    
     func tableView(_ tableView : UITableView, didSelectRowAt indexPath: IndexPath){
+        
+
         
     }
     

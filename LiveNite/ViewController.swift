@@ -83,7 +83,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if (item.tag == 1){
             self.placesToggle = false
             self.displayPlacesAlbum = false
-            //self.collectionView?.reloadData()
         }else if (item.tag == 2){
             
         }else if (item.tag == 3){
@@ -679,10 +678,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //self.collectionView?.reloadData()
-        
     }
     
     override func didReceiveMemoryWarning() {

@@ -74,6 +74,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             event?.geohash = s.substring(to: index)
             AWSService().save(event!)
             self.dismiss(animated: true, completion: nil)
+            self.view.window!.rootViewController?.dismiss(animated: (false), completion: nil)
             self.tabBarController?.selectedIndex = 1
         })
         })
