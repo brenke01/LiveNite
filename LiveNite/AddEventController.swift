@@ -36,11 +36,34 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         imgView.image = selectedImg
         locLabel.text = placeTitle
         let tap = UITapGestureRecognizer(target: self, action: "dissmissKeyboard")
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
         view.addGestureRecognizer(tap)
         
        
     }
     
+    @IBAction func addTitle(_ sender: AnyObject) {
+        self.performSegue(withIdentifier: "addTitle", sender: 1)
+    }
+    @IBAction func addDesc(_ sender: AnyObject) {
+        self.performSegue(withIdentifier: "addDesc", sender: 1)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "addTitle"{
+            
+            if let destinationVC = segue.destination as? PickLocationController{
+
+            }
+        }else if segue.identifier == "addDesc"{
+            
+            if let destinationVC = segue.destination as? ViewEventController{
+
+            }
+        }
+    }
+
     func dissmissKeyboard(){
         view.endEditing(true)
     }

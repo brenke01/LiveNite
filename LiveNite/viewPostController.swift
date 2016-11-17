@@ -180,11 +180,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func loadUIDetails() {
         
-        detailView.backgroundColor = UIColor.clear
-        print(userID)
-        let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
-        navigationBar.setBackgroundImage(navBarBGImage, for: .default)
-        
+        detailView.backgroundColor = UIColor.clear        
         captionLabel.textColor = UIColor.white
         userNameLabel.textColor = UIColor.white
         

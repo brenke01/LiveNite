@@ -58,14 +58,26 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }
     }
     
+    override func viewWillAppear(_ animated: Bool){
+        self.navigationController?.setNavigationBarHidden(true , animated: animated)
+        super.viewWillAppear(animated)
+    }
+    override func viewWillDisappear(_ animated: Bool){
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        super.viewWillDisappear(animated)
+    }
+    
+    @IBOutlet weak var topNavBar: UIView!
     override func viewDidLoad(){
         super.viewDidLoad()
-        
+        self.tableView.backgroundColor = UIColor.clear
         if #available(iOS 8.0, *) {
             self.locationManager.requestWhenInUseAuthorization()
         } else {
             // Fallback on earlier versions
         }
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.stopUpdatingLocation()
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -223,13 +235,30 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             
         }
         if (self.uiImageArr.count > 0){
-        let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(self.view.frame.width), height: CGFloat(self.view.frame.height * 0.3)))
+            cell.backgroundColor = UIColor.clear
+
+            
+        let imageButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.05, y: self.view.frame.height * 0.05, width: CGFloat(self.view.frame.width * 0.9), height: CGFloat(250)))
+            imageButton.layer.cornerRadius = 10
+            let imageLabel = UILabel(frame: CGRect(x: self.view.frame.width * 0.05, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.7, height: 40))
+            imageLabel.backgroundColor = UIColor.darkGray
+            imageLabel.text = self.eventsArr[indexPath.row].eventTitle
+            imageLabel.textColor = UIColor.white
+            let imageScoreLabel  = UILabel(frame: CGRect(x: self.view.frame.width * 0.75, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.20, height: 40))
+            imageScoreLabel.textColor = UIColor.white
+            imageScoreLabel.backgroundColor = UIColor.darkGray
+            imageScoreLabel.text = String(self.eventsArr[indexPath.row].hotColdScore)
+            imageButton.addSubview((imageLabel))
+            imageButton.addSubview(imageScoreLabel)
+            imageButton.isUserInteractionEnabled = true
+            imageButton.layer.masksToBounds = true
         imageButton.setImage(self.uiImageArr[(indexPath as NSIndexPath).row], for: UIControlState())
             cell.addSubview(imageButton)
             let imagePressed :Selector = #selector(ViewController.imagePressed(_:))
             let tap = UITapGestureRecognizer(target: self, action: imagePressed)
             tap.numberOfTapsRequired = 1
             imageButton.addGestureRecognizer(tap)
+            cell.layer.cornerRadius = 5
         }
         return cell
     }
@@ -244,8 +273,14 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     func tableView(_ tableView : UITableView, didSelectRowAt indexPath: IndexPath){
         
-
-        
+    }
+    
+   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath)-> CGFloat{
+        return 240
+    }
+    
+    func tableView(tableView:UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath){
+        cell.backgroundColor = UIColor.clear
     }
     
 }

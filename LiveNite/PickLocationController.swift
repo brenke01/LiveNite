@@ -336,7 +336,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
         
         submitButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.50, y: self.view.frame.height * 0.50,width: self.view.frame.width * 0.5 - 10, height: 40 ))
-        submitButton.backgroundColor = UIColor(red: 0.9294, green: 0.8667, blue: 0, alpha: 1.0)
+        submitButton.backgroundColor = UIColor.purple
+        submitButton.setTitleColor(UIColor.white, for: .normal)
         submitButton.setTitle("Post", for: UIControlState())
         submitButton.layer.cornerRadius = 5
         submitButton.isEnabled = true

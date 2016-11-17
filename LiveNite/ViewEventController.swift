@@ -31,4 +31,8 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         
     }
     
+    @IBAction func exit(_ sender: AnyObject) {
+        self.dismiss(animated: false, completion: nil)
+
+    }
 }

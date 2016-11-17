@@ -25,8 +25,8 @@ var idInc : Int = 1
 
 //variables for auto layout code
 var noColumns: Int = 2
-var imgWidth = 120
-var imgHeight = 160
+var imgWidth = 160
+var imgHeight = 200
 
 
 
@@ -135,6 +135,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         determineQuery()
     }
     
+    override func viewWillAppear(_ animated: Bool){
+        self.navigationController?.setNavigationBarHidden(true , animated: animated)
+        super.viewWillAppear(animated)
+    }
+    override func viewWillDisappear(_ animated: Bool){
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        super.viewWillDisappear(animated)
+    }
    
     override func viewDidAppear(_ animated: Bool) {
 
@@ -152,10 +160,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.view.bringSubview(toFront: topNavBar)
         progressBarDisplayer("Loading", true)
         profileMenu.isHidden = true
-        
+        self.collectionView?.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
         self.view.isHidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -469,18 +477,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 imgWidth = 240
                 noColumns = 1
             }else{
-                imgHeight = 160
-                imgWidth = 120
+                imgHeight = 200
+                imgWidth = 160
                 noColumns = 2
             }
         let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(imgWidth), height: CGFloat(imgHeight)))
         imageButton.setImage(self.uiImageArr[(indexPath as NSIndexPath).row], for: UIControlState())
-
-            let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
+            let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
+            let titleView = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
+            
+         
             titleView.text = self.imageArr[(indexPath as NSIndexPath).row].placeTitle
             titleView.textColor = UIColor.white
-            titleView.backgroundColor = UIColor.black
+            titleView.backgroundColor = UIColor.darkGray
             titleView.font = UIFont (name: "Helvetica Neue", size: 12)
+            titleViewContainer.backgroundColor = UIColor.darkGray
+            titleViewContainer.addSubview(titleView)
             imageButton.addSubview(titleView)
         imageButton.isUserInteractionEnabled = true
             imageButton.layer.masksToBounds = true
@@ -502,7 +514,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let tap = UITapGestureRecognizer(target: self, action: imagePressed)
         tap.numberOfTapsRequired = 1
         imageButton.addGestureRecognizer(tap)
-        print(imageButton.layer)
         let layer = imageButton.layer
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 20)
@@ -565,8 +576,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imgWidth = 240
             noColumns = 1
         }else{
-            imgHeight = 160
-            imgWidth = 120
+            imgHeight = 200
+            imgWidth = 160
             noColumns = 2
         }
         let size = CGSize(width: imgWidth, height: imgHeight)
@@ -679,9 +690,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
