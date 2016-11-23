@@ -70,6 +70,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBOutlet weak var topNavBar: UIView!
     override func viewDidLoad(){
         super.viewDidLoad()
+        
         self.tableView.backgroundColor = UIColor.clear
         if #available(iOS 8.0, *) {
             self.locationManager.requestWhenInUseAuthorization()
@@ -83,6 +84,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
         if (self.user?.userID == ""){
             retrieveUserID({(result)->Void in
                 self.userID = result
@@ -256,6 +258,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             cell.addSubview(imageButton)
             let imagePressed :Selector = #selector(ViewController.imagePressed(_:))
             let tap = UITapGestureRecognizer(target: self, action: imagePressed)
+            tap.cancelsTouchesInView = false
             tap.numberOfTapsRequired = 1
             imageButton.addGestureRecognizer(tap)
             cell.layer.cornerRadius = 5
@@ -264,7 +267,8 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     @IBAction func imagePressed(_ sender: UITapGestureRecognizer){
-        let tapLocation = sender.location(in: self.view)
+    
+        let tapLocation = sender.location(in: self.tableView)
         let indexPath = self.tableView.indexPathForRow(at: tapLocation)
         self.selectedEvent = self.eventsArr[(indexPath?.row)!]
         self.selectedEventImg = self.uiImageArr[(indexPath?.row)!]

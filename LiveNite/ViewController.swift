@@ -512,6 +512,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //
             let imagePressed :Selector = #selector(ViewController.imagePressed(_:))
         let tap = UITapGestureRecognizer(target: self, action: imagePressed)
+        tap.cancelsTouchesInView = false
         tap.numberOfTapsRequired = 1
         imageButton.addGestureRecognizer(tap)
         let layer = imageButton.layer
@@ -534,7 +535,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func imagePressed(_ sender: UITapGestureRecognizer){
-        let tapLocation = sender.location(in: self.view)
+        let tapLocation = sender.location(in: self.collectionView)
         let indexPath = self.collectionView?.indexPathForItem(at: tapLocation)
         if (!self.placesToggle || self.displayPlacesAlbum){
             self.chosenImageObj = self.imageArr[(indexPath! as NSIndexPath).row]

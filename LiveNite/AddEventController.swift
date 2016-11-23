@@ -125,6 +125,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         })
         })
     }
+    
+    @IBAction func unwindToEvents(segue : UIStoryboardSegue){
+        
+    }
     func textFieldShouldReturn(textField: UITextField) -> Bool{
         self.view.endEditing(true)
         return false
