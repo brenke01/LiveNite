@@ -26,6 +26,7 @@
 		0ADCDEA11C44978400E05257 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ADCDEA01C44978400E05257 /* FBSDKCoreKit.framework */; };
 		0ADD5D841D94ACD300DCC3C5 /* AWSConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADD5D831D94ACD300DCC3C5 /* AWSConstants.swift */; };
 		0ADD5D861D94AE1700DCC3C5 /* AWSGeoHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADD5D851D94AE1700DCC3C5 /* AWSGeoHash.swift */; };
+		0AE626DF1DE51F14003FFF66 /* EventForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE626DE1DE51F14003FFF66 /* EventForm.swift */; };
 		15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DDCC1D1B5F381F00E87EA1 /* AppDelegate.swift */; };
 		15DDCC211B5F381F00E87EA1 /* LiveNite.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 15DDCC1F1B5F381F00E87EA1 /* LiveNite.xcdatamodeld */; };
 		15DDCC231B5F381F00E87EA1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DDCC221B5F381F00E87EA1 /* ViewController.swift */; };
@@ -79,6 +80,7 @@
 		0ADCDEA01C44978400E05257 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "FacebookSDKs-iOS-20151111/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		0ADD5D831D94ACD300DCC3C5 /* AWSConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSConstants.swift; sourceTree = "<group>"; };
 		0ADD5D851D94AE1700DCC3C5 /* AWSGeoHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSGeoHash.swift; sourceTree = "<group>"; };
+		0AE626DE1DE51F14003FFF66 /* EventForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventForm.swift; sourceTree = "<group>"; };
 		15DDCC181B5F381F00E87EA1 /* LiveNite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveNite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15DDCC1C1B5F381F00E87EA1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15DDCC1D1B5F381F00E87EA1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				0A62F9A81DD1645600FC883A /* ViewEventController.swift */,
 				0A4D87391DDD41DC00B5AFE1 /* AddEventTitleController.swift */,
 				0A4D873B1DDD422100B5AFE1 /* AddEventDescriptionController.swift */,
+				0AE626DE1DE51F14003FFF66 /* EventForm.swift */,
 			);
 			name = View_Controller_Classes;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AE626DF1DE51F14003FFF66 /* EventForm.swift in Sources */,
 				0A4D873C1DDD422100B5AFE1 /* AddEventDescriptionController.swift in Sources */,
 				0A3F302A1D9CAE69007AFB06 /* Geohash.swift in Sources */,
 				0A55220E1D9A16E300D1330E /* SendGeoRequest.h in Sources */,

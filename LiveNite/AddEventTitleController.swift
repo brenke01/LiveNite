@@ -15,17 +15,35 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-class AddEventTitleController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate,UITextFieldDelegate{
+class AddEventTitleController: UIViewController, UIImagePickerControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate,UITextFieldDelegate, UINavigationControllerDelegate{
     @IBOutlet weak var textField : UITextView?
     @IBAction func doneTyping(_ sender: AnyObject){
         
     }
+    var eventForm = EventForm()
+
     override func viewDidLoad(){
         super.viewDidLoad()
+        navigationController?.delegate = self
         textField?.becomeFirstResponder()
         textField?.textColor = UIColor.black
         textField?.backgroundColor = UIColor.white
         textField?.autocorrectionType = UITextAutocorrectionType.default
         textField?.keyboardType = UIKeyboardType.default
+        if (textField?.text != "Please enter a title"){
+            textField?.text = eventForm.titleInput
+        }
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool){
+            if let controller = viewController as? AddEventController{
+                controller.locLabel.text = textField?.text
+            }
+        }
+    @IBAction func exit(_ sender: AnyObject) {
+        eventForm.titleInput = (textField?.text)!
+
+        self.dismiss(animated: false, completion: nil)
+
     }
 }

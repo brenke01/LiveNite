@@ -15,10 +15,15 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-class AddEventController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate{
+class AddEventController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate, UITabBarControllerDelegate{
     
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var locLabelBG: UIView!
 
-    @IBOutlet weak var descInput: UITextView!
+    @IBOutlet weak var descLabel: UILabel!
+    @IBOutlet weak var privateLabelBG: UIView!
+    @IBOutlet weak var descLabelBG: UIView!
+    @IBOutlet weak var titleLabelBG: UIView!
     @IBOutlet weak var privateToggle: UISwitch!
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var titleInput: UITextField!
@@ -29,16 +34,31 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     var placeLat = 0.0
     var placeLong = 0.0
     var userLocation = CLLocationCoordinate2D()
-    
+    var eventForm = EventForm()
     
     override func viewDidLoad(){
         super.viewDidLoad()
         imgView.image = selectedImg
         locLabel.text = placeTitle
+        titleLabel.text = eventForm.titleInput
+        descLabel.text = eventForm.descInput
+        navigationController?.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: "dissmissKeyboard")
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
         view.addGestureRecognizer(tap)
-        
+        locLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
+        titleLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
+        descLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
+        privateLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
+        privateLabelBG.layer.borderWidth = 1
+        privateLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        titleLabelBG.layer.borderWidth = 1
+        titleLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        locLabelBG.layer.borderWidth = 1
+        locLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        descLabelBG.layer.borderWidth = 1
+        descLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        tabBarController?.delegate = self
        
     }
     
@@ -53,13 +73,15 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         if segue.identifier == "addTitle"{
             
-            if let destinationVC = segue.destination as? PickLocationController{
+            if let destinationVC = segue.destination as? AddEventTitleController{
+                destinationVC.eventForm = eventForm
 
+                
             }
         }else if segue.identifier == "addDesc"{
             
-            if let destinationVC = segue.destination as? ViewEventController{
-
+            if let destinationVC = segue.destination as? AddEventDescriptionController{
+                destinationVC.eventForm = eventForm
             }
         }
     }
@@ -80,10 +102,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             event?.eventID = eventID
             event?.eventLat = self.placeLat
             event?.eventLong = self.placeLong
-            event?.information = self.descInput.text
+            event?.information = self.descLabel.text!
             event?.publicStatus = self.privateToggle.isOn
             event?.placeTitle = self.placeTitle
-            event?.eventTitle = self.titleInput.text!
+            event?.eventTitle = self.titleLabel.text!
             let date = Date()
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -96,8 +118,9 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             let index = s.characters.index(s.endIndex, offsetBy: -7)
             event?.geohash = s.substring(to: index)
             AWSService().save(event!)
-            self.dismiss(animated: true, completion: nil)
+           self.dismiss(animated: true, completion: nil)
             self.view.window!.rootViewController?.dismiss(animated: (false), completion: nil)
+           self.navigationController?.popToRootViewController(animated: true)
             self.tabBarController?.selectedIndex = 1
         })
         })
@@ -110,6 +133,12 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBAction func postEvent(_ sender: AnyObject) {
         saveImageToBucket()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool){
+        titleLabel.text = eventForm.titleInput
+        descLabel.text = eventForm.descInput
+        super.viewWillAppear(animated)
     }
     
 }
