@@ -429,6 +429,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
@@ -486,13 +488,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
             let titleView = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
             
-         
+            
             titleView.text = self.imageArr[(indexPath as NSIndexPath).row].placeTitle
             titleView.textColor = UIColor.white
             titleView.backgroundColor = UIColor.darkGray
             titleView.font = UIFont (name: "Helvetica Neue", size: 12)
             titleViewContainer.backgroundColor = UIColor.darkGray
-            titleViewContainer.addSubview(titleView)
+            imageButton.addSubview(titleViewContainer)
             imageButton.addSubview(titleView)
         imageButton.isUserInteractionEnabled = true
             imageButton.layer.masksToBounds = true

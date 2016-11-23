@@ -213,7 +213,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         var sortedArray = [Event]()
         if self.hotToggle == 1{
             sortedArray = (eventsArr as NSArray).sortedArray(using: [
-                NSSortDescriptor(key: "totalScore", ascending: false)
+                NSSortDescriptor(key: "hotColdScore", ascending: false)
                 ]) as! [Event]
             eventsArr = sortedArray as! [Event]
         }else{
@@ -240,16 +240,19 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             cell.backgroundColor = UIColor.clear
 
             
-        let imageButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.05, y: self.view.frame.height * 0.05, width: CGFloat(self.view.frame.width * 0.9), height: CGFloat(250)))
+        let imageButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.05, y: self.view.frame.height * 0.05, width: CGFloat(self.view.frame.width * 0.9), height: self.view.frame.height * 0.3))
             imageButton.layer.cornerRadius = 10
-            let imageLabel = UILabel(frame: CGRect(x: self.view.frame.width * 0.05, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.7, height: 40))
+            let imageLabel = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.7, height: 40))
             imageLabel.backgroundColor = UIColor.darkGray
             imageLabel.text = self.eventsArr[indexPath.row].eventTitle
             imageLabel.textColor = UIColor.white
-            let imageScoreLabel  = UILabel(frame: CGRect(x: self.view.frame.width * 0.75, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.20, height: 40))
+            let imageScoreLabel  = UILabel(frame: CGRect(x: imageButton.frame.width * 0.9, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.20, height: 40))
+            let imageLabelContainer = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: imageButton.frame.width, height: 40))
+            imageLabelContainer.backgroundColor = UIColor.darkGray
             imageScoreLabel.textColor = UIColor.white
             imageScoreLabel.backgroundColor = UIColor.darkGray
             imageScoreLabel.text = String(self.eventsArr[indexPath.row].hotColdScore)
+            imageButton.addSubview(imageLabelContainer)
             imageButton.addSubview((imageLabel))
             imageButton.addSubview(imageScoreLabel)
             imageButton.isUserInteractionEnabled = true
