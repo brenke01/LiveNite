@@ -19,9 +19,9 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         let comment : Comment = Comment()
         let uuid = UUID().uuidString
         comment.commentID = uuid
-        comment.imageID = self.imageID
+        comment.imageID = (self.imageObj?.imageID)!
         comment.comment = commentField.text
-        comment.owner = self.userName
+        comment.owner = (self.imageObj?.userID)!
         comment.date = String(describing: Date())
         comment.eventID = ""
         AWSService().save(comment)
@@ -46,14 +46,13 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     
     @IBOutlet weak var postCommentButton: UIButton!
     @IBOutlet weak var commentField: UITextView!
-    @IBOutlet weak var navBar: UINavigationBar!
+
     var imageID = "";
     var userName = "";
+    var imageObj = Image()
     
     override func viewDidLoad() {
-        let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
-        navBar.setBackgroundImage(navBarBGImage, for: .default)
-        navBar.topItem!.title = "Post Comment"
+
         super.viewDidLoad()
         commentField.becomeFirstResponder()
         commentField.textColor = UIColor.black
@@ -61,12 +60,14 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         commentField.autocorrectionType = UITextAutocorrectionType.default
         commentField.keyboardType = UIKeyboardType.default
         commentField.font = UIFont (name: "HelveticaNeue", size: 20)
-        postCommentButton.backgroundColor = UIColor.yellow
         postCommentButton.layer.cornerRadius = 5
         
 
         
     }
     
-    
+    @IBAction func exit(_ sender: AnyObject) {
+        self.dismiss(animated: false, completion: nil)
+        
+    }
 }

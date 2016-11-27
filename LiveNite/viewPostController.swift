@@ -411,30 +411,21 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "viewComments" {
-            if let destinationVC = segue.destination as? CommentController{
+
+        if segue.identifier == "postComment" {
+            if let destinationVC = segue.destination as? PostCommentController{
                 
                 destinationVC.imageID = imageID
-                destinationVC.userNameOP = userNameOP
                 destinationVC.userName = userName
-            }else if segue.identifier == "postComment" {
-                if let destinationVC = segue.destination as? PostCommentController{
-                    
-                    destinationVC.imageID = imageID
-                    destinationVC.userName = userName
-                    destinationVC.userName = userName
-                }
+                destinationVC.userName = userName
+                destinationVC.imageObj = self.imageObj
             }
         }
     }
     
     //end override func zone
 //----------------------------------------------
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        let cell : UITableViewCell = tableView.cellForRow(at: indexPath)!
-        let cellText : String = (cell.textLabel?.text)!
-        
-    }
+
     
     func numberOfSectionsinTableView(_ tableView: UITableView) -> Int{
         return 1
