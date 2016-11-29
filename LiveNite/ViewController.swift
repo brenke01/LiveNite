@@ -492,7 +492,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             titleView.text = self.imageArr[(indexPath as NSIndexPath).row].placeTitle
             titleView.textColor = UIColor.white
             titleView.backgroundColor = UIColor.darkGray
-            titleView.font = UIFont (name: "Helvetica Neue", size: 12)
+            titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
             titleViewContainer.backgroundColor = UIColor.darkGray
             imageButton.addSubview(titleViewContainer)
             imageButton.addSubview(titleView)

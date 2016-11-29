@@ -17,7 +17,7 @@ import GoogleMaps
 import AWSDynamoDB
 import AWSS3
 
-class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate{
+class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate,UITableViewDataSource, UITableViewDelegate{
     
     //IBOutlet zone
 
@@ -26,6 +26,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBOutlet weak var detailView: UIView!
     @IBOutlet weak var userNameLabel: UILabel!
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var imgView: UIImageView!
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
@@ -55,7 +56,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var imageObj = Image()
     var vote = Vote()
     var commentInfoArray : [[String:String]] = []
+    var commentArray = [Comment]()
     @IBOutlet weak var tableView: UITableView!
+    var scrollViewContentHeight = 0 as CGFloat
+    let screenHeight = UIScreen.main.bounds.height
     
     //end var zone
     
@@ -185,7 +189,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         detailView.backgroundColor = UIColor.clear        
         captionLabel.textColor = UIColor.white
         userNameLabel.textColor = UIColor.white
-        loadComments()
+        loadComments(completion: {(result)->Void in
+            self.commentArray = result as! [Comment]
+            self.tableView.reloadData()
+        })
         
         AWSService().loadVote(userID + "_" + imageID,completion: {(result)->Void in
             self.vote = result
@@ -384,6 +391,14 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.scrollViewContentHeight = self.view.frame.height
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1200)
+        self.scrollView.delegate = self
+        self.tableView.isScrollEnabled = false
+                self.scrollView.backgroundColor = UIColor.white
+               self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CommentList")
+        tableView.dataSource = self
+        tableView.delegate = self
         print("IMAGE ID: "+self.imageID)
         AWSService().loadImage(imageID, completion: {(result: Image) in
             self.imageData = result
@@ -399,6 +414,28 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+
+    }
+    
+    override func viewDidLayoutSubviews() {
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1200)
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let yOffset = scrollView.contentOffset.y
+        
+        if scrollView == self.scrollView {
+            if yOffset >= scrollViewContentHeight - screenHeight {
+                scrollView.isScrollEnabled = false
+                tableView.isScrollEnabled = true
+            }
+        }
+        
+        if scrollView == self.tableView {
+            if yOffset <= 0 {
+                self.scrollView.isScrollEnabled = true
+                self.tableView.isScrollEnabled = false
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -433,18 +470,19 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
-        return self.commentInfoArray.count
+        return self.commentArray.count
     }
     
-    func loadComments()-> [Comment]{
+    func loadComments(completion:@escaping ([Comment])->Void)-> [Comment]{
         
         var commentArray = [Comment]()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
         queryExpression.hashKeyAttribute = "commentID"
-        queryExpression.rangeKeyConditionExpression = "imageID = :val"
-        queryExpression.expressionAttributeValues = [":val": self.imageObj?.imageID]
-        dynamoDBObjectMapper.query(Image.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
+        queryExpression.indexName = "imageID-index"
+        queryExpression.hashKeyAttribute = "imageID"
+        queryExpression.hashKeyValues = self.imageObj?.imageID
+        dynamoDBObjectMapper.query(Comment.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
             }
@@ -457,6 +495,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     let comment : Comment = comment as! Comment
                     commentArray.append(comment)
                 }
+                completion(commentArray)
+                return commentArray as AnyObject
             }
             return commentArray as AnyObject
         })
@@ -468,8 +508,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func tableView(_ tableView:UITableView, cellForRowAt
         indexPath: IndexPath)-> UITableViewCell{
-        var commentArr = loadComments()
         let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "CommentList")! as UITableViewCell
+        DispatchQueue.main.async(execute: {
+        var commentArr = self.commentArray
+
         tableView.backgroundColor = UIColor.clear
         let border = CALayer()
         let width = CGFloat(1.0)
@@ -497,14 +539,14 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
          
          cell.addSubview(commentInfoContainer)*/
         
-        let nameLabel : UILabel = (cell.viewWithTag(100) as! UILabel)
-        let commentLabel : UILabel = (cell.viewWithTag(200) as! UILabel)
-        let timeLabel : UILabel = (cell.viewWithTag(300) as! UILabel)
-        let timePosted = commentArr[(indexPath as NSIndexPath).row].timePosted
+        let nameLabel : UILabel = UILabel(frame: CGRect(x: self.view.frame.width * 0.3, y: 5, width: self.view.frame.width * 0.5, height: 20))
+       let commentLabel : UILabel = UILabel(frame: CGRect(x: self.view.frame.width * 0.3, y: 15, width: self.view.frame.width * 0.2, height: 20))
+        let timeLabel : UILabel = UILabel(frame: CGRect(x: 5, y: 5, width: self.view.frame.width * 0.2, height: 20))
+       let timePosted = commentArr[(indexPath as NSIndexPath).row].timePosted
         
         let dateFormatter = DateFormatter()
         let localeStr = "us"
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         dateFormatter.locale = Locale(identifier: localeStr)
         let timePostedFormatted = dateFormatter.date(from: timePosted)
         let now = Date()
@@ -521,18 +563,20 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         timeLabel.text = intervalStr
         timeLabel.textColor = UIColor.white
-        nameLabel.text = commentArr[(indexPath as NSIndexPath).row].owner
+        nameLabel.text = self.imageObj?.owner
         commentLabel.text = commentArr[(indexPath as NSIndexPath).row].comment
         border.borderColor = UIColor.white.cgColor
         border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
         border.borderWidth = width
         tableView.layer.addSublayer(border)
-        
+        cell.addSubview(timeLabel)
+            cell.addSubview(commentLabel)
+            cell.addSubview(nameLabel)
         tableView.isOpaque = false
         cell.backgroundColor = UIColor.clear
         cell.isOpaque = false
         cell.textLabel?.textColor = UIColor.white
-        
+            })
         return cell
     }
     

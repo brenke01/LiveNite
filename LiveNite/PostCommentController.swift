@@ -23,7 +23,8 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         comment.comment = commentField.text
         comment.owner = (self.imageObj?.userID)!
         comment.date = String(describing: Date())
-        comment.eventID = ""
+        comment.timePosted = String(describing: Date())
+        comment.eventID = "-1"
         AWSService().save(comment)
         dismiss(animated: true, completion: nil)
 //        if let newComment = NSEntityDescription.insertNewObjectForEntityForName("Comments", inManagedObjectContext:context) as? NSManagedObject{
