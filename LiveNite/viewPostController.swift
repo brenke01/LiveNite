@@ -21,15 +21,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     //IBOutlet zone
 
-    @IBOutlet weak var captionLabel: UILabel!
-    @IBOutlet weak var upvotesLabel: UILabel!
-    @IBOutlet weak var detailView: UIView!
-    @IBOutlet weak var userNameLabel: UILabel!
-    
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet var imgView: UIImageView!
-    @IBOutlet var upvoteButton: UIButton!
-    @IBOutlet var downvoteButton: UIButton!
+
     @IBOutlet var navigationBar: UINavigationBar!
     
     //end IBOutlet zone
@@ -159,13 +151,15 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     @IBAction func upvoteAction(_ sender: AnyObject) {
-        upvoteButton.tag = 1
-        registerVote(upvoteButton)
+        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+        cell.upvoteButton.tag = 1
+        registerVote(cell.upvoteButton)
     }
     
     @IBAction func downvoteAction(_ sender: AnyObject) {
-        downvoteButton.tag = -1
-        registerVote(downvoteButton)
+        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+        cell.downvoteButton.tag = -1
+        registerVote(cell.downvoteButton)
     }
     
     @IBAction func viewComments(_ sender: AnyObject) {
@@ -185,27 +179,28 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func loadUIDetails() {
-        
-        detailView.backgroundColor = UIColor.clear        
-        captionLabel.textColor = UIColor.white
-        userNameLabel.textColor = UIColor.white
+        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+
         loadComments(completion: {(result)->Void in
             self.commentArray = result as! [Comment]
+            DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
+            })
         })
         
         AWSService().loadVote(userID + "_" + imageID,completion: {(result)->Void in
             self.vote = result
         if self.vote?.voteValue == 1{
-            self.upvoteButton.alpha = 0.5
+            cell.upvoteButton.alpha = 0.5
         } else if self.vote?.voteValue == -1{
-            self.downvoteButton.alpha = 0.5
+            cell.downvoteButton.alpha = 0.5
         }
         })
         
     }
     
     func loadImageDetail(){
+        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
         //Query to check if user can vote
         hasVoted({(result)->Void in
             var voteArr = result
@@ -216,12 +211,11 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
 
         })
-        imgView.image = self.imageTapped
-        
+        cell.imgView.image = self.imageTapped
         //calculateHotColdScore()
-        upvotesLabel.text = String(imageObj!.totalScore)
+        cell.upvotesLabel.text = String(imageObj!.totalScore)
         //Needs styling
-        upvotesLabel.textColor = UIColor.white
+        cell.upvotesLabel.textColor = UIColor.white
         
     }
     
@@ -258,14 +252,16 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func imageData_DisplayToUI()
     {
-        upvotesLabel.text = String(imageObj!.totalScore)
-        captionLabel.text = imageData?.caption
-        userNameLabel.text = imageData?.owner
+        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+        cell.upvotesLabel.text = String(imageObj!.totalScore)
+
         navigationBar.topItem!.title = imageData?.placeTitle
     }
     
     func registerVote(_ sender: UIButton)
     {
+          let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+        
         let modifier = sender.tag
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -281,23 +277,22 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 vote?.voteID = self.userID + "_" + self.imageID
                 vote?.owner = self.userID
                 vote?.imageID = self.imageID
-                
                 if modifier == 1 {
-                    self.upvoteButton.alpha = 0.5
+                    cell.upvoteButton.alpha = 0.5
                 } else if modifier == -1 {
-                    self.downvoteButton.alpha = 0.5
+                    cell.downvoteButton.alpha = 0.5
                 }
                 
             } else if vote?.voteValue == 1 {
                 
                 if modifier == 1 {
                     change = -1
-                    self.upvoteButton.alpha = 1.0
-                    self.downvoteButton.alpha = 1.0
+                    cell.upvoteButton.alpha = 1.0
+                    cell.downvoteButton.alpha = 1.0
                 } else if modifier == -1 {
                     change = -2
-                    self.upvoteButton.alpha = 0.5
-                    self.downvoteButton.alpha = 1.0
+                    cell.upvoteButton.alpha = 0.5
+                    cell.downvoteButton.alpha = 1.0
                 }
                 vote?.voteValue += change
                 
@@ -305,12 +300,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 
                 if modifier == 1 {
                     change = 2
-                    self.upvoteButton.alpha = 0.5
-                    self.downvoteButton.alpha = 1.0
+                    cell.upvoteButton.alpha = 0.5
+                    cell.downvoteButton.alpha = 1.0
                 } else if modifier == -1 {
                     change = 1
-                    self.upvoteButton.alpha = 1.0
-                    self.downvoteButton.alpha = 1.0
+                    cell.upvoteButton.alpha = 1.0
+                    cell.downvoteButton.alpha = 1.0
                 }
                 vote?.voteValue += change
                 
@@ -334,7 +329,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             AWSService().save(self.imageData!)
             
             //update label with correct score
-            self.upvotesLabel.text = String(self.imageData!.totalScore)
+            cell.upvotesLabel.text = String(self.imageData!.totalScore)
 
         
         
@@ -388,15 +383,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 //----------------------------------------------
     
     //override func zone
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.scrollViewContentHeight = self.view.frame.height
-        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1200)
-        self.scrollView.delegate = self
-        self.tableView.isScrollEnabled = false
-                self.scrollView.backgroundColor = UIColor.white
-               self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CommentList")
         tableView.dataSource = self
         tableView.delegate = self
         print("IMAGE ID: "+self.imageID)
@@ -409,34 +398,17 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         AWSService().loadCheckIn(self.userID + "_" + (self.imageData?.placeTitle)!, completion: {(result)->Void in
             self.checkInRequest = result
         })
+        
         loadImageDetail()
         loadUIDetails()
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.tableView.contentSize = CGSize(width: self.view.frame.width, height: 400)
 
     }
     
-    override func viewDidLayoutSubviews() {
-        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1200)
-    }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let yOffset = scrollView.contentOffset.y
-        
-        if scrollView == self.scrollView {
-            if yOffset >= scrollViewContentHeight - screenHeight {
-                scrollView.isScrollEnabled = false
-                tableView.isScrollEnabled = true
-            }
-        }
-        
-        if scrollView == self.tableView {
-            if yOffset <= 0 {
-                self.scrollView.isScrollEnabled = true
-                self.tableView.isScrollEnabled = false
-            }
-        }
-    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -505,39 +477,41 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
     }
     
+    func tableView(_tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        var height = 60
+        if (indexPath.row == 0){
+            height = 450
+        }
+        return CGFloat(height)
+    }
+
     
     func tableView(_ tableView:UITableView, cellForRowAt
         indexPath: IndexPath)-> UITableViewCell{
-        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "CommentList")! as UITableViewCell
-        DispatchQueue.main.async(execute: {
+
+       
+        if (indexPath.row == 0){
+            let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+            cell.imgView.image = self.imageTapped
+            //calculateHotColdScore()
+            cell.upvotesLabel.text = String(self.imageObj!.totalScore)
+            //Needs styling
+            cell.upvotesLabel.textColor = UIColor.white
+            cell.detailView.backgroundColor = UIColor.clear
+            cell.captionLabel.textColor = UIColor.white
+            cell.userNameLabel.textColor = UIColor.white
+                cell.captionLabel.text = self.imageData?.caption
+                cell.userNameLabel.text = self.imageData?.owner
+            return cell
+        }else{
+        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! 
+            
+        
         var commentArr = self.commentArray
 
         tableView.backgroundColor = UIColor.clear
         let border = CALayer()
         let width = CGFloat(1.0)
-        
-        
-        
-        /*        self.tableView.rowHeight = 50
-         
-         var commentInfoContainer = UIView(frame: CGRect(x: 10, y:5, width: (cell.frame.maxX), height: cell.frame.maxY))
-         var userNameContainer = UIView(frame: CGRect(x: 0, y: 0, width: (cell.frame.maxX), height: cell.frame.maxY / 2))
-         var userNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: (cell.frame.maxX), height: cell.frame.maxY / 2))
-         userNameLabel.text = self.commentInfoArray[indexPath.row]["owner"]
-         userNameLabel.textColor = UIColor.whiteColor()
-         
-         userNameContainer.addSubview(userNameLabel)
-         
-         commentInfoContainer.addSubview(userNameContainer)
-         var commentContainer = UIView(frame: CGRect(x: 0, y: 0, width: (cell.frame.maxX), height: cell.frame.maxY / 2))
-         var commentLabel = UILabel(frame: CGRect(x: 0, y: cell.frame.maxY / 2, width: cell.frame.maxX, height: cell.frame.maxY))
-         commentLabel.textColor = UIColor.whiteColor()
-         
-         commentLabel.text = self.commentInfoArray[indexPath.row]["comment"]
-         commentContainer.addSubview(commentLabel)
-         commentInfoContainer.addSubview(commentContainer)
-         
-         cell.addSubview(commentInfoContainer)*/
         
         let nameLabel : UILabel = UILabel(frame: CGRect(x: self.view.frame.width * 0.3, y: 5, width: self.view.frame.width * 0.5, height: 20))
        let commentLabel : UILabel = UILabel(frame: CGRect(x: self.view.frame.width * 0.3, y: 15, width: self.view.frame.width * 0.2, height: 20))
@@ -576,12 +550,28 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         cell.backgroundColor = UIColor.clear
         cell.isOpaque = false
         cell.textLabel?.textColor = UIColor.white
-            })
-        return cell
+           return cell
+        }
+        
+
+
+        
     }
     
     @IBAction func postComment(_ sender: AnyObject) {
         self.performSegue(withIdentifier: "postComment", sender: sender.tag)
     }
+
+}
+class MyCustomTableViewCell: UITableViewCell{
+    @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var upvotesLabel: UILabel!
+    @IBOutlet weak var detailView: UIView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    
+    @IBOutlet var imgView: UIImageView!
+    @IBOutlet var upvoteButton: UIButton!
+    @IBOutlet var downvoteButton: UIButton!
+    
 
 }
