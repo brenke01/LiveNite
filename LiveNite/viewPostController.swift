@@ -383,11 +383,17 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 //----------------------------------------------
     
     //override func zone
+    @IBOutlet weak var commentHeightRestraint: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        self.tableView.estimatedRowHeight = 80
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.setNeedsLayout()
+        self.tableView.layoutIfNeeded()
+        navigationBar.backgroundColor = UIColor.blue
         print("IMAGE ID: "+self.imageID)
         AWSService().loadImage(imageID, completion: {(result: Image) in
             self.imageData = result
@@ -409,7 +415,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
 
+    @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
     
+    @IBOutlet weak var commentUserNameLabel: UILabel!
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -477,14 +486,29 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
     }
     
-    func tableView(_tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        var height = 60
-        if (indexPath.row == 0){
-            height = 450
-        }
-        return CGFloat(height)
-    }
 
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    override func viewWillLayoutSubviews() {
+        // Clear the preferred max layout width in case the text of the label is a single line taking less width than what would be taken from the constraints of the left and right edges to the label's superview
+        let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
+       cell.commentLabel.preferredMaxLayoutWidth = 0.0
+    }
+    
+    override func viewDidLayoutSubviews() {
+
+            let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
+            cell.commentLabel.preferredMaxLayoutWidth = cell.commentLabel.bounds.size.width
+        self.view.layoutSubviews()
+        
+
+        
+    }
     
     func tableView(_ tableView:UITableView, cellForRowAt
         indexPath: IndexPath)-> UITableViewCell{
@@ -492,6 +516,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
        
         if (indexPath.row == 0){
             let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+            
             cell.imgView.image = self.imageTapped
             //calculateHotColdScore()
             cell.upvotesLabel.text = String(self.imageObj!.totalScore)
@@ -504,7 +529,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 cell.userNameLabel.text = self.imageData?.owner
             return cell
         }else{
-        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! 
+        let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
             
         
         var commentArr = self.commentArray
@@ -512,10 +537,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.backgroundColor = UIColor.clear
         let border = CALayer()
         let width = CGFloat(1.0)
-        
-        let nameLabel : UILabel = UILabel(frame: CGRect(x: self.view.frame.width * 0.3, y: 5, width: self.view.frame.width * 0.5, height: 20))
-       let commentLabel : UILabel = UILabel(frame: CGRect(x: self.view.frame.width * 0.3, y: 15, width: self.view.frame.width * 0.2, height: 20))
-        let timeLabel : UILabel = UILabel(frame: CGRect(x: 5, y: 5, width: self.view.frame.width * 0.2, height: 20))
+
+
        let timePosted = commentArr[(indexPath as NSIndexPath).row].timePosted
         
         let dateFormatter = DateFormatter()
@@ -535,17 +558,23 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             let intervalInt = Int(interval)
             intervalStr = String(intervalInt) + "h"
         }
-        timeLabel.text = intervalStr
-        timeLabel.textColor = UIColor.white
-        nameLabel.text = self.imageObj?.owner
-        commentLabel.text = commentArr[(indexPath as NSIndexPath).row].comment
+            cell.commentLabel.numberOfLines = 0
+            cell.commentLabel.lineBreakMode = .byWordWrapping
+        //cell.timeLabel.text = intervalStr
+        //cell.timeLabel.textColor = UIColor.white
+        //cell.commentUserNameLabel.text = self.imageObj?.owner
+        cell.commentLabel.text = commentArr[(indexPath as NSIndexPath).row].comment
+        cell.commentLabel.textColor = UIColor.white
+            //cell.commentUserNameLabel.textColor = UIColor.white
+        cell.commentHeightRestraint.constant = cell.commentLabel.frame.height + 50
         border.borderColor = UIColor.white.cgColor
         border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
         border.borderWidth = width
         tableView.layer.addSublayer(border)
-        cell.addSubview(timeLabel)
-            cell.addSubview(commentLabel)
-            cell.addSubview(nameLabel)
+        
+        //cell.addSubview(cell.timeLabel)
+            cell.addSubview(cell.commentLabel)
+            //cell.addSubview(cell.commentUserNameLabel)
         tableView.isOpaque = false
         cell.backgroundColor = UIColor.clear
         cell.isOpaque = false
@@ -574,4 +603,10 @@ class MyCustomTableViewCell: UITableViewCell{
     @IBOutlet var downvoteButton: UIButton!
     
 
+}
+
+class CommentTableViewCell: UITableViewCell{
+    @IBOutlet weak var commentLabel: UILabel!
+
+    @IBOutlet weak var commentHeightRestraint: NSLayoutConstraint!
 }
