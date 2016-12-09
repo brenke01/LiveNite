@@ -17,7 +17,7 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-var userID : String = ""
+
 
 class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, FBSDKLoginButtonDelegate{
     var locations = 0
@@ -25,7 +25,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     @IBOutlet var submitButton: UIButton!
     @IBOutlet var inputUserName: UITextField!
-
+    var userID : String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,44 +83,49 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     func saveUserToCoreData(_ result : AnyObject){
         var newUser : Bool = true
         var userObj = User()
-        AWSService().loadUser(userID,completion: {(result)->Void in
+        AWSService().loadUser("10153244164880906",completion: {(result)->Void in
             userObj = result
+            
+            if (userObj?.userID != ""){
+                newUser = false
+            }
+            //The result from the Facebook request is an object that works like a Dictionary
+            //First we grab all of the fields
+
+            //This is our predicate for the table that will ask for a record that has an id of userID
+            
+            
+            
+            if (newUser){
+                self.userID = result.value(forKey: "id") as! String
+                let firstName = result.value(forKey: "first_name")
+                let email = result.value(forKey: "email") as! String
+                let gender = result.value(forKey: "gender")
+                let ageRange = (result.value(forKey: "age_range") as AnyObject).value(forKey: "min")
+                let newUserObj : User = User()
+                newUserObj.userID = self.userID
+                newUserObj.age = ageRange as! Int
+                newUserObj.gender = String(describing: gender)
+                newUserObj.accessToken = String(describing: FBSDKAccessToken.current())
+                newUserObj.score = 0
+                newUserObj.email = email
+                newUserObj.userName = "temp"
+                AWSService().save(newUserObj)
+                self.submitButton.isHidden = false
+                self.inputUserName.isHidden = false
+                self.submitButton.isEnabled = true
+                self.submitButton.backgroundColor = UIColor.gray
+                self.submitButton.layer.cornerRadius = 5
+                
+            }else{
+                DispatchQueue.main.async(execute: {
+                print(FBSDKAccessToken.current())
+                userObj?.accessToken = String(describing: FBSDKAccessToken.current()!)
+                AWSService().save(userObj!)
+                })
+            }
         })
 
-        if (userObj?.userID != ""){
-            newUser = false
-        }
-        //The result from the Facebook request is an object that works like a Dictionary 
-        //First we grab all of the fields
-        userID = result.value(forKey: "id") as! String
-        let firstName = result.value(forKey: "first_name") 
-        let email = result.value(forKey: "email") as! String
-        let gender = result.value(forKey: "gender") 
-        let ageRange = (result.value(forKey: "age_range") as AnyObject).value(forKey: "min") 
-        //This is our predicate for the table that will ask for a record that has an id of userID
-        
-
-        
-        if (newUser){
-            let newUserObj : User = User()
-            newUserObj.userID = userID
-            newUserObj.age = ageRange as! Int
-            newUserObj.gender = String(describing: gender)
-            newUserObj.accessToken = String(describing: FBSDKAccessToken.current())
-            newUserObj.score = 0
-            newUserObj.email = email
-            newUserObj.userName = "temp"
-            AWSService().save(newUserObj)
-            submitButton.isHidden = false
-            inputUserName.isHidden = false
-            submitButton.isEnabled = true
-            submitButton.backgroundColor = UIColor.gray
-            submitButton.layer.cornerRadius = 5
-
-        }else{
-            userObj?.accessToken = FBSDKAccessToken.current() as! String
-            AWSService().save(userObj!)
-        }
         
     }
     func returnUserData()
@@ -138,9 +143,10 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             }
             else
             {   //Save the user to the Users table
-                self.saveUserToCoreData(result as AnyObject)
+               self.saveUserToCoreData(result as AnyObject)
                 if (self.submitButton.isEnabled == false) {
                     self.dismiss(animated: true, completion: nil)
+                    
                 }
 
             }

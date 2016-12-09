@@ -156,6 +156,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }else{
             self.accessToken = String(describing: FBSDKAccessToken.current())
         }
+        determineQuery()
     }
     
     override func viewDidLoad() {
@@ -224,6 +225,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }else{
                 let data:[String:AnyObject] = result as! [String: AnyObject]
                 let userID = data["id"] as? String
+                self.userID = userID!
                 completion(userID!)
                 
             }
@@ -667,6 +669,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }else if segue.identifier == "login"{
             if let destinationVC = segue.destination as? FBLoginController{
                 destinationVC.locations = 1
+                destinationVC.userID = (self.userID)
             }
         }
     }

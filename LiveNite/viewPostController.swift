@@ -59,107 +59,107 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     //IBAction zone
     
-    @IBAction func checkIn(_ sender: AnyObject) {
-        
-        //create date formatter to allow conversion of dates to string and vice versa throughout function
-        //set current date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        let currentDate = Date()
-        
-        //fetch image data for post
-
-        
-        //determine distance between user and place and set maxAllowableDistance
-        let imagePlaceLocation = CLLocation(latitude: (self.imageData?.placeLat)!, longitude: (self.imageData?.placeLong)!)
-        let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
-        let maxAllowableDistance : CLLocationDistance = 2500
-        
-        //if within range, check if they've checked in recently
-        if distanceBetweenUserAndPlace < maxAllowableDistance {
-
-            
-            
-            //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
-            if (self.checkInRequest?.userID == ""){
-                
-                //Make new check in in table
-                let checkIn : CheckIn = CheckIn()
-                checkIn.checkInID = self.userID + "_" + (self.imageData?.placeTitle)!
-                checkIn.checkInTime = dateFormatter.string(from: currentDate)
-                checkIn.placeTitle = (self.imageData?.placeTitle)!
-                checkIn.userID = self.userID
-                AWSService().save(checkIn)
-                
-                //Award user points
-                print("userID: \(userID)")
-                AWSService().loadUser(self.userID,completion: {(result)->Void in
-                    self.user = result
-                    print("user id is ")
-                    print(self.user?.userID)
-                })
-                user?.score += 5
-                AWSService().save(user!)
-                print("Score: \(user?.score)")
-                
-            } else {
-                //if it did set the userID, they've checked in there before so we need to see how long it's been
-                
-                //get last check in date
-                let lastCheckIn : Date = dateFormatter.date(from: self.checkInRequest!.checkInTime)!
-                
-                //get the difference in date components
-                let diffDateComponents = (Calendar.current as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day, NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second], from: lastCheckIn, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
-                
-                 print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
-                
-                //if it has been more than a day award the user points and update the check in time
-                if (diffDateComponents.year! > 0 || diffDateComponents.month! > 0 || diffDateComponents.day! > 0){
-                    print("It's been a while")
-                    
-                    //Award user points
-                    print("userID: \(userID)")
-                    AWSService().loadUser(self.userID,completion: {(result)->Void in
-                        self.user = result
-                    })
-
-                    user?.score += 5
-                    AWSService().save(user!)
-                    print("Score: \(user?.score)")
-                    
-                    //Update check in date
-                    self.checkInRequest?.checkInTime = dateFormatter.string(from: currentDate)
-                    AWSService().save(self.checkInRequest!)
-                    
-                    //Notify user of successful check in
-                    
-                } else {
-                    //if it's been less than a day, let them know they've checked in too recently
-                    print("You've checked in within the last 24 hours")
-                }
-                
-            }
-        } else {
-            //if they aren't within range, let them know they aren't close enough to check in
-
-            print("not close enough to check in")
-        }
-    }
+//    @IBAction func checkIn(_ sender: AnyObject) {
+//        
+//        //create date formatter to allow conversion of dates to string and vice versa throughout function
+//        //set current date
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+//        let currentDate = Date()
+//        
+//        //fetch image data for post
+//
+//        
+//        //determine distance between user and place and set maxAllowableDistance
+//        let imagePlaceLocation = CLLocation(latitude: (self.imageData?.placeLat)!, longitude: (self.imageData?.placeLong)!)
+//        let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
+//        let maxAllowableDistance : CLLocationDistance = 2500
+//        
+//        //if within range, check if they've checked in recently
+//        if distanceBetweenUserAndPlace < maxAllowableDistance {
+//
+//            
+//            
+//            //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
+//            if (self.checkInRequest?.userID == ""){
+//                
+//                //Make new check in in table
+//                let checkIn : CheckIn = CheckIn()
+//                checkIn.checkInID = self.userID + "_" + (self.imageData?.placeTitle)!
+//                checkIn.checkInTime = dateFormatter.string(from: currentDate)
+//                checkIn.placeTitle = (self.imageData?.placeTitle)!
+//                checkIn.userID = self.userID
+//                AWSService().save(checkIn)
+//                
+//                //Award user points
+//                print("userID: \(userID)")
+//                AWSService().loadUser(self.userID,completion: {(result)->Void in
+//                    self.user = result
+//                    print("user id is ")
+//                    print(self.user?.userID)
+//                })
+//                user?.score += 5
+//                AWSService().save(user!)
+//                print("Score: \(user?.score)")
+//                
+//            } else {
+//                //if it did set the userID, they've checked in there before so we need to see how long it's been
+//                
+//                //get last check in date
+//                let lastCheckIn : Date = dateFormatter.date(from: self.checkInRequest!.checkInTime)!
+//                
+//                //get the difference in date components
+//                let diffDateComponents = (Calendar.current as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day, NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second], from: lastCheckIn, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
+//                
+//                 print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
+//                
+//                //if it has been more than a day award the user points and update the check in time
+//                if (diffDateComponents.year! > 0 || diffDateComponents.month! > 0 || diffDateComponents.day! > 0){
+//                    print("It's been a while")
+//                    
+//                    //Award user points
+//                    print("userID: \(userID)")
+//                    AWSService().loadUser(self.userID,completion: {(result)->Void in
+//                        self.user = result
+//                    })
+//
+//                    user?.score += 5
+//                    AWSService().save(user!)
+//                    print("Score: \(user?.score)")
+//                    
+//                    //Update check in date
+//                    self.checkInRequest?.checkInTime = dateFormatter.string(from: currentDate)
+//                    AWSService().save(self.checkInRequest!)
+//                    
+//                    //Notify user of successful check in
+//                    
+//                } else {
+//                    //if it's been less than a day, let them know they've checked in too recently
+//                    print("You've checked in within the last 24 hours")
+//                }
+//                
+//            }
+//        } else {
+//            //if they aren't within range, let them know they aren't close enough to check in
+//
+//            print("not close enough to check in")
+//        }
+//    }
     
     @IBAction func exit(_ sender: AnyObject) {
         self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func upvoteAction(_ sender: AnyObject) {
-        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
-        cell.upvoteButton.tag = 1
-        registerVote(cell.upvoteButton)
+//        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+//        cell.upvoteButton.tag = 1
+//        registerVote(cell.upvoteButton)
     }
     
     @IBAction func downvoteAction(_ sender: AnyObject) {
-        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
-        cell.downvoteButton.tag = -1
-        registerVote(cell.downvoteButton)
+//        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+//        cell.downvoteButton.tag = -1
+//        registerVote(cell.downvoteButton)
     }
     
     @IBAction func viewComments(_ sender: AnyObject) {
@@ -177,27 +177,33 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("\(userLocation.coordinate.latitude) Degrees Latitude, \(userLocation.coordinate.longitude) Degrees Longitude")
         locationUpdated = true
     }
-    
+//
     func loadUIDetails() {
         let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
 
         loadComments(completion: {(result)->Void in
             self.commentArray = result as! [Comment]
             DispatchQueue.main.async(execute: {
-            self.tableView.reloadData()
+                self.tableView.reloadData()
+
             })
+            
         })
-        
+
         AWSService().loadVote(userID + "_" + imageID,completion: {(result)->Void in
             self.vote = result
         if self.vote?.voteValue == 1{
             cell.upvoteButton.alpha = 0.5
         } else if self.vote?.voteValue == -1{
-            cell.downvoteButton.alpha = 0.5
+           cell.downvoteButton.alpha = 0.5
         }
         })
         
-    }
+        
+   }
+
+    
+
     
     func loadImageDetail(){
         let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
@@ -252,8 +258,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func imageData_DisplayToUI()
     {
-        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
-        cell.upvotesLabel.text = String(imageObj!.totalScore)
+        //let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+        //cell.upvotesLabel.text = String(imageObj!.totalScore)
 
         navigationBar.topItem!.title = imageData?.placeTitle
     }
@@ -384,33 +390,31 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     //override func zone
     @IBOutlet weak var commentHeightRestraint: NSLayoutConstraint!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        self.tableView.estimatedRowHeight = 80
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.setNeedsLayout()
-        self.tableView.layoutIfNeeded()
         navigationBar.backgroundColor = UIColor.blue
+        navigationBar.barTintColor = UIColor.blue
         print("IMAGE ID: "+self.imageID)
-        AWSService().loadImage(imageID, completion: {(result: Image) in
-            self.imageData = result
-            self.imageData_DisplayToUI()
-        })
 
         //fetch check in
         AWSService().loadCheckIn(self.userID + "_" + (self.imageData?.placeTitle)!, completion: {(result)->Void in
             self.checkInRequest = result
         })
-        
-        loadImageDetail()
-        loadUIDetails()
+
+
+
+       loadImageDetail()
+       loadUIDetails()
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.tableView.contentSize = CGSize(width: self.view.frame.width, height: 400)
+        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+        
+        //self.tableView.contentSize = CGSize(width: self.view.frame.width, height: 400)
 
     }
     
@@ -487,33 +491,49 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    override func viewWillLayoutSubviews() {
-        // Clear the preferred max layout width in case the text of the label is a single line taking less width than what would be taken from the constraints of the left and right edges to the label's superview
-        let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
-       cell.commentLabel.preferredMaxLayoutWidth = 0.0
-    }
-    
-    override func viewDidLayoutSubviews() {
 
-            let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
-            cell.commentLabel.preferredMaxLayoutWidth = cell.commentLabel.bounds.size.width
-        self.view.layoutSubviews()
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
+//        cell.commentLabel.preferredMaxLayoutWidth = 250
+//         cell.commentLabel.text =  self.commentArray[indexPath.row].comment
+//        cell.layoutIfNeeded()
+//        var s = cell.commentLabel.bounds.height
+//        var sz = UITableViewAutomaticDimension
+
+           return UITableViewAutomaticDimension 
         
-
+        
+        
         
     }
+    
+    func calcHeightForCell(cell : UITableViewCell) -> CGFloat{
+        cell.layoutIfNeeded()
+        var size = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        return size.height
+    }
+    @IBAction func refresh(_ sender: AnyObject) {
+        self.tableView.setNeedsLayout()
+        self.tableView.layoutIfNeeded()
+        self.tableView.reloadData()
+    }
+//
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.row == 0){
+            return 460
+        }else{
+          return 72
+        }
+        
+    }
+
+    
+
     
     func tableView(_ tableView:UITableView, cellForRowAt
         indexPath: IndexPath)-> UITableViewCell{
 
-       
+//       
         if (indexPath.row == 0){
             let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
             
@@ -522,16 +542,17 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             cell.upvotesLabel.text = String(self.imageObj!.totalScore)
             //Needs styling
             cell.upvotesLabel.textColor = UIColor.white
-            cell.detailView.backgroundColor = UIColor.clear
             cell.captionLabel.textColor = UIColor.white
             cell.userNameLabel.textColor = UIColor.white
-                cell.captionLabel.text = self.imageData?.caption
-                cell.userNameLabel.text = self.imageData?.owner
+                cell.captionLabel.text = self.imageObj?.caption
+                cell.userNameLabel.text = self.imageObj?.owner
+            //cell.upvoteButton.backgroundColor = UIColor.white
+            cell.downvoteButton.isHidden = false
+            cell.upvoteButton.isHidden = false
             return cell
         }else{
         let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
-            
-        
+
         var commentArr = self.commentArray
 
         tableView.backgroundColor = UIColor.clear
@@ -558,29 +579,34 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             let intervalInt = Int(interval)
             intervalStr = String(intervalInt) + "h"
         }
-            cell.commentLabel.numberOfLines = 0
-            cell.commentLabel.lineBreakMode = .byWordWrapping
-        //cell.timeLabel.text = intervalStr
-        //cell.timeLabel.textColor = UIColor.white
-        //cell.commentUserNameLabel.text = self.imageObj?.owner
-        cell.commentLabel.text = commentArr[(indexPath as NSIndexPath).row].comment
-        cell.commentLabel.textColor = UIColor.white
-            //cell.commentUserNameLabel.textColor = UIColor.white
-        cell.commentHeightRestraint.constant = cell.commentLabel.frame.height + 50
+   
+
+        cell.timeLabel.text = intervalStr
+        cell.timeLabel.textColor = UIColor.white
+        cell.userNameLabel.text = self.imageObj?.owner
+            
+        cell.commentLabel.text = self.commentArray[indexPath.row].comment
+//        cell.commentLabel.numberOfLines = 0
+//        cell.commentLabel.lineBreakMode = .byWordWrapping
+//        cell.commentLabel.preferredMaxLayoutWidth = cell.commentLabel.bounds.width
+       cell.commentLabel.textColor = UIColor.white
+        //cell.layoutIfNeeded()
+        cell.userNameLabel.textColor = UIColor.white
         border.borderColor = UIColor.white.cgColor
         border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
         border.borderWidth = width
         tableView.layer.addSublayer(border)
+
         
         //cell.addSubview(cell.timeLabel)
-            cell.addSubview(cell.commentLabel)
+            //cell.addSubview(cell.commentLabel)
             //cell.addSubview(cell.commentUserNameLabel)
         tableView.isOpaque = false
         cell.backgroundColor = UIColor.clear
         cell.isOpaque = false
         cell.textLabel?.textColor = UIColor.white
            return cell
-        }
+      }
         
 
 
@@ -606,7 +632,12 @@ class MyCustomTableViewCell: UITableViewCell{
 }
 
 class CommentTableViewCell: UITableViewCell{
+    
+    //@IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var commentLabel: UILabel!
 
-    @IBOutlet weak var commentHeightRestraint: NSLayoutConstraint!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var commentHeight: NSLayoutConstraint!
+
 }
