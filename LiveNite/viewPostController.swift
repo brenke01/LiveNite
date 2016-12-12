@@ -17,7 +17,7 @@ import GoogleMaps
 import AWSDynamoDB
 import AWSS3
 
-class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate,UITableViewDataSource, UITableViewDelegate{
+class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate,UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate{
     
     //IBOutlet zone
 
@@ -191,6 +191,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         })
 
         AWSService().loadVote(userID + "_" + imageID,completion: {(result)->Void in
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
             self.vote = result
         if self.vote?.voteValue == 1{
             cell.upvoteButton.alpha = 0.5
@@ -398,6 +402,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.delegate = self
         navigationBar.backgroundColor = UIColor.blue
         navigationBar.barTintColor = UIColor.blue
+        navigationBar.isTranslucent = false
         print("IMAGE ID: "+self.imageID)
 
         //fetch check in
@@ -493,18 +498,19 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
-//        cell.commentLabel.preferredMaxLayoutWidth = 250
-//         cell.commentLabel.text =  self.commentArray[indexPath.row].comment
-//        cell.layoutIfNeeded()
-//        var s = cell.commentLabel.bounds.height
-//        var sz = UITableViewAutomaticDimension
+
 
            return UITableViewAutomaticDimension 
         
         
         
         
+    }
+    
+   func tableView(_ tableView: UITableView, willDisplayCell indexPath: IndexPath) {
+        if (indexPath.row == tableView.indexPathsForVisibleRows?.last?.row){
+            tableView.reloadData()
+        }
     }
     
     func calcHeightForCell(cell : UITableViewCell) -> CGFloat{
@@ -549,6 +555,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             //cell.upvoteButton.backgroundColor = UIColor.white
             cell.downvoteButton.isHidden = false
             cell.upvoteButton.isHidden = false
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }else{
         let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
@@ -597,7 +604,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         border.borderWidth = width
         tableView.layer.addSublayer(border)
 
-        
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         //cell.addSubview(cell.timeLabel)
             //cell.addSubview(cell.commentLabel)
             //cell.addSubview(cell.commentUserNameLabel)
@@ -605,7 +612,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         cell.backgroundColor = UIColor.clear
         cell.isOpaque = false
         cell.textLabel?.textColor = UIColor.white
-           return cell
+
+        return cell
       }
         
 

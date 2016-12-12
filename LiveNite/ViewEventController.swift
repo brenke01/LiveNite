@@ -36,3 +36,26 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
 
     }
 }
+
+class EventImgCell: UITableViewCell{
+    @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var upvotesLabel: UILabel!
+    @IBOutlet weak var detailView: UIView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    
+    @IBOutlet var imgView: UIImageView!
+    @IBOutlet var upvoteButton: UIButton!
+    @IBOutlet var downvoteButton: UIButton!
+    
+    
+}
+
+class EventCommentTableViewCell: UITableViewCell{
+    
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var commentLabel: UILabel!
+    
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var commentHeight: NSLayoutConstraint!
+    
+}
