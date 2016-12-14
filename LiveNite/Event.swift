@@ -24,6 +24,9 @@ class Event :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var eventID: String = ""
     var url: String = ""
     var timePosted: String = ""
+    var owner = ""
+    var ownerID = ""
+    var totalScore = 0
     
     class func dynamoDBTableName() -> String{
         return "Events"

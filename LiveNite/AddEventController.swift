@@ -35,6 +35,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     var placeLong = 0.0
     var userLocation = CLLocationCoordinate2D()
     var eventForm = EventForm()
+    var user = User()
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -117,6 +118,9 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             let s = l.geohash(10)
             let index = s.characters.index(s.endIndex, offsetBy: -7)
             event?.geohash = s.substring(to: index)
+            event?.owner = (self.user?.userName)!
+            event?.ownerID = (self.user?.userID)!
+            event?.totalScore = 0
             AWSService().save(event!)
            self.dismiss(animated: true, completion: nil)
             self.view.window!.rootViewController?.dismiss(animated: (false), completion: nil)

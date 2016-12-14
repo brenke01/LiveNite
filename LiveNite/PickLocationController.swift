@@ -175,6 +175,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 destinationVC.placeTitle = self.chosenLocation
                 destinationVC.placeLat = self.chosenLatitude
                 destinationVC.placeLong = self.chosenLongitude
+                destinationVC.user = self.user
             
             }
         }

@@ -47,6 +47,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 destinationVC.locations = 1
                 destinationVC.userName = (self.user?.userID)!
                 destinationVC.fromEvent = true
+                destinationVC.user = self.user
             }
         }else if segue.identifier == "viewEvent"{
             
