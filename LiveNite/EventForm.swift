@@ -11,4 +11,5 @@ class EventForm{
     var titleInput : String = "Please enter a title"
     var descInput : String = "Please enter a description"
     var privateInput = false
+    var time : Date = Date()
 }

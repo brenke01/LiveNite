@@ -23,6 +23,8 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBOutlet weak var descLabel: UILabel!
     @IBOutlet weak var privateLabelBG: UIView!
     @IBOutlet weak var descLabelBG: UIView!
+    @IBOutlet weak var whenLabelBG: UIView!
+    @IBOutlet weak var whenLabel: UILabel!
     @IBOutlet weak var titleLabelBG: UIView!
     @IBOutlet weak var privateToggle: UISwitch!
     @IBOutlet weak var imgView: UIImageView!
@@ -43,6 +45,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         locLabel.text = placeTitle
         titleLabel.text = eventForm.titleInput
         descLabel.text = eventForm.descInput
+        whenLabel.text = String(describing: eventForm.time)
         navigationController?.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: "dissmissKeyboard")
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
@@ -50,6 +53,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         locLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
         titleLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
         descLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
+        whenLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
         privateLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
         privateLabelBG.layer.borderWidth = 1
         privateLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
@@ -59,6 +63,8 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         locLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
         descLabelBG.layer.borderWidth = 1
         descLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        whenLabelBG.layer.borderWidth = 1
+        whenLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
         tabBarController?.delegate = self
        
     }
@@ -68,6 +74,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     @IBAction func addDesc(_ sender: AnyObject) {
         self.performSegue(withIdentifier: "addDesc", sender: 1)
+    }
+    
+    @IBAction func addTime(_ sender: AnyObject) {
+        self.performSegue(withIdentifier: "addTime", sender: 1)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -82,6 +92,11 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         }else if segue.identifier == "addDesc"{
             
             if let destinationVC = segue.destination as? AddEventDescriptionController{
+                destinationVC.eventForm = eventForm
+            }
+        }else if segue.identifier == "addTime"{
+            
+            if let destinationVC = segue.destination as? AddEventTimeController{
                 destinationVC.eventForm = eventForm
             }
         }
@@ -110,9 +125,9 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             let date = Date()
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            event?.timePosted = formatter.string(from: date)
-            event?.eventStartTime = formatter.string(from: date)
-            event?.eventEndTime = formatter.string(from: date)
+            event?.timePosted = String(describing: date)
+            event?.eventStartTime = String(describing: self.eventForm.time)
+            event?.eventEndTime = String(describing: date)
             var geo :Geohash = Geohash()
             let l =  self.userLocation
             let s = l.geohash(10)
@@ -146,6 +161,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewWillAppear(_ animated: Bool){
         titleLabel.text = eventForm.titleInput
         descLabel.text = eventForm.descInput
+        whenLabel.text = String(describing: eventForm.time)
         super.viewWillAppear(animated)
     }
     

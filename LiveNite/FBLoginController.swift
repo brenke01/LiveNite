@@ -105,7 +105,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 let newUserObj : User = User()
                 newUserObj.userID = self.userID
                 newUserObj.age = ageRange as! Int
-                newUserObj.gender = String(describing: gender)
+                newUserObj.gender = String(describing: gender!)
                 newUserObj.accessToken = String(describing: FBSDKAccessToken.current())
                 newUserObj.score = 0
                 newUserObj.email = email
