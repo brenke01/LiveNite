@@ -16,22 +16,59 @@ import CoreLocation
 import GoogleMaps
 
 class AddEventTimeController: UIViewController, UIImagePickerControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate,UITextFieldDelegate, UINavigationControllerDelegate{
-    @IBOutlet weak var timePicker : UIDatePicker?
     var eventForm = EventForm()
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        navigationController?.delegate = self
+        startText.layer.borderColor = UIColor.white.cgColor
+        endText.layer.borderColor = UIColor.white.cgColor
+        startText.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        endText.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        
+    }
+    
+    
+    @IBOutlet weak var startText: UITextField!
+    
+    @IBOutlet weak var endText: UITextField!
+    
+    @IBAction func startTextFieldEdit(_ sender: UITextField) {
+        let datePickerView: UIDatePicker = UIDatePicker()
+        datePickerView.datePickerMode = UIDatePickerMode.dateAndTime
+        sender.inputView = datePickerView
+        datePickerView.addTarget(self, action: #selector(AddEventTimeController.startDatePickerValueChanged), for: UIControlEvents.valueChanged)
+    }
+    @IBAction func endTextEdit(_ sender: UITextField) {
+        let datePickerView: UIDatePicker = UIDatePicker()
+        datePickerView.datePickerMode = UIDatePickerMode.dateAndTime
+        sender.inputView = datePickerView
+        datePickerView.addTarget(self, action: #selector(AddEventTimeController.endDatePickerValueChanged), for: UIControlEvents.valueChanged)
+    }
 
+    
+    func startDatePickerValueChanged(sender: UIDatePicker){
+        eventForm.startTime = sender.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.medium
+        startText.text = dateFormatter.string(from: sender.date)
+    }
+    
+    func endDatePickerValueChanged(sender: UIDatePicker){
+        eventForm.endTime = sender.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.medium
+        endText.text = dateFormatter.string(from: sender.date)
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool){
         if let controller = viewController as? AddEventController{
-            controller.whenLabel.text = String(describing: timePicker?.date)
+            //controller.whenLabel.text = String(describing: timePicker?.date)
         }
     }
     @IBAction func exit(_ sender: AnyObject) {
-        eventForm.time = (timePicker?.date)!
+        //eventForm.time = (timePicker?.date)!
         
         self.dismiss(animated: false, completion: nil)
         

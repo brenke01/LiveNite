@@ -61,6 +61,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     override func viewWillAppear(_ animated: Bool){
         self.navigationController?.setNavigationBarHidden(true , animated: animated)
+
         super.viewWillAppear(animated)
     }
     override func viewWillDisappear(_ animated: Bool){
@@ -243,19 +244,24 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             
         let imageButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.05, y: self.view.frame.height * 0.05, width: CGFloat(self.view.frame.width * 0.9), height: self.view.frame.height * 0.3))
             imageButton.layer.cornerRadius = 10
-            let imageLabel = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.7, height: 40))
-            imageLabel.backgroundColor = UIColor.darkGray
-            imageLabel.text = self.eventsArr[indexPath.row].eventTitle
-            imageLabel.textColor = UIColor.white
+
+            let titleView = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
+            
+            
+            titleView.text = self.eventsArr[indexPath.row].eventTitle
+            titleView.textColor = UIColor.white
+            titleView.backgroundColor = UIColor.darkGray
+            titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
+            imageButton.addSubview(titleView)
+            imageButton.isUserInteractionEnabled = true
+            imageButton.layer.masksToBounds = true
             let imageScoreLabel  = UILabel(frame: CGRect(x: imageButton.frame.width * 0.9, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.20, height: 40))
             let imageLabelContainer = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: imageButton.frame.width, height: 40))
             imageLabelContainer.backgroundColor = UIColor.darkGray
             imageScoreLabel.textColor = UIColor.white
             imageScoreLabel.backgroundColor = UIColor.darkGray
             imageScoreLabel.text = String(self.eventsArr[indexPath.row].hotColdScore)
-            imageButton.addSubview(imageLabelContainer)
-            imageButton.addSubview((imageLabel))
-            imageButton.addSubview(imageScoreLabel)
+            imageButton.addSubview((titleView))
             imageButton.isUserInteractionEnabled = true
             imageButton.layer.masksToBounds = true
         imageButton.setImage(self.uiImageArr[(indexPath as NSIndexPath).row], for: UIControlState())
@@ -291,4 +297,14 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         cell.backgroundColor = UIColor.clear
     }
     
+    override func viewDidAppear(_ animated: Bool){
+        self.getEvents(completion: {(result)->Void in
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
+        })
+        super.viewDidAppear(animated)
+    }
+
 }

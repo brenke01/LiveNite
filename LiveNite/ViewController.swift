@@ -145,7 +145,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
    
     override func viewDidAppear(_ animated: Bool) {
-
+        
         super.viewDidAppear(animated)
         
         self.view.isHidden = false

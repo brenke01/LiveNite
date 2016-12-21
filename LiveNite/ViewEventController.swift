@@ -446,7 +446,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
-        return self.commentArray.count
+        return self.commentArray.count + 1 
     }
     
     func loadComments(completion:@escaping ([Comment])->Void)-> [Comment]{

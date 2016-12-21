@@ -45,7 +45,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         locLabel.text = placeTitle
         titleLabel.text = eventForm.titleInput
         descLabel.text = eventForm.descInput
-        whenLabel.text = String(describing: eventForm.time)
+        whenLabel.text = String(describing: eventForm.startTime)
         navigationController?.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: "dissmissKeyboard")
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
@@ -126,8 +126,8 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             event?.timePosted = String(describing: date)
-            event?.eventStartTime = String(describing: self.eventForm.time)
-            event?.eventEndTime = String(describing: date)
+            event?.eventStartTime = String(describing: self.eventForm.startTime)
+            event?.eventEndTime = String(describing: self.eventForm.endTime)
             var geo :Geohash = Geohash()
             let l =  self.userLocation
             let s = l.geohash(10)
@@ -161,7 +161,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewWillAppear(_ animated: Bool){
         titleLabel.text = eventForm.titleInput
         descLabel.text = eventForm.descInput
-        whenLabel.text = String(describing: eventForm.time)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.medium
+        whenLabel.text = dateFormatter.string(from: eventForm.startTime)
         super.viewWillAppear(animated)
     }
     
