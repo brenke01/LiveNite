@@ -23,4 +23,5 @@ target “LiveNite” do
     	pod 'AWSSimpleDB'
     	pod 'AWSSNS'
     	pod 'AWSSQS'
+        pod 'SCLAlertView'
 end

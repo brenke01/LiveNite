@@ -22,7 +22,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     //IBOutlet zone
 
 
-    @IBOutlet var navigationBar: UINavigationBar!
+    //@IBOutlet var navigationBar: UINavigationBar!
     
     //end IBOutlet zone
     
@@ -265,7 +265,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         //let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
         //cell.upvotesLabel.text = String(imageObj!.totalScore)
 
-        navigationBar.topItem!.title = imageData?.placeTitle
+    self.navigationController?.navigationBar.topItem?.title = imageObj?.placeTitle
     }
     
     func registerVote(_ sender: UIButton)
@@ -400,9 +400,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        navigationBar.backgroundColor = UIColor.blue
-        navigationBar.barTintColor = UIColor.blue
-        navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+            self.navigationController?.navigationBar.topItem?.title = imageObj?.placeTitle
+//        navigationBar.backgroundColor = UIColor.blue
+//        navigationBar.barTintColor = UIColor.blue
+//        navigationBar.isTranslucent = false
+        
         print("IMAGE ID: "+self.imageID)
 
         //fetch check in
