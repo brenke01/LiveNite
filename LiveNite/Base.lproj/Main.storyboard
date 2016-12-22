@@ -205,7 +205,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kmr-u8-OBq" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1917.5999999999999" y="99.400299850074973"/>
+            <point key="canvasLocation" x="2768.8000000000002" y="99.400299850074973"/>
         </scene>
         <!--Events -->
         <scene sceneID="Tvm-t7-xQi">
@@ -264,14 +264,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="Places " id="WFl-Do-U4G">
-                        <inset key="imageInsets" minX="0.0" minY="2" maxX="0.0" maxY="-2"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                <color key="value" red="0.80148294207592197" green="0.30152154707162676" blue="0.99100130890052351" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="B4T-O6-isu"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
@@ -283,7 +276,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7cf-rz-aIB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-263.19999999999999" y="662.51874062968523"/>
+            <point key="canvasLocation" x="588" y="662.51874062968523"/>
         </scene>
         <!--Notifications -->
         <scene sceneID="S2J-kV-1wI">
@@ -405,7 +398,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="GhP-be-jbp" kind="relationship" relationship="viewControllers" id="kKA-K1-WJd"/>
-                        <segue destination="F4t-Tb-Llf" kind="relationship" relationship="viewControllers" id="VmV-FS-Km6"/>
+                        <segue destination="ciz-Vw-40C" kind="relationship" relationship="viewControllers" id="VmV-FS-Km6"/>
                         <segue destination="SQT-NH-12I" kind="relationship" relationship="viewControllers" id="lgQ-mK-qrS"/>
                         <segue destination="sbl-BS-Puu" kind="relationship" relationship="viewControllers" id="sVo-iq-rQj"/>
                         <segue destination="9LE-U9-Bh0" kind="relationship" relationship="viewControllers" id="k7H-HS-PqW"/>
@@ -684,7 +677,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vTl-xe-zqT" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="498" y="687"/>
+            <point key="canvasLocation" x="1348" y="686.80659670164926"/>
         </scene>
         <!--Login Controller-->
         <scene sceneID="XHN-EO-kvc">
@@ -884,7 +877,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s2c-a3-tEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1106" y="862"/>
+            <point key="canvasLocation" x="1956.8" y="861.76911544227892"/>
         </scene>
         <!--Post Comment Controller-->
         <scene sceneID="NQw-ZQ-QWB">
@@ -950,7 +943,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6DJ-oM-EMi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2620" y="108.39580209895054"/>
+            <point key="canvasLocation" x="3471.1999999999998" y="108.39580209895054"/>
         </scene>
         <!--Events -->
         <scene sceneID="I4R-5l-Tx1">
@@ -1060,6 +1053,8 @@
                                                             </state>
                                                             <connections>
                                                                 <action selector="postComment:" destination="VBq-gS-Kxm" eventType="touchUpInside" id="Qok-Y0-6Pb"/>
+                                                                <action selector="postComment:" destination="7Xu-IW-crY" eventType="touchUpInside" id="pNj-cK-4Fe"/>
+                                                                <segue destination="Fal-UV-Xkm" kind="show" identifier="postComment" id="DNC-uJ-717"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -1190,6 +1185,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.1647058824" green="0.37647058820000001" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -1368,7 +1366,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ej4-gh-3gn">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ej4-gh-3gn">
                                         <frame key="frameInset" minX="-2" minY="103" width="377" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1378,7 +1376,7 @@
                                             <action selector="startTextFieldEdit:" destination="It5-Ml-UrF" eventType="editingDidBegin" id="irS-bJ-HH6"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OHa-hr-lRr">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OHa-hr-lRr">
                                         <frame key="frameInset" minY="192" width="377" height="51"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1412,6 +1410,36 @@
             </objects>
             <point key="canvasLocation" x="671.20000000000005" y="2329.385307346327"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Kbd-LS-ZGu">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ciz-Vw-40C" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="Places " id="WFl-Do-U4G">
+                        <inset key="imageInsets" minX="0.0" minY="2" maxX="0.0" maxY="-2"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" red="0.80148294207592197" green="0.30152154707162676" blue="0.99100130890052351" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="YYi-IH-HRu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.1647058824" green="0.37647058820000001" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="F4t-Tb-Llf" kind="relationship" relationship="rootViewController" id="Y8C-6Z-Iib"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XRh-h0-Xfb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-264" y="662.06896551724139"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Background_Gradient" width="748" height="1333"/>
@@ -1430,6 +1458,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lOC-7T-djj"/>
+        <segue reference="DNC-uJ-717"/>
         <segue reference="ZXV-xP-qJW"/>
     </inferredMetricsTieBreakers>
 </document>

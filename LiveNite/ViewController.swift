@@ -655,6 +655,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 print("IMAGE ID: " + (image?.imageID)!)
                 destinationVC.imageObj = self.chosenImageObj
                 destinationVC.imageID = (self.chosenImageObj?.imageID)!
+                destinationVC.user = self.user
             }
             print("IMAGE ID: " + (image?.imageID)!)
             

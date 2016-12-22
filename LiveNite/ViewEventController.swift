@@ -48,7 +48,10 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        print("IMAGE ID: "+self.imageID)
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.topItem?.title = selectedEvent?.eventTitle
+
+        
         
         //fetch check in
 //        AWSService().loadCheckIn(self.userID + "_" + (self.selectedEvent?.placeTitle)!, completion: {(result)->Void in
@@ -426,13 +429,15 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "postComment" {
-//            if let destinationVC = segue.destination as? PostCommentController{
-//                
+            if let destinationVC = segue.destination as? PostCommentController{
+//
 //                destinationVC.imageID = imageID
 //                destinationVC.userName = userName
 //                destinationVC.userName = userName
 //                destinationVC.selectedEvent = self.selectedEvent
-//            }
+                destinationVC.imageID = (selectedEvent?.eventID)!
+                destinationVC.userName = (self.user?.userName)!
+           }
         }
     }
     

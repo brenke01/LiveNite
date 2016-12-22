@@ -16,6 +16,7 @@ import CoreLocation
 import GoogleMaps
 import AWSDynamoDB
 import AWSS3
+import SCLAlertView
 
 class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate,UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate{
     
@@ -59,92 +60,93 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     //IBAction zone
     
-//    @IBAction func checkIn(_ sender: AnyObject) {
-//        
-//        //create date formatter to allow conversion of dates to string and vice versa throughout function
-//        //set current date
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-//        let currentDate = Date()
-//        
-//        //fetch image data for post
-//
-//        
-//        //determine distance between user and place and set maxAllowableDistance
-//        let imagePlaceLocation = CLLocation(latitude: (self.imageData?.placeLat)!, longitude: (self.imageData?.placeLong)!)
-//        let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
-//        let maxAllowableDistance : CLLocationDistance = 2500
-//        
-//        //if within range, check if they've checked in recently
-//        if distanceBetweenUserAndPlace < maxAllowableDistance {
-//
-//            
-//            
-//            //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
-//            if (self.checkInRequest?.userID == ""){
-//                
-//                //Make new check in in table
-//                let checkIn : CheckIn = CheckIn()
-//                checkIn.checkInID = self.userID + "_" + (self.imageData?.placeTitle)!
-//                checkIn.checkInTime = dateFormatter.string(from: currentDate)
-//                checkIn.placeTitle = (self.imageData?.placeTitle)!
-//                checkIn.userID = self.userID
-//                AWSService().save(checkIn)
-//                
-//                //Award user points
-//                print("userID: \(userID)")
-//                AWSService().loadUser(self.userID,completion: {(result)->Void in
-//                    self.user = result
-//                    print("user id is ")
-//                    print(self.user?.userID)
-//                })
-//                user?.score += 5
-//                AWSService().save(user!)
-//                print("Score: \(user?.score)")
-//                
-//            } else {
-//                //if it did set the userID, they've checked in there before so we need to see how long it's been
-//                
-//                //get last check in date
-//                let lastCheckIn : Date = dateFormatter.date(from: self.checkInRequest!.checkInTime)!
-//                
-//                //get the difference in date components
-//                let diffDateComponents = (Calendar.current as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day, NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second], from: lastCheckIn, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
-//                
-//                 print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
-//                
-//                //if it has been more than a day award the user points and update the check in time
-//                if (diffDateComponents.year! > 0 || diffDateComponents.month! > 0 || diffDateComponents.day! > 0){
-//                    print("It's been a while")
-//                    
-//                    //Award user points
-//                    print("userID: \(userID)")
-//                    AWSService().loadUser(self.userID,completion: {(result)->Void in
-//                        self.user = result
-//                    })
-//
-//                    user?.score += 5
-//                    AWSService().save(user!)
-//                    print("Score: \(user?.score)")
-//                    
-//                    //Update check in date
-//                    self.checkInRequest?.checkInTime = dateFormatter.string(from: currentDate)
-//                    AWSService().save(self.checkInRequest!)
-//                    
-//                    //Notify user of successful check in
-//                    
-//                } else {
-//                    //if it's been less than a day, let them know they've checked in too recently
-//                    print("You've checked in within the last 24 hours")
-//                }
-//                
-//            }
-//        } else {
-//            //if they aren't within range, let them know they aren't close enough to check in
-//
-//            print("not close enough to check in")
-//        }
-//    }
+    @IBAction func checkIn(_ sender: AnyObject) {
+        
+        //create date formatter to allow conversion of dates to string and vice versa throughout function
+        //set current date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let currentDate = Date()
+        
+        //fetch image data for post
+
+        
+        //determine distance between user and place and set maxAllowableDistance
+        let imagePlaceLocation = CLLocation(latitude: (self.imageObj?.placeLat)!, longitude: (self.imageObj?.placeLong)!)
+        let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
+        let maxAllowableDistance : CLLocationDistance = 2500
+        
+        //if within range, check if they've checked in recently
+        if distanceBetweenUserAndPlace < maxAllowableDistance {
+
+            
+            
+            //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
+            if (self.checkInRequest?.userID == ""){
+                
+                //Make new check in in table
+                let checkIn : CheckIn = CheckIn()
+                checkIn.checkInID = (self.user?.userID)! + "_" + (self.imageObj?.placeTitle)!
+                checkIn.checkInTime = dateFormatter.string(from: currentDate)
+                checkIn.placeTitle = (self.imageObj?.placeTitle)!
+                checkIn.userID = (self.user?.userID)!
+                print(checkIn.checkInID)
+                print(checkIn.checkInTime)
+                print(checkIn.userID)
+                print(checkIn.placeTitle)
+                AWSService().save(checkIn)
+                
+                //Award user points
+                print("userID: \(userID)")
+
+                self.user?.score += 5
+                AWSService().save(user!)
+                print("Score: \(user?.score)")
+                SCLAlertView().showSuccess("Congrats", subTitle: "You have checked in and earned 5 points!")
+                
+            } else {
+                //if it did set the userID, they've checked in there before so we need to see how long it's been
+                
+                //get last check in date
+                let lastCheckIn : Date = dateFormatter.date(from: self.checkInRequest!.checkInTime)!
+                
+                //get the difference in date components
+                let diffDateComponents = (Calendar.current as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day, NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second], from: lastCheckIn, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
+                
+                 print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
+                
+                //if it has been more than a day award the user points and update the check in time
+                if (diffDateComponents.year! > 0 || diffDateComponents.month! > 0 || diffDateComponents.day! > 0){
+                    print("It's been a while")
+                    
+                    //Award user points
+                    print("userID: \(userID)")
+                    AWSService().loadUser(self.userID,completion: {(result)->Void in
+                        self.user = result
+                    })
+
+                    user?.score += 5
+                    AWSService().save(user!)
+                    print("Score: \(user?.score)")
+                    
+                    //Update check in date
+                    self.checkInRequest?.checkInTime = dateFormatter.string(from: currentDate)
+                    AWSService().save(self.checkInRequest!)
+                    
+                    //Notify user of successful check in
+                    
+                } else {
+                    //if it's been less than a day, let them know they've checked in too recently
+                    print("You've checked in within the last 24 hours")
+                }
+                
+            }
+        } else {
+            //if they aren't within range, let them know they aren't close enough to check in
+            SCLAlertView().showInfo("Sorry", subTitle: "You are not close enough to check in")
+            print("not close enough to check in")
+        }
+    }
     
     @IBAction func exit(_ sender: AnyObject) {
         self.dismiss(animated: false, completion: nil)
@@ -402,12 +404,14 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.delegate = self
         self.navigationController?.navigationBar.tintColor = UIColor.white
             self.navigationController?.navigationBar.topItem?.title = imageObj?.placeTitle
+        
 //        navigationBar.backgroundColor = UIColor.blue
 //        navigationBar.barTintColor = UIColor.blue
 //        navigationBar.isTranslucent = false
         
         print("IMAGE ID: "+self.imageID)
-
+        let checkInButton = UIBarButtonItem(image: UIImage(named: "checkInButton"), style: .plain, target: self, action: #selector(viewPostController.checkIn))
+        navigationItem.rightBarButtonItem = checkInButton
         //fetch check in
         AWSService().loadCheckIn(self.userID + "_" + (self.imageData?.placeTitle)!, completion: {(result)->Void in
             self.checkInRequest = result
@@ -463,7 +467,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)-> Int{
-        return self.commentArray.count
+        return self.commentArray.count + 1
     }
     
     func loadComments(completion:@escaping ([Comment])->Void)-> [Comment]{
