@@ -61,7 +61,7 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         commentField.autocorrectionType = UITextAutocorrectionType.default
         commentField.keyboardType = UIKeyboardType.default
         commentField.font = UIFont (name: "HelveticaNeue", size: 20)
-        postCommentButton.layer.cornerRadius = 5
+        self.navigationController?.navigationBar.tintColor = UIColor.white
         
 
         

@@ -53,6 +53,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBOutlet weak var tableView: UITableView!
     var scrollViewContentHeight = 0 as CGFloat
     let screenHeight = UIScreen.main.bounds.height
+    var checkInArray = [CheckIn]()
     
     //end var zone
     
@@ -86,14 +87,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 
                 //Make new check in in table
                 let checkIn : CheckIn = CheckIn()
-                checkIn.checkInID = (self.user?.userID)! + "_" + (self.imageObj?.placeTitle)!
+                checkIn.checkInID = (self.imageObj?.imageID)!
                 checkIn.checkInTime = dateFormatter.string(from: currentDate)
                 checkIn.placeTitle = (self.imageObj?.placeTitle)!
+                checkIn.gender = (self.user?.gender)!
                 checkIn.userID = (self.user?.userID)!
-                print(checkIn.checkInID)
-                print(checkIn.checkInTime)
-                print(checkIn.userID)
-                print(checkIn.placeTitle)
+                checkIn.imageID = (self.imageObj?.imageID)!
                 AWSService().save(checkIn)
                 
                 //Award user points
@@ -121,9 +120,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     
                     //Award user points
                     print("userID: \(userID)")
-                    AWSService().loadUser(self.userID,completion: {(result)->Void in
-                        self.user = result
-                    })
+                    SCLAlertView().showSuccess("Congrats", subTitle: "You have checked in and earned 5 points!")
 
                     user?.score += 5
                     AWSService().save(user!)
@@ -138,6 +135,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 } else {
                     //if it's been less than a day, let them know they've checked in too recently
                     print("You've checked in within the last 24 hours")
+                    SCLAlertView().showError("Sorry", subTitle: "You have already checked in within the last 24 hours")
                 }
                 
             }
@@ -405,17 +403,19 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         self.navigationController?.navigationBar.tintColor = UIColor.white
             self.navigationController?.navigationBar.topItem?.title = imageObj?.placeTitle
         
-//        navigationBar.backgroundColor = UIColor.blue
-//        navigationBar.barTintColor = UIColor.blue
-//        navigationBar.isTranslucent = false
-        
         print("IMAGE ID: "+self.imageID)
         let checkInButton = UIBarButtonItem(image: UIImage(named: "checkInButton"), style: .plain, target: self, action: #selector(viewPostController.checkIn))
         navigationItem.rightBarButtonItem = checkInButton
         //fetch check in
-        AWSService().loadCheckIn(self.userID + "_" + (self.imageData?.placeTitle)!, completion: {(result)->Void in
+        AWSService().loadCheckIn((self.imageObj?.imageID)!, completion: {(result)->Void in
             self.checkInRequest = result
+            
         })
+        
+        getCheckIns(completion: {(result)->Void in
+            self.checkInArray = result
+        })
+
 
 
 
@@ -563,6 +563,29 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             cell.downvoteButton.isHidden = false
             cell.upvoteButton.isHidden = false
             cell.selectionStyle = UITableViewCellSelectionStyle.none
+            var maleCount = 0
+            var femaleCount = 0
+            print("Check in Bar width")
+            print(cell.genderBar.bounds.width)
+            print(cell.genderBar.bounds.height)
+            cell.genderBar.backgroundColor = UIColor.darkGray
+            if self.checkInArray.count > 0{
+                for checkIn in self.checkInArray{
+                    if checkIn.gender == "male"{
+                        maleCount += 1
+                    }else{
+                        femaleCount += 1
+                    }
+                }
+                var genderBarWidth = cell.genderBar.bounds.width
+                var malePct = CGFloat(maleCount / self.checkInArray.count)
+                var femalePct = CGFloat(femaleCount / self.checkInArray.count)
+                cell.femaleLabel = UILabel(frame: CGRect(x: cell.genderBar.frame.origin.x, y: cell.genderBar.frame.origin.y, width: femalePct * cell.genderBar.bounds.width, height: cell.genderBar.bounds.height))
+                cell.maleLabel = UILabel(frame: CGRect(x: cell.genderBar.frame.origin.x, y: cell.genderBar.frame.origin.y, width: malePct * cell.genderBar.bounds.width, height: cell.genderBar.bounds.height))
+
+              
+                
+            }
             return cell
         }else{
         let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
@@ -574,7 +597,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         let width = CGFloat(1.0)
 
 
-       let timePosted = commentArr[(indexPath as NSIndexPath).row].timePosted
+       let timePosted = commentArr[(indexPath as NSIndexPath).row - 1].timePosted
         
         let dateFormatter = DateFormatter()
         let localeStr = "us"
@@ -599,7 +622,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         cell.timeLabel.textColor = UIColor.white
         cell.userNameLabel.text = self.imageObj?.owner
             
-        cell.commentLabel.text = self.commentArray[indexPath.row].comment
+        cell.commentLabel.text = self.commentArray[indexPath.row - 1].comment
 //        cell.commentLabel.numberOfLines = 0
 //        cell.commentLabel.lineBreakMode = .byWordWrapping
 //        cell.commentLabel.preferredMaxLayoutWidth = cell.commentLabel.bounds.width
@@ -631,6 +654,43 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBAction func postComment(_ sender: AnyObject) {
         self.performSegue(withIdentifier: "postComment", sender: sender.tag)
     }
+    
+    func getCheckIns(completion:@escaping ([CheckIn])->Void)->[CheckIn]{
+
+        var checkInArray = [CheckIn]()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        let queryExpression = AWSDynamoDBQueryExpression()
+
+        queryExpression.indexName = "imageID-index"
+        queryExpression.hashKeyAttribute = "imageID"
+        queryExpression.hashKeyValues = self.imageObj?.imageID
+        
+        
+        
+        dynamoDBObjectMapper.query(CheckIn.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for checkIn  in output.items {
+                    let checkIn : CheckIn = checkIn as! CheckIn
+                    checkInArray.append(checkIn)
+                }
+                completion(checkInArray)
+                return checkInArray as AnyObject
+                
+            }
+            return checkInArray as AnyObject
+        })
+        
+        
+        return checkInArray
+
+    }
 
 }
 class MyCustomTableViewCell: UITableViewCell{
@@ -643,7 +703,10 @@ class MyCustomTableViewCell: UITableViewCell{
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
     
+    @IBOutlet weak var genderBar: UIView!
 
+    @IBOutlet weak var femaleLabel: UILabel!
+    @IBOutlet weak var maleLabel: UILabel!
 }
 
 class CommentTableViewCell: UITableViewCell{
