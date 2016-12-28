@@ -414,6 +414,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         getCheckIns(completion: {(result)->Void in
             self.checkInArray = result
+            self.tableView.reloadData()
         })
 
 
@@ -578,10 +579,27 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     }
                 }
                 var genderBarWidth = cell.genderBar.bounds.width
-                var malePct = CGFloat(maleCount / self.checkInArray.count)
-                var femalePct = CGFloat(femaleCount / self.checkInArray.count)
-                cell.femaleLabel = UILabel(frame: CGRect(x: cell.genderBar.frame.origin.x, y: cell.genderBar.frame.origin.y, width: femalePct * cell.genderBar.bounds.width, height: cell.genderBar.bounds.height))
-                cell.maleLabel = UILabel(frame: CGRect(x: cell.genderBar.frame.origin.x, y: cell.genderBar.frame.origin.y, width: malePct * cell.genderBar.bounds.width, height: cell.genderBar.bounds.height))
+                var malePct = CGFloat(maleCount) / CGFloat(self.checkInArray.count)
+                var femalePct = CGFloat(femaleCount) / CGFloat(self.checkInArray.count)
+                var maleWidth = malePct * cell.genderBar.bounds.width
+                var femaleWidth = femalePct * cell.genderBar.bounds.width
+                //cell.maleLabel.frame = CGRect(x: cell.genderBar.frame.origin.x, y: cell.genderBar.frame.origin.y, width: malePct * cell.genderBar.bounds.width, height: cell.genderBar.bounds.height)
+                var maleWidthConstraint = NSLayoutConstraint(item: cell.maleLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: maleWidth)
+                var femaleWidthConstraint = NSLayoutConstraint(item: cell.femaleLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: femaleWidth)
+                view.addConstraints([maleWidthConstraint, femaleWidthConstraint])
+                cell.maleLabel.text = String(maleCount)
+                cell.femaleLabel.text = String(femaleCount)
+                cell.maleLabel.textColor = UIColor.white
+                cell.femaleLabel.textColor = UIColor.white
+                print(cell.maleLabel.bounds.height)
+                print(cell.maleLabel.bounds.width)
+                //change width constraints not frame width
+                //cell.femaleLabel.frame = CGRect(x: cell.maleLabel.frame.origin.x, y: cell.genderBar.frame.origin.y, width: femalePct * cell.genderBar.bounds.width, height: cell.genderBar.bounds.height)
+                //cell.maleLabel.updateConstraints()
+                //cell.femaleLabel.updateConstraints()
+                print(cell.maleLabel.bounds.height)
+                print(cell.maleLabel.bounds.width)
+             
 
               
                 
@@ -705,8 +723,8 @@ class MyCustomTableViewCell: UITableViewCell{
     
     @IBOutlet weak var genderBar: UIView!
 
-    @IBOutlet weak var femaleLabel: UILabel!
     @IBOutlet weak var maleLabel: UILabel!
+    @IBOutlet weak var femaleLabel: UILabel!
 }
 
 class CommentTableViewCell: UITableViewCell{
