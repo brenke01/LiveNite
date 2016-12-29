@@ -50,6 +50,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var vote = Vote()
     var commentInfoArray : [[String:String]] = []
     var commentArray = [Comment]()
+    var hasUpvoted = false
+    var hasDownvoted = false
     @IBOutlet weak var tableView: UITableView!
     var scrollViewContentHeight = 0 as CGFloat
     let screenHeight = UIScreen.main.bounds.height
@@ -141,7 +143,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
         } else {
             //if they aren't within range, let them know they aren't close enough to check in
-            SCLAlertView().showInfo("Sorry", subTitle: "You are not close enough to check in")
+            SCLAlertView().showError("Sorry", subTitle: "You are not close enough to check in")
             print("not close enough to check in")
         }
     }
@@ -151,15 +153,15 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     @IBAction func upvoteAction(_ sender: AnyObject) {
-//        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
-//        cell.upvoteButton.tag = 1
-//        registerVote(cell.upvoteButton)
+        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+        cell.upvoteButton.tag = 1
+        registerVote(cell.upvoteButton)
     }
     
     @IBAction func downvoteAction(_ sender: AnyObject) {
-//        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
-//        cell.downvoteButton.tag = -1
-//        registerVote(cell.downvoteButton)
+        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
+        cell.downvoteButton.tag = -1
+        registerVote(cell.downvoteButton)
     }
     
     @IBAction func viewComments(_ sender: AnyObject) {
@@ -179,10 +181,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
 //
     func loadUIDetails() {
-        let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
 
         loadComments(completion: {(result)->Void in
             self.commentArray = result as! [Comment]
+            self.commentArray.sort {$0.timePosted > $1.timePosted}
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
 
@@ -190,17 +192,19 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             
         })
 
-        AWSService().loadVote(userID + "_" + imageID,completion: {(result)->Void in
+        AWSService().loadVote((self.user?.userID)! + "_" + (self.imageObj?.imageID)!,completion: {(result)->Void in
+
+            self.vote = result
+        if self.vote?.voteValue == 1{
+            self.hasUpvoted = true
+        } else if self.vote?.voteValue == -1{
+
+            self.hasDownvoted = true
+        }
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
                 
             })
-            self.vote = result
-        if self.vote?.voteValue == 1{
-            cell.upvoteButton.alpha = 0.5
-        } else if self.vote?.voteValue == -1{
-           cell.downvoteButton.alpha = 0.5
-        }
         })
         
         
@@ -260,13 +264,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     }
     
-    func imageData_DisplayToUI()
-    {
-        //let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
-        //cell.upvotesLabel.text = String(imageObj!.totalScore)
 
-    self.navigationController?.navigationBar.topItem?.title = imageObj?.placeTitle
-    }
     
     func registerVote(_ sender: UIButton)
     {
@@ -284,23 +282,23 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 change = modifier
                 //set all parameters in case it is a new vote
                 vote?.voteValue = modifier
-                vote?.voteID = self.userID + "_" + self.imageID
-                vote?.owner = self.userID
+                vote?.voteID = (self.user?.userID)! + "_" + self.imageID
+                vote?.owner = (self.user?.userID)!
                 vote?.imageID = self.imageID
                 if modifier == 1 {
-                    cell.upvoteButton.alpha = 0.5
+                    self.hasUpvoted = true
+                    self.hasDownvoted = false
                 } else if modifier == -1 {
-                    cell.downvoteButton.alpha = 0.5
+                   self.hasDownvoted = true
+                    self.hasUpvoted = false
                 }
                 
             } else if vote?.voteValue == 1 {
                 
-                if modifier == 1 {
-                    change = -1
-                    cell.upvoteButton.alpha = 1.0
-                    cell.downvoteButton.alpha = 1.0
-                } else if modifier == -1 {
+                if modifier == -1 {
                     change = -2
+                    self.hasDownvoted = true
+                    self.hasUpvoted = false
                     cell.upvoteButton.alpha = 0.5
                     cell.downvoteButton.alpha = 1.0
                 }
@@ -310,11 +308,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 
                 if modifier == 1 {
                     change = 2
+                    self.hasUpvoted = true
+                    self.hasDownvoted = false
                     cell.upvoteButton.alpha = 0.5
-                    cell.downvoteButton.alpha = 1.0
-                } else if modifier == -1 {
-                    change = 1
-                    cell.upvoteButton.alpha = 1.0
                     cell.downvoteButton.alpha = 1.0
                 }
                 vote?.voteValue += change
@@ -329,17 +325,15 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             AWSService().save(vote!)
             
             //update owner of images score
-            self.imageData?.totalScore += change
-            AWSService().loadUser((self.imageData?.userID)!,completion: {(result)->Void in
-                self.user = result
-            })
+            self.imageObj?.totalScore += change
             print("User ID = " + self.userID)
             self.user?.score += change
             AWSService().save(self.user!)
-            AWSService().save(self.imageData!)
+            AWSService().save(self.imageObj!)
             
             //update label with correct score
-            cell.upvotesLabel.text = String(self.imageData!.totalScore)
+            cell.upvotesLabel.text = String(self.imageObj!.totalScore)
+        self.tableView.reloadData()
 
         
         
@@ -384,8 +378,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         })
 
         
-        self.imageData?.hotColdScore = self.hotColdScore
-        AWSService().save(self.imageData!)
+        self.imageObj?.hotColdScore = self.hotColdScore
+        AWSService().save(self.imageObj!)
     }
     
     //end func zone
@@ -400,9 +394,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-            self.navigationController?.navigationBar.topItem?.title = imageObj?.placeTitle
-        
+            navigationItem.title = self.imageObj?.placeTitle
+        navigationItem.backBarButtonItem?.tintColor = UIColor.white
         print("IMAGE ID: "+self.imageID)
         let checkInButton = UIBarButtonItem(image: UIImage(named: "checkInButton"), style: .plain, target: self, action: #selector(viewPostController.checkIn))
         navigationItem.rightBarButtonItem = checkInButton
@@ -451,8 +444,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             if let destinationVC = segue.destination as? PostCommentController{
                 
                 destinationVC.imageID = imageID
-                destinationVC.userName = userName
-                destinationVC.userName = userName
+                destinationVC.user = self.user
+                
                 destinationVC.imageObj = self.imageObj
             }
         }
@@ -564,6 +557,16 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             cell.downvoteButton.isHidden = false
             cell.upvoteButton.isHidden = false
             cell.selectionStyle = UITableViewCellSelectionStyle.none
+            if (self.hasUpvoted){
+                cell.upvoteButton.alpha = 0.5
+            }else{
+                cell.upvoteButton.alpha = 1.0
+            }
+            if (self.hasDownvoted){
+                cell.downvoteButton.alpha = 0.5
+            }else{
+                cell.downvoteButton.alpha = 1.0
+            }
             var maleCount = 0
             var femaleCount = 0
             print("Check in Bar width")
@@ -578,27 +581,11 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                         femaleCount += 1
                     }
                 }
-                var genderBarWidth = cell.genderBar.bounds.width
-                var malePct = CGFloat(maleCount) / CGFloat(self.checkInArray.count)
-                var femalePct = CGFloat(femaleCount) / CGFloat(self.checkInArray.count)
-                var maleWidth = malePct * cell.genderBar.bounds.width
-                var femaleWidth = femalePct * cell.genderBar.bounds.width
-                //cell.maleLabel.frame = CGRect(x: cell.genderBar.frame.origin.x, y: cell.genderBar.frame.origin.y, width: malePct * cell.genderBar.bounds.width, height: cell.genderBar.bounds.height)
-                var maleWidthConstraint = NSLayoutConstraint(item: cell.maleLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: maleWidth)
-                var femaleWidthConstraint = NSLayoutConstraint(item: cell.femaleLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: femaleWidth)
-                view.addConstraints([maleWidthConstraint, femaleWidthConstraint])
+                
                 cell.maleLabel.text = String(maleCount)
                 cell.femaleLabel.text = String(femaleCount)
                 cell.maleLabel.textColor = UIColor.white
                 cell.femaleLabel.textColor = UIColor.white
-                print(cell.maleLabel.bounds.height)
-                print(cell.maleLabel.bounds.width)
-                //change width constraints not frame width
-                //cell.femaleLabel.frame = CGRect(x: cell.maleLabel.frame.origin.x, y: cell.genderBar.frame.origin.y, width: femalePct * cell.genderBar.bounds.width, height: cell.genderBar.bounds.height)
-                //cell.maleLabel.updateConstraints()
-                //cell.femaleLabel.updateConstraints()
-                print(cell.maleLabel.bounds.height)
-                print(cell.maleLabel.bounds.width)
              
 
               
@@ -638,7 +625,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
         cell.timeLabel.text = intervalStr
         cell.timeLabel.textColor = UIColor.white
-        cell.userNameLabel.text = self.imageObj?.owner
+        cell.userNameLabel.text = self.commentArray[indexPath.row - 1].owner
             
         cell.commentLabel.text = self.commentArray[indexPath.row - 1].comment
 //        cell.commentLabel.numberOfLines = 0
@@ -708,6 +695,17 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         return checkInArray
 
+    }
+    
+    @IBAction func unwind(toPost unwindSegue: UIStoryboardSegue){
+        loadComments(completion: {(result)->Void in
+            self.commentArray = result as! [Comment]
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
+            
+        })
     }
 
 }

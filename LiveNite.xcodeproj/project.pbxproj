@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0813DA1D0BA6DE00CE0C70 /* User.swift */; };
 		0A239AA31DC0364400B83D48 /* AddEventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A239AA21DC0364400B83D48 /* AddEventController.swift */; };
+		0A3286751E14907D003655B2 /* PostEventCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3286741E14907D003655B2 /* PostEventCommentController.swift */; };
+		0A3286771E1496A8003655B2 /* SearchPostsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3286761E1496A8003655B2 /* SearchPostsController.swift */; };
 		0A3F302A1D9CAE69007AFB06 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F30291D9CAE69007AFB06 /* Geohash.swift */; };
 		0A48A2941D8A1D9C00E70833 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48A2931D8A1D9C00E70833 /* EventController.swift */; };
 		0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C705C1D1A268600795D20 /* PostCommentController.swift */; };
@@ -64,6 +66,8 @@
 /* Begin PBXFileReference section */
 		0A0813DA1D0BA6DE00CE0C70 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0A239AA21DC0364400B83D48 /* AddEventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventController.swift; sourceTree = "<group>"; };
+		0A3286741E14907D003655B2 /* PostEventCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostEventCommentController.swift; sourceTree = "<group>"; };
+		0A3286761E1496A8003655B2 /* SearchPostsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPostsController.swift; sourceTree = "<group>"; };
 		0A3F30291D9CAE69007AFB06 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Geohash.swift; path = LiveNite/Geohash.swift; sourceTree = "<group>"; };
 		0A48A2931D8A1D9C00E70833 /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		0A4C705C1D1A268600795D20 /* PostCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentController.swift; sourceTree = "<group>"; };
@@ -251,6 +255,8 @@
 				0AED00F51E08C48400214B5C /* AddEventTimeController.swift */,
 				0A4D873B1DDD422100B5AFE1 /* AddEventDescriptionController.swift */,
 				0AE626DE1DE51F14003FFF66 /* EventForm.swift */,
+				0A3286741E14907D003655B2 /* PostEventCommentController.swift */,
+				0A3286761E1496A8003655B2 /* SearchPostsController.swift */,
 			);
 			name = View_Controller_Classes;
 			sourceTree = "<group>";
@@ -434,6 +440,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A3286771E1496A8003655B2 /* SearchPostsController.swift in Sources */,
 				0AE626DF1DE51F14003FFF66 /* EventForm.swift in Sources */,
 				0A4D873C1DDD422100B5AFE1 /* AddEventDescriptionController.swift in Sources */,
 				0A3F302A1D9CAE69007AFB06 /* Geohash.swift in Sources */,
@@ -456,6 +463,7 @@
 				0A62F9A91DD1645600FC883A /* ViewEventController.swift in Sources */,
 				0A6014B91D458CC300AE5AF6 /* AWSService.swift in Sources */,
 				0AA2AB5C1C86878A00488A56 /* ProfileController.swift in Sources */,
+				0A3286751E14907D003655B2 /* PostEventCommentController.swift in Sources */,
 				0A48A2941D8A1D9C00E70833 /* EventController.swift in Sources */,
 				15DDCC1E1B5F381F00E87EA1 /* AppDelegate.swift in Sources */,
 				0A0813DB1D0BA6DE00CE0C70 /* User.swift in Sources */,

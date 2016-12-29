@@ -12,17 +12,18 @@ import MobileCoreServices
 import CoreData
 import GoogleMaps
 
-class PostCommentController: UIViewController,  UINavigationControllerDelegate,  UIScrollViewDelegate,  UITextFieldDelegate {
+class PostEventCommentController: UIViewController,  UINavigationControllerDelegate,  UIScrollViewDelegate,  UITextFieldDelegate {
     
     
     @IBAction func postComment(_ sender: AnyObject) {
         let comment : Comment = Comment()
         let uuid = UUID().uuidString
         comment.commentID = uuid
-        comment.imageID = (self.imageObj?.imageID)!
-        comment.eventID = "-1"
 
-
+        comment.imageID = (self.event?.eventID)!
+        comment.eventID = (self.event?.eventID)!
+        
+        
         comment.comment = commentField.text
         comment.owner = (self.user?.userName)!
         comment.date = String(describing: Date())
@@ -41,7 +42,7 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     var user = User()
     
     override func viewDidLoad() {
-
+        
         super.viewDidLoad()
         commentField.becomeFirstResponder()
         commentField.textColor = UIColor.black
@@ -52,7 +53,7 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         self.navigationController?.navigationBar.tintColor = UIColor.white
         navigationItem.title = "Post Comment"
         
-
+        
         
     }
     
