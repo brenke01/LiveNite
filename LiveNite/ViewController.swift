@@ -678,8 +678,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         }else if segue.identifier == "searchPosts"{
             if let destinationVC = segue.destination as? SearchPostsController{
-               
+                destinationVC.uiImageArray = self.uiImageArr
                 destinationVC.imageArray = self.imageArr
+                destinationVC.user = self.user
             }
         }
     }

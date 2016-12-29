@@ -396,6 +396,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.delegate = self
             navigationItem.title = self.imageObj?.placeTitle
         navigationItem.backBarButtonItem?.tintColor = UIColor.white
+        navigationController?.navigationBar.tintColor = UIColor.white
+        
         print("IMAGE ID: "+self.imageID)
         let checkInButton = UIBarButtonItem(image: UIImage(named: "checkInButton"), style: .plain, target: self, action: #selector(viewPostController.checkIn))
         navigationItem.rightBarButtonItem = checkInButton
@@ -581,16 +583,17 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                         femaleCount += 1
                     }
                 }
-                
-                cell.maleLabel.text = String(maleCount)
-                cell.femaleLabel.text = String(femaleCount)
-                cell.maleLabel.textColor = UIColor.white
-                cell.femaleLabel.textColor = UIColor.white
+
              
 
               
                 
             }
+            
+            cell.maleLabel.text = String(maleCount)
+            cell.femaleLabel.text = String(femaleCount)
+            cell.maleLabel.textColor = UIColor.white
+            cell.femaleLabel.textColor = UIColor.white
             return cell
         }else{
         let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell

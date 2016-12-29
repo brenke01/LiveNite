@@ -39,6 +39,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         loginView.center = self.view.center
         loginView.readPermissions = ["public_profile", "email"]
         loginView.delegate = self
+        
         FBSDKProfile.enableUpdates(onAccessTokenChange: true)
         
     }

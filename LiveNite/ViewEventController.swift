@@ -567,10 +567,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                 }
                
                 
-                cell.maleLabel.text = String(maleCount)
-                cell.femaleLabel.text = String(femaleCount)
-                cell.maleLabel.textColor = UIColor.white
-                cell.femaleLabel.textColor = UIColor.white
+
 
 
                 
@@ -578,6 +575,10 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                 
                 
             }
+            cell.maleLabel.text = String(maleCount)
+            cell.femaleLabel.text = String(femaleCount)
+            cell.maleLabel.textColor = UIColor.white
+            cell.femaleLabel.textColor = UIColor.white
 
             return cell
         }else{
