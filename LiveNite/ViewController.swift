@@ -143,6 +143,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         super.viewWillDisappear(animated)
     }
+    
+    @IBAction func searchPosts(_ sender: AnyObject) {
+        self.performSegue(withIdentifier: "searchPosts", sender: sender.tag)
+    }
    
     override func viewDidAppear(_ animated: Bool) {
         
@@ -671,6 +675,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if let destinationVC = segue.destination as? FBLoginController{
                 destinationVC.locations = 1
                 destinationVC.userID = (self.userID)
+            }
+        }else if segue.identifier == "searchPosts"{
+            if let destinationVC = segue.destination as? SearchPostsController{
+               
+                destinationVC.imageArray = self.imageArr
             }
         }
     }
