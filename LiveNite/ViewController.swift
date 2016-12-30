@@ -685,23 +685,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    func getRankMedal(_ score : Int) -> UIImage{
-        let score = 750
-        var medal : UIImage
-        if score < 100{
-            medal = UIImage(named: "Novice")!
-        }else if score >= 100 && score < 500{
-            medal = UIImage(named: "Regular")!
-        }else if score >= 500 && score < 1000{
-            medal = UIImage(named: "Legend")!
-        }else if score >= 1000 && score < 2500{
-            medal = UIImage(named: "Legend")!
-        }else {
-            medal = UIImage(named: "Myth")!
-        }
-        
-        return medal
-    }
+
 
     
     

@@ -1,36 +1,31 @@
 //
-//  User.swift
+//  Notification.swift
 //  LiveNite
 //
-//  Created by Kevin  on 6/10/16.
+//  Created by Kevin  on 12/30/16.
 //  Copyright © 2016 LiveNite. All rights reserved.
 //
 
 import Foundation
 import AWSDynamoDB
 
-class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+class Notification :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var userID: String = ""
     var userName: String = ""
-    var gender: String = ""
-    var age: Int = 0
-    var email: String = ""
-    var score: Int = 0
-    var accessToken: String = ""
-    var distance = 5
+    var open = false
+    var actionTime = ""
+    var imageID = ""
     
     class func dynamoDBTableName() -> String{
-        return "Users"
+        return "Notifications"
     }
     
     class func primaryKeyAttribute() -> String{
-        return "userID"
+        return "notificationID"
     }
     
     class func hashKeyAttribute() -> String {
-        return "userID"
+        return "notificationID"
     }
 }
-
-    
