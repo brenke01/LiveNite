@@ -20,6 +20,9 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
 
     @IBOutlet weak var tableView: UITableView!
     var notificationArray = [Notification]()
+    var user = User()
+    var userID = ""
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -28,11 +31,51 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
         navigationItem.title = "Notifications"
         tableView.delegate = self
         tableView.dataSource = self
+        if (self.user?.userID == ""){
+            retrieveUserID({(result)->Void in
+                self.userID = result
+                AWSService().loadUser(self.userID,completion: {(result)->Void in
+                    self.user = result
+                    self.getNotifications(completion: {(result)->Void in
+                        self.notificationArray = result
+                        DispatchQueue.main.async(execute: {
+                            self.tableView.reloadData()
+                            
+                        })
+                    })
+                    
+                })
+                
+            })
+        }
+
         
   
         
         
     }
+        
+        func retrieveUserID(_ completion:@escaping (_ result: String)->Void){
+            var id = ""
+            let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range"])
+            graphRequest.start(completionHandler: { (connection, result, error) -> Void in
+                
+                if ((error) != nil)
+                {
+                    // Process error
+                    print("Error: \(error)")
+                    
+                }else{
+                    let data:[String:AnyObject] = result as! [String: AnyObject]
+                    let userID = data["id"] as? String
+                    completion(userID!)
+                    
+                }
+                
+            })
+            
+            
+        }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return self.notificationArray.count
@@ -41,11 +84,52 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:NotificationCell = self.tableView.dequeueReusableCell(withIdentifier: "notificationCell")! as! NotificationCell
-        
-
+        if self.notificationArray[indexPath.row].type == "checkIn"{
+            cell.notificationLabel.text = notificationArray[indexPath.row].userName + " has checked in to your post."
+        }else if self.notificationArray[indexPath.row].type == "comment"{
+            cell.notificationLabel.text = self.notificationArray[indexPath.row].userName + " has commented on your post."
+        }
         
         return cell
     }
+    
+    func getNotifications(completion:@escaping ([Notification])->Void)->[Notification]{
+        
+        var notificationArray = [Notification]()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        let queryExpression = AWSDynamoDBQueryExpression()
+        
+        queryExpression.indexName = "ownerName-index"
+        queryExpression.hashKeyAttribute = "ownerName"
+        queryExpression.hashKeyValues = self.user?.userName
+        
+        
+        
+        dynamoDBObjectMapper.query(Notification.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for notification  in output.items {
+                    let notification : Notification = notification as! Notification
+                    notificationArray.append(notification)
+                }
+                completion(notificationArray)
+                return notificationArray as AnyObject
+                
+            }
+            return notificationArray as AnyObject
+        })
+        
+        
+        return notificationArray
+        
+    }
+
 }
 
 class NotificationCell: UITableViewCell{

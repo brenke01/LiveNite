@@ -11,11 +11,13 @@ import AWSDynamoDB
 
 class Notification :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var userID: String = ""
+    var notificationID = ""
+    var ownerName: String = ""
     var userName: String = ""
     var open = false
     var actionTime = ""
     var imageID = ""
+    var type = ""
     
     class func dynamoDBTableName() -> String{
         return "Notifications"

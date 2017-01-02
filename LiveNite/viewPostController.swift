@@ -85,6 +85,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             
             //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
+            var notifUUID =  UUID().uuidString
             if (self.checkInRequest?.userID == ""){
                 
                 //Make new check in in table
@@ -96,6 +97,21 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 checkIn.userID = (self.user?.userID)!
                 checkIn.imageID = (self.imageObj?.imageID)!
                 AWSService().save(checkIn)
+                
+                
+                var notification = Notification()
+                notification?.notificationID = notifUUID
+                notification?.userName = (self.user?.userName)!
+                notification?.ownerName = (self.imageObj?.owner)!
+                var date = Date()
+                notification?.actionTime = String(describing: date)
+                notification?.imageID = (self.imageObj?.imageID)!
+                notification?.open = true
+                notification?.type = "checkIn"
+                 AWSService().save(notification!)
+                
+                
+                
                 
                 //Award user points
                 print("userID: \(userID)")
@@ -126,6 +142,16 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
                     user?.score += 5
                     AWSService().save(user!)
+                    var notification = Notification()
+                    notification?.notificationID = notifUUID
+                    notification?.userName = (self.user?.userName)!
+                    notification?.ownerName = (self.imageObj?.owner)!
+                    var date = Date()
+                    notification?.actionTime = String(describing: date)
+                    notification?.imageID = (self.imageObj?.imageID)!
+                    notification?.open = true
+                    notification?.type = "checkIn"
+                    AWSService().save(notification!)
                     print("Score: \(user?.score)")
                     
                     //Update check in date
