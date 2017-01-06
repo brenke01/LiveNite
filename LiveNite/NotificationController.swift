@@ -77,6 +77,7 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
             
         }
     
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return self.notificationArray.count
         
@@ -84,11 +85,34 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:NotificationCell = self.tableView.dequeueReusableCell(withIdentifier: "notificationCell")! as! NotificationCell
+        cell.userNameLabel.text = self.notificationArray[indexPath.row].userName
         if self.notificationArray[indexPath.row].type == "checkIn"{
-            cell.notificationLabel.text = notificationArray[indexPath.row].userName + " has checked in to your post."
+            cell.notificationLabel.text = "checked in"
         }else if self.notificationArray[indexPath.row].type == "comment"{
-            cell.notificationLabel.text = self.notificationArray[indexPath.row].userName + " has commented on your post."
+            cell.notificationLabel.text = "commented on your post."
         }
+        let timePosted = notificationArray[(indexPath as NSIndexPath).row].actionTime
+        
+        let dateFormatter = DateFormatter()
+        let localeStr = "us"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        dateFormatter.locale = Locale(identifier: localeStr)
+        let timePostedFormatted = dateFormatter.date(from: timePosted)
+        let now = Date()
+        var interval = now.timeIntervalSince(timePostedFormatted!)
+        var intervalStr = ""
+        interval = interval / 3600
+        if (interval < 1){
+            interval = interval * 60
+            let intervalInt = Int(interval)
+            intervalStr = String(intervalInt) + "m"
+        }else{
+            let intervalInt = Int(interval)
+            intervalStr = String(intervalInt) + "h"
+        }
+        
+        
+        cell.timeLabel.text = intervalStr
         
         return cell
     }
@@ -136,4 +160,5 @@ class NotificationCell: UITableViewCell{
     @IBOutlet weak var notificationLabel : UILabel!
     @IBOutlet weak var timeLabel : UILabel!
     
+    @IBOutlet weak var userNameLabel: UILabel!
 }

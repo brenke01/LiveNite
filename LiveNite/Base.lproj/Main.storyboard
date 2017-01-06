@@ -343,35 +343,52 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="notificationCell" id="tzT-sN-fCd" customClass="NotificationCell" customModule="LiveNite" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="notificationCell" rowHeight="54" id="tzT-sN-fCd" customClass="NotificationCell" customModule="LiveNite" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tzT-sN-fCd" id="uFU-Co-GYw">
-                                            <frame key="frameInset" width="375" height="43"/>
+                                            <frame key="frameInset" width="375" height="53"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PuE-uv-HiQ">
-                                                    <frame key="frameInset" minX="32" minY="11" width="230" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PuE-uv-HiQ">
+                                                    <frame key="frameInset" minX="101" minY="16" width="200" height="21"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbc-g3-6nB">
-                                                    <frame key="frameInset" minX="303" minY="11" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IHd-gv-BHh">
+                                                    <frame key="frameInset" minX="20" minY="16" width="73" height="21"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbc-g3-6nB">
+                                                    <frame key="frameInset" minX="318" minY="16" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="IHd-gv-BHh" firstAttribute="top" secondItem="uFU-Co-GYw" secondAttribute="topMargin" constant="8" id="20j-qA-ZUt"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="IHd-gv-BHh" secondAttribute="bottom" constant="8" id="7Aw-VS-CyR"/>
+                                                <constraint firstItem="IHd-gv-BHh" firstAttribute="leading" secondItem="uFU-Co-GYw" secondAttribute="leadingMargin" constant="12" id="RkI-cO-8Js"/>
+                                                <constraint firstItem="PuE-uv-HiQ" firstAttribute="leading" secondItem="IHd-gv-BHh" secondAttribute="trailing" constant="8" id="Sim-EO-gbd"/>
+                                                <constraint firstItem="PuE-uv-HiQ" firstAttribute="top" secondItem="uFU-Co-GYw" secondAttribute="topMargin" constant="8" id="fEx-jw-QNn"/>
+                                                <constraint firstItem="vbc-g3-6nB" firstAttribute="top" secondItem="uFU-Co-GYw" secondAttribute="topMargin" constant="8" id="iY3-Ta-zXo"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="vbc-g3-6nB" secondAttribute="bottom" constant="8" id="juo-9C-sJL"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="vbc-g3-6nB" secondAttribute="trailing" constant="7" id="pF8-HX-LfZ"/>
+                                                <constraint firstItem="PuE-uv-HiQ" firstAttribute="leading" secondItem="IHd-gv-BHh" secondAttribute="trailing" constant="8" id="qwO-En-rzW"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="PuE-uv-HiQ" secondAttribute="bottom" constant="8" id="wdK-U0-TaR"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="notificationLabel" destination="PuE-uv-HiQ" id="8e9-Eh-hRs"/>
                                             <outlet property="timeLabel" destination="vbc-g3-6nB" id="R5m-fa-Fwi"/>
+                                            <outlet property="userNameLabel" destination="IHd-gv-BHh" id="lp9-Rv-Za7"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
