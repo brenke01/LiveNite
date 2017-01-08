@@ -11,6 +11,7 @@
 		0A239AA31DC0364400B83D48 /* AddEventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A239AA21DC0364400B83D48 /* AddEventController.swift */; };
 		0A3286751E14907D003655B2 /* PostEventCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3286741E14907D003655B2 /* PostEventCommentController.swift */; };
 		0A3286771E1496A8003655B2 /* SearchPostsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3286761E1496A8003655B2 /* SearchPostsController.swift */; };
+		0A3AB0701E22A64A0082ECFE /* EditSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3AB06F1E22A64A0082ECFE /* EditSettingsController.swift */; };
 		0A3F302A1D9CAE69007AFB06 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F30291D9CAE69007AFB06 /* Geohash.swift */; };
 		0A48A2941D8A1D9C00E70833 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48A2931D8A1D9C00E70833 /* EventController.swift */; };
 		0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C705C1D1A268600795D20 /* PostCommentController.swift */; };
@@ -70,6 +71,7 @@
 		0A239AA21DC0364400B83D48 /* AddEventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventController.swift; sourceTree = "<group>"; };
 		0A3286741E14907D003655B2 /* PostEventCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostEventCommentController.swift; sourceTree = "<group>"; };
 		0A3286761E1496A8003655B2 /* SearchPostsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPostsController.swift; sourceTree = "<group>"; };
+		0A3AB06F1E22A64A0082ECFE /* EditSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSettingsController.swift; sourceTree = "<group>"; };
 		0A3F30291D9CAE69007AFB06 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Geohash.swift; path = LiveNite/Geohash.swift; sourceTree = "<group>"; };
 		0A48A2931D8A1D9C00E70833 /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		0A4C705C1D1A268600795D20 /* PostCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentController.swift; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				0A3286741E14907D003655B2 /* PostEventCommentController.swift */,
 				0A3286761E1496A8003655B2 /* SearchPostsController.swift */,
 				0A5FC69D1E16CE570070260F /* NotificationController.swift */,
+				0A3AB06F1E22A64A0082ECFE /* EditSettingsController.swift */,
 			);
 			name = View_Controller_Classes;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 				6BF7D4241D9B68F300348DC7 /* SendGeoRequest.m in Sources */,
 				0AD58B4F1C9264C70037F0F8 /* LiveNite in Sources */,
 				6B69ED9D1C34C1F2000785EF /* GooglePlace.swift in Sources */,
+				0A3AB0701E22A64A0082ECFE /* EditSettingsController.swift in Sources */,
 				6B7122F41D49276700EB0A30 /* Event.swift in Sources */,
 				0A5FC6A01E16CF3D0070260F /* Notification.swift in Sources */,
 				0A239AA31DC0364400B83D48 /* AddEventController.swift in Sources */,

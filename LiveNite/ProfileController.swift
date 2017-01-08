@@ -23,9 +23,12 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var accessToken = ""
     var userID = ""
     var user = User()
+
+    @IBOutlet weak var distanceView: UIView!
     
     @IBOutlet weak var userNameLabel: UILabel!
     
+    @IBOutlet weak var distanceContainer: UIView!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var imgView: UIImageView!
@@ -38,10 +41,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     @IBOutlet weak var sliderValue: UISlider!
     
-    @IBAction func sliderValueChanged(_ sender: UISlider) {
-        let currentVal = round(sender.value / 2) * 2
-        distanceLabel.text = "Distance: " + String(currentVal) + " miles"
-    }
+
     
     
     override func viewDidLoad() {
@@ -49,7 +49,12 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         navigationController?.navigationBar.topItem?.title = "Profile"
         
         navigationController?.navigationBar.tintColor = UIColor.white
-        
+        var editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editSettings))
+        self.navigationItem.rightBarButtonItem = editButton
+        distanceView.layer.borderWidth = 1
+        distanceView.layer.borderColor = UIColor.white.cgColor
+        distanceView.layer.masksToBounds = true
+        distanceView.backgroundColor = UIColor.white.withAlphaComponent(0.1)
         if (self.user?.userID == ""){
             retrieveUserID({(result)->Void in
                 self.userID = result
@@ -72,11 +77,24 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         userNameLabel.text = self.user?.userName
         imgView.image = getRankMedal((self.user?.score)!)
         scoreLabel.text = "Score: " + String(describing: user!.score)
-        sliderValue.value = Float((self.user?.distance)!)
-        distanceLabel.text = "Distance: " + String(describing: self.user!.distance) + " miles"
+
+
+        distanceLabel.text = String(describing: self.user!.distance) + " miles"
         view.bringSubview(toFront: imgView)
         
     }
+    
+    func editSettings(_ sender: UIBarButtonItem!){
+        self.performSegue(withIdentifier: "editSettings", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "editSettings" {
+
+            
+            if let destinationVC = segue.destination as? EditSettingsController{
+                destinationVC.user = self.user
+            }}}
     
     func getRankMedal(_ score : Int) -> UIImage{
         var medal : UIImage

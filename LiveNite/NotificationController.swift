@@ -22,6 +22,9 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
     var notificationArray = [Notification]()
     var user = User()
     var userID = ""
+    var uiImageArr = [UIImage]()
+    var chosenImage = UIImage()
+    var chosenImageObj = Image()
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -38,10 +41,17 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
                     self.user = result
                     self.getNotifications(completion: {(result)->Void in
                         self.notificationArray = result
-                        DispatchQueue.main.async(execute: {
-                            self.tableView.reloadData()
-                            
-                        })
+                        for n in self.notificationArray{
+                            AWSService().getImageFromUrl(String(n.imageID), completion: {(result)->Void in
+                                self.uiImageArr.append(result)
+                                DispatchQueue.main.async(execute: {
+                                    self.tableView.reloadData()
+                                    
+                                })
+                            })
+                        }
+
+   
                     })
                     
                 })
@@ -76,10 +86,11 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
             
             
         }
+
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return self.notificationArray.count
+        return self.uiImageArr.count
         
     }
     
@@ -92,7 +103,8 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
             cell.notificationLabel.text = "commented on your post."
         }
         let timePosted = notificationArray[(indexPath as NSIndexPath).row].actionTime
-        
+        cell.notifImage.image = self.uiImageArr[indexPath.row]
+        cell.notifImage.layer.cornerRadius = 20
         let dateFormatter = DateFormatter()
         let localeStr = "us"
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
@@ -116,6 +128,31 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+       
+        AWSService().loadImage(self.notificationArray[indexPath.row].imageID,completion: {(result)->Void in
+             self.chosenImage = self.uiImageArr[indexPath.row]
+            self.chosenImageObj = result
+             self.performSegue(withIdentifier: "viewPostFromNotifications", sender: 1)
+        })
+       
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print(segue.identifier)
+        if segue.identifier == "viewPostFromNotifications" {
+            
+            if let destinationVC = segue.destination as? viewPostController{
+                
+                destinationVC.imageTapped = self.chosenImage
+
+                destinationVC.imageObj = self.chosenImageObj
+                destinationVC.imageID = (self.chosenImageObj?.imageID)!
+                destinationVC.user = self.user
+            }
+        }}
     
     func getNotifications(completion:@escaping ([Notification])->Void)->[Notification]{
         
@@ -158,7 +195,7 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
 
 class NotificationCell: UITableViewCell{
     @IBOutlet weak var notificationLabel : UILabel!
+    @IBOutlet weak var notifImage: UIImageView!
     @IBOutlet weak var timeLabel : UILabel!
-    
     @IBOutlet weak var userNameLabel: UILabel!
 }

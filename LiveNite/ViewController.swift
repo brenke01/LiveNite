@@ -77,6 +77,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var titleCountArr = [Int]()
     var chosenImageObj = Image()
     var sort = false
+    var uiImageDict = [String:UIImage]()
+    var sortedUIImageArray = [UIImage]()
     typealias FinishedDownloaded = () -> ()
     
     func tabBar(_ tabBar: UITabBar, didSelectItem item: UITabBarItem) {
@@ -110,7 +112,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func getHotImages() {
         self.sort = true
         self.hotToggle = 1
-        collectionView?.reloadData()
+        determineSort()
+        self.collectionView?.reloadData()
         
     }
     
@@ -118,7 +121,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.sort = true
         self.toggleState = 0
         self.hotToggle = 0
-        
+        determineSort()
         collectionView?.reloadData()
     }
     
@@ -246,34 +249,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var count = 0
-        if (self.imageArrLength == 0){
-            return 1
-        }else{
-            return self.imageArrLength
-        }
-//        var imagesArr = [Image]()
-//        let placesViewController = PlacesViewController()
-//        if (self.placesToggle && !self.displayPlacesAlbum){
-//            placesViewController.getGroupedImages({(result)->Void in
-//                imagesArr = result
-//            })
-//        }else if(self.placesToggle && self.displayPlacesAlbum){
-//            placesViewController.getImagesForGroup(self.chosenAlbumLocation, user: user, completion: {(result)->Void in
-//                imagesArr = result
-//            })
-//        }
-//        
-//        self.previousLocationName = ""
-//        for image in imagesArr{
-//            if(self.previousLocationName != image.placeTitle || !self.placesToggle || self.displayPlacesAlbum){
-//                count=count+1
-//                self.previousLocationName = image.placeTitle
-//            }
-//        }
-//        self.previousLocationName = ""
-//        print(count)
-        return 1
+
+        return self.uiImageArr.count
     }
     
     @IBOutlet weak var sortButton: UIButton!
@@ -335,15 +312,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
-        stringLabel = UILabel(frame: CGRect(x: 50, y: 0, width: 175, height: 50))
-        stringLabel.text = msg
-        stringLabel.textColor = UIColor.white
+//        stringLabel = UILabel(frame: CGRect(x: 50, y: 0, width: 175, height: 50))
+//        stringLabel.text = msg
+//        stringLabel.textColor = UIColor.white
         messageFrame = UIView(frame: CGRect(x: self.collectionView!.frame.midX - 90, y: self.collectionView!.frame.midY - 100, width: 180, height: 50))
         messageFrame.layer.cornerRadius = 15
-        messageFrame.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        messageFrame.backgroundColor = UIColor.clear
         if indicator {
             activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
-            activityIndicator.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            activityIndicator.frame = CGRect(x:self.view.bounds.width / 2 , y: self.view.bounds.height / 2 , width: 100, height: 100)
             activityIndicator.startAnimating()
             messageFrame.addSubview(activityIndicator)
         }
@@ -393,13 +370,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.idArray = []
                 self.imageArr = []
                 self.imageArr = groupedArr
+
                 self.imageArrLength = groupedArr.count
                 self.doneLoading = true
                 
-                DispatchQueue.main.async(execute: {
-                    self.switchNavBar(albumView: true)
-                    self.collectionView!.reloadData()
-                })
+                self.determineSort()
+                for img in self.imageArr{
+                    AWSService().getImageFromUrl(String(img.imageID), completion: {(result)->Void in
+                        self.uiImageArr.append(result)
+                        if self.uiImageArr.count == self.imageArr.count{
+                            
+                            DispatchQueue.main.async(execute: {
+                                self.uiImageDict = self.createUIImageDict()
+
+                                self.collectionView!.reloadData()
+                            })
+                            
+                        }
+                    })
+                }
                 
             })
         }else if(self.placesToggle && self.displayPlacesAlbum){
@@ -411,12 +400,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.uiImageArr = []
                 self.imageArr = []
                 self.imageArr = result
+
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
-                DispatchQueue.main.async(execute: {
-                    self.switchNavBar(albumView: false)
-                    self.collectionView!.reloadData()
-                })
+                self.determineSort()
+                for img in self.imageArr{
+                    AWSService().getImageFromUrl(String(img.imageID), completion: {(result)->Void in
+                        self.uiImageArr.append(result)
+                        if self.uiImageArr.count == self.imageArr.count{
+                            self.switchNavBar(albumView: false)
+                            
+                            DispatchQueue.main.async(execute: {
+                                self.uiImageDict = self.createUIImageDict()
+
+                                self.collectionView!.reloadData()
+                            })
+                            
+                        }
+                    })
+                }
             })
         }else{
             placesViewController.getImages(completion: {(result)->Void in
@@ -425,30 +427,35 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageArr = []
                 self.idArray = []
                 self.imageArr = result
+
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
                 self.imageArrLength = self.imageArr.count
-                DispatchQueue.main.async(execute: {
-                self.collectionView!.reloadData()
-                })
+                //write function to determine sort
+                //create dictionary with images for sorting
+                self.determineSort()
+                for img in self.imageArr{
+                    AWSService().getImageFromUrl(String(img.imageID), completion: {(result)->Void in
+                        self.uiImageArr.append(result)
+                        if self.uiImageArr.count == self.imageArr.count{
+                            DispatchQueue.main.async(execute: {
+                               self.uiImageDict = self.createUIImageDict()
+
+
+                            self.collectionView!.reloadData()
+
+                            })
+                        }
+                    })
+                }
+                
+                
             })
         }
     }
     
-
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        
-        
-        self.uiImageArr = []
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
-        cell.backgroundColor = UIColor.black
-        
-        var imageArray : [UIImage] = []
-    
-        if (self.doneLoading){
-        if (hotToggle == 1){
+    func determineSort(){
+        if (self.hotToggle == 1){
             self.imageArr = (self.imageArr as NSArray).sortedArray(using: [
                 NSSortDescriptor(key: "totalScore", ascending: false)
                 ]) as! [Image]
@@ -458,28 +465,45 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 NSSortDescriptor(key: "timePosted", ascending: false)
                 ]) as! [Image]
         }
-        idArray = []
-        if (!self.sort){
-            var upVoteArray : [Int] = []
-            for img in self.imageArr{
-                let titleData = img.placeTitle
-                if(self.previousLocationName != title || !self.placesToggle || self.displayPlacesAlbum){
-                    let imageID = img.imageID
-                    self.previousLocationName = titleData
-                    idArray.append(imageID)
-                    //Retrieving the image file from S3 example
-                    AWSService().getImageFromUrl(String(imageID), completion: {(result)->Void in
-                    
-                        self.uiImageArr.append(result)
-                        //self.collectionView?.reloadData()
-                    
-                    })
-                
-                }
-            }
-        }
+    
+    }
+    
+//    func determineUIImageSort(){
+//
+//        
+//        var sortedUIImgArray = [UIImage]()
+//        
+//        
+//        for i in 0...self.imageArr.count-1{
+//            var imageID = self.imageArr[i].imageID
+//            sortedUIImgArray.append(self.uiImageDict[self.imageArr[i].imageID]!)
+//        }
+//        self.uiImageArr = []
+//        self.uiImageArr = sortedUIImgArray
+//    }
+    
+    func createUIImageDict() -> [String: UIImage]{
+        var dict = [String: UIImage]()
+        for i in 0...self.imageArr.count-1{
             
-        if (self.uiImageArr.count > 0){
+            dict[self.imageArr[i].imageID] = self.uiImageArr[i]
+            
+        }
+        return dict
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
+        cell.backgroundColor = UIColor.black
+        
+    
+        if (self.doneLoading){
+
+        idArray = []
+
+            
+        
             if (self.placesToggle){
                 imgHeight = 240
                 imgWidth = 240
@@ -489,8 +513,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 imgWidth = 160
                 noColumns = 2
             }
+        
         let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(imgWidth), height: CGFloat(imgHeight)))
-        imageButton.setImage(self.uiImageArr[(indexPath as NSIndexPath).row], for: UIControlState())
+             imageButton.setImage(nil, for: UIControlState())
+            imageButton.setImage(self.uiImageDict[self.imageArr[indexPath.row].imageID], for: UIControlState())
+
+            
             let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
             let titleView = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
             
@@ -537,7 +565,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             cell.layer.masksToBounds = true
             cell.clipsToBounds = true
         }
-        }
+        
         self.messageFrame.removeFromSuperview()
         return cell
     }
@@ -547,7 +575,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let indexPath = self.collectionView?.indexPathForItem(at: tapLocation)
         if (!self.placesToggle || self.displayPlacesAlbum){
             self.chosenImageObj = self.imageArr[(indexPath! as NSIndexPath).row]
-            self.chosenImage = self.uiImageArr[(indexPath! as NSIndexPath).row]
+            self.chosenImage = self.uiImageDict[self.imageArr[(indexPath?.row)!].imageID]!
             self.performSegue(withIdentifier: "viewPost", sender: nil)
         }else{
             displayImagesForAlbum(self.imageArr[(indexPath! as NSIndexPath).row])
@@ -564,15 +592,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.chosenAlbumLocation = img.placeTitle
         self.displayPlacesAlbum = true
         determineQuery()
-//        var fetchRequest = NSFetchRequest(entityName: "Entity")
-//        fetchRequest.predicate = NSPredicate(format: "id= %i", sender.tag)
-//        let images = (try? context.executeFetchRequest(fetchRequest)) as! [NSManagedObject]?
-//        if let images = images{
-//            for img in images{
-//                let title: AnyObject? = img.valueForKey("title")
-//                
-//            }
-//        }
 
     }
     
