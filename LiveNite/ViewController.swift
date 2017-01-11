@@ -321,7 +321,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         messageFrame.backgroundColor = UIColor.clear
         if indicator {
             activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+<<<<<<< HEAD
             activityIndicator.frame = CGRect(x:self.view.frame.midX, y: self.view.frame.midY - 75, width: 100, height: 100)
+=======
+            activityIndicator.frame = CGRect(x:self.view.frame.midX, y: self.view.frame.midY, width: 100, height: 100)
+>>>>>>> 5118199d32d16ce93d33b9e3451d7ac5f28a978f
             activityIndicator.startAnimating()
             messageFrame.addSubview(activityIndicator)
         }
