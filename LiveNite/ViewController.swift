@@ -128,6 +128,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var imagesTypeBtn: UIButton!
 
     @IBAction func getPlacesView(_ sender: AnyObject) {
+        progressBarDisplayer("Loading", true)
         if (!self.placesToggle){
             self.placesToggle = true
             imagesTypeBtn.setTitle("Places", for: UIControlState())
@@ -296,7 +297,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 exitButton.addTarget(self, action: #selector(self.backToAlbumView(_:)), for: .touchUpInside)
                 altNavBar.addSubview(exitButton)
                 altNavBar.addSubview(placeTitleLabel)
-                self.view.addSubview(altNavBar)
+                //self.view.addSubview(altNavBar)
             
                 
             }
@@ -320,12 +321,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         messageFrame.backgroundColor = UIColor.clear
         if indicator {
             activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
-            activityIndicator.frame = CGRect(x:self.view.bounds.width / 2 , y: self.view.bounds.height / 2 , width: 100, height: 100)
+            activityIndicator.frame = CGRect(x:self.view.frame.midX, y: self.view.frame.midY - 75, width: 100, height: 100)
             activityIndicator.startAnimating()
             messageFrame.addSubview(activityIndicator)
         }
         messageFrame.addSubview(stringLabel)
-        self.collectionView!.addSubview(messageFrame)
+        self.collectionView!.addSubview(activityIndicator)
     }
     
     func determineQuery(){
@@ -566,7 +567,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             cell.clipsToBounds = true
         }
         
-        self.messageFrame.removeFromSuperview()
+        self.activityIndicator.removeFromSuperview()
         return cell
     }
     

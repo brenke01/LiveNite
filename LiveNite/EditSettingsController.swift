@@ -12,7 +12,7 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
 
 
     var user = User()
-    
+    var profileForm = ProfileSettingsForm()
     
     @IBOutlet weak var userNameLabel: UILabel!
     
@@ -38,13 +38,13 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
         navigationController?.navigationBar.tintColor = UIColor.white
         userNameEdit.text = self.user?.userName
             sliderValue.value = Float((self.user?.distance)!)
-        distanceLabel.text = (describing: String(self.user!.distance))
-        userNameView.layer.borderWidth = 1
-        distanceView.layer.borderWidth = 1
+        distanceLabel.text = (describing: String(self.user!.distance)) + " mi"
+        userNameView.layer.borderWidth = 2
+        distanceView.layer.borderWidth = 2
         userNameView.layer.borderColor = UIColor.white.cgColor
         distanceView.layer.borderColor = UIColor.white.cgColor
-        distanceView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-        userNameView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        distanceView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.2)
+        userNameView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.2)
         distanceView.layer.masksToBounds = true
         userNameView.layer.masksToBounds = true
         
@@ -54,7 +54,7 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
     func loadUserDetail(){
         
         sliderValue.value = Float((self.user?.distance)!)
-        distanceLabel.text = "Distance: " + String(describing: self.user!.distance) + " miles"
+        distanceLabel.text = "Distance: " + String(describing: self.user!.distance) + " mi"
       
         
     }
@@ -65,7 +65,9 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
         self.user?.userName = newUserName!
         self.user?.distance = newDistance!
         AWSService().save(self.user!)
-        self.dismiss(animated: false, completion: nil)
+        profileForm.distance = String(newDistance!)
+        profileForm.userName = newUserName!
+        self.dismiss(animated: true, completion: nil)
         
     }
 

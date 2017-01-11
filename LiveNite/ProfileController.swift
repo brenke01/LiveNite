@@ -23,6 +23,9 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var accessToken = ""
     var userID = ""
     var user = User()
+    var profileForm = ProfileSettingsForm()
+
+    
 
     @IBOutlet weak var distanceView: UIView!
     
@@ -73,13 +76,15 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         
 
     }
+
+    
     func loadUserDetail(){
         userNameLabel.text = self.user?.userName
         imgView.image = getRankMedal((self.user?.score)!)
         scoreLabel.text = "Score: " + String(describing: user!.score)
 
-
-        distanceLabel.text = String(describing: self.user!.distance) + " miles"
+        
+        distanceLabel.text = String(describing: self.user!.distance) + " mi"
         view.bringSubview(toFront: imgView)
         
     }
@@ -94,6 +99,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
             
             if let destinationVC = segue.destination as? EditSettingsController{
                 destinationVC.user = self.user
+                destinationVC.profileForm = profileForm 
             }}}
     
     func getRankMedal(_ score : Int) -> UIImage{
@@ -133,6 +139,11 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         })
         
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool){
+        distanceLabel.text = profileForm.distance + " mi"
+        userNameLabel.text = profileForm.userName
     }
 
 }

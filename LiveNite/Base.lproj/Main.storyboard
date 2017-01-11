@@ -24,7 +24,7 @@
                         <viewControllerLayoutGuide type="bottom" id="FIV-Gq-nnJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pLR-rD-vJW">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="backgroundimg" translatesAutoresizingMaskIntoConstraints="NO" id="bvL-ap-Bq1">
@@ -1034,7 +1034,7 @@
                         <viewControllerLayoutGuide type="bottom" id="ZCJ-kg-IxT"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pz0-OM-g1i">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="backgroundimg" translatesAutoresizingMaskIntoConstraints="NO" id="ztK-Sv-C42">
@@ -1706,10 +1706,10 @@
             </objects>
             <point key="canvasLocation" x="-2162" y="1193"/>
         </scene>
-        <!--Events -->
+        <!--Search Posts-->
         <scene sceneID="uWT-ut-sZL">
             <objects>
-                <viewController title="Events " id="SoA-UF-XYu" customClass="SearchPostsController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Search Posts" id="SoA-UF-XYu" customClass="SearchPostsController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zb5-zY-hJI"/>
                         <viewControllerLayoutGuide type="bottom" id="9UB-GI-jcC"/>
@@ -1862,10 +1862,10 @@
             </objects>
             <point key="canvasLocation" x="-566.39999999999998" y="1424.8875562218891"/>
         </scene>
-        <!--Profile-->
+        <!--Profile Settings-->
         <scene sceneID="UKb-ap-Vhb">
             <objects>
-                <viewController title="Profile" id="yvR-Ve-EAC" customClass="EditSettingsController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Profile Settings" id="yvR-Ve-EAC" customClass="EditSettingsController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OUW-p1-dpl"/>
                         <viewControllerLayoutGuide type="bottom" id="80P-BD-ZBA"/>
@@ -1879,25 +1879,18 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ecF-MH-DQv">
-                                <frame key="frameInset" minX="-12" minY="77" width="405" height="98"/>
+                                <frame key="frameInset" minX="-15" minY="126" width="405" height="67"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="5" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="kKf-BR-vkh">
-                                        <frame key="frameInset" minX="34" minY="48" width="306" height="31"/>
+                                        <frame key="frameInset" minX="31" minY="18" width="289" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <connections>
                                             <action selector="sliderValueChanged:" destination="yvR-Ve-EAC" eventType="valueChanged" id="g8o-Ld-yV8"/>
                                         </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Distanace Radius" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DpJ-7c-lgb">
-                                        <frame key="frameInset" minX="36" minY="19" width="167" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G61-9G-Nwk">
-                                        <frame key="frameInset" minX="246" minY="19" width="92" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G61-9G-Nwk">
+                                        <frame key="frameInset" minX="326" minY="23" width="55" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1915,7 +1908,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Edit Settings" id="U9C-5G-0Bg">
-                                        <barButtonItem key="rightBarButtonItem" title="Save" id="uvl-d7-j15">
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="uvl-d7-j15">
                                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="saveSettings:" destination="yvR-Ve-EAC" id="dID-NK-sif"/>
@@ -1925,26 +1918,33 @@
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gxj-Bt-vXe">
-                                <frame key="frameInset" minX="-12" minY="189" width="405" height="97"/>
+                                <frame key="frameInset" minX="-12" minY="235" width="405" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4QO-q4-3kT">
-                                        <frame key="frameInset" minX="23" minY="52" width="359" height="30"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4QO-q4-3kT">
+                                        <frame key="frameInset" minX="31" minY="15" width="351" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NiC-Ak-l11">
-                                        <frame key="frameInset" minX="23" minY="23" width="200" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Distanace Radius" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DpJ-7c-lgb">
+                                <frame key="frameInset" minX="16" minY="97" width="167" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NiC-Ak-l11">
+                                <frame key="frameInset" minX="16" minY="206" width="200" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -1982,8 +1982,8 @@
         <image name="loadingImage" width="640" height="799"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lxM-tE-ZSx"/>
-        <segue reference="lOC-7T-djj"/>
         <segue reference="qZi-s2-boM"/>
+        <segue reference="lOC-7T-djj"/>
+        <segue reference="cVh-Vp-R9K"/>
     </inferredMetricsTieBreakers>
 </document>
