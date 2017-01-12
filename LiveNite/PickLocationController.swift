@@ -65,17 +65,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
 
         searchBar = UISearchBar(frame: CGRect(x: 0, y: 10, width: 250.0, height: 44.0))
         self.view.addSubview(textField)
-       // tableDataSource = GMSAutocompleteTableDataSource()
-        //tableDataSource?.delegate = self
         
         srchDisplayController = UISearchDisplayController(searchBar: searchBar!, contentsController: self)
         srchDisplayController?.searchResultsDataSource = tableDataSource
         srchDisplayController?.searchResultsDelegate = tableDataSource
-        //segmentedControl.tintColor = UIColor.whiteColor()
-        //segmentedControl.backgroundColor = UIColor.darkGrayColor()
-        
-        let navBarBGImage = UIImage(named: "Navigation_Bar_Gold")
-        pickLocNav.setBackgroundImage(navBarBGImage, for: .default)
         pickLocNav.topItem!.title = "Pick Location"
        
         self.view.isHidden = true
@@ -321,28 +314,21 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func loadCaptionView(){
         self.view.isHidden = false
         pickLocNav.topItem!.title = "Add Caption"
-        //tableView.hidden = true
-        //textField = UITextField(frame: CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height * 0.5))
         textField.becomeFirstResponder()
         textField.textColor = UIColor.black
         textField.backgroundColor = UIColor.white
         textField.autocorrectionType = UITextAutocorrectionType.default
         textField.keyboardType = UIKeyboardType.default
         textField.font = UIFont (name: "HelveticaNeue", size: 20)
-        /*UITextField.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            
-                self.textField.frame.origin.y =  (self.textField.frame.origin.y - self.view.frame.height - 5) + self.pickLocNav.frame.height
-            }, completion: nil)*/
         
         
-        submitButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.50, y: self.view.frame.height * 0.50,width: self.view.frame.width * 0.5 - 10, height: 40 ))
-        submitButton.backgroundColor = UIColor.purple
+        submitButton = UIButton(frame: CGRect(x: 0, y: self.view.frame.height * 0.54,width: self.view.frame.width, height: 50 ))
+        submitButton.backgroundColor = ViewController().hexStringToUIColor(hex: "#3869CB")
         submitButton.setTitleColor(UIColor.white, for: .normal)
         submitButton.setTitle("Post", for: UIControlState())
-        submitButton.layer.cornerRadius = 5
         submitButton.isEnabled = true
         submitButton.layer.opacity = 1.0
-        submitButton.setTitleColor(UIColor.gray, for: UIControlState())
+        submitButton.setTitleColor(UIColor.white, for: UIControlState())
         submitButton.titleLabel!.font = UIFont(name:
             "HelveticaNeue-Medium", size: 18)
         submitButton.addTarget(self, action: #selector(PickLocationController.saveImageInfo(_:)), for: UIControlEvents.touchUpInside)
@@ -366,9 +352,6 @@ extension PickLocationController: GMSAutocompleteTableDataSourceDelegate {
     func tableDataSource(_ tableDataSource: GMSAutocompleteTableDataSource, didAutocompleteWith place: GMSPlace) {
         srchDisplayController?.isActive = false
         // Do something with the selected place.
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
     }
     
     @objc(searchDisplayController:shouldReloadTableForSearchString:) func searchDisplayController(_ controller: UISearchDisplayController, shouldReloadTableForSearch searchString: String?) -> Bool {

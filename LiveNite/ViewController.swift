@@ -79,6 +79,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var sort = false
     var uiImageDict = [String:UIImage]()
     var sortedUIImageArray = [UIImage]()
+    var altNavBar = UIView()
     typealias FinishedDownloaded = () -> ()
     
     func tabBar(_ tabBar: UITabBar, didSelectItem item: UITabBarItem) {
@@ -243,8 +244,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
-
-    
+    func hexStringToUIColor (hex:String) -> UIColor {
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+        
+        if ((cString.characters.count) != 6) {
+            return UIColor.gray
+        }
+        
+        var rgbValue:UInt32 = 0
+        Scanner(string: cString).scanHexInt32(&rgbValue)
+        
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -258,10 +278,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var searchBtn: UIButton!
     @IBOutlet weak var imgTypeBtn: UIButton!
     func switchNavBar(albumView:Bool){
-        let altNavBar = UIView(frame: CGRect(x: 0, y: 0, width: self.topNavBar.frame.width, height: self.topNavBar.frame.height))
+        self.altNavBar = UIView(frame: CGRect(x: 0, y: 0, width: self.topNavBar.frame.width, height: self.topNavBar.frame.height))
+        altNavBar.backgroundColor = hexStringToUIColor(hex: "#3869CB")
         let exitButton = UIButton(frame: CGRect(x: self.topNavBar.frame.width * 0.1, y: self.topNavBar.frame.height * 0.1, width: self.topNavBar.frame.width * 0.1, height: self.topNavBar.frame.height * 0.8))
-        var placeTitleLabel = UILabel(frame: CGRect(x: self.topNavBar.frame.width * 0.4, y: self.topNavBar.frame.height * 0.1, width: self.topNavBar.frame.width * 0.6, height: self.topNavBar.frame.height * 0.8))
+        var placeTitleLabel = UILabel(frame: CGRect(x: self.topNavBar.frame.width * 0.4, y: self.topNavBar.frame.height * 0.15, width: self.topNavBar.frame.width * 0.6, height: self.topNavBar.frame.height * 0.8))
+       
+        placeTitleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)
         altNavBar.isHidden = true
+
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
+        spacer.width = -15
 
         DispatchQueue.main.async(execute: {
             
@@ -273,31 +300,32 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.searchBtn.isHidden = false
                 self.imgTypeBtn.isHidden = false
                 self.topNavBar.isHidden = false
-                altNavBar.bringSubview(toFront: placeTitleLabel)
+                self.altNavBar.bringSubview(toFront: placeTitleLabel)
                 placeTitleLabel.text = ""
                 self.view.bringSubview(toFront: self.topNavBar)
-                altNavBar.isHidden = true
+                self.altNavBar.isHidden = true
                
                 
                
                 
             }else{
-                
+                let backButton = UIButton(frame: CGRect(x:0, y: 0, width: 70.0, height: 70.0))
+                let backImage = UIImage(named: "backBtn")
+                backButton.setImage(backImage, for: UIControlState.normal)
+                //backButton.titleEdgeInsets = UIEdgeInsetsMake(5.0, 20.0, 10.0, 0.0)
+                backButton.addTarget(self, action: #selector(self.backToAlbumView(_:)), for: .touchUpInside)
                 self.topNavBar.isHidden = true
-                self.sortBtn.isHidden = true
-                self.searchBtn.isHidden = true
-                self.imgTypeBtn.isHidden = true
-                altNavBar.isHidden = false
-
+                self.altNavBar.addSubview(backButton)
+                self.topNavBar.bringSubview(toFront: backButton)
+                self.altNavBar.isHidden = false
                 placeTitleLabel.textColor = UIColor.white
                 placeTitleLabel.text = self.chosenAlbumLocation
+                
+                placeTitleLabel.center.x = self.view.center.x
+                placeTitleLabel.textAlignment = NSTextAlignment.center
 
-                exitButton.setTitle("X", for: .normal)
-                exitButton.setTitleColor(UIColor.white, for: .normal)
-                exitButton.addTarget(self, action: #selector(self.backToAlbumView(_:)), for: .touchUpInside)
-                altNavBar.addSubview(exitButton)
-                altNavBar.addSubview(placeTitleLabel)
-                //self.view.addSubview(altNavBar)
+                self.altNavBar.addSubview(placeTitleLabel)
+                self.view.addSubview(self.altNavBar)
             
                 
             }
@@ -307,6 +335,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func backToAlbumView(_ sender: UIButton!){
+        self.topNavBar.isHidden = false
+        self.altNavBar.isHidden = true
         self.placesToggle = true
         self.displayPlacesAlbum = false
         determineQuery()
@@ -321,11 +351,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         messageFrame.backgroundColor = UIColor.clear
         if indicator {
             activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
-<<<<<<< HEAD
-            activityIndicator.frame = CGRect(x:self.view.frame.midX, y: self.view.frame.midY - 75, width: 100, height: 100)
-=======
-            activityIndicator.frame = CGRect(x:self.view.frame.midX, y: self.view.frame.midY, width: 100, height: 100)
->>>>>>> 5118199d32d16ce93d33b9e3451d7ac5f28a978f
+
+
+            activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 100, width: 100, height: 100)
             activityIndicator.startAnimating()
             messageFrame.addSubview(activityIndicator)
         }
