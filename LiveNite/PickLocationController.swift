@@ -18,9 +18,10 @@ import GooglePlaces
 import GooglePlacePicker
 
 
-class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UISearchDisplayDelegate{
+class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextViewDelegate, UISearchDisplayDelegate, UITextFieldDelegate{
     @IBOutlet var tableView: UITableView!
     
+    @IBOutlet weak var charCount: UILabel!
     @IBOutlet weak var textField: UITextView!
     @IBOutlet weak var pickLocNav: UINavigationBar!
     @IBOutlet weak var stopButton: UINavigationBar!
@@ -62,7 +63,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        textField.delegate = self
         searchBar = UISearchBar(frame: CGRect(x: 0, y: 10, width: 250.0, height: 44.0))
         self.view.addSubview(textField)
         
@@ -71,6 +72,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         srchDisplayController?.searchResultsDelegate = tableDataSource
         pickLocNav.topItem!.title = "Pick Location"
        
+
         self.view.isHidden = true
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "Background_Gradient")!)
         locationManager.startUpdatingLocation()
@@ -90,7 +92,6 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     }
     @IBAction func exit(_ sender: AnyObject) {
      
-            tableView.isHidden = false
             pickLocNav.topItem!.title = "Pick Location"
             self.submitButton.removeFromSuperview()
             self.textField.removeFromSuperview()
@@ -198,7 +199,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        textField.delegate = self
         print(complete)
         print(saved)
         if (complete == false){
@@ -310,9 +311,34 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         dismiss(animated: true, completion: nil)
         tabBarController?.selectedIndex = 0
     }
+    
+    func textView(_ textView: UITextView, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newLength = (textView.text?.utf16.count)! + string.utf16.count - range.length
+        //charCount.text = String(newLength)
+        // Find out what the text field will be after adding the current edit
+        let text = (textView.text! as NSString).replacingCharacters(in: range, with: string)
+        
+        if !text.isEmpty{//Checking if the input field is not empty
+            submitButton.isUserInteractionEnabled = true
+            submitButton.alpha = 1.0
+            //Enabling the button
+        } else {
+            submitButton.isUserInteractionEnabled = false
+            submitButton.alpha = 0.5
+            //Disabling the button
+        }
+        
+        // Return true so the text field will be changed
+        return newLength <= 300
+        return true
+    }
 
     func loadCaptionView(){
+       
+        textField.delegate = self
         self.view.isHidden = false
+         charCount.text = "300"
+        charCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
         pickLocNav.topItem!.title = "Add Caption"
         textField.becomeFirstResponder()
         textField.textColor = UIColor.black
@@ -321,7 +347,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         textField.keyboardType = UIKeyboardType.default
         textField.font = UIFont (name: "HelveticaNeue", size: 20)
         
-        
+        self.view.bringSubview(toFront: charCount)
         submitButton = UIButton(frame: CGRect(x: 0, y: self.view.frame.height * 0.54,width: self.view.frame.width, height: 50 ))
         submitButton.backgroundColor = ViewController().hexStringToUIColor(hex: "#3869CB")
         submitButton.setTitleColor(UIColor.white, for: .normal)
@@ -333,18 +359,46 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             "HelveticaNeue-Medium", size: 18)
         submitButton.addTarget(self, action: #selector(PickLocationController.saveImageInfo(_:)), for: UIControlEvents.touchUpInside)
         self.view.addSubview(submitButton)
+        if textField.text.isEmpty{
+            submitButton.isUserInteractionEnabled = false
+            submitButton.alpha = 0.5
+        }
+        
         
         
         
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (textField.text?.isEmpty == false){
-            submitButton.isEnabled = true;
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if (textView.text?.isEmpty == false){
+            submitButton.isUserInteractionEnabled = true;
             submitButton.layer.opacity = 1.0
-            submitButton.setTitleColor(UIColor.black, for: UIControlState())
         }
     }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let count = 300 - textView.text.utf16.count
+        if (textView.text?.isEmpty == false && count >= 0){
+            submitButton.isUserInteractionEnabled = true;
+            submitButton.layer.opacity = 1.0
+            charCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
+        }else if count < 0{
+            charCount.textColor = UIColor.red.withAlphaComponent(0.75)
+            submitButton.isUserInteractionEnabled = false;
+            submitButton.layer.opacity = 0.5
+        }else{
+            charCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
+            submitButton.isUserInteractionEnabled = false;
+            submitButton.layer.opacity = 0.5
+        }
+        
+        
+        charCount.text = String(count)
+        
+      
+    }
+    
+
     
 }
 

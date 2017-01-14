@@ -758,10 +758,10 @@
             </objects>
             <point key="canvasLocation" x="940" y="1566.5667166416792"/>
         </scene>
-        <!--Camera-->
+        <!--Pick Location Controller-->
         <scene sceneID="BeN-rJ-Idf">
             <objects>
-                <viewController title="Camera" id="SQT-NH-12I" customClass="PickLocationController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Pick Location Controller" id="SQT-NH-12I" customClass="PickLocationController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zym-ci-EF3"/>
                         <viewControllerLayoutGuide type="bottom" id="0GK-ZP-HMf"/>
@@ -794,13 +794,23 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="What's going on here? " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="j5F-Nu-gKX">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="j5F-Nu-gKX">
                                 <frame key="frameInset" minY="59" width="375" height="373"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="SQT-NH-12I" id="E3P-ZG-t3K"/>
+                                </connections>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mXA-Xe-KvB">
+                                <frame key="frameInset" minX="317" minY="323" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.26069286616161613" green="0.26069286616161613" blue="0.26069286616161613" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -816,9 +826,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
+                        <outlet property="charCount" destination="mXA-Xe-KvB" id="2BK-Me-nFX"/>
                         <outlet property="pickLocNav" destination="YSW-tI-50P" id="zpA-2O-e1A"/>
                         <outlet property="stopButton" destination="YSW-tI-50P" id="F8v-Ww-zC7"/>
-                        <outlet property="textField" destination="j5F-Nu-gKX" id="bzP-sb-dhi"/>
+                        <outlet property="textField" destination="j5F-Nu-gKX" id="S3J-5c-1HW"/>
                         <segue destination="ctm-SE-zUG" kind="presentation" identifier="addEventDesc" id="qZi-s2-boM"/>
                     </connections>
                 </viewController>
@@ -980,55 +991,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UYL-Nh-xDf" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1676" y="-81.859070464767626"/>
-        </scene>
-        <!--Pick Location Controller-->
-        <scene sceneID="zpw-tU-Aan">
-            <objects>
-                <viewController id="eEM-fp-SS5" customClass="PickLocationController" customModule="LiveNite" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ifi-ho-FEn"/>
-                        <viewControllerLayoutGuide type="bottom" id="f42-KC-Pnl"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="tMg-SB-vBP">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Background_Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="AFI-dK-v5U">
-                                <frame key="frameInset" width="320" height="592"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="900-mz-RVK">
-                                <frame key="frameInset" minY="59" width="350" height="541"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </mapView>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pjf-M8-oWo">
-                                <frame key="frameInset" minY="-5" width="320" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.16862745100000001" green="0.3803921569" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" red="0.16470588235294117" green="0.38039215686274508" blue="0.83137254901960789" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <navigationItem id="dXq-dd-Xab">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="E1J-On-Gm2">
-                                            <connections>
-                                                <action selector="exit:" destination="eEM-fp-SS5" id="pqQ-lQ-6x0"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" red="0.26069286619999998" green="0.26069286619999998" blue="0.26069286619999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="568"/>
-                    <connections>
-                        <outlet property="pickLocNav" destination="pjf-M8-oWo" id="7g2-T0-Lk8"/>
-                        <segue destination="ctm-SE-zUG" kind="presentation" identifier="addEventDesc" id="ZXV-xP-qJW"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="s2c-a3-tEh" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1956.8" y="861.76911544227892"/>
         </scene>
         <!--Post Comment Controller-->
         <scene sceneID="NQw-ZQ-QWB">
@@ -1972,7 +1934,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Background_Gradient" width="748" height="1333"/>
         <image name="Cam" width="27" height="22"/>
         <image name="Comment" width="64" height="64"/>
         <image name="Downvote_Gold" width="51" height="28"/>
@@ -1987,8 +1948,7 @@
         <image name="loadingImage" width="640" height="799"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nYP-eX-3SA"/>
         <segue reference="lOC-7T-djj"/>
-        <segue reference="qZi-s2-boM"/>
+        <segue reference="nYP-eX-3SA"/>
     </inferredMetricsTieBreakers>
 </document>

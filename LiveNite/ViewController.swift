@@ -165,7 +165,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }else{
             self.accessToken = String(describing: FBSDKAccessToken.current())
         }
-        determineQuery()
+
     }
     
     override func viewDidLoad() {

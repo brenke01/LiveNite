@@ -47,4 +47,6 @@ class AddEventDescriptionController: UIViewController, UIImagePickerControllerDe
         self.dismiss(animated: false, completion: nil)
     }
     
+    
+    
 }
