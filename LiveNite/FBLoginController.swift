@@ -148,6 +148,8 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 if (self.submitButton.isEnabled == false) {
                     self.dismiss(animated: true, completion: nil)
                     
+                    
+                    
                 }
 
             }

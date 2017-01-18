@@ -983,7 +983,7 @@
                         <outlet property="sortButton" destination="xic-R6-yKC" id="S1K-cE-e0d"/>
                         <outlet property="topNavBar" destination="UIL-5m-K2c" id="KVb-eM-k9f"/>
                         <segue destination="VBq-gS-Kxm" kind="show" identifier="viewPost" id="nYP-eX-3SA"/>
-                        <segue destination="o6U-yY-ghQ" kind="presentation" identifier="login" modalPresentationStyle="fullScreen" id="Rpq-7X-HBS"/>
+                        <segue destination="o6U-yY-ghQ" kind="presentation" identifier="login" id="Rpq-7X-HBS"/>
                         <segue destination="SQT-NH-12I" kind="show" identifier="PickLocation" id="lOC-7T-djj"/>
                         <segue destination="SoA-UF-XYu" kind="show" identifier="searchPosts" id="SWc-cK-C9A"/>
                     </connections>

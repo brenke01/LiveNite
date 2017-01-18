@@ -164,17 +164,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.performSegue(withIdentifier: "login", sender: nil)
         }else{
             self.accessToken = String(describing: FBSDKAccessToken.current())
+            setupHomeScreen()
         }
+        
 
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.bringSubview(toFront: topNavBar)
+    func setupHomeScreen(){
         progressBarDisplayer("Loading", true)
         profileMenu.isHidden = true
         self.collectionView?.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
-        self.view.isHidden = true
+        //self.view.isHidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionView?.dataSource = self
@@ -183,7 +183,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let nibname = UINib(nibName: "Cell", bundle: nil)
         collectionView!.register(nibname, forCellWithReuseIdentifier: "Cell")
         collectionView!.register(NSClassFromString("GalleryCell"),forCellWithReuseIdentifier:"CELL");
-
+        
         //collectionView!.backgroundColor = UIColor(red: 42/255, green: 34/255, blue: 34/255, alpha: 1)
         self.view.addSubview(collectionView!)
         
@@ -197,11 +197,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             // Fallback on earlier versions
         }
         locationManager.startUpdatingLocation()
+
+
+        self.collectionView?.frame = CGRect(x: 0, y: self.topNavBar.frame.height, width: self.view.frame.width, height: self.view.frame.height * 0.9)
         let barViewControllers = self.tabBarController?.viewControllers
         let svc = barViewControllers![2] as! PickLocationController
-        self.collectionView?.frame = CGRect(x: 0, y: self.topNavBar.frame.height, width: self.view.frame.width, height: self.view.frame.height * 0.9)
-        
-        //dispatch_group_enter(fbUserID)
         retrieveUserID({(result)->Void in
             self.userID = result
             AWSService().loadUser(self.userID,completion: {(result)->Void in
@@ -213,6 +213,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             })
             
         })
+
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupHomeScreen()
+        self.view.bringSubview(toFront: topNavBar)
+          //dispatch_group_enter(fbUserID)
+
+
 
        
        
@@ -355,10 +365,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
             activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 100, width: 100, height: 100)
             activityIndicator.startAnimating()
-            messageFrame.addSubview(activityIndicator)
+            //messageFrame.addSubview(activityIndicator)
         }
         messageFrame.addSubview(stringLabel)
-        self.collectionView!.addSubview(activityIndicator)
+        self.collectionView?.addSubview(activityIndicator)
     }
     
     func determineQuery(){
@@ -598,8 +608,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             cell.layer.masksToBounds = true
             cell.clipsToBounds = true
         }
-        
+          DispatchQueue.main.async(execute: {
+        self.activityIndicator.stopAnimating()
         self.activityIndicator.removeFromSuperview()
+            })
         return cell
     }
     

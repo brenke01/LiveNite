@@ -18,7 +18,7 @@ import GooglePlaces
 import GooglePlacePicker
 
 
-class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextViewDelegate, UISearchDisplayDelegate, UITextFieldDelegate{
+class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextViewDelegate, UISearchDisplayDelegate, UITextFieldDelegate, UITabBarControllerDelegate{
     @IBOutlet var tableView: UITableView!
     
     @IBOutlet weak var charCount: UILabel!
@@ -60,13 +60,14 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var userID = ""
     var fromEvent = false
     var eventPlacePicked = false
+    var lastIndex = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         
         textField.delegate = self
         searchBar = UISearchBar(frame: CGRect(x: 0, y: 10, width: 250.0, height: 44.0))
         self.view.addSubview(textField)
-        
+        tabBarController?.delegate = self
         srchDisplayController = UISearchDisplayController(searchBar: searchBar!, contentsController: self)
         srchDisplayController?.searchResultsDataSource = tableDataSource
         srchDisplayController?.searchResultsDelegate = tableDataSource
@@ -93,10 +94,18 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     @IBAction func exit(_ sender: AnyObject) {
      
             pickLocNav.topItem!.title = "Pick Location"
-            self.submitButton.removeFromSuperview()
-            self.textField.removeFromSuperview()
+            //self.submitButton.removeFromSuperview()
+            //self.textField.removeFromSuperview()
+        dismiss(animated: true, completion: nil)
+        searchPlaces()
             
         
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        self.lastIndex = (self.tabBarController?.selectedIndex)!
+        print("\(self.tabBarController?.selectedIndex)")
+        return true
     }
     
     func searchPlaces() {
@@ -151,6 +160,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 }
                 
             } else {
+                self.textField.endEditing(true)
+                self.view.isHidden = true
+                self.takeAndSave()
+                self.saved = false
                 print("No place selected")
             }
         })
@@ -205,12 +218,16 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         if (complete == false){
             takeAndSave()
         }else if (complete == true && saved == false){
-            
+            complete = false
+            saved = false
             dismiss(animated: true, completion: nil)
+            tabBarController?.selectedIndex = self.lastIndex
             
         }else if (!eventPlacePicked){
             
             searchPlaces()
+        }else{
+            takeAndSave()
         }
 
     }
@@ -257,6 +274,15 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
         
     }
+
+    
+
+        
+        
+        
+        
+        
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -336,6 +362,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func loadCaptionView(){
        
         textField.delegate = self
+        textField.text = ""
         self.view.isHidden = false
          charCount.text = "300"
         charCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
