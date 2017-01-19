@@ -22,6 +22,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBOutlet weak var tableView: UITableView!
     var user = User()
     var userID = ""
+    var activityIndicator = UIActivityIndicatorView()
     var eventsArr = [Event]()
     var bounds = [CLLocation]()
     var nearbyZipCodes = [String]()
@@ -34,6 +35,8 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     var hotToggle = 0
     var selectedEvent = Event()
     var selectedEventImg = UIImage()
+    var uiImageDict = [String:UIImage]()
+    var sortedUIImageArray = [UIImage]()
     @IBAction func addEvent(_ sender: AnyObject) {
         
         self.performSegue(withIdentifier: "addEvent", sender: 1)
@@ -97,13 +100,51 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 
             })
         }
-        
+        progressBarDisplayer("Loading", true)
         self.getEvents(completion: {(result)->Void in
             DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
+                self.determineSort()
+                for e in self.eventsArr{
+                    AWSService().getImageFromUrl(String(e.url), completion: {(result)->Void in
+                        self.uiImageArr.append(result)
+                        if self.uiImageArr.count == self.eventsArr.count{
+                            DispatchQueue.main.async(execute: {
+                                self.uiImageDict = self.createUIImageDict()
+                                
+                                
+                                self.tableView!.reloadData()
+                                
+                            })
+                        }
+                    })
+                }
+
             
         })
         })
+    }
+    
+    func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
+
+        if indicator {
+            
+            
+            activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 100, width: 100, height: 100)
+            activityIndicator.startAnimating()
+
+        }
+
+        self.tableView?.addSubview(activityIndicator)
+    }
+    
+    func createUIImageDict() -> [String: UIImage]{
+        var dict = [String: UIImage]()
+        for i in 0...self.eventsArr.count-1{
+            
+            dict[self.eventsArr[i].eventID] = self.uiImageArr[i]
+            
+        }
+        return dict
     }
     
     func retrieveUserID(_ completion:@escaping (_ result: String)->Void){
@@ -132,13 +173,30 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         if (self.hotToggle == 0){
             sortButton.setTitle("Popular", for: UIControlState())
             self.hotToggle = 1
+            determineSort()
             self.tableView.reloadData()
         }else{
             sortButton.setTitle("Recent", for: UIControlState())
             self.hotToggle = 0
+            determineSort()
             self.tableView.reloadData()
         }
     }
+    
+    func determineSort(){
+        if (self.hotToggle == 1){
+            self.eventsArr = (self.eventsArr as NSArray).sortedArray(using: [
+                NSSortDescriptor(key: "totalScore", ascending: false)
+                ]) as! [Event]
+        }else{
+            
+            self.eventsArr = (self.eventsArr as NSArray).sortedArray(using: [
+                NSSortDescriptor(key: "timePosted", ascending: false)
+                ]) as! [Event]
+        }
+        
+    }
+
     
     func getEvents(completion:@escaping ([Event])->Void)->Void{
         //sendGeo()
@@ -210,34 +268,8 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
         cell.backgroundColor = UIColor.black
-          self.uiImageArr = []
-        var upVoteArray : [Int] = []
-        var sortedArray = [Event]()
-        if self.hotToggle == 1{
-            sortedArray = (eventsArr as NSArray).sortedArray(using: [
-                NSSortDescriptor(key: "hotColdScore", ascending: false)
-                ]) as! [Event]
-            eventsArr = sortedArray as! [Event]
-        }else{
-            sortedArray = (eventsArr as NSArray).sortedArray(using: [
-                NSSortDescriptor(key: "timePosted", ascending: false)
-                ]) as! [Event]
-            eventsArr = sortedArray as! [Event]
-        }
-        for event in self.eventsArr{
-            let titleData = event.placeTitle
-         
-            let eventID = event.eventID
-            //Retrieving the image file from S3 example
-            AWSService().getImageFromUrl(String(event.url), completion: {(result)->Void in
-                
-                self.uiImageArr.append(result)
-                
-                
-            })
-            
-            
-        }
+        
+
         if (self.uiImageArr.count > 0){
             cell.backgroundColor = UIColor.clear
 
@@ -264,7 +296,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             imageButton.addSubview((titleView))
             imageButton.isUserInteractionEnabled = true
             imageButton.layer.masksToBounds = true
-        imageButton.setImage(self.uiImageArr[(indexPath as NSIndexPath).row], for: UIControlState())
+            imageButton.setImage(self.uiImageDict[self.eventsArr[indexPath.row].eventID], for: UIControlState())
             cell.addSubview(imageButton)
             let imagePressed :Selector = #selector(ViewController.imagePressed(_:))
             let tap = UITapGestureRecognizer(target: self, action: imagePressed)
@@ -272,6 +304,8 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             tap.numberOfTapsRequired = 1
             imageButton.addGestureRecognizer(tap)
             cell.layer.cornerRadius = 5
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.removeFromSuperview()
         }
         return cell
     }

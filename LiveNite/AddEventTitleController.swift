@@ -30,7 +30,7 @@ class AddEventTitleController: UIViewController, UIImagePickerControllerDelegate
         textField?.backgroundColor = UIColor.white
         textField?.autocorrectionType = UITextAutocorrectionType.default
         textField?.keyboardType = UIKeyboardType.default
-        if (textField?.text != "Please enter a title"){
+        if (textField?.text != ""){
             textField?.text = eventForm.titleInput
         }
     }

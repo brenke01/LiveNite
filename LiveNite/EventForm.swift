@@ -8,8 +8,8 @@
 
 import Foundation
 class EventForm{
-    var titleInput : String = "Please enter a title"
-    var descInput : String = "Please enter a description"
+    var titleInput : String = ""
+    var descInput : String = ""
     var privateInput = false
     var startTime : Date = Date()
     var endTime : Date = Date()

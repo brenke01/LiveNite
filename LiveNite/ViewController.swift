@@ -42,10 +42,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 
     @IBOutlet var collectionView: UICollectionView?
-    @IBOutlet weak var activityLoader: UIActivityIndicatorView!
 
-    
-    var messageFrame = UIView()
+
+
     var stringLabel = UILabel()
     var activityIndicator = UIActivityIndicatorView()
     //variable for accessing location
@@ -353,22 +352,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
-//        stringLabel = UILabel(frame: CGRect(x: 50, y: 0, width: 175, height: 50))
-//        stringLabel.text = msg
-//        stringLabel.textColor = UIColor.white
-        messageFrame = UIView(frame: CGRect(x: self.collectionView!.frame.midX - 90, y: self.collectionView!.frame.midY - 100, width: 180, height: 50))
-        messageFrame.layer.cornerRadius = 15
-        messageFrame.backgroundColor = UIColor.clear
+
         if indicator {
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
 
 
-            activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 100, width: 100, height: 100)
-            activityIndicator.startAnimating()
-            //messageFrame.addSubview(activityIndicator)
+            self.activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 100, width: 100, height: 100)
+            self.activityIndicator.startAnimating()
+            self.collectionView?.addSubview(self.activityIndicator)
+            
+
         }
-        messageFrame.addSubview(stringLabel)
-        self.collectionView?.addSubview(activityIndicator)
     }
     
     func determineQuery(){
@@ -482,10 +475,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         self.uiImageArr.append(result)
                         if self.uiImageArr.count == self.imageArr.count{
                             DispatchQueue.main.async(execute: {
+            
                                self.uiImageDict = self.createUIImageDict()
 
 
-                            self.collectionView!.reloadData()
+                                self.collectionView!.reloadData()
 
                             })
                         }
@@ -526,6 +520,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 //    }
     
     func createUIImageDict() -> [String: UIImage]{
+
         var dict = [String: UIImage]()
         for i in 0...self.imageArr.count-1{
             
@@ -539,7 +534,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
         cell.backgroundColor = UIColor.black
-        
     
         if (self.doneLoading){
 
@@ -607,11 +601,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         cell.layer.cornerRadius = 5
             cell.layer.masksToBounds = true
             cell.clipsToBounds = true
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.removeFromSuperview()
         }
-          DispatchQueue.main.async(execute: {
-        self.activityIndicator.stopAnimating()
-        self.activityIndicator.removeFromSuperview()
-            })
+
+       
         return cell
     }
     

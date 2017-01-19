@@ -30,7 +30,7 @@ class AddEventDescriptionController: UIViewController, UIImagePickerControllerDe
         textField?.backgroundColor = UIColor.white
         textField?.autocorrectionType = UITextAutocorrectionType.default
         textField?.keyboardType = UIKeyboardType.default
-        if (textField?.text != "Please enter a description"){
+        if (textField?.text != ""){
             textField?.text = eventForm.descInput
         }
     }

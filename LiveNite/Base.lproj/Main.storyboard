@@ -746,6 +746,7 @@
                         <outlet property="imgView" destination="X5z-0Z-eGK" id="488-TE-Pt2"/>
                         <outlet property="locLabel" destination="cx7-rB-HlY" id="7bd-zz-mms"/>
                         <outlet property="locLabelBG" destination="BGu-kR-2w2" id="tHY-kj-9qv"/>
+                        <outlet property="postButton" destination="aMG-AN-Mmm" id="oyi-Bh-WW4"/>
                         <outlet property="privateLabelBG" destination="MaZ-03-EN8" id="IXE-fH-PNr"/>
                         <outlet property="privateToggle" destination="uEk-hl-5AC" id="PY7-Ss-W7p"/>
                         <outlet property="titleLabel" destination="hTr-sQ-wWY" id="KBz-7l-MtD"/>

@@ -19,6 +19,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var locLabelBG: UIView!
+    @IBOutlet weak var postButton: UIButton!
 
     @IBOutlet weak var descLabel: UILabel!
     @IBOutlet weak var privateLabelBG: UIView!
@@ -41,10 +42,11 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        postButton.isUserInteractionEnabled = false
+        postButton.alpha = 0.5
         imgView.image = selectedImg
         locLabel.text = placeTitle
-        titleLabel.text = eventForm.titleInput
-        descLabel.text = eventForm.descInput
+
         whenLabel.text = String(describing: eventForm.startTime)
         navigationController?.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: "dissmissKeyboard")
@@ -159,12 +161,27 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     override func viewWillAppear(_ animated: Bool){
-        titleLabel.text = eventForm.titleInput
-        descLabel.text = eventForm.descInput
+        if (eventForm.titleInput != ""){
+            titleLabel.text = eventForm.titleInput
+        }else{
+            titleLabel.text = "Please enter a title"
+
+        }
+        if (eventForm.descInput != ""){
+            descLabel.text = eventForm.descInput
+
+        }else{
+            descLabel.text = "Please enter a description"
+
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
         dateFormatter.timeStyle = DateFormatter.Style.medium
         whenLabel.text = dateFormatter.string(from: eventForm.startTime)
+        if (eventForm.descInput != "" && eventForm.titleInput != ""){
+            postButton.isUserInteractionEnabled = true
+            postButton.alpha = 1.0
+        }
         super.viewWillAppear(animated)
     }
     
