@@ -28,6 +28,9 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        self.refreshControl.tintColor = UIColor.white
+        
+        self.tableView.addSubview(self.refreshControl)
         navigationController?.navigationBar.tintColor = UIColor.white
 
         navigationItem.backBarButtonItem?.tintColor = UIColor.white
@@ -64,7 +67,23 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
         
         
     }
-        
+    
+    func handleRefresh(_ refreshControl: UIRefreshControl){
+        self.getNotifications(completion: {(result)->Void in
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
+        })
+        refreshControl.endRefreshing()
+    }
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
+    
         func retrieveUserID(_ completion:@escaping (_ result: String)->Void){
             var id = ""
             let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, gender, age_range"])

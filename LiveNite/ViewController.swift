@@ -81,6 +81,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var altNavBar = UIView()
     typealias FinishedDownloaded = () -> ()
     
+    
+
+    
+    func handleRefresh(_ refreshControl: UIRefreshControl){
+        determineQuery()
+        refreshControl.endRefreshing()
+    }
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
+    
     func tabBar(_ tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         if (item.tag == 1){
             self.placesToggle = false
@@ -170,9 +184,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func setupHomeScreen(){
+        self.collectionView?.backgroundView = UIImageView(image: UIImage(named: "backgroundimg"))
         progressBarDisplayer("Loading", true)
         profileMenu.isHidden = true
-        self.collectionView?.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
         //self.view.isHidden = true
         // Do any additional setup after loading the view, typically from a nib.
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -182,7 +196,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let nibname = UINib(nibName: "Cell", bundle: nil)
         collectionView!.register(nibname, forCellWithReuseIdentifier: "Cell")
         collectionView!.register(NSClassFromString("GalleryCell"),forCellWithReuseIdentifier:"CELL");
-        
+        self.refreshControl.tintColor = UIColor.white
+        collectionView?.addSubview(self.refreshControl)
         //collectionView!.backgroundColor = UIColor(red: 42/255, green: 34/255, blue: 34/255, alpha: 1)
         self.view.addSubview(collectionView!)
         

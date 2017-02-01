@@ -75,14 +75,17 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBOutlet weak var topNavBar: UIView!
     override func viewDidLoad(){
         super.viewDidLoad()
-        
+        self.refreshControl.tintColor = UIColor.white
+
+        self.tableView.addSubview(self.refreshControl)
+
         self.tableView.backgroundColor = UIColor.clear
         if #available(iOS 8.0, *) {
             self.locationManager.requestWhenInUseAuthorization()
         } else {
             // Fallback on earlier versions
         }
-        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
+        self.tableView.backgroundView = UIImageView(image: UIImage(named: "backgroundimg"))
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.stopUpdatingLocation()
@@ -196,6 +199,22 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }
         
     }
+    
+    func handleRefresh(_ refreshControl: UIRefreshControl){
+        self.getEvents(completion: {(result)->Void in
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+                
+            })
+        })
+        refreshControl.endRefreshing()
+    }
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
 
     
     func getEvents(completion:@escaping ([Event])->Void)->Void{
