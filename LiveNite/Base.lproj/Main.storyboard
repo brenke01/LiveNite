@@ -10,9 +10,6 @@
         <array key="Roboto-Black.ttf">
             <string>Roboto-Black</string>
         </array>
-        <array key="Roboto-Bold.ttf">
-            <string>Roboto-Bold</string>
-        </array>
     </customFonts>
     <scenes>
         <!--View Post Controller-->
@@ -911,11 +908,10 @@
                                 <frame key="frameInset" width="375" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F1R-nd-wG5">
-                                        <frame key="frameInset" minX="150" minY="26" width="74" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F1R-nd-wG5">
+                                        <frame key="frameInset" minX="172" minY="26" width="32" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
-                                        <state key="normal" title="People">
+                                        <state key="normal" image="PeopleSelect">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
@@ -1940,6 +1936,7 @@
         <image name="Downvote_Gold" width="51" height="28"/>
         <image name="Home" width="26" height="22"/>
         <image name="Notifications " width="30" height="29"/>
+        <image name="PeopleSelect" width="64" height="64"/>
         <image name="Places " width="30" height="30"/>
         <image name="ProfilePerson" width="25" height="25"/>
         <image name="Search" width="64" height="64"/>

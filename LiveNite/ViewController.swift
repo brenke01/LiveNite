@@ -145,9 +145,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         progressBarDisplayer("Loading", true)
         if (!self.placesToggle){
             self.placesToggle = true
-            imagesTypeBtn.setTitle("Places", for: UIControlState())
+        imagesTypeBtn.setImage(UIImage(named:"PlacesSelect"), for: UIControlState.normal)
         }else{
-            imagesTypeBtn.setTitle("People", for: UIControlState())
+            imagesTypeBtn.setImage(UIImage(named:"PeopleSelect"), for: UIControlState.normal)
             self.placesToggle = false
         }
         determineQuery()
@@ -185,7 +185,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func setupHomeScreen(){
         self.collectionView?.backgroundView = UIImageView(image: UIImage(named: "backgroundimg"))
-        progressBarDisplayer("Loading", true)
+        if (self.imageArr.count == 0){
+            progressBarDisplayer("Loading", true)
+        }
         profileMenu.isHidden = true
         //self.view.isHidden = true
         // Do any additional setup after loading the view, typically from a nib.
