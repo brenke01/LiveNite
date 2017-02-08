@@ -19,6 +19,7 @@ class User :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var score: Int = 0
     var accessToken: String = ""
     var distance = 5
+    var profileImg = ""
     
     class func dynamoDBTableName() -> String{
         return "Users"

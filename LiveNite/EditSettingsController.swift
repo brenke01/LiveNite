@@ -8,11 +8,14 @@
 
 
 
-class EditSettingsController: UIViewController,UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate{
+class EditSettingsController: UIViewController,UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate, UIImagePickerControllerDelegate{
 
 
     var user = User()
     var profileForm = ProfileSettingsForm()
+    let imagePicker = UIImagePickerController()
+    var selectedImage = UIImage()
+    var selected = false
     
     @IBOutlet weak var userNameLabel: UILabel!
     
@@ -23,6 +26,7 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
     @IBOutlet weak var userNameView: UIView!
     @IBOutlet weak var sliderValue: UISlider!
     
+    @IBOutlet weak var profileImgView: UIImageView!
     @IBOutlet weak var distanceView: UIView!
     @IBOutlet weak var userNameContainer: UIView!
     @IBAction func sliderValueChanged(_ sender: UISlider) {
@@ -31,8 +35,33 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
     }
     
     
+    @IBAction func editProfileImg(_ sender: AnyObject) {
+        
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.modalPresentationStyle = .popover
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : Any]) {
+        let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+            
+        //profileImgView.contentMode = .scaleAspectFit
+        self.selectedImage = pickedImage!
+         self.selected = true
+         dismiss(animated: true, completion: nil)
+        
+       
+       
+        
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagePicker.delegate = self
         navigationController?.navigationBar.topItem?.title = "Profile"
         loadUserDetail()
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -62,17 +91,50 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
     @IBAction func saveSettings(_ sender: AnyObject) {
         var newUserName = userNameEdit.text
         var newDistance = Int(distanceLabel.text!)
-        self.user?.userName = newUserName!
-        self.user?.distance = newDistance!
-        AWSService().save(self.user!)
-        profileForm.distance = String(newDistance!)
-        profileForm.userName = newUserName!
-        self.dismiss(animated: true, completion: nil)
+        if (self.selected){
+            let tempImage = self.selectedImage
+            let dataImage:Data = UIImageJPEGRepresentation(tempImage, 0.0)!
+            AWSService().saveProfileImageToBucket(dataImage, id: (self.user?.userID)!, completion: {(result)->Void in
+                DispatchQueue.main.async(execute: {
+                    var imageURL = result
+                    self.user?.profileImg = imageURL
+                    self.user?.userName = newUserName!
+                    if (newDistance != nil){
+                        self.user?.distance = newDistance!
+                        self.profileForm.distance = String(newDistance!)
+                    }
+                    AWSService().save(self.user!)
+                    self.profileForm.selectedImage = self.selectedImage
+                    self.profileForm.userName = newUserName!
+                    self.dismiss(animated: true, completion: nil)
+                    })
+                })
+        }else{
+
+            self.user?.userName = newUserName!
+            if (newDistance != nil){
+                self.user?.distance = newDistance!
+                self.profileForm.distance = String(newDistance!)
+            }
+            AWSService().save(self.user!)
+            
+            self.profileForm.userName = newUserName!
+            self.dismiss(animated: true, completion: nil)
+        }
+
         
     }
 
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
 
+
+     if (self.selected){
+            profileImgView.image = self.selectedImage
+        }
+    }
     
 
     

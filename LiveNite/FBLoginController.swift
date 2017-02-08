@@ -111,6 +111,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 newUserObj.score = 0
                 newUserObj.email = email
                 newUserObj.userName = "temp"
+                newUserObj.profileImg = "nil"
                 AWSService().save(newUserObj)
                 self.submitButton.isHidden = false
                 self.inputUserName.isHidden = false

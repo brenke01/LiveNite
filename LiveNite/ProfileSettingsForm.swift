@@ -10,4 +10,5 @@ import Foundation
 class ProfileSettingsForm{
     var userName : String = ""
     var distance : String = ""
+    var selectedImage = UIImage()
 }

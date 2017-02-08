@@ -292,4 +292,57 @@ let testFileURL1 = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathCom
         return "success"
     }
     
+    func saveProfileImageToBucket (_ selectedImage : Data, id : String, completion:@escaping (_ result:String)->Void) -> String{
+        let transferManager: AWSS3TransferManager = AWSS3TransferManager.default()
+        let uploadRequest : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
+        let testFileURL1 = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("temp")
+        try? selectedImage.write(to: testFileURL1, options: [.atomic])
+        uploadRequest.bucket = "liveniteprofileimages"
+        uploadRequest.key = id
+        uploadRequest.body = testFileURL1
+        transferManager.upload(uploadRequest).continue(with: AWSExecutor.mainThread(), with: {(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                if (task.error!._domain == AWSS3TransferManagerErrorDomain) {
+                    switch task.error!._code {
+                        
+                        
+                    default:
+                        print("Error: \(task.error)")
+                    }
+                }
+                else {
+                    // Unknown error.
+                    print("Error: \(task.error)")
+                }
+            }
+            if (task.result != nil) {
+                var uploadOutput: AWSS3TransferManagerUploadOutput = task.result as! AWSS3TransferManagerUploadOutput
+                completion(uploadRequest.key!)
+                // The file uploaded successfully.
+                // The file uploaded successfully.
+            }
+            return uploadRequest.key! as AnyObject
+        })
+        return "success"
+    }
+    
+    func getProfileImageFromUrl(_ fileName : String, completion:(_ result:UIImage)->Void) -> UIImage{
+        var transferManager: AWSS3TransferManager = AWSS3TransferManager.default()
+        var downloadedImage : UIImage = UIImage()
+        let downloadingFilePath: String = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("FQQhOWsL.jpg").absoluteString
+        let downloadingFileURL: URL = URL(fileURLWithPath: downloadingFilePath)
+        // Construct the download request.
+        let downloadRequest: AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+        downloadRequest.bucket = "liveniteprofileimages"
+        let url = "https://s3.amazonaws.com/liveniteprofileimages/" + fileName
+        let urlFormat = URL(string: url)
+        let imgFromURL = UIImage(data: try! Data(contentsOf: urlFormat!))
+        downloadRequest.key = fileName
+        //let downloadImg = UIImage(data: NSData(contentsOfURL: urlFormat!)!)
+        downloadRequest.downloadingFileURL = downloadingFileURL
+
+        completion(imgFromURL!)
+        return imgFromURL!
+    }
+    
 }

@@ -15,6 +15,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
    
     
     
+    @IBOutlet weak var profilebkg: UIView!
     var locations = 0
     var locationUpdated = false
     var toggleState = 0
@@ -26,8 +27,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var profileForm = ProfileSettingsForm()
 
     
+    @IBOutlet weak var profileImg: UIImageView!
 
-    @IBOutlet weak var distanceView: UIView!
     
     @IBOutlet weak var userNameLabel: UILabel!
     
@@ -49,15 +50,13 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        profilebkg.backgroundColor? = UIColor.white.withAlphaComponent(0.2)
         navigationController?.navigationBar.topItem?.title = "Profile"
         
         navigationController?.navigationBar.tintColor = UIColor.white
         var editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editSettings))
         self.navigationItem.rightBarButtonItem = editButton
-        distanceView.layer.borderWidth = 1
-        distanceView.layer.borderColor = UIColor.white.cgColor
-        distanceView.layer.masksToBounds = true
-        distanceView.backgroundColor = UIColor.white.withAlphaComponent(0.1)
+
         if (self.user?.userID == ""){
             retrieveUserID({(result)->Void in
                 self.userID = result
@@ -78,12 +77,18 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
 
     
+    @IBAction func editProfileImg(_ sender: AnyObject) {
+    }
     func loadUserDetail(){
         userNameLabel.text = self.user?.userName
         imgView.image = getRankMedal((self.user?.score)!)
         scoreLabel.text = "Score: " + String(describing: user!.score)
 
-        
+        if (self.user?.profileImg != "nil"){
+            AWSService().getProfileImageFromUrl((self.user?.profileImg)!, completion: {(result)->Void in
+                self.profileImg.image = result
+            })
+        }
         distanceLabel.text = String(describing: self.user!.distance) + " mi"
         view.bringSubview(toFront: imgView)
         
@@ -144,6 +149,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     override func viewWillAppear(_ animated: Bool){
         distanceLabel.text = profileForm.distance + " mi"
         userNameLabel.text = profileForm.userName
+        
     }
 
 }
