@@ -52,7 +52,10 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         super.viewDidLoad()
         profilebkg.backgroundColor? = UIColor.white.withAlphaComponent(0.2)
         navigationController?.navigationBar.topItem?.title = "Profile"
-        
+        profileImg.layer.borderWidth = 2
+        profileImg.layer.borderColor = UIColor.white.cgColor
+        profileImg.layer.masksToBounds = true
+        //profileImg.backgroundColor = UIColor(red: 58/255, green:67/255, blue:96/255, alpha:1)
         navigationController?.navigationBar.tintColor = UIColor.white
         var editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editSettings))
         self.navigationItem.rightBarButtonItem = editButton
@@ -104,6 +107,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
             
             if let destinationVC = segue.destination as? EditSettingsController{
                 destinationVC.user = self.user
+                destinationVC.currentImg = self.profileImg.image!
                 destinationVC.profileForm = profileForm 
             }}}
     
@@ -149,6 +153,9 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     override func viewWillAppear(_ animated: Bool){
         distanceLabel.text = profileForm.distance + " mi"
         userNameLabel.text = profileForm.userName
+        if (profileForm.didSaveNewImage){
+            profileImg.image = profileForm.selectedImage
+        }
         
     }
 

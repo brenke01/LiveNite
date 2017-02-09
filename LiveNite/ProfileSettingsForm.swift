@@ -11,4 +11,5 @@ class ProfileSettingsForm{
     var userName : String = ""
     var distance : String = ""
     var selectedImage = UIImage()
+    var didSaveNewImage = false
 }

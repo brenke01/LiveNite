@@ -16,6 +16,7 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
     let imagePicker = UIImagePickerController()
     var selectedImage = UIImage()
     var selected = false
+    var currentImg = UIImage()
     
     @IBOutlet weak var userNameLabel: UILabel!
     
@@ -61,6 +62,14 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        if (self.user?.profileImg != "nil"){
+            profileImgView.image = currentImg
+        }
+        self.profileForm.didSaveNewImage = false
+        profileImgView.layer.borderWidth = 2
+        profileImgView.layer.borderColor = UIColor.white.cgColor
+        profileImgView.layer.masksToBounds = true
+        //profileImgView.backgroundColor = UIColor(red: 58/255, green:67/255, blue:96/255, alpha:1)
         imagePicker.delegate = self
         navigationController?.navigationBar.topItem?.title = "Profile"
         loadUserDetail()
@@ -102,10 +111,13 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
                     if (newDistance != nil){
                         self.user?.distance = newDistance!
                         self.profileForm.distance = String(newDistance!)
+                    }else{
+                        self.profileForm.distance = String(describing: (self.user?.distance)!)
                     }
                     AWSService().save(self.user!)
                     self.profileForm.selectedImage = self.selectedImage
                     self.profileForm.userName = newUserName!
+                    self.profileForm.didSaveNewImage = true
                     self.dismiss(animated: true, completion: nil)
                     })
                 })
@@ -115,8 +127,12 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
             if (newDistance != nil){
                 self.user?.distance = newDistance!
                 self.profileForm.distance = String(newDistance!)
+                
+            }else{
+                self.profileForm.distance = String(describing: (self.user?.distance)!)
             }
             AWSService().save(self.user!)
+            self.profileForm.selectedImage = currentImg
             
             self.profileForm.userName = newUserName!
             self.dismiss(animated: true, completion: nil)
