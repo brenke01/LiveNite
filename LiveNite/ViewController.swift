@@ -79,6 +79,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var uiImageDict = [String:UIImage]()
     var sortedUIImageArray = [UIImage]()
     var altNavBar = UIView()
+    var arrayEmpty = false
     typealias FinishedDownloaded = () -> ()
     
     
@@ -296,8 +297,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
-        return self.uiImageArr.count
+        if (self.arrayEmpty){
+            return 1
+        }else{
+            return self.uiImageArr.count
+        }
     }
     
     @IBOutlet weak var sortButton: UIButton!
@@ -359,6 +363,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         
     }
+    func reloadCollectionView(){
+        self.arrayEmpty = false
+        progressBarDisplayer("Loading", true)
+        self.determineQuery()
+    }
     
     func backToAlbumView(_ sender: UIButton!){
         self.topNavBar.isHidden = false
@@ -389,7 +398,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             var groupedArr = [Image]()
             placesViewController.getImages(completion: {(result)->Void in
                 let imgArr = result
-                
+                if (self.imageArr.count == 0){
+                    self.arrayEmpty = true
+                }else{
+                    self.arrayEmpty = false
+                }
                 let sortedArray = (imgArr as NSArray).sortedArray(using: [
                     NSSortDescriptor(key: "placeTitle", ascending: false),
                     NSSortDescriptor(key: "totalScore", ascending: false)
@@ -453,6 +466,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.uiImageArr = []
                 self.imageArr = []
                 self.imageArr = result
+                if (self.imageArr.count == 0){
+                    self.arrayEmpty = true
+                }else{
+                    self.arrayEmpty = false
+                }
 
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
@@ -479,7 +497,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.uiImageArr = []
                 self.imageArr = []
                 self.idArray = []
-                self.imageArr = result
+                self.imageArr = []
+                if (self.imageArr.count == 0){
+                    self.arrayEmpty = true
+                    self.collectionView!.reloadData()
+                }else{
+                    self.arrayEmpty = false
+                }
 
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
@@ -550,9 +574,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
-        cell.backgroundColor = UIColor.black
+        
+        cell.backgroundColor = UIColor.clear
     
-        if (self.doneLoading){
+        if (self.doneLoading && !self.arrayEmpty){
 
         idArray = []
 
@@ -620,6 +645,35 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             cell.clipsToBounds = true
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
+        }else if (doneLoading){
+         DispatchQueue.main.async(execute: {
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.removeFromSuperview()
+            var emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 75, width: self.view.frame.width - 25, height: 50))
+            var tryAgainButton = UILabel(frame: CGRect(x:0, y: emptyArrayLabel.frame.origin.y + 50, width: self.view.frame.width - 35, height: 50))
+            tryAgainButton.text = "Tap to retry"
+            tryAgainButton.textAlignment = .center
+            tryAgainButton.textColor = UIColor.white
+            //let btnPressed :Selector = #selector(ViewController.handleRefresh(_:))
+            //let tap = UITapGestureRecognizer(target: self, action: btnPressed)
+            //tap.cancelsTouchesInView = false
+            //tryAgainButton.isUserInteractionEnabled = true
+            //tap.numberOfTapsRequired = 1
+            //tryAgainButton.addGestureRecognizer(tap)
+            //tryAgainButton.backgroundColor = UIColor.black
+            tryAgainButton.layer.masksToBounds = true
+
+            //tryAgainButton.addTarget(self, action: #selector(self.reloadCollectionView(_:)), for: UIControlEvents.valueChanged)
+            tryAgainButton.tintColor = UIColor.white
+            emptyArrayLabel.text = "No posts found"
+            tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
+            emptyArrayLabel.textColor = UIColor.white
+            emptyArrayLabel.textAlignment = .center
+
+
+            cell.addSubview(tryAgainButton)
+            cell.addSubview(emptyArrayLabel)
+            })
         }
 
        
@@ -639,7 +693,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func collectionView(_ collection: UICollectionView, didSelectItemAt indexPath: IndexPath){
-
+        if (self.arrayEmpty){
+            reloadCollectionView()
+        }
        
     }
     
@@ -659,7 +715,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imgHeight = 240
             imgWidth = 240
             noColumns = 1
+        }else if (self.arrayEmpty){
+            imgHeight = Int((self.collectionView?.frame.height)!)
+            imgWidth = Int(self.collectionView!.frame.width)
+            noColumns = 1
         }else{
+        
             imgHeight = 200
             imgWidth = 160
             noColumns = 2

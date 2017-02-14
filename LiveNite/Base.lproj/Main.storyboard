@@ -37,7 +37,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="460"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XXo-4c-hdO" id="gfo-J4-pQt">
-                                            <frame key="frameInset" width="375" height="459"/>
+                                            <frame key="frameInset" width="375" height="460"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Qs-iL-i5m">
@@ -180,7 +180,7 @@
                                         <rect key="frame" x="0.0" y="488" width="375" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3aL-j3-NDG" id="udK-aO-DqG">
-                                            <frame key="frameInset" width="375" height="64"/>
+                                            <frame key="frameInset" width="375" height="65"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9kg-Uo-MLs">
@@ -344,7 +344,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tzT-sN-fCd" id="uFU-Co-GYw">
-                                            <frame key="frameInset" width="375" height="65"/>
+                                            <frame key="frameInset" width="375" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IHd-gv-BHh">
@@ -509,7 +509,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EtD-cm-tZS" id="lmt-TY-an4">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -899,7 +899,7 @@
                         <viewControllerLayoutGuide type="bottom" id="fa0-y8-Fa4"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Hs7-Oz-Fh3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lRp-Nz-14D">
@@ -972,8 +972,6 @@
                         <color key="backgroundColor" red="0.10739119761780103" green="0.10739119761780103" blue="0.10739119761780103" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="tyb-wU-781"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="568"/>
                     <connections>
                         <outlet property="collectionView" destination="JNH-rE-kyH" id="x07-VO-fX6"/>
                         <outlet property="imagesTypeBtn" destination="F1R-nd-wG5" id="5ZO-el-pt7"/>
@@ -1107,7 +1105,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="375" height="468"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fjC-Sk-848" id="fsR-KT-mqp">
-                                                    <frame key="frameInset" width="375" height="467"/>
+                                                    <frame key="frameInset" width="375" height="468"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tFL-8A-Qab">
@@ -1260,7 +1258,7 @@
                                                 <rect key="frame" x="0.0" y="496" width="375" height="77"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z4o-Vg-Oo7" id="rZQ-zp-0W6">
-                                                    <frame key="frameInset" width="375" height="76"/>
+                                                    <frame key="frameInset" width="375" height="77"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIy-d8-Q7o">
@@ -1347,7 +1345,7 @@
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ilR-XB-cyC">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ilR-XB-cyC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.1647058824" green="0.37647058820000001" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -1589,7 +1587,7 @@
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="YYi-IH-HRu">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="YYi-IH-HRu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.1647058824" green="0.37647058820000001" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -1705,7 +1703,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="376" height="64"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ef5-4l-WNl" id="Cen-cR-pdn">
-                                                    <frame key="frameInset" width="376" height="63"/>
+                                                    <frame key="frameInset" width="376" height="64"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ggf-i0-Y3l">
@@ -1781,7 +1779,7 @@
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="lwT-bW-ggq">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="lwT-bW-ggq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.1647058824" green="0.37254901959999998" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -1812,7 +1810,7 @@
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="Kwc-pa-MdJ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Kwc-pa-MdJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.1647058824" green="0.37254901959999998" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -1968,7 +1966,7 @@
         <image name="loadingImage" width="640" height="799"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lgQ-mK-qrS"/>
+        <segue reference="lOC-7T-djj"/>
         <segue reference="nYP-eX-3SA"/>
     </inferredMetricsTieBreakers>
 </document>
