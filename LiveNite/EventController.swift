@@ -33,10 +33,13 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     var locationUpdated = false
     var uiImageArr = [UIImage]()
     var hotToggle = 0
+    var arrayEmpty = false
     var selectedEvent = Event()
     var selectedEventImg = UIImage()
     var uiImageDict = [String:UIImage]()
     var sortedUIImageArray = [UIImage]()
+    var emptyArrayLabel = UILabel()
+    var tryAgainButton = UILabel()
     @IBAction func addEvent(_ sender: AnyObject) {
         
         self.performSegue(withIdentifier: "addEvent", sender: 1)
@@ -92,7 +95,6 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
         if (self.user?.userID == ""){
             retrieveUserID({(result)->Void in
                 self.userID = result
@@ -103,27 +105,39 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 
             })
         }
+        getEventData()
+
+    }
+    
+    func getEventData(){
         progressBarDisplayer("Loading", true)
         self.getEvents(completion: {(result)->Void in
             DispatchQueue.main.async(execute: {
-                self.determineSort()
-                for e in self.eventsArr{
-                    AWSService().getImageFromUrl(String(e.url), completion: {(result)->Void in
-                        self.uiImageArr.append(result)
-                        if self.uiImageArr.count == self.eventsArr.count{
-                            DispatchQueue.main.async(execute: {
-                                self.uiImageDict = self.createUIImageDict()
-                                
-                                
-                                self.tableView!.reloadData()
-                                
-                            })
-                        }
-                    })
+               
+                if (self.eventsArr.count == 0){
+                    self.arrayEmpty = true
+                    self.tableView.reloadData()
+                }else{
+                     self.determineSort()
+                    self.arrayEmpty = false
+                    for e in self.eventsArr{
+                        AWSService().getImageFromUrl(String(e.url), completion: {(result)->Void in
+                            self.uiImageArr.append(result)
+                            if self.uiImageArr.count == self.eventsArr.count{
+                                DispatchQueue.main.async(execute: {
+                                    self.uiImageDict = self.createUIImageDict()
+                                    
+                                    
+                                    self.tableView!.reloadData()
+                                    
+                                })
+                            }
+                        })
+                    }
                 }
-
-            
-        })
+                
+                
+            })
         })
     }
     
@@ -281,13 +295,17 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section : Int) -> Int{
-        return self.eventsArr.count
+        if (self.arrayEmpty){
+            return 1
+        }else{
+            return self.eventsArr.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
-        cell.backgroundColor = UIColor.black
-        
+        cell.backgroundColor = UIColor.clear
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
 
         if (self.uiImageArr.count > 0){
             cell.backgroundColor = UIColor.clear
@@ -325,6 +343,28 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             cell.layer.cornerRadius = 5
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
+        }else if (self.arrayEmpty){
+
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.removeFromSuperview()
+                self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.tableView?.frame.height)! / 2) - 75, width: self.view.frame.width, height: 50))
+                self.tryAgainButton = UILabel(frame: CGRect(x: 0, y: ((self.tableView?.frame.height)! / 2) - 50, width: self.view.frame.width, height: 50))
+                self.tryAgainButton.text = "Tap to retry"
+                self.tryAgainButton.textAlignment = .center
+                self.tryAgainButton.textColor = UIColor.white
+                self.tryAgainButton.layer.masksToBounds = true
+                
+                self.emptyArrayLabel.text = "No posts found"
+                self.tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
+                self.emptyArrayLabel.textColor = UIColor.white
+                self.emptyArrayLabel.textAlignment = .center
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.removeFromSuperview()
+                
+                cell.addSubview(self.tryAgainButton)
+                cell.addSubview(self.emptyArrayLabel)
+         
+
         }
         return cell
     }
@@ -339,11 +379,20 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     func tableView(_ tableView : UITableView, didSelectRowAt indexPath: IndexPath){
+        if (self.arrayEmpty){
+            self.emptyArrayLabel.removeFromSuperview()
+            self.tryAgainButton.removeFromSuperview()
+            getEventData()
+        }
         
     }
     
    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath)-> CGFloat{
-        return 240
+        if (self.arrayEmpty){
+            return self.view.frame.height
+        }else{
+            return 240
+        }
     }
     
     func tableView(tableView:UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath){

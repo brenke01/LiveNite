@@ -13,6 +13,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     
    
+    @IBOutlet weak var profileInfoContainer: UIView!
     
     
     @IBOutlet weak var profilebkg: UIView!
@@ -52,6 +53,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        profileInfoContainer.isHidden = true
+        profileInfoContainer.backgroundColor = UIColor.clear
         profilebkg.backgroundColor? = UIColor.white.withAlphaComponent(0.2)
         navigationController?.navigationBar.topItem?.title = "Profile"
         profileImg.layer.borderWidth = 2
@@ -86,6 +89,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBAction func editProfileImg(_ sender: AnyObject) {
     }
     func loadUserDetail(){
+        profileInfoContainer.isHidden = false
         userNameLabel.text = self.user?.userName
         imgView.image = getRankMedal((self.user?.score)!)
         scoreLabel.text = String(describing: user!.score)
@@ -112,8 +116,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
             
             self.activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 100, width: 100, height: 100)
             self.activityIndicator.startAnimating()
-            self.profilebkg?.addSubview(self.activityIndicator)
-            self.profilebkg.bringSubview(toFront: self.activityIndicator)
+            self.view?.addSubview(self.activityIndicator)
+            self.view.bringSubview(toFront: self.activityIndicator)
             
             
         }
