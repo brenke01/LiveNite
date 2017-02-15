@@ -122,9 +122,12 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
                     })
                 })
         }else{
-
+            if (newUserName != nil){
+                profileForm.madeEdits = true
+            }
             self.user?.userName = newUserName!
             if (newDistance != nil){
+                profileForm.madeEdits = true
                 self.user?.distance = newDistance!
                 self.profileForm.distance = String(newDistance!)
                 

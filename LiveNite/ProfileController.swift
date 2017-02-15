@@ -25,6 +25,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var userID = ""
     var user = User()
     var profileForm = ProfileSettingsForm()
+    var activityIndicator = UIActivityIndicatorView()
+
 
     
     @IBOutlet weak var profileImg: UIImageView!
@@ -66,6 +68,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                 AWSService().loadUser(self.userID,completion: {(result)->Void in
                     self.user = result
                     DispatchQueue.main.async(execute: {
+                        self.progressBarDisplayer("Loading", true)
                          self.loadUserDetail()
                         
                     })
@@ -85,11 +88,12 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     func loadUserDetail(){
         userNameLabel.text = self.user?.userName
         imgView.image = getRankMedal((self.user?.score)!)
-        scoreLabel.text = "Score: " + String(describing: user!.score)
+        scoreLabel.text = String(describing: user!.score)
 
         if (self.user?.profileImg != "nil"){
             AWSService().getProfileImageFromUrl((self.user?.profileImg)!, completion: {(result)->Void in
                 self.profileImg.image = result
+                activityIndicator.removeFromSuperview()
             })
         }
         distanceLabel.text = String(describing: self.user!.distance) + " mi"
@@ -99,6 +103,20 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     func editSettings(_ sender: UIBarButtonItem!){
         self.performSegue(withIdentifier: "editSettings", sender: nil)
+    }
+    
+    func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
+        
+        if indicator {
+            
+            
+            self.activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 100, width: 100, height: 100)
+            self.activityIndicator.startAnimating()
+            self.profilebkg?.addSubview(self.activityIndicator)
+            self.profilebkg.bringSubview(toFront: self.activityIndicator)
+            
+            
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -151,8 +169,12 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     override func viewWillAppear(_ animated: Bool){
-        distanceLabel.text = profileForm.distance + " mi"
-        userNameLabel.text = profileForm.userName
+        if (profileForm.madeEdits){
+            profileForm.madeEdits = false
+            distanceLabel.text = profileForm.distance + " mi"
+            userNameLabel.text = profileForm.userName
+
+        }
         if (profileForm.didSaveNewImage){
             profileImg.image = profileForm.selectedImage
         }

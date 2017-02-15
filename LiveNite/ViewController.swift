@@ -80,6 +80,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var sortedUIImageArray = [UIImage]()
     var altNavBar = UIView()
     var arrayEmpty = false
+    var tryAgainButton = UILabel()
+    var emptyArrayLabel = UILabel()
     typealias FinishedDownloaded = () -> ()
     
     
@@ -497,7 +499,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.uiImageArr = []
                 self.imageArr = []
                 self.idArray = []
-                self.imageArr = []
+                self.imageArr = result
                 if (self.imageArr.count == 0){
                     self.arrayEmpty = true
                     self.collectionView!.reloadData()
@@ -649,30 +651,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
          DispatchQueue.main.async(execute: {
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
-            var emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 75, width: self.view.frame.width - 25, height: 50))
-            var tryAgainButton = UILabel(frame: CGRect(x:0, y: emptyArrayLabel.frame.origin.y + 50, width: self.view.frame.width - 35, height: 50))
-            tryAgainButton.text = "Tap to retry"
-            tryAgainButton.textAlignment = .center
-            tryAgainButton.textColor = UIColor.white
-            //let btnPressed :Selector = #selector(ViewController.handleRefresh(_:))
-            //let tap = UITapGestureRecognizer(target: self, action: btnPressed)
-            //tap.cancelsTouchesInView = false
-            //tryAgainButton.isUserInteractionEnabled = true
-            //tap.numberOfTapsRequired = 1
-            //tryAgainButton.addGestureRecognizer(tap)
-            //tryAgainButton.backgroundColor = UIColor.black
-            tryAgainButton.layer.masksToBounds = true
+            self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 75, width: self.view.frame.width, height: 50))
+            self.tryAgainButton = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 50, width: self.view.frame.width, height: 50))
+            self.tryAgainButton.text = "Tap to retry"
+            self.tryAgainButton.textAlignment = .center
+            self.tryAgainButton.textColor = UIColor.white
+            self.tryAgainButton.layer.masksToBounds = true
 
-            //tryAgainButton.addTarget(self, action: #selector(self.reloadCollectionView(_:)), for: UIControlEvents.valueChanged)
-            tryAgainButton.tintColor = UIColor.white
-            emptyArrayLabel.text = "No posts found"
-            tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
-            emptyArrayLabel.textColor = UIColor.white
-            emptyArrayLabel.textAlignment = .center
+            self.emptyArrayLabel.text = "No posts found"
+            self.tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
+            self.emptyArrayLabel.textColor = UIColor.white
+            self.emptyArrayLabel.textAlignment = .center
 
 
-            cell.addSubview(tryAgainButton)
-            cell.addSubview(emptyArrayLabel)
+            cell.addSubview(self.tryAgainButton)
+            cell.addSubview(self.emptyArrayLabel)
             })
         }
 
@@ -694,6 +687,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func collectionView(_ collection: UICollectionView, didSelectItemAt indexPath: IndexPath){
         if (self.arrayEmpty){
+            self.emptyArrayLabel.removeFromSuperview()
+            self.tryAgainButton.removeFromSuperview()
             reloadCollectionView()
         }
        
