@@ -25,6 +25,8 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
     var uiImageArr = [UIImage]()
     var chosenImage = UIImage()
     var chosenImageObj = Image()
+    var activityIndicator = UIActivityIndicatorView()
+
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -37,10 +39,14 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
         navigationItem.title = "Notifications"
         tableView.delegate = self
         tableView.dataSource = self
+        self.tableView.isHidden = true
+        self.progressBarDisplayer("Loading", true)
+
         if (self.user?.userID == ""){
             retrieveUserID({(result)->Void in
                 self.userID = result
                 AWSService().loadUser(self.userID,completion: {(result)->Void in
+
                     self.user = result
                     self.getNotifications(completion: {(result)->Void in
                         self.notificationArray = result
@@ -48,6 +54,7 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
                             AWSService().getImageFromUrl(String(n.imageID), completion: {(result)->Void in
                                 self.uiImageArr.append(result)
                                 DispatchQueue.main.async(execute: {
+                                    self.tableView.isHidden = false
                                     self.tableView.reloadData()
                                     
                                 })
@@ -66,6 +73,19 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
   
         
         
+    }
+    
+    func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
+        
+        if indicator {
+            
+            
+            activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 100, width: 100, height: 100)
+            activityIndicator.startAnimating()
+            
+        }
+        
+        self.view?.addSubview(activityIndicator)
     }
     
     func handleRefresh(_ refreshControl: UIRefreshControl){
@@ -123,7 +143,9 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
         }
         let timePosted = notificationArray[(indexPath as NSIndexPath).row].actionTime
         cell.notifImage.image = self.uiImageArr[indexPath.row]
-        cell.notifImage.layer.cornerRadius = 20
+        cell.notifImage.layer.borderWidth = 1
+        cell.notifImage.layer.borderColor = UIColor.white.cgColor
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         let dateFormatter = DateFormatter()
         let localeStr = "us"
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
@@ -142,7 +164,8 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
             intervalStr = String(intervalInt) + "h"
         }
         
-        
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.removeFromSuperview()
         cell.timeLabel.text = intervalStr
         
         return cell

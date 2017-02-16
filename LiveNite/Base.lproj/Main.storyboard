@@ -24,7 +24,7 @@
                         <viewControllerLayoutGuide type="bottom" id="FIV-Gq-nnJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pLR-rD-vJW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="backgroundimg" translatesAutoresizingMaskIntoConstraints="NO" id="bvL-ap-Bq1">
@@ -379,7 +379,7 @@
                                                         <constraint firstAttribute="width" constant="35" id="k5s-Q0-H5n"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PuE-uv-HiQ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PuE-uv-HiQ">
                                                     <rect key="frame" x="113" y="22" width="174" height="21"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -395,7 +395,6 @@
                                                 <constraint firstItem="IHd-gv-BHh" firstAttribute="top" secondItem="uFU-Co-GYw" secondAttribute="topMargin" constant="14" id="FvM-WP-bFH"/>
                                                 <constraint firstItem="vbc-g3-6nB" firstAttribute="leading" secondItem="uFU-Co-GYw" secondAttribute="leadingMargin" constant="9" id="HLs-Lc-Zny"/>
                                                 <constraint firstItem="PuE-uv-HiQ" firstAttribute="leading" secondItem="IHd-gv-BHh" secondAttribute="trailing" constant="8" id="JKx-RM-OKU"/>
-                                                <constraint firstItem="9iM-Z3-nW0" firstAttribute="leading" secondItem="PuE-uv-HiQ" secondAttribute="trailing" constant="45" id="K4g-Hk-hAy"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="9iM-Z3-nW0" secondAttribute="bottom" constant="2" id="RBi-Na-vfs"/>
                                                 <constraint firstItem="PuE-uv-HiQ" firstAttribute="top" secondItem="uFU-Co-GYw" secondAttribute="topMargin" constant="14" id="bL2-zg-Qj4"/>
                                                 <constraint firstItem="9iM-Z3-nW0" firstAttribute="trailing" secondItem="uFU-Co-GYw" secondAttribute="trailingMargin" id="fv9-gh-e6E"/>
@@ -1028,7 +1027,7 @@
                         <viewControllerLayoutGuide type="bottom" id="ZCJ-kg-IxT"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pz0-OM-g1i">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="backgroundimg" translatesAutoresizingMaskIntoConstraints="NO" id="ztK-Sv-C42">
@@ -2004,7 +2003,7 @@
         <image name="loadingImage" width="640" height="799"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="lxM-tE-ZSx"/>
         <segue reference="lOC-7T-djj"/>
-        <segue reference="nYP-eX-3SA"/>
     </inferredMetricsTieBreakers>
 </document>
