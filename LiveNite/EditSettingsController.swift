@@ -81,8 +81,6 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
         distanceView.layer.borderWidth = 2
         userNameView.layer.borderColor = UIColor.white.cgColor
         distanceView.layer.borderColor = UIColor.white.cgColor
-        distanceView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.2)
-        userNameView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.2)
         distanceView.layer.masksToBounds = true
         userNameView.layer.masksToBounds = true
         
