@@ -378,7 +378,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "509418003.968808"
+                  timestampString = "509459122.192667"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "100"
@@ -393,7 +393,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "509418003.971661"
+                  timestampString = "509459122.195644"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "100"
@@ -408,7 +408,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "509418003.97444"
+                  timestampString = "509459122.198827"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "100"
@@ -645,7 +645,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/NotificationController.swift"
@@ -661,7 +661,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/AWSService.swift"
@@ -671,6 +671,22 @@
             startingLineNumber = "355"
             endingLineNumber = "355"
             landmarkName = "getOpenNotifications(userName:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/viewPostController.swift"
+            timestampString = "509458988.103931"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "652"
+            endingLineNumber = "652"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -612,16 +612,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imageButton.setImage(self.uiImageDict[self.imageArr[indexPath.row].imageID], for: UIControlState())
 
             
-            let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
-            let titleView = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
+            //let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
+            let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
             
             
-            titleView.text = self.imageArr[(indexPath as NSIndexPath).row].placeTitle
+            titleView.text = " " + self.imageArr[(indexPath as NSIndexPath).row].placeTitle
             titleView.textColor = UIColor.white
-            titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
+            titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
             titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
-            titleViewContainer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
-            imageButton.addSubview(titleViewContainer)
+            //titleViewContainer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
+            //imageButton.addSubview(titleViewContainer)
             imageButton.addSubview(titleView)
         imageButton.isUserInteractionEnabled = true
             imageButton.layer.masksToBounds = true

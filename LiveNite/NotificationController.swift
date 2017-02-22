@@ -171,8 +171,20 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
             let intervalInt = Int(interval)
             intervalStr = String(intervalInt) + "m"
         }else{
-            let intervalInt = Int(interval)
-            intervalStr = String(intervalInt) + "h"
+            var intervalInt = Int(interval)
+            if (intervalInt > 23){
+                intervalInt = (intervalInt / 24)
+                if (intervalInt > 364){
+                    intervalStr = String(intervalInt / 365) + "y"
+
+                }else{
+                    intervalStr = String(intervalInt) + "d"
+
+                }
+            }else{
+                intervalStr = String(intervalInt) + "h"
+
+            }
         }
         
         self.activityIndicator.stopAnimating()
