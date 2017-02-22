@@ -17,6 +17,7 @@ import GoogleMaps
 
 
 
+
 var appDel = (UIApplication.shared.delegate as! AppDelegate)
 var context:NSManagedObjectContext = appDel.managedObjectContext!
 var upVoteInc : CGFloat = 5
@@ -229,6 +230,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 print("user id is ")
                 print(self.user?.userID)
                 self.determineQuery()
+                  AWSService().getOpenNotifications(userName: (self.user?.userName)!,completion: {(result)->Void in
+                            DispatchQueue.main.async(execute: {
+                                var count = result.count
+                                if (count > 0){
+                                    self.tabBarController?.tabBar.items?[3].badgeValue = String(count)
+                                }
+                            })
+
+                })
             })
             
         })
@@ -249,6 +259,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 
     }
+    
+   
     
     func retrieveUserID(_ completion:@escaping (_ result: String)->Void){
         var id = ""
@@ -600,15 +612,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imageButton.setImage(self.uiImageDict[self.imageArr[indexPath.row].imageID], for: UIControlState())
 
             
-            let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
-            let titleView = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
+            let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
+            let titleView = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
             
             
             titleView.text = self.imageArr[(indexPath as NSIndexPath).row].placeTitle
             titleView.textColor = UIColor.white
-            titleView.backgroundColor = UIColor.darkGray
+            titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
             titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
-            titleViewContainer.backgroundColor = UIColor.darkGray
+            titleViewContainer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
             imageButton.addSubview(titleViewContainer)
             imageButton.addSubview(titleView)
         imageButton.isUserInteractionEnabled = true

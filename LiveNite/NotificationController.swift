@@ -31,7 +31,7 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad(){
         super.viewDidLoad()
         self.refreshControl.tintColor = UIColor.white
-        
+        self.tabBarController?.tabBar.items?[3].badgeValue = nil
         self.tableView.addSubview(self.refreshControl)
         navigationController?.navigationBar.tintColor = UIColor.white
 
@@ -50,7 +50,9 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
                     self.user = result
                     self.getNotifications(completion: {(result)->Void in
                         self.notificationArray = result
+                        self.updateOpenNotifications(notifArray: self.notificationArray)
                         for n in self.notificationArray{
+                            
                             AWSService().getImageFromUrl(String(n.imageID), completion: {(result)->Void in
                                 self.uiImageArr.append(result)
                                 DispatchQueue.main.async(execute: {
@@ -73,6 +75,15 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
   
         
         
+    }
+    
+    func updateOpenNotifications(notifArray : [Notification]){
+        for n in self.notificationArray{
+            if (n.open == true){
+                n.open = false
+                AWSService().save(n)
+            }
+        }
     }
     
     func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {

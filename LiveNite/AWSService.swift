@@ -345,4 +345,44 @@ let testFileURL1 = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathCom
         return imgFromURL!
     }
     
+    func getOpenNotifications(userName : String, completion:@escaping ([Notification])->Void)->[Notification]{
+        
+        var notificationArray = [Notification]()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        let queryExpression = AWSDynamoDBQueryExpression()
+        
+        queryExpression.indexName = "ownerName-index"
+        queryExpression.hashKeyAttribute = "ownerName"
+        queryExpression.hashKeyValues = userName
+
+        
+        
+        dynamoDBObjectMapper.query(Notification.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for notification  in output.items {
+                    let notification : Notification = notification as! Notification
+                    if (notification.open == true){
+                        notificationArray.append(notification)
+                    }
+                }
+                completion(notificationArray)
+                return notificationArray as AnyObject
+                
+            }
+            return notificationArray as AnyObject
+        })
+        
+        
+        return notificationArray
+        
+    }
+
+    
 }

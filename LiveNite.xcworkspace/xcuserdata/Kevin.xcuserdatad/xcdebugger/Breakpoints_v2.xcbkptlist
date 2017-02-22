@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508623884.527043"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
             landmarkName = "switchNavBar(albumView:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508735353.77768"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "575"
-            endingLineNumber = "575"
+            startingLineNumber = "587"
+            endingLineNumber = "587"
             landmarkName = "ViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508623884.527043"
+            timestampString = "509417375.066312"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508623884.527043"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508623884.527043"
+            timestampString = "509415969.674776"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
             landmarkName = "setupHomeScreen()"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508818227.861712"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "677"
-            endingLineNumber = "677"
+            startingLineNumber = "689"
+            endingLineNumber = "689"
             landmarkName = "imagePressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508735353.77768"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "382"
-            endingLineNumber = "382"
+            startingLineNumber = "394"
+            endingLineNumber = "394"
             landmarkName = "progressBarDisplayer(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -378,11 +378,11 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "508907827.037167"
+                  timestampString = "509418003.968808"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "102"
-                  endingLineNumber = "102"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
                   offsetFromSymbolStart = "460">
                </Location>
                <Location
@@ -393,11 +393,11 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "508907827.040075"
+                  timestampString = "509418003.971661"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "102"
-                  endingLineNumber = "102"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
                   offsetFromSymbolStart = "36">
                </Location>
                <Location
@@ -408,11 +408,11 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "508907827.042647"
+                  timestampString = "509418003.97444"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "102"
-                  endingLineNumber = "102"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
                   offsetFromSymbolStart = "44">
                </Location>
             </Locations>
@@ -457,11 +457,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508624089.873112"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
             landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -473,11 +473,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508818227.861712"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "668"
-            endingLineNumber = "668"
+            startingLineNumber = "680"
+            endingLineNumber = "680"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -489,11 +489,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508735353.77768"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "394"
-            endingLineNumber = "394"
+            startingLineNumber = "406"
+            endingLineNumber = "406"
             landmarkName = "ViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -505,11 +505,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508735353.77768"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "369"
-            endingLineNumber = "369"
+            startingLineNumber = "381"
+            endingLineNumber = "381"
             landmarkName = "reloadCollectionView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -521,11 +521,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508726907.847919"
+            timestampString = "509417375.066312"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "ViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -537,11 +537,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewController.swift"
-            timestampString = "508818227.861712"
+            timestampString = "509420121.13252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "695"
-            endingLineNumber = "695"
+            startingLineNumber = "707"
+            endingLineNumber = "707"
             landmarkName = "collectionView(_:didSelectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -585,11 +585,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/NotificationController.swift"
-            timestampString = "508907701.301881"
+            timestampString = "509418744.474978"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "progressBarDisplayer(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -649,12 +649,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/NotificationController.swift"
-            timestampString = "508907674.776567"
+            timestampString = "509418744.474978"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "progressBarDisplayer(_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/AWSService.swift"
+            timestampString = "509417709.548216"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
+            landmarkName = "getOpenNotifications(userName:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
