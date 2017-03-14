@@ -22,8 +22,25 @@ class AddEventTimeController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         startText.layer.borderColor = UIColor.white.cgColor
         endText.layer.borderColor = UIColor.white.cgColor
-        startText.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-        endText.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        startText.backgroundColor = UIColor.white
+        endText.backgroundColor = UIColor.white
+        startText.textColor = UIColor.black
+        endText.textColor = UIColor.black
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.medium
+        if (eventForm.startTime != nil){
+            startText.text = " " + dateFormatter.string(from: eventForm.startTime)
+
+        }else{
+            startText.text = " " + dateFormatter.string(from: Date())
+        }
+        if (eventForm.endTime != nil){
+            endText.text = " " + dateFormatter.string(from: eventForm.endTime)
+
+        }else{
+            endText.text = " " + dateFormatter.string(from: Date())
+        }
         
     }
     
@@ -51,7 +68,7 @@ class AddEventTimeController: UIViewController, UIImagePickerControllerDelegate,
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
         dateFormatter.timeStyle = DateFormatter.Style.medium
-        startText.text = dateFormatter.string(from: sender.date)
+        startText.text = " " + dateFormatter.string(from: sender.date)
     }
     
     func endDatePickerValueChanged(sender: UIDatePicker){
@@ -59,7 +76,7 @@ class AddEventTimeController: UIViewController, UIImagePickerControllerDelegate,
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
         dateFormatter.timeStyle = DateFormatter.Style.medium
-        endText.text = dateFormatter.string(from: sender.date)
+        endText.text = " " + dateFormatter.string(from: sender.date)
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool){
