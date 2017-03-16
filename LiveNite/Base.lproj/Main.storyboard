@@ -606,7 +606,14 @@
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </textAttributes>
                                         <items>
-                                            <navigationItem title="Add Event " id="4Kq-eG-LMj"/>
+                                            <navigationItem title="Add Event " id="4Kq-eG-LMj">
+                                                <barButtonItem key="leftBarButtonItem" image="navBack" style="plain" id="Rl2-h0-T2P">
+                                                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <connections>
+                                                        <action selector="exit:" destination="ctm-SE-zUG" id="adg-26-1W4"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                            </navigationItem>
                                         </items>
                                     </navigationBar>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X5z-0Z-eGK">
@@ -814,7 +821,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem id="iys-y6-fNs">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="p1q-K9-Qdv">
+                                        <barButtonItem key="leftBarButtonItem" image="navBack" id="p1q-K9-Qdv">
                                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="exit:" destination="SQT-NH-12I" id="FuJ-u3-KnV"/>
@@ -2007,6 +2014,7 @@
         <image name="backgroundimg" width="750" height="1158"/>
         <image name="keyboardArrow" width="64" height="64"/>
         <image name="loadingImage" width="640" height="799"/>
+        <image name="navBack" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lgQ-mK-qrS"/>

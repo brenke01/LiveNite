@@ -152,7 +152,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                     self.chosenLatitude = place.coordinate.latitude
                     self.chosenLongitude = place.coordinate.longitude
                     if (self.fromEvent){
-                        self.eventPlacePicked = true
+                        self.eventForm.eventPlacePicked = true
                         self.performSegue(withIdentifier: "addEventDesc", sender: 1)
 
                     }else{
@@ -231,7 +231,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             dismiss(animated: true, completion: nil)
         
             
-        }else if (!eventPlacePicked){
+        }else if (!eventForm.eventPlacePicked){
             searchPlaces()
         }else{
             takeAndSave()

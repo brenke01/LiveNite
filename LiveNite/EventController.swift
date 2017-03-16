@@ -217,7 +217,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     func handleRefresh(_ refreshControl: UIRefreshControl){
         self.getEvents(completion: {(result)->Void in
             DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
+                self.getEventData()
                 
             })
         })
@@ -236,7 +236,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         var eventsArray = [Event]()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
-        let radius : Int = 5
+        let radius : Int = (self.user?.distance)!
         let latTraveledDeg : Double = (1 / 110.54) * Double(radius)
 
 
@@ -311,8 +311,8 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             cell.backgroundColor = UIColor.clear
 
             
-        let imageButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.05, y: self.view.frame.height * 0.05, width: CGFloat(self.view.frame.width * 0.9), height: self.view.frame.height * 0.3))
-            imageButton.layer.cornerRadius = 10
+        let imageButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.05, y: self.view.frame.height * 0.05, width: CGFloat(self.view.frame.width * 0.9), height: self.view.frame.height * 0.4))
+            imageButton.layer.cornerRadius = 5
 
             let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
             
@@ -391,7 +391,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         if (self.arrayEmpty){
             return self.view.frame.height
         }else{
-            return 240
+            return self.view.frame.height * 0.45
         }
     }
     
@@ -400,12 +400,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     override func viewDidAppear(_ animated: Bool){
-        self.getEvents(completion: {(result)->Void in
-            DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
-                
-            })
-        })
+        getEventData()
         super.viewDidAppear(animated)
     }
 

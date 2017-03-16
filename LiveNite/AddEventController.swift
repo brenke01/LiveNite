@@ -189,5 +189,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         super.viewWillAppear(animated)
     }
+    @IBAction func exit(_ sender: Any) {
+        eventForm.eventPlacePicked = false
+        self.dismiss(animated: false, completion: nil)
+
+    }
     
 }

@@ -14,4 +14,5 @@ class EventForm{
     var startTime : Date = Date()
     var endTime : Date = Date()
     var eventSaved = false
+    var eventPlacePicked = false
 }
