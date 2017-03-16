@@ -13,4 +13,5 @@ class EventForm{
     var privateInput = false
     var startTime : Date = Date()
     var endTime : Date = Date()
+    var eventSaved = false
 }

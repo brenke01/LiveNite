@@ -314,19 +314,19 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let imageButton = UIButton(frame: CGRect(x: self.view.frame.width * 0.05, y: self.view.frame.height * 0.05, width: CGFloat(self.view.frame.width * 0.9), height: self.view.frame.height * 0.3))
             imageButton.layer.cornerRadius = 10
 
-            let titleView = UILabel(frame: CGRect(x: 5, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
+            let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
             
             
-            titleView.text = self.eventsArr[indexPath.row].eventTitle
+            titleView.text = " " + self.eventsArr[indexPath.row].eventTitle
             titleView.textColor = UIColor.white
-            titleView.backgroundColor = UIColor.darkGray
+            titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
             titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
             imageButton.addSubview(titleView)
             imageButton.isUserInteractionEnabled = true
             imageButton.layer.masksToBounds = true
             let imageScoreLabel  = UILabel(frame: CGRect(x: imageButton.frame.width * 0.9, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: self.view.frame.width * 0.20, height: 40))
             let imageLabelContainer = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height - imageButton.frame.height * 0.2, width: imageButton.frame.width, height: 40))
-            imageLabelContainer.backgroundColor = UIColor.darkGray
+            imageLabelContainer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
             imageScoreLabel.textColor = UIColor.white
             imageScoreLabel.backgroundColor = UIColor.darkGray
             imageScoreLabel.text = String(self.eventsArr[indexPath.row].hotColdScore)

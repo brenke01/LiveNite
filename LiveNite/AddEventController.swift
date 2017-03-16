@@ -139,10 +139,15 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             event?.ownerID = (self.user?.userID)!
             event?.totalScore = 0
             AWSService().save(event!)
+            self.eventForm.eventSaved = true
+            self.tabBarController?.selectedIndex = 1
            self.dismiss(animated: true, completion: nil)
             self.view.window!.rootViewController?.dismiss(animated: (false), completion: nil)
            self.navigationController?.popToRootViewController(animated: true)
-            self.tabBarController?.selectedIndex = 1
+            PickLocationController().dismiss(animated: false, completion: {
+                
+            })
+            
         })
         })
     }

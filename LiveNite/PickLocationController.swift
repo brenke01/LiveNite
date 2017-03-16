@@ -60,7 +60,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var userID = ""
     var fromEvent = false
     var eventPlacePicked = false
+    var eventSaved = false
     var lastIndex = 0
+    var eventForm = EventForm()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -183,6 +185,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 destinationVC.placeLat = self.chosenLatitude
                 destinationVC.placeLong = self.chosenLongitude
                 destinationVC.user = self.user
+                destinationVC.eventForm = eventForm
             
             }
         }
@@ -217,14 +220,18 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         print(saved)
         if (complete == false){
             takeAndSave()
-        }else if (complete == true && saved == false){
+        }else if (complete == true && saved == false || eventSaved == true){
             complete = false
             saved = false
             dismiss(animated: true, completion: nil)
             tabBarController?.selectedIndex = self.lastIndex
+        }else if (eventForm.eventSaved){
+            complete = false
+            saved = false
+            dismiss(animated: true, completion: nil)
+        
             
         }else if (!eventPlacePicked){
-            
             searchPlaces()
         }else{
             takeAndSave()
