@@ -1305,6 +1305,7 @@
                                                 <connections>
                                                     <outlet property="captionLabel" destination="v5Q-vf-osK" id="f0Z-kG-U1j"/>
                                                     <outlet property="downvoteButton" destination="Gb7-Kq-dwm" id="bQ9-hh-x9q"/>
+                                                    <outlet property="eventTimeLabel" destination="O2t-KF-mA8" id="TPC-bX-wAK"/>
                                                     <outlet property="femaleLabel" destination="M7o-mw-4af" id="pkZ-d2-AdJ"/>
                                                     <outlet property="genderBar" destination="Op1-yB-5Xh" id="vy4-kP-RZY"/>
                                                     <outlet property="imgView" destination="tFL-8A-Qab" id="VmW-zs-JxY"/>

@@ -419,7 +419,6 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
     
     
     @IBOutlet weak var commentLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
     
     @IBOutlet weak var commentUserNameLabel: UILabel!
     override func didReceiveMemoryWarning() {
@@ -575,6 +574,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                 
                 
             }
+            cell.eventTimeLabel.text = formatEventTime(startTime: (self.selectedEvent?.eventStartTime)!)
             cell.maleLabel.text = String(maleCount)
             cell.femaleLabel.text = String(femaleCount)
             cell.maleLabel.textColor = UIColor.white
@@ -645,6 +645,48 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         
     }
     
+    func formatEventTime(startTime: String) -> String {
+        let dateFormatter = DateFormatter()
+        let localeStr = "us"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        dateFormatter.locale = Locale(identifier: localeStr)
+        let eventDate = dateFormatter.date(from: startTime)
+        let todayDate = dateFormatter.date(from: String(describing: Date()))
+        let cal = NSCalendar(calendarIdentifier: NSCalendar.Identifier(rawValue: NSGregorianCalendar))!
+        let comp = cal.components(.weekday, from: eventDate!)
+        let todayComp = cal.components(.weekday, from: todayDate!)
+        let todayDay = todayComp.weekday
+        let weekDay = comp.weekday
+        var dayName = ""
+        if (weekDay == todayDay){
+            dayName = "Today"
+        }else if (weekDay! == todayDay! + 1){
+            dayName = "Tomorrow"
+        }else if (weekDay == 1){
+            dayName = "Sunday"
+        }else if (weekDay == 2){
+            dayName = "Monday"
+        }else if (weekDay == 3){
+            dayName = "Tuesday"
+        }else if (weekDay == 4){
+            dayName = "Wednesday"
+        }else if (weekDay == 5){
+            dayName = "Thursday"
+        }else if (weekDay == 6){
+            dayName = "Friday"
+        }else if (weekDay == 7){
+            dayName = "Saturday"
+        }
+        var partOfDay = "AM"
+        var hour = cal.component(.hour, from: eventDate!)
+        if (hour >= 12){
+            hour = 24 - hour
+            partOfDay = "PM"
+        }
+        var formattedEventDate = dayName + " at " + String(hour) + partOfDay
+        return formattedEventDate
+    }
+    
     @IBAction func postComment(_ sender: AnyObject) {
         self.performSegue(withIdentifier: "postEventComment", sender: sender.tag)
     }
@@ -711,7 +753,8 @@ class EventImgCell: UITableViewCell{
     @IBOutlet var imgView: UIImageView!
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
-    
+
+    @IBOutlet weak var eventTimeLabel: UILabel!
     @IBOutlet weak var femaleLabel: UILabel!
     @IBOutlet weak var maleLabel: UILabel!
     
