@@ -13,6 +13,8 @@ import AVFoundation
 import CoreData
 import CoreLocation
 import GoogleMaps
+import AWSDynamoDB
+import SCLAlertView
 
 
 
@@ -24,22 +26,13 @@ class ChooseUserNameController: UIViewController, UIImagePickerControllerDelegat
     
     @IBAction func submitUserName(_ sender: AnyObject) {
         print("submit")
-       /* let fetchRequest = NSFetchRequest(entityName: "Users")
-        fetchRequest.predicate = NSPredicate(format: "id= %@", userID as NSString)
-        let users = (try? context.fetch(fetchRequest)) as! [NSManagedObject]?
-        if let users = users{
-            for user in users{
-                user.setValue(userNameText.text, forKey: "user_name")
-                do {
-                    try context.save()
-                } catch _ {
-                }
-                self.dismiss(animated: true, completion: nil)
+        self.findUsername(completion: {(result)->Void in
+            if (result.count > 1){
+                SCLAlertView().showError("Sorry", subTitle: "That username is taken. Please choose another username")
+            }else{
+                
             }
-        } else {
-            print("User Name storage failed")
-            self.dismiss(animated: true, completion: nil)   
-        }*/
+        })
     }
     
     override func viewDidLoad() {
@@ -64,6 +57,42 @@ class ChooseUserNameController: UIViewController, UIImagePickerControllerDelegat
     func textFieldShouldReturn(_ textField: UITextField!) -> Bool {
         userNameText.resignFirstResponder()
         return true
+    }
+    
+    func findUsername(completion:@escaping ([User])->Void)->[User]{
+        
+        var userArray = [User]()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        let scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "userName = :val"
+        scanExpression.expressionAttributeValues = [":val": userNameText.text]
+    
+        
+        
+        
+        dynamoDBObjectMapper.scan(User.self, expression: scanExpression).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for user  in output.items {
+                    let user : User = user as! User
+                    userArray.append(user)
+                }
+                completion(userArray)
+                return userArray as AnyObject
+                
+            }
+            return userArray as AnyObject
+        })
+        
+        
+        return userArray
+        
     }
     
 }

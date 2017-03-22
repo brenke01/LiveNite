@@ -182,6 +182,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }else{
             self.accessToken = String(describing: FBSDKAccessToken.current())
             setupHomeScreen()
+
         }
         
 

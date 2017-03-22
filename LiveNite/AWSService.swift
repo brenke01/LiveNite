@@ -205,6 +205,10 @@ class AWSService {
                     completion(user)
                 })
 
+            }else{
+                DispatchQueue.main.async(execute: {
+                    completion(user)
+                })
             }
             return user
         })

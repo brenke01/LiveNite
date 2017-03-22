@@ -16,6 +16,8 @@ import AVFoundation
 import CoreData
 import CoreLocation
 import GoogleMaps
+import SCLAlertView
+import AWSDynamoDB
 
 
 
@@ -46,11 +48,24 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     @IBAction func submitAction(_ sender: AnyObject) {
         print("submit")
-        print(userID)
-        var user : User = AWSService().loadUser(userID, newUserName: inputUserName.text!)
-        
+        var username = inputUserName.text
+        var trimmedUsername = username?.trimmingCharacters(in: CharacterSet.whitespaces)
+        username = trimmedUsername!
+   
+        self.findUsername(username: trimmedUsername!, completion: {(result)->Void in
+            if (result.count >= 1){
+                 DispatchQueue.main.async(execute: {
+                SCLAlertView().showError("Sorry", subTitle: "That username is taken. Please choose another username")
+                })
+            }else{
+                var user : User = AWSService().loadUser(self.userID, newUserName: self.inputUserName.text!)
+                self.dismiss(animated: true, completion: nil)
+            }
+        })
 
-        self.dismiss(animated: true, completion: nil)
+        
+        
+        
     }
     
     // Facebook Delegate Methods
@@ -81,10 +96,10 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         
     }
     
-    func saveUserToCoreData(_ result : AnyObject){
+    func saveUserToCoreData(_ fbResult : AnyObject){
         var newUser : Bool = true
         var userObj = User()
-        AWSService().loadUser("10153244164880906",completion: {(result)->Void in
+        AWSService().loadUser(fbResult.value(forKey: "id") as! String,completion: {(result)->Void in
             userObj = result
             
             if (userObj?.userID != ""){
@@ -98,16 +113,16 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             
             
             if (newUser){
-                self.userID = result.value(forKey: "id") as! String
-                let firstName = result.value(forKey: "first_name")
-                let email = result.value(forKey: "email") as! String
-                let gender = result.value(forKey: "gender")
-                let ageRange = (result.value(forKey: "age_range") as AnyObject).value(forKey: "min")
+                self.userID = fbResult.value(forKey: "id") as! String
+                let firstName = fbResult.value(forKey: "first_name")
+                let email = fbResult.value(forKey: "email") as! String
+                let gender = fbResult.value(forKey: "gender")
+                let ageRange = (fbResult.value(forKey: "age_range") as AnyObject).value(forKey: "min")
                 let newUserObj : User = User()
                 newUserObj.userID = self.userID
                 newUserObj.age = ageRange as! Int
                 newUserObj.gender = String(describing: gender!)
-                newUserObj.accessToken = String(describing: FBSDKAccessToken.current())
+                newUserObj.accessToken = String(describing: (FBSDKAccessToken.current()!))
                 newUserObj.score = 0
                 newUserObj.email = email
                 newUserObj.userName = "temp"
@@ -115,8 +130,8 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 AWSService().save(newUserObj)
                 self.submitButton.isHidden = false
                 self.inputUserName.isHidden = false
-                self.submitButton.isEnabled = true
-                self.submitButton.backgroundColor = UIColor.gray
+                self.submitButton.alpha = 0.5
+                self.submitButton.isEnabled = false
                 self.submitButton.layer.cornerRadius = 5
                 
             }else{
@@ -124,6 +139,8 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 print(FBSDKAccessToken.current())
                 userObj?.accessToken = String(describing: FBSDKAccessToken.current()!)
                 AWSService().save(userObj!)
+                    self.dismiss(animated: true, completion: nil)
+
                 })
             }
         })
@@ -146,12 +163,6 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             else
             {   //Save the user to the Users table
                self.saveUserToCoreData(result as AnyObject)
-                if (self.submitButton.isEnabled == false) {
-                    self.dismiss(animated: true, completion: nil)
-                    
-                    
-                    
-                }
 
             }
         })
@@ -163,12 +174,63 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if (inputUserName.text != ""){
+            submitButton.alpha = 1.0
+            submitButton.isEnabled = true
+        }else{
+            submitButton.alpha = 0.5
+            submitButton.isEnabled = false
+        }
         self.view.endEditing(true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField!) -> Bool {
         inputUserName.resignFirstResponder()
+        if (inputUserName.text != ""){
+            submitButton.alpha = 1.0
+            submitButton.isEnabled = true
+        }else{
+            submitButton.alpha = 0.5
+            submitButton.isEnabled = false
+
+        }
         return true
+    }
+    
+    func findUsername(username: String, completion:@escaping ([User])->Void)->[User]{
+        
+        var userArray = [User]()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        let scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "userName = :val"
+        scanExpression.expressionAttributeValues = [":val": username]
+        
+        
+        
+        
+        dynamoDBObjectMapper.scan(User.self, expression: scanExpression).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for user  in output.items {
+                    let user : User = user as! User
+                    userArray.append(user)
+                }
+                completion(userArray)
+                return userArray as AnyObject
+                
+            }
+            return userArray as AnyObject
+        })
+        
+        
+        return userArray
+        
     }
     
 }
