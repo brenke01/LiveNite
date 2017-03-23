@@ -21,16 +21,19 @@ import AWSDynamoDB
 
 
 
-class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, FBSDKLoginButtonDelegate{
+class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, FBSDKLoginButtonDelegate, UITextFieldDelegate{
     var locations = 0
-    
+    var blockedCharacters = CharacterSet.alphanumerics.inverted
     
     @IBOutlet var submitButton: UIButton!
     @IBOutlet var inputUserName: UITextField!
     var userID : String = ""
-    
+    var loadMask = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(loadMask)
+        loadMask.isHidden = true
+        inputUserName.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
         submitButton.isHidden = true
         inputUserName.isHidden = true
@@ -41,6 +44,8 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         loginView.center = self.view.center
         loginView.readPermissions = ["public_profile", "email"]
         loginView.delegate = self
+        loadMask = UIView(frame: CGRect(x: 0, y:0, width: self.view.frame.width, height: self.view.frame.height))
+        loadMask.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         FBSDKProfile.enableUpdates(onAccessTokenChange: true)
         
@@ -51,16 +56,24 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         var username = inputUserName.text
         var trimmedUsername = username?.trimmingCharacters(in: CharacterSet.whitespaces)
         username = trimmedUsername!
-   
+        loadMask.isHidden = false
+        self.view.isUserInteractionEnabled = false
         self.findUsername(username: trimmedUsername!, completion: {(result)->Void in
-            if (result.count >= 1){
-                 DispatchQueue.main.async(execute: {
-                SCLAlertView().showError("Sorry", subTitle: "That username is taken. Please choose another username")
-                })
-            }else{
-                var user : User = AWSService().loadUser(self.userID, newUserName: self.inputUserName.text!)
-                self.dismiss(animated: true, completion: nil)
-            }
+              DispatchQueue.main.async(execute: {
+                    if (result.count >= 1){
+                       
+                        SCLAlertView().showError("Sorry", subTitle: "That username is taken. Please choose another username")
+                            self.loadMask.isHidden = true
+                            self.view.isUserInteractionEnabled = true
+                       
+
+                    }else{
+                        var user : User = AWSService().loadUser(self.userID, newUserName: self.inputUserName.text!)
+                        self.dismiss(animated: true, completion: nil)
+                        self.loadMask.isHidden = true
+                        self.view.isUserInteractionEnabled = true
+                    }
+                 })
         })
 
         
@@ -129,8 +142,9 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 newUserObj.profileImg = "nil"
                 AWSService().save(newUserObj)
                 self.submitButton.isHidden = false
+                self.view.bringSubview(toFront: self.submitButton)
                 self.inputUserName.isHidden = false
-                self.submitButton.alpha = 0.5
+                self.submitButton.alpha = 0.7
                 self.submitButton.isEnabled = false
                 self.submitButton.layer.cornerRadius = 5
                 
@@ -178,7 +192,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             submitButton.alpha = 1.0
             submitButton.isEnabled = true
         }else{
-            submitButton.alpha = 0.5
+            submitButton.alpha = 0.7
             submitButton.isEnabled = false
         }
         self.view.endEditing(true)
@@ -190,7 +204,7 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             submitButton.alpha = 1.0
             submitButton.isEnabled = true
         }else{
-            submitButton.alpha = 0.5
+            submitButton.alpha = 0.7
             submitButton.isEnabled = false
 
         }
@@ -231,6 +245,10 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         
         return userArray
         
+    }
+    
+    func textField(_ field: UITextField, shouldChangeCharactersIn range: NSRange, replacementString characters: String) -> Bool{
+        return ((characters as NSString).rangeOfCharacter(from: blockedCharacters).location == NSNotFound)
     }
     
 }

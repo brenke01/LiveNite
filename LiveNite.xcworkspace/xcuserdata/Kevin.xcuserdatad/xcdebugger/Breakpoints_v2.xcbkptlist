@@ -378,7 +378,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "511837557.197783"
+                  timestampString = "512002674.729497"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "100"
@@ -393,7 +393,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "511837557.198841"
+                  timestampString = "512002674.731649"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "100"
@@ -408,7 +408,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EditSettingsController.swift"
-                  timestampString = "511837557.199904"
+                  timestampString = "512002674.733246"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "100"
@@ -713,11 +713,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/FBLoginController.swift"
-            timestampString = "511837161.143651"
+            timestampString = "512002444.32034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "saveUserToCoreData(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -729,11 +729,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/FBLoginController.swift"
-            timestampString = "511837890.303739"
+            timestampString = "512002444.32034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "saveUserToCoreData(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -745,11 +745,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/FBLoginController.swift"
-            timestampString = "511837890.303739"
+            timestampString = "512002444.32034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
             landmarkName = "returnUserData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -761,11 +761,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/FBLoginController.swift"
-            timestampString = "511837890.303739"
+            timestampString = "512002444.32034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "returnUserData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -777,11 +777,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/FBLoginController.swift"
-            timestampString = "511837161.143651"
+            timestampString = "512002444.32034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "saveUserToCoreData(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -793,11 +793,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/FBLoginController.swift"
-            timestampString = "511837161.143651"
+            timestampString = "512002444.32034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
             landmarkName = "submitAction(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -809,45 +809,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/FBLoginController.swift"
-            timestampString = "511836180.153603"
+            timestampString = "512002444.32034"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "submitAction(_:)"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
+            landmarkName = "textField(_:shouldChangeCharactersInn:replacementString:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.FBLoginController.submitAction (Swift.AnyObject) -&gt; ()"
-                  moduleName = "LiveNite"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/FBLoginController.swift"
-                  timestampString = "511837557.234925"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "55"
-                  endingLineNumber = "55"
-                  offsetFromSymbolStart = "804">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.FBLoginController.(submitAction (Swift.AnyObject) -&gt; ()).(closure #1)"
-                  moduleName = "LiveNite"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/FBLoginController.swift"
-                  timestampString = "511837557.236035"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "56"
-                  endingLineNumber = "56"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
