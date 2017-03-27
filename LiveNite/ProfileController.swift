@@ -52,7 +52,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     @IBOutlet weak var sliderValue: UISlider!
     
-
+    var connectButton : UIBarButtonItem!
     
     
     override func viewDidLoad() {
@@ -69,7 +69,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         var editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editSettings))
         self.navigationItem.rightBarButtonItem = editButton
 
-        var connectButton = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(self.connectWithUser))
+        connectButton = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(self.connectWithUser))
         self.navigationItem.leftBarButtonItem = connectButton
         
         if (self.user?.userID == ""){
@@ -139,8 +139,10 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
             captureSession?.stopRunning()
             videoPreviewLayer?.zPosition = -1
             captureSession = nil
+            connectButton.title = "Connect"
         }
         else{
+            connectButton.title = "Return"
             let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
             
             do{
@@ -193,6 +195,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                     captureSession = nil
                     videoPreviewLayer?.zPosition = -1
                     qrCodeFrameView?.frame = CGRect.zero
+                    connectButton.title = "Connect"
                     checkIfQRCodeIsUser(qrString: metadataObj.stringValue)
                 }
             }
