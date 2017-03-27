@@ -121,7 +121,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                      self.determineSort()
                     self.arrayEmpty = false
                     for e in self.eventsArr{
-                        AWSService().getImageFromUrl(String(e.url), completion: {(result)->Void in
+                        AWSService().getImageFromUrl(String(e.url), bucket: "liveniteimages", completion: {(result)->Void in
                             self.uiImageArr.append(result)
                             if self.uiImageArr.count == self.eventsArr.count{
                                 DispatchQueue.main.async(execute: {

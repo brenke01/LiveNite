@@ -457,7 +457,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 
                 self.determineSort()
                 for img in self.imageArr{
-                    AWSService().getImageFromUrl(String(img.imageID), completion: {(result)->Void in
+                    AWSService().getImageFromUrl(String(img.imageID), bucket: "liveniteimages", completion: {(result)->Void in
                         self.uiImageArr.append(result)
                         if self.uiImageArr.count == self.imageArr.count{
                             
@@ -491,7 +491,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.doneLoading = true
                 self.determineSort()
                 for img in self.imageArr{
-                    AWSService().getImageFromUrl(String(img.imageID), completion: {(result)->Void in
+                    AWSService().getImageFromUrl(String(img.imageID), bucket: "liveniteimages", completion: {(result)->Void in
                         self.uiImageArr.append(result)
                         if self.uiImageArr.count == self.imageArr.count{
                             self.switchNavBar(albumView: false)
@@ -527,7 +527,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 //create dictionary with images for sorting
                 self.determineSort()
                 for img in self.imageArr{
-                    AWSService().getImageFromUrl(String(img.imageID), completion: {(result)->Void in
+                    AWSService().getImageFromUrl(String(img.imageID), bucket: "liveniteimages", completion: {(result)->Void in
                         self.uiImageArr.append(result)
                         if self.uiImageArr.count == self.imageArr.count{
                             DispatchQueue.main.async(execute: {

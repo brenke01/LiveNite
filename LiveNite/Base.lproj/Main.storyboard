@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vv2-Bv-Itn">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vv2-Bv-Itn">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -449,12 +449,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V9e-Tb-T5i">
-                                <rect key="frame" x="49" y="106" width="276" height="280"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V9e-Tb-T5i">
+                                <rect key="frame" x="50" y="106" width="276" height="238"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hpK-e5-41Z">
-                                        <rect key="frame" x="0.0" y="41" width="276" height="239"/>
+                                        <rect key="frame" x="0.0" y="30" width="276" height="193"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RuK-K9-Cdy">
@@ -507,13 +506,30 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ma9-Oq-gDO">
+                                <rect key="frame" x="123" y="364" width="128" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="lzi-DM-BxX"/>
+                                    <constraint firstAttribute="width" constant="128" id="n27-eq-E7d"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="V9e-Tb-T5i" firstAttribute="leading" secondItem="x7h-QV-cKw" secondAttribute="leadingMargin" constant="34" id="9vc-F2-P6a"/>
+                            <constraint firstItem="Ma9-Oq-gDO" firstAttribute="leading" secondItem="x7h-QV-cKw" secondAttribute="leadingMargin" constant="107" id="BLW-GT-sxo"/>
+                            <constraint firstItem="Ma9-Oq-gDO" firstAttribute="top" secondItem="V9e-Tb-T5i" secondAttribute="bottom" constant="20" id="bZL-If-f9g"/>
+                            <constraint firstItem="U5I-Hn-vgc" firstAttribute="top" secondItem="Ma9-Oq-gDO" secondAttribute="bottom" constant="62" id="bm8-m4-ZDD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="V9e-Tb-T5i" secondAttribute="trailing" constant="33" id="dci-6v-5de"/>
+                            <constraint firstItem="V9e-Tb-T5i" firstAttribute="top" secondItem="SHV-6f-SdB" secondAttribute="bottom" constant="106" id="hVU-Uo-jl7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ma9-Oq-gDO" secondAttribute="trailing" constant="108" id="vKf-8D-j3F"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IiM-pg-vgj"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
+                        <outlet property="QrImageView" destination="Ma9-Oq-gDO" id="Bry-Iv-2lE"/>
                         <outlet property="distanceLabel" destination="g30-AH-tue" id="3T6-mF-my6"/>
                         <outlet property="imgView" destination="t5R-ig-30X" id="pOn-gm-8N3"/>
                         <outlet property="profileImg" destination="sGZ-1J-GQO" id="yZH-kZ-DUD"/>
@@ -2057,7 +2073,7 @@
         <image name="navBack" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lOC-7T-djj"/>
         <segue reference="nYP-eX-3SA"/>
+        <segue reference="lgQ-mK-qrS"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -115,15 +115,15 @@ class AWSService {
     
 
     // Retrieving image file from S3
-    func getImageFromUrl(_ fileName : String, completion:(_ result:UIImage)->Void) -> UIImage{
+    func getImageFromUrl(_ fileName : String, bucket : String, completion:(_ result:UIImage)->Void) -> UIImage{
         var transferManager: AWSS3TransferManager = AWSS3TransferManager.default()
         var downloadedImage : UIImage = UIImage()
         let downloadingFilePath: String = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("FQQhOWsL.jpg").absoluteString
         let downloadingFileURL: URL = URL(fileURLWithPath: downloadingFilePath)
         // Construct the download request.
         let downloadRequest: AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
-        downloadRequest.bucket = "liveniteimages"
-        let url = "https://s3.amazonaws.com/liveniteimages/" + fileName
+        downloadRequest.bucket = bucket
+        let url = "https://s3.amazonaws.com/" + bucket + "/" + fileName
         let urlFormat = URL(string: url)
         let imgFromURL = UIImage(data: try! Data(contentsOf: urlFormat!))
         downloadRequest.key = fileName
@@ -214,6 +214,36 @@ class AWSService {
         })
         return user
     }
+    
+    func checkIfUserExists(_ primaryKeyValue: String, completion:@escaping (_ result:User)->Void) -> User{
+        var user : User = User()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(User.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil){
+                print("error")
+                
+                
+            }
+            if (task.exception != nil){
+                print("exception")
+            }
+            if (task.result != nil){
+                user = task.result as! User
+                print(user.userID)
+                DispatchQueue.main.async(execute: {
+                    completion(user)
+                })
+                
+            }else{
+                DispatchQueue.main.async(execute: {
+                    completion(user)
+                })
+            }
+            return user
+        })
+        return user
+    }
+
     
     func loadUserAndSaveUserName(_ primaryKeyValue: String, newUserName : String) -> User{
         var user : User = User()

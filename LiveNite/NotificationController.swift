@@ -52,8 +52,14 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
                         self.notificationArray = result
                         self.updateOpenNotifications(notifArray: self.notificationArray)
                         for n in self.notificationArray{
-                            
-                            AWSService().getImageFromUrl(String(n.imageID), completion: {(result)->Void in
+                            var bucket : String
+                            if(n.type == "meetUp"){
+                                bucket = "liveniteprofileimages"
+                            }
+                            else{
+                                bucket = "liveniteimages"
+                            }
+                            AWSService().getImageFromUrl(String(n.imageID), bucket: bucket, completion: {(result)->Void in
                                 self.uiImageArr.append(result)
                                 DispatchQueue.main.async(execute: {
                                     self.tableView.isHidden = false
@@ -151,6 +157,8 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
             cell.notificationLabel.text = "checked in"
         }else if self.notificationArray[indexPath.row].type == "comment"{
             cell.notificationLabel.text = "commented on your post."
+        }else if self.notificationArray[indexPath.row].type == "meetUp"{
+            cell.notificationLabel.text = "and you met up!"
         }
         let timePosted = notificationArray[(indexPath as NSIndexPath).row].actionTime
         cell.notifImage.image = self.uiImageArr[indexPath.row]

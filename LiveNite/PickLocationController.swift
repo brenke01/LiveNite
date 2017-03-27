@@ -18,7 +18,7 @@ import GooglePlaces
 import GooglePlacePicker
 
 
-class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextViewDelegate, UISearchDisplayDelegate, UITextFieldDelegate, UITabBarControllerDelegate{
+class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextViewDelegate, UISearchDisplayDelegate, UITextFieldDelegate, UITabBarControllerDelegate, AVCaptureMetadataOutputObjectsDelegate{
     @IBOutlet var tableView: UITableView!
     
     @IBOutlet weak var charCount: UILabel!
@@ -46,6 +46,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     //var textField = UITextField()
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
+    var qrCodeFrameView : UIView?
     var captureDevice : AVCaptureDevice?
     var locationDictionary = [String: CLLocationCoordinate2D]()
     var currentUserName : String = ""
