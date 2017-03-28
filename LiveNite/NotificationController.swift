@@ -50,7 +50,12 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
                     self.user = result
                     self.getNotifications(completion: {(result)->Void in
                         self.notificationArray = result
+                        self.notificationArray = (self.notificationArray as NSArray).sortedArray(using: [
+                            NSSortDescriptor(key: "actionTime", ascending: false)
+                            ]) as! [Notification]
+                        DispatchQueue.main.async(execute: {
                         self.updateOpenNotifications(notifArray: self.notificationArray)
+                        })
                         for n in self.notificationArray{
                             var bucket : String
                             if(n.type == "meetUp"){
@@ -60,8 +65,9 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
                                 bucket = "liveniteimages"
                             }
                             AWSService().getImageFromUrl(String(n.imageID), bucket: bucket, completion: {(result)->Void in
-                                self.uiImageArr.append(result)
                                 DispatchQueue.main.async(execute: {
+                                self.uiImageArr.append(result)
+
                                     self.tableView.isHidden = false
                                     self.tableView.reloadData()
                                     
@@ -152,6 +158,8 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:NotificationCell = self.tableView.dequeueReusableCell(withIdentifier: "notificationCell")! as! NotificationCell
+        cell.notifImage.layer.borderWidth = 0
+        cell.notifImage.layer.borderColor = UIColor.clear.cgColor
         cell.userNameLabel.text = self.notificationArray[indexPath.row].userName
         if self.notificationArray[indexPath.row].type == "checkIn"{
             cell.notificationLabel.text = "checked in"
@@ -162,8 +170,12 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
         }
         let timePosted = notificationArray[(indexPath as NSIndexPath).row].actionTime
         cell.notifImage.image = self.uiImageArr[indexPath.row]
-        cell.notifImage.layer.borderWidth = 1
-        cell.notifImage.layer.borderColor = UIColor.white.cgColor
+        DispatchQueue.main.async(execute: {
+        if (self.notificationArray[(indexPath as NSIndexPath).row].type != "meetUp"){
+            cell.notifImage.layer.borderWidth = 2
+            cell.notifImage.layer.borderColor = UIColor.white.cgColor
+            }})
+
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         let dateFormatter = DateFormatter()
         let localeStr = "us"

@@ -230,7 +230,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                 else{
                     currentUserNotification?.imageID = "DefaultProfileImage"
                 }
-                currentUserNotification?.open = false
+                currentUserNotification?.open = true
                 currentUserNotification?.type = "meetUp"
                 AWSService().save(currentUserNotification!)
                 
