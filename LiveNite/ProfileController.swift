@@ -204,64 +204,130 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     func checkIfQRCodeIsUser(qrString: String){
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let currentDate = Date()
+        
         _ = AWSService().checkIfUserExists(qrString, completion: {(result) -> Void in
             if result.userID != "" {
-                self.user?.score += 1
-                result.score += 1
-                AWSService().save(self.user!)
-                AWSService().save(result)
-                
-                print("Met user image id")
-                print(result.profileImg)
-                print("Current user image id")
-                print((self.user?.profileImg)!)
-                let currentUserNotifUUID =  UUID().uuidString
-                let currentUserNotification = Notification()
-                currentUserNotification?.notificationID = currentUserNotifUUID
-                currentUserNotification?.userName = result.userName
-                currentUserNotification?.ownerName = (self.user?.userName)!
-                let date = Date()
-                currentUserNotification?.actionTime = String(describing: date)
-                let metProfileID = result.profileImg
-                if(metProfileID != "nil")
-                {
-                    currentUserNotification?.imageID = result.profileImg
-                }
-                else{
-                    currentUserNotification?.imageID = "DefaultProfileImage"
-                }
-                currentUserNotification?.open = false
-                currentUserNotification?.type = "meetUp"
-                AWSService().save(currentUserNotification!)
-                
-                let metUserNotifUUID =  UUID().uuidString
-                let metUserNotification = Notification()
-                metUserNotification?.notificationID = metUserNotifUUID
-                metUserNotification?.userName = (self.user?.userName)!
-                metUserNotification?.ownerName = result.userName
-                metUserNotification?.actionTime = String(describing: date)
-                let currentProfileID = self.user?.profileImg
-                if(currentProfileID != "nil")
-                {
-                    metUserNotification?.imageID = (self.user?.profileImg)!
-                }
-                else{
-                    metUserNotification?.imageID = "DefaultProfileImage"
-                }
-                metUserNotification?.open = false
-                metUserNotification?.type = "meetUp"
-                AWSService().save(metUserNotification!)
-                
-                print("Score: \(self.user?.score)")
-                SCLAlertView().showSuccess("Congrats", subTitle: "You met up and earned 1 point!")
+                _ = AWSService().loadMeetUp((self.user?.userID)! + result.userID, completion: {(meetUpResult) -> Void in
+                    //if they have met up before
+                    if meetUpResult.meetUpID != "" {
+                        //figure out how long it's been since their last meet up
+                        let lastMeetUp : Date = dateFormatter.date(from: meetUpResult.meetUpTime)!
+                        
+                        //get the difference in date components
+                        let diffDateComponents = (Calendar.current as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day, NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second], from: lastMeetUp, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
+                        
+                        print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
+                        
+                        //if it has been more than a day award the user points and update the check in time
+                        if (diffDateComponents.year! > 0 || diffDateComponents.month! > 0 || diffDateComponents.day! > 0){
+                            print("It's been a while")
+                            DispatchQueue.main.async(execute: {
+                                self.processSuccessfulMeetUp(currentUser: self.user!, metUser: result)
+                            })
+                        }
+                        //if it's been less than a day, output error message
+                        else{
+                            DispatchQueue.main.async(execute: {
+                                SCLAlertView().showError("Sorry", subTitle: "You've met up in the last 24 hours with " + result.userName)
+                            })
+                            
+                            print("Sorry, you've met up recently.")
+                        }
+
+                    }
+                    // if the meetUpResult returns an empty meetUp, store new meetUp
+                    else{
+                        DispatchQueue.main.async(execute: {
+                            self.processSuccessfulMeetUp(currentUser: self.user!, metUser: result)
+                        })
+                    }
+                    
+                })
             }
             else{
-                SCLAlertView().showError("Sorry", subTitle: qrString + " isn't a current user.")
+                DispatchQueue.main.async(execute: {
+                    SCLAlertView().showError("Sorry", subTitle: " That code isn't a current user.")
+                })
+                print("Sorry, that's not a user.")
             }
             
         })
         
         
+    }
+    
+    func processSuccessfulMeetUp(currentUser: User, metUser: User){
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let currentDate = Date()
+        
+        currentUser.score += 1
+        metUser.score += 1
+        AWSService().save(currentUser)
+        AWSService().save(metUser)
+        
+        print("Met user image id")
+        print(metUser.profileImg)
+        print("Current user image id")
+        print(currentUser.profileImg)
+        let currentUserNotifUUID =  UUID().uuidString
+        let currentUserNotification = Notification()
+        currentUserNotification?.notificationID = currentUserNotifUUID
+        currentUserNotification?.userName = metUser.userName
+        currentUserNotification?.ownerName = currentUser.userName
+        let date = Date()
+        currentUserNotification?.actionTime = String(describing: date)
+        let metProfileID = metUser.profileImg
+        if(metProfileID != "nil")
+        {
+            currentUserNotification?.imageID = metUser.profileImg
+        }
+        else{
+            currentUserNotification?.imageID = "DefaultProfileImage"
+        }
+        currentUserNotification?.open = false
+        currentUserNotification?.type = "meetUp"
+        AWSService().save(currentUserNotification!)
+        
+        let metUserNotifUUID =  UUID().uuidString
+        let metUserNotification = Notification()
+        metUserNotification?.notificationID = metUserNotifUUID
+        metUserNotification?.userName = currentUser.userName
+        metUserNotification?.ownerName = metUser.userName
+        metUserNotification?.actionTime = String(describing: date)
+        let currentProfileID = currentUser.profileImg
+        if(currentProfileID != "nil")
+        {
+            metUserNotification?.imageID = (self.user?.profileImg)!
+        }
+        else{
+            metUserNotification?.imageID = "DefaultProfileImage"
+        }
+        metUserNotification?.open = false
+        metUserNotification?.type = "meetUp"
+        AWSService().save(metUserNotification!)
+        
+        let currentUserMeetUpID = currentUser.userID + metUser.userID
+        let currentUserMeetUp = MeetUp()
+        currentUserMeetUp?.meetUpID = currentUserMeetUpID
+        currentUserMeetUp?.user1ID = currentUser.userID
+        currentUserMeetUp?.user2ID = metUser.userID
+        currentUserMeetUp?.meetUpTime = dateFormatter.string(from: currentDate)
+        AWSService().save(currentUserMeetUp!)
+        
+        let metUserMeetUpID = metUser.userID + currentUser.userID
+        let metUserMeetUp = MeetUp()
+        metUserMeetUp?.meetUpID = metUserMeetUpID
+        metUserMeetUp?.user1ID = metUser.userID
+        metUserMeetUp?.user2ID = currentUser.userID
+        metUserMeetUp?.meetUpTime = dateFormatter.string(from: currentDate)
+        AWSService().save(metUserMeetUp!)
+        
+        print("Score: \(self.user?.score)")
+        SCLAlertView().showSuccess("Congrats", subTitle: "You met up and earned 1 point!")
     }
     
     func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
@@ -285,7 +351,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
             if let destinationVC = segue.destination as? EditSettingsController{
                 destinationVC.user = self.user
                 destinationVC.currentImg = self.profileImg.image!
-                destinationVC.profileForm = profileForm 
+                destinationVC.profileForm = profileForm
             }}}
     
     func getRankMedal(_ score : Int) -> UIImage{

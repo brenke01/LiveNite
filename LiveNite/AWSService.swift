@@ -48,6 +48,30 @@ class AWSService {
         return checkIn
     }
     
+    func loadMeetUp(_ primaryKeyValue: String, completion:@escaping (_ result:MeetUp)->Void) -> MeetUp{
+        var meetUp : MeetUp = MeetUp()
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.load(MeetUp.self, hashKey: primaryKeyValue, rangeKey: nil).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil){
+                print("error")
+                
+            }
+            if (task.exception != nil){
+                print("exception")
+            }
+            if (task.result != nil){
+                
+                meetUp = task.result as! MeetUp
+                completion(meetUp)
+            }
+            else{
+                completion(meetUp)
+            }
+            return meetUp
+        })
+        return meetUp
+    }
+    
     func loadComment(_ primaryKeyValue: String) -> Comment{
         var comment : Comment = Comment()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
