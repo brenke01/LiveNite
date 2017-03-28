@@ -142,8 +142,10 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 newUserObj.profileImg = "nil"
                 AWSService().save(newUserObj)
                 self.submitButton.isHidden = false
+                self.submitButton.slideInFromLeft()
                 self.view.bringSubview(toFront: self.submitButton)
                 self.inputUserName.isHidden = false
+                self.inputUserName.slideInFromLeft()
                 self.submitButton.alpha = 0.7
                 self.submitButton.isEnabled = false
                 self.submitButton.layer.cornerRadius = 5
@@ -251,4 +253,30 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         return ((characters as NSString).rangeOfCharacter(from: blockedCharacters).location == NSNotFound)
     }
     
+    
+    
+}
+
+extension UIView {
+    // Name this function in a way that makes sense to you...
+    // slideFromLeft, slideRight, slideLeftToRight, etc. are great alternative names
+    func slideInFromLeft(duration: TimeInterval = 0.5, completionDelegate: AnyObject? = nil) {
+        // Create a CATransition animation
+        let slideInFromLeftTransition = CATransition()
+        
+        // Set its callback delegate to the completionDelegate that was provided (if any)
+        if let delegate: CAAnimationDelegate = completionDelegate as! CAAnimationDelegate? {
+            slideInFromLeftTransition.delegate = delegate
+        }
+        
+        // Customize the animation's properties
+        slideInFromLeftTransition.type = kCATransitionPush
+        slideInFromLeftTransition.subtype = kCATransitionFromLeft
+        slideInFromLeftTransition.duration = duration
+        slideInFromLeftTransition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        slideInFromLeftTransition.fillMode = kCAFillModeRemoved
+        
+        // Add the animation to the View's layer
+        self.layer.add(slideInFromLeftTransition, forKey: "slideInFromLeftTransition")
+    }
 }
