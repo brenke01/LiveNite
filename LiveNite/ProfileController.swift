@@ -16,7 +16,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var captureSession : AVCaptureSession?
     var videoPreviewLayer : AVCaptureVideoPreviewLayer?
     var qrCodeFrameView:UIView?
-   
+    
     @IBOutlet weak var profileInfoContainer: UIView!
     
     
@@ -31,11 +31,11 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var user = User()
     var profileForm = ProfileSettingsForm()
     var activityIndicator = UIActivityIndicatorView()
-
-
+    
+    
     
     @IBOutlet weak var profileImg: UIImageView!
-
+    
     
     @IBOutlet weak var userNameLabel: UILabel!
     
@@ -68,7 +68,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         navigationController?.navigationBar.tintColor = UIColor.white
         var editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editSettings))
         self.navigationItem.rightBarButtonItem = editButton
-
+        
         connectButton = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(self.connectWithUser))
         self.navigationItem.leftBarButtonItem = connectButton
         
@@ -79,19 +79,19 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                     self.user = result
                     DispatchQueue.main.async(execute: {
                         self.progressBarDisplayer("Loading", true)
-                         self.loadUserDetail()
+                        self.loadUserDetail()
                         
                     })
-                   
+                    
                     
                 })
                 
             })
         }
         
-
+        
     }
-
+    
     
     @IBAction func editProfileImg(_ sender: AnyObject) {
     }
@@ -100,7 +100,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         userNameLabel.text = self.user?.userName
         imgView.image = getRankMedal((self.user?.score)!)
         scoreLabel.text = String(describing: user!.score)
-
+        
         if (self.user?.profileImg != "nil"){
             AWSService().getProfileImageFromUrl((self.user?.profileImg)!, completion: {(result)->Void in
                 self.profileImg.image = result
@@ -228,7 +228,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                                 self.processSuccessfulMeetUp(currentUser: self.user!, metUser: result)
                             })
                         }
-                        //if it's been less than a day, output error message
+                            //if it's been less than a day, output error message
                         else{
                             DispatchQueue.main.async(execute: {
                                 SCLAlertView().showError("Sorry", subTitle: "You've met up in the last 24 hours with " + result.userName)
@@ -236,9 +236,9 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                             
                             print("Sorry, you've met up recently.")
                         }
-
+                        
                     }
-                    // if the meetUpResult returns an empty meetUp, store new meetUp
+                        // if the meetUpResult returns an empty meetUp, store new meetUp
                     else{
                         DispatchQueue.main.async(execute: {
                             self.processSuccessfulMeetUp(currentUser: self.user!, metUser: result)
@@ -288,7 +288,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         else{
             currentUserNotification?.imageID = "DefaultProfileImage"
         }
-        currentUserNotification?.open = false
+        currentUserNotification?.open = true
         currentUserNotification?.type = "meetUp"
         AWSService().save(currentUserNotification!)
         
@@ -306,7 +306,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         else{
             metUserNotification?.imageID = "DefaultProfileImage"
         }
-        metUserNotification?.open = false
+        metUserNotification?.open = true
         metUserNotification?.type = "meetUp"
         AWSService().save(metUserNotification!)
         
@@ -346,7 +346,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editSettings" {
-
+            
             
             if let destinationVC = segue.destination as? EditSettingsController{
                 destinationVC.user = self.user
@@ -398,12 +398,12 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
             profileForm.madeEdits = false
             distanceLabel.text = profileForm.distance + " mi"
             userNameLabel.text = profileForm.userName
-
+            
         }
         if (profileForm.didSaveNewImage){
             profileImg.image = profileForm.selectedImage
         }
         
     }
-
+    
 }
