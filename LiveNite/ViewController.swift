@@ -611,6 +611,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(imgWidth), height: CGFloat(imgHeight)))
              imageButton.setImage(nil, for: UIControlState())
             imageButton.setImage(self.uiImageDict[self.imageArr[indexPath.row].imageID], for: UIControlState())
+            
 
             
             //let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))

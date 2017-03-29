@@ -207,7 +207,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
 //
     func loadUIDetails() {
-
+    
+        self.tableView.tableFooterView = UIView()
+        
         loadComments(completion: {(result)->Void in
             self.commentArray = result as! [Comment]
             self.commentArray.sort {$0.timePosted > $1.timePosted}

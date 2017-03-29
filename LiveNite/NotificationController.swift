@@ -170,6 +170,7 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
         }
         let timePosted = notificationArray[(indexPath as NSIndexPath).row].actionTime
         cell.notifImage.image = self.uiImageArr[indexPath.row]
+        cell.notifImage.contentMode = UIViewContentMode.scaleAspectFit
         DispatchQueue.main.async(execute: {
         if (self.notificationArray[(indexPath as NSIndexPath).row].type != "meetUp"){
             cell.notifImage.layer.borderWidth = 2

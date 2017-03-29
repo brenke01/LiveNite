@@ -45,7 +45,7 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : Any]) {
-        let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage
             
         //profileImgView.contentMode = .scaleAspectFit
         self.selectedImage = pickedImage!
