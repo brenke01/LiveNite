@@ -14,7 +14,6 @@ import GoogleMaps
 
 class PostCommentController: UIViewController,  UINavigationControllerDelegate,  UIScrollViewDelegate,  UITextFieldDelegate, UITextViewDelegate {
     
-    
     @IBAction func postComment(_ sender: AnyObject) {
         let comment : Comment = Comment()
         let uuid = UUID().uuidString
@@ -52,9 +51,12 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     var imageObj = Image()
     var user = User()
     
+    var typing = true;
+    
     override func viewDidLoad() {
 
         super.viewDidLoad()
+
         charCount.text = "300"
         commentField.delegate = self
         charCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
@@ -69,7 +71,9 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         self.navigationController?.navigationBar.tintColor = UIColor.white
         navigationItem.title = "Post Comment"
         
-
+        
+        
+        
         
     }
     
