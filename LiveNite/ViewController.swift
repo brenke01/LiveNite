@@ -181,7 +181,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.performSegue(withIdentifier: "login", sender: nil)
         }else{
             self.accessToken = String(describing: FBSDKAccessToken.current())
-            setupHomeScreen()
+            //setupHomeScreen()
 
         }
         
