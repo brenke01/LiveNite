@@ -50,8 +50,11 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         self.view.isHidden = false
         
     }
+    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var sliderValue: UISlider!
     
+    @IBOutlet weak var pullView: UIView!
     var connectButton : UIBarButtonItem!
     
     
@@ -61,6 +64,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         profileInfoContainer.backgroundColor = UIColor.clear
         profilebkg.backgroundColor? = UIColor.white.withAlphaComponent(0.2)
         navigationController?.navigationBar.topItem?.title = "Profile"
+        scrollView.delegate = self
         profileImg.layer.borderWidth = 2
         profileImg.layer.borderColor = UIColor.white.cgColor
         profileImg.layer.masksToBounds = true
@@ -104,8 +108,12 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         if (self.user?.profileImg != "nil"){
             AWSService().getProfileImageFromUrl((self.user?.profileImg)!, completion: {(result)->Void in
                 self.profileImg.image = result
-                activityIndicator.removeFromSuperview()
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.removeFromSuperview()
             })
+        }else{
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.removeFromSuperview()
         }
         if qrCodeImage == nil {
             if self.user?.userID != "" {
@@ -124,6 +132,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                 
             }
         }
+        
+
         
         distanceLabel.text = String(describing: self.user!.distance) + " mi"
         view.bringSubview(toFront: imgView)
@@ -265,6 +275,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         let currentDate = Date()
         
         currentUser.score += 1
+        scoreLabel.text = String(currentUser.score)
         metUser.score += 1
         AWSService().save(currentUser)
         AWSService().save(metUser)
@@ -392,6 +403,26 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         
         
     }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.activityIndicator.frame = CGRect(x:self.pullView.frame.midX - 20, y: self.pullView.frame.midY - 20, width: 30, height: 50)
+        self.activityIndicator.startAnimating()
+        self.pullView?.addSubview(self.activityIndicator)
+        self.pullView.bringSubview(toFront: self.activityIndicator)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        var offset = scrollView.contentOffset.y
+        if (scrollView.contentOffset.y < 0){
+            AWSService().loadUser(self.userID,completion: {(result)->Void in
+                self.user = result
+                DispatchQueue.main.async(execute: {
+                    self.loadUserDetail()
+                    
+                })
+                
+                
+            })        }
+    }
     
     override func viewWillAppear(_ animated: Bool){
         if (profileForm.madeEdits){
@@ -405,5 +436,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         }
         
     }
-    
+    override func viewDidLayoutSubviews() {
+
+        scrollView.contentSize = CGSize(width: CGFloat(contentView.frame.size.width), height: CGFloat(contentView.frame.size.height))
+    }
 }
