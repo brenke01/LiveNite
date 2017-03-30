@@ -420,6 +420,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.dataSource = self
         tableView.delegate = self
             navigationItem.title = self.imageObj?.placeTitle

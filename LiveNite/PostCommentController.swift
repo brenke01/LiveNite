@@ -51,7 +51,7 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
     var imageObj = Image()
     var user = User()
     
-    var typing = true;
+    var typing = true
     
     override func viewDidLoad() {
 
@@ -70,8 +70,6 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
 
         self.navigationController?.navigationBar.tintColor = UIColor.white
         navigationItem.title = "Post Comment"
-        
-        
         
         
         
