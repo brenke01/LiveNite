@@ -255,7 +255,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             imagePicker.delegate = self
             imagePicker.sourceType = .camera;
             //imagePicker.mediaTypes = [kUTTypeMovie!]
-            imagePicker.allowsEditing = false
+            imagePicker.allowsEditing = true
             
             imagePicker.showsCameraControls = true
 
@@ -271,7 +271,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : Any]) {
         
-        self.selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        self.selectedImage = info[UIImagePickerControllerEditedImage] as! UIImage
         //selectedImageView.image = self.selectedImage
         dismiss(animated: true, completion: nil)
         saved = true
