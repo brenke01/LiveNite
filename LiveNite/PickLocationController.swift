@@ -334,6 +334,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             let index = s.characters.index(s.endIndex, offsetBy: -7)
             myImage.geohash = s.substring(to: index)
             AWSService().save(myImage)
+
             })
             
         })
@@ -342,6 +343,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         
         
         print("saved successfully", terminator: "")
+        //reset progress checkers 
+        self.saved = false
+        self.complete = false
         dismiss(animated: true, completion: nil)
         tabBarController?.selectedIndex = 0
     }

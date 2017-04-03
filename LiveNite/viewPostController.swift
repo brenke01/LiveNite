@@ -254,10 +254,14 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
         })
         cell.imgView.image = self.imageTapped
-        //calculateHotColdScore()
+
         cell.upvotesLabel.text = String(imageObj!.totalScore)
         //Needs styling
         cell.upvotesLabel.textColor = UIColor.white
+        calculateHotColdScore({(result)->Void in
+            cell.hotColdLabel.text = String(describing: result)
+            self.tableView.reloadData()
+        })
         
     }
     
@@ -368,7 +372,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
     }
     
-    func calculateHotColdScore(){
+    func calculateHotColdScore(_ completion:@escaping (_ result:[Double])->Void)->[Double]{
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -381,7 +385,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         hotColdScore = 0
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
-        queryExpression.filterExpression = "imageID = "+imageID
+        queryExpression.indexName = "imageID-owner-index"
+        queryExpression.hashKeyAttribute = "imageID"
+        queryExpression.hashKeyValues = self.imageObj?.imageID
         dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
@@ -400,14 +406,18 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.hotColdScore += decayedValue
                 }
                 print("The request succeeded. HotColdScore = " + String(self.hotColdScore))
-                return self.hotColdScore as AnyObject
+                AWSService().save(self.imageObj!)
+
+                completion([self.hotColdScore])
+                return self.hotColdScore as Double as AnyObject
+                
             }
-            return self.hotColdScore as AnyObject
+            return self.hotColdScore as Double as AnyObject
         })
 
         
         self.imageObj?.hotColdScore = self.hotColdScore
-        AWSService().save(self.imageObj!)
+        return [self.hotColdScore as Double]
     }
     
     //end func zone
@@ -582,6 +592,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             cell.upvotesLabel.textColor = UIColor.white
             cell.captionLabel.textColor = UIColor.white
             cell.userNameLabel.textColor = UIColor.white
+            cell.hotColdLabel.text = String(self.hotColdScore)
                 cell.captionLabel.text = self.imageObj?.caption
                 cell.userNameLabel.text = self.imageObj?.owner
             //cell.upvoteButton.backgroundColor = UIColor.white
@@ -766,6 +777,7 @@ class MyCustomTableViewCell: UITableViewCell{
 
     @IBOutlet weak var maleLabel: UILabel!
     @IBOutlet weak var femaleLabel: UILabel!
+    @IBOutlet weak var hotColdLabel: UILabel!
 }
 
 class CommentTableViewCell: UITableViewCell{
