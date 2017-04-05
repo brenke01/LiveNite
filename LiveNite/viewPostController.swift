@@ -333,6 +333,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.hasUpvoted = false
                     cell.upvoteButton.alpha = 0.5
                     cell.downvoteButton.alpha = 1.0
+                }else if modifier == 1{
+                    change = -1
+                    self.hasDownvoted = false
+                    self.hasUpvoted = false
+                    cell.upvoteButton.alpha = 1.0
+                    cell.downvoteButton.alpha = 1.0
                 }
                 vote?.voteValue += change
                 
@@ -343,6 +349,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.hasUpvoted = true
                     self.hasDownvoted = false
                     cell.upvoteButton.alpha = 0.5
+                    cell.downvoteButton.alpha = 1.0
+                }else if modifier == -1{
+                    change = 1
+                    self.hasUpvoted = false
+                    self.hasDownvoted = false
+                    cell.upvoteButton.alpha = 1.0
                     cell.downvoteButton.alpha = 1.0
                 }
                 vote?.voteValue += change

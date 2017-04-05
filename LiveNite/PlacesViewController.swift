@@ -78,14 +78,20 @@ class PlacesViewController{
     }
     
     
-    func getImages(completion:@escaping ([Image])->Void)->[Image]{
+    func getImages(user: User, completion:@escaping ([Image])->Void)->[Image]{
+        //
+        //find approx images and post process ones that have coordinates that are a distance away.
+        //
         //sendGeo()
+        var locationManager = CLLocationManager()
         var imagesArray = [Image]()
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
+        let scanExpression = AWSDynamoDBScanExpression()
+        
         let radius : Int = 5
-        let latTraveledDeg : Double = (1 / 110.54) * Double(radius)
-        var locationManager = CLLocationManager()
+        let latTraveledDeg : Double = (1 / 110.54) * (Double(50) * 0.621371)
+        
         if #available(iOS 8.0, *) {
             locationManager.requestWhenInUseAuthorization()
         } else {
@@ -93,8 +99,9 @@ class PlacesViewController{
         }
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.stopUpdatingLocation()
+        let currentLoc = locationManager.location
         let loc :  CLLocationCoordinate2D = locationManager.location!.coordinate
-        let  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude)))
+        let  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude))) * (Double(user.distance) * 0.621371)
         let latBoundPos = loc.latitude + latTraveledDeg
         let latBoundNeg = loc.latitude - latTraveledDeg
         let longBoundPos = loc.longitude + longTraveledDeg
@@ -112,10 +119,11 @@ class PlacesViewController{
             
         }
         
-        
-        queryExpression.indexName = "geohash-index"
-        queryExpression.hashKeyAttribute = "geohash"
-        queryExpression.hashKeyValues = self.geoHashArr[0].substring(to: self.geoHashArr[0].characters.index(self.geoHashArr[0].endIndex, offsetBy: -7))
+        scanExpression.filterExpression = "geohash = :val1 or geohash = :val2"
+        scanExpression.expressionAttributeValues = [":val1": self.geoHashArr[3].substring(to: self.geoHashArr[3].characters.index(self.geoHashArr[3].endIndex, offsetBy: -7)), ":val2": self.geoHashArr[0].substring(to: self.geoHashArr[0].characters.index(self.geoHashArr[0].endIndex, offsetBy: -7))]
+        //queryExpression.indexName = "geohash-index"
+        //queryExpression.hashKeyAttribute = "geohash"
+        //queryExpression.hashKeyValues = self.geoHashArr[3].substring(to: self.geoHashArr[3].characters.index(self.geoHashArr[3].endIndex, offsetBy: -6))
         
         
        // queryExpression.filterExpression = "picTakenLat < :posLat AND picTakenLat  > :negLat AND picTakenLong < :posLong AND picTakenLong  > :negLong"
@@ -128,7 +136,7 @@ class PlacesViewController{
         //        scanExpression.expressionAttributeValues = [":val":longBoundNeg]
         
         
-        dynamoDBObjectMapper.query(Image.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
+        dynamoDBObjectMapper.scan(Image.self, expression: scanExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
             }
@@ -139,7 +147,12 @@ class PlacesViewController{
                 let output : AWSDynamoDBPaginatedOutput = task.result!
                 for image  in output.items {
                     let image : Image = image as! Image
-                    imagesArray.append(image)
+                    var imgLoc = CLLocation(latitude: Double(image.placeLat), longitude: Double(image.placeLong))
+                    var distance = imgLoc.distance(from: currentLoc!)
+                    if ((distance * 0.000621371) <= Double(user.distance)){
+                        imagesArray.append(image)
+
+                    }
                 }
                 completion(imagesArray)
                 return imagesArray as AnyObject

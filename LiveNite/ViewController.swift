@@ -411,7 +411,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             var groupedImageDictionary = [String: AnyObject]()
            
             var groupedArr = [Image]()
-            placesViewController.getImages(completion: {(result)->Void in
+            placesViewController.getImages(user: self.user!, completion: {(result)->Void in
                 let imgArr = result
                 if (self.imageArr.count == 0){
                     self.arrayEmpty = true
@@ -507,7 +507,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 }
             })
         }else{
-            placesViewController.getImages(completion: {(result)->Void in
+            placesViewController.getImages(user: self.user!, completion: {(result)->Void in
                 self.sort = false
                 self.uiImageArr = []
                 self.imageArr = []
