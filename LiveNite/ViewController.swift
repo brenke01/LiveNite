@@ -89,8 +89,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     
     func handleRefresh(_ refreshControl: UIRefreshControl){
-        determineQuery()
-        refreshControl.endRefreshing()
+        AWSService().loadUser(self.userID,completion: {(result)->Void in
+            self.user = result
+            self.determineQuery()
+            refreshControl.endRefreshing()
+        })
     }
     
     lazy var refreshControl: UIRefreshControl = {

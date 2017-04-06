@@ -90,7 +90,7 @@ class PlacesViewController{
         let scanExpression = AWSDynamoDBScanExpression()
         
         let radius : Int = 5
-        let latTraveledDeg : Double = (1 / 110.54) * (Double(50) * 0.621371)
+        let latTraveledDeg : Double = (1 / 110.54) * (Double(user.distance) * 0.621371)
         
         if #available(iOS 8.0, *) {
             locationManager.requestWhenInUseAuthorization()
@@ -106,7 +106,11 @@ class PlacesViewController{
         let latBoundNeg = loc.latitude - latTraveledDeg
         let longBoundPos = loc.longitude + longTraveledDeg
         let longBoundNeg = loc.longitude - longTraveledDeg
-        self.bounds = [CLLocation(latitude: latBoundPos, longitude: longBoundPos), CLLocation(latitude: latBoundPos, longitude: longBoundNeg), CLLocation(latitude: latBoundNeg, longitude: longBoundPos), CLLocation(latitude: latBoundNeg, longitude: longBoundNeg)]
+        let latBoundPosHalf = loc.latitude + (latTraveledDeg * 0.5)
+        let latBoundNegHalf = loc.latitude - (latTraveledDeg * 0.5)
+        let longBoundPosHalf = loc.longitude + (longTraveledDeg * 0.5)
+        let longBoundNegHalf = loc.longitude - (longTraveledDeg * 0.5)
+        self.bounds = [CLLocation(latitude: latBoundPos, longitude: longBoundPos), CLLocation(latitude: latBoundPos, longitude: longBoundNeg), CLLocation(latitude: latBoundNeg, longitude: longBoundPos), CLLocation(latitude: latBoundNeg, longitude: longBoundNeg), CLLocation(latitude: latBoundPosHalf, longitude: longBoundPosHalf), CLLocation(latitude: latBoundPosHalf, longitude: longBoundNegHalf), CLLocation(latitude: latBoundNegHalf, longitude: longBoundPosHalf), CLLocation(latitude: latBoundNegHalf, longitude: longBoundNegHalf)]
         
         
         for i in self.bounds{

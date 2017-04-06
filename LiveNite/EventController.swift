@@ -237,17 +237,24 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
         let radius : Int = (self.user?.distance)!
-        let latTraveledDeg : Double = (1 / 110.54) * Double(radius)
+        let latTraveledDeg : Double = (1 / 110.54) * (Double(self.user!.distance) * 0.621371)
+        let scanExpression = AWSDynamoDBScanExpression()
 
 
-
-        let loc :  CLLocationCoordinate2D = self.locationManager.location!.coordinate
-        let  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude)))
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.stopUpdatingLocation()
+        let currentLoc = locationManager.location
+        let loc :  CLLocationCoordinate2D = locationManager.location!.coordinate
+        let  longTraveledDeg : Double = (1 / (111.320 * cos(loc.latitude))) * (Double(self.user!.distance) * 0.621371)
         let latBoundPos = loc.latitude + latTraveledDeg
         let latBoundNeg = loc.latitude - latTraveledDeg
         let longBoundPos = loc.longitude + longTraveledDeg
         let longBoundNeg = loc.longitude - longTraveledDeg
-        self.bounds = [CLLocation(latitude: latBoundPos, longitude: longBoundPos), CLLocation(latitude: latBoundPos, longitude: longBoundNeg), CLLocation(latitude: latBoundNeg, longitude: longBoundPos), CLLocation(latitude: latBoundNeg, longitude: longBoundNeg)]
+        let latBoundPosHalf = loc.latitude + (latTraveledDeg * 0.5)
+        let latBoundNegHalf = loc.latitude - (latTraveledDeg * 0.5)
+        let longBoundPosHalf = loc.longitude + (longTraveledDeg * 0.5)
+        let longBoundNegHalf = loc.longitude - (longTraveledDeg * 0.5)
+        self.bounds = [CLLocation(latitude: latBoundPos, longitude: longBoundPos), CLLocation(latitude: latBoundPos, longitude: longBoundNeg), CLLocation(latitude: latBoundNeg, longitude: longBoundPos), CLLocation(latitude: latBoundNeg, longitude: longBoundNeg), CLLocation(latitude: latBoundPosHalf, longitude: longBoundPosHalf), CLLocation(latitude: latBoundPosHalf, longitude: longBoundNegHalf), CLLocation(latitude: latBoundNegHalf, longitude: longBoundPosHalf), CLLocation(latitude: latBoundNegHalf, longitude: longBoundNegHalf)]
         
         
         for i in self.bounds{
@@ -260,13 +267,14 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             
         }
         
+        scanExpression.filterExpression = "geohash = :val1 or geohash = :val2"
+        scanExpression.expressionAttributeValues = [":val1": self.geoHashArr[3].substring(to: self.geoHashArr[3].characters.index(self.geoHashArr[3].endIndex, offsetBy: -7)), ":val2": self.geoHashArr[0].substring(to: self.geoHashArr[0].characters.index(self.geoHashArr[0].endIndex, offsetBy: -7))]
+        //queryExpression.indexName = "geohash-index"
+        //queryExpression.hashKeyAttribute = "geohash"
+        //queryExpression.hashKeyValues = self.geoHashArr[0].substring(to: self.geoHashArr[0].characters.index(self.geoHashArr[0].endIndex, offsetBy: -7))
         
-        queryExpression.indexName = "geohash-index"
-        queryExpression.hashKeyAttribute = "geohash"
-        queryExpression.hashKeyValues = self.geoHashArr[0].substring(to: self.geoHashArr[0].characters.index(self.geoHashArr[0].endIndex, offsetBy: -7))
         
-        
-        dynamoDBObjectMapper.query(Event.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
+        dynamoDBObjectMapper.scan(Event.self, expression: scanExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
             }
@@ -277,7 +285,11 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 let output : AWSDynamoDBPaginatedOutput = task.result!
                 for e  in output.items {
                     let event : Event = e as! Event
-                    eventsArray.append(event)
+                    var imgLoc = CLLocation(latitude: Double(event.eventLat), longitude: Double(event.eventLong))
+                    var distance = imgLoc.distance(from: currentLoc!)
+                    if ((distance * 0.000621371) <= Double((self.user?.distance)!)){
+                        eventsArray.append(event)
+                    }
                 }
                 self.eventsArr = (eventsArray as AnyObject) as! [Event]
 
