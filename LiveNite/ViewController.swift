@@ -92,7 +92,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         AWSService().loadUser(self.userID,completion: {(result)->Void in
             self.user = result
             self.determineQuery()
-            refreshControl.endRefreshing()
+            
         })
     }
     
@@ -150,6 +150,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     @IBAction func getPlacesView(_ sender: AnyObject) {
         progressBarDisplayer("Loading", true)
+        self.view.isUserInteractionEnabled = false
         if (!self.placesToggle){
             self.placesToggle = true
         imagesTypeBtn.setImage(UIImage(named:"PlacesSelect"), for: UIControlState.normal)
@@ -388,6 +389,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func backToAlbumView(_ sender: UIButton!){
+        self.view.isUserInteractionEnabled = false
         self.topNavBar.isHidden = false
         self.altNavBar.isHidden = true
         self.placesToggle = true
@@ -466,7 +468,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             
                             DispatchQueue.main.async(execute: {
                                 self.uiImageDict = self.createUIImageDict()
-
+                                self.refreshControl.endRefreshing()
+                                self.view.isUserInteractionEnabled = true
                                 self.collectionView!.reloadData()
                             })
                             
@@ -501,7 +504,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             
                             DispatchQueue.main.async(execute: {
                                 self.uiImageDict = self.createUIImageDict()
-
+                                self.refreshControl.endRefreshing()
+                                self.view.isUserInteractionEnabled = true
                                 self.collectionView!.reloadData()
                             })
                             
@@ -537,7 +541,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
                                self.uiImageDict = self.createUIImageDict()
 
-
+                                self.refreshControl.endRefreshing()
+                                self.view.isUserInteractionEnabled = true
                                 self.collectionView!.reloadData()
 
                             })

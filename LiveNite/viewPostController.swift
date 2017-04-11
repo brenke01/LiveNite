@@ -445,6 +445,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         tableView.dataSource = self
         tableView.delegate = self
+        self.refreshControl.tintColor = UIColor.white
+        
+        self.tableView.addSubview(self.refreshControl)
             navigationItem.title = self.imageObj?.placeTitle
         navigationItem.backBarButtonItem?.tintColor = UIColor.white
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -773,6 +776,28 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             
         })
     }
+    
+    func handleRefresh(_ refreshControl: UIRefreshControl){
+        getCheckIns(completion: {(result)->Void in
+            self.checkInArray = result
+            
+            self.loadImageDetail()
+            self.loadUIDetails()
+            refreshControl.endRefreshing()
+            self.tableView.reloadData()
+            
+        })
+        
+        
+        
+
+    }
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
 
 }
 class MyCustomTableViewCell: UITableViewCell{

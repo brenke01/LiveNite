@@ -127,7 +127,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                                 DispatchQueue.main.async(execute: {
                                     self.uiImageDict = self.createUIImageDict()
                                     
-                                    
+                                    self.refreshControl.endRefreshing()
                                     self.tableView!.reloadData()
                                     
                                 })
@@ -215,13 +215,8 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     func handleRefresh(_ refreshControl: UIRefreshControl){
-        self.getEvents(completion: {(result)->Void in
-            DispatchQueue.main.async(execute: {
-                self.getEventData()
-                
-            })
-        })
-        refreshControl.endRefreshing()
+        self.getEventData()
+        
     }
     
     lazy var refreshControl: UIRefreshControl = {
@@ -412,7 +407,6 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     override func viewDidAppear(_ animated: Bool){
-        getEventData()
         super.viewDidAppear(animated)
     }
 

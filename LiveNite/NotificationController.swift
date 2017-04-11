@@ -114,11 +114,12 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
     func handleRefresh(_ refreshControl: UIRefreshControl){
         self.getNotifications(completion: {(result)->Void in
             DispatchQueue.main.async(execute: {
+                refreshControl.endRefreshing()
                 self.tableView.reloadData()
                 
             })
         })
-        refreshControl.endRefreshing()
+        
     }
     
     lazy var refreshControl: UIRefreshControl = {
