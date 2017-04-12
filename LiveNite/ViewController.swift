@@ -71,6 +71,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var awsUser = DispatchGroup()
     var imageArrLength = 0
     var imageArr = [Image]()
+    var imageArrTemp = [Image]()
     var uiImageArr = [UIImage]()
     var doneLoading = false
     var chosenImage = UIImage()
@@ -78,6 +79,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var chosenImageObj = Image()
     var sort = false
     var uiImageDict = [String:UIImage]()
+    var uiImageDictTemp = [String:UIImage]()
     var sortedUIImageArray = [UIImage]()
     var altNavBar = UIView()
     var arrayEmpty = false
@@ -150,6 +152,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     @IBAction func getPlacesView(_ sender: AnyObject) {
         progressBarDisplayer("Loading", true)
+        
         self.view.isUserInteractionEnabled = false
         if (!self.placesToggle){
             self.placesToggle = true
@@ -319,7 +322,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if (self.arrayEmpty){
             return 1
         }else{
-            return self.uiImageArr.count
+            return self.imageArr.count
         }
     }
     
@@ -389,12 +392,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func backToAlbumView(_ sender: UIButton!){
-        self.view.isUserInteractionEnabled = false
         self.topNavBar.isHidden = false
         self.altNavBar.isHidden = true
         self.placesToggle = true
         self.displayPlacesAlbum = false
-        determineQuery()
+        self.uiImageDict = self.uiImageDictTemp
+        self.imageArr = self.imageArrTemp
+        self.imageArrLength = self.imageArr.count
+        self.doneLoading = true
+        self.collectionView?.reloadData()
     }
     
     func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
@@ -468,6 +474,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             
                             DispatchQueue.main.async(execute: {
                                 self.uiImageDict = self.createUIImageDict()
+                                self.uiImageDictTemp = self.uiImageDict
+                                self.imageArrTemp = self.imageArr
                                 self.refreshControl.endRefreshing()
                                 self.view.isUserInteractionEnabled = true
                                 self.collectionView!.reloadData()
