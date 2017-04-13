@@ -304,7 +304,7 @@
             startingLineNumber = "151"
             endingLineNumber = "151"
             landmarkName = "viewDidAppear(_:)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -320,7 +320,7 @@
             startingLineNumber = "148"
             endingLineNumber = "148"
             landmarkName = "viewDidAppear(_:)"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1263,6 +1263,22 @@
             startingLineNumber = "399"
             endingLineNumber = "399"
             landmarkName = "backToAlbumView(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/EditSettingsController.swift"
+            timestampString = "513737252.328296"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "updateUserNameForTables(oldUserName:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
