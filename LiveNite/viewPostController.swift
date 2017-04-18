@@ -260,6 +260,14 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         cell.upvotesLabel.textColor = UIColor.white
         calculateHotColdScore({(result)->Void in
             cell.hotColdLabel.text = String(describing: result)
+            if (self.hotColdScore > 0.75){
+                cell.hotColdLabel.textColor = UIColor.green
+            }else if (self.hotColdScore <= 0.75 && self.hotColdScore >= 0.25){
+                cell.hotColdLabel.textColor = UIColor.yellow
+            }else if (self.hotColdScore < 0.25){
+                cell.hotColdLabel.textColor = UIColor.red
+            }
+            
             self.tableView.reloadData()
         })
         
@@ -608,6 +616,13 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             cell.captionLabel.textColor = UIColor.white
             cell.userNameLabel.textColor = UIColor.white
             cell.hotColdLabel.text = String(self.hotColdScore)
+            if (self.hotColdScore > 0.75){
+                cell.hotColdLabel.textColor = UIColor.green
+            }else if (self.hotColdScore <= 0.75 && self.hotColdScore >= 0.25){
+                cell.hotColdLabel.textColor = UIColor.yellow
+            }else if (self.hotColdScore < 0.25){
+                cell.hotColdLabel.textColor = UIColor.red
+            }
                 cell.captionLabel.text = self.imageObj?.caption
                 cell.userNameLabel.text = self.imageObj?.ownerName
             //cell.upvoteButton.backgroundColor = UIColor.white
