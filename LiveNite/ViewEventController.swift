@@ -521,6 +521,8 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         indexPath: IndexPath)-> UITableViewCell{
         
         //
+        var border = CALayer()
+        var width = CGFloat(1.0)
         if (indexPath.row == 0){
             let cell:EventImgCell = self.tableView.dequeueReusableCell(withIdentifier: "eventImgCell")! as! EventImgCell
             navBar.topItem?.title = self.selectedEvent?.eventTitle
@@ -637,6 +639,10 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             cell.isOpaque = false
             cell.textLabel?.textColor = UIColor.white
             
+            border.borderColor = UIColor.white.cgColor
+            border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)
+            border.borderWidth = width
+            tableView.layer.addSublayer(border)
             return cell
         }
         
