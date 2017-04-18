@@ -18,8 +18,13 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         let comment : Comment = Comment()
         let uuid = UUID().uuidString
         comment.commentID = uuid
-        comment.imageID = (self.imageObj?.imageID)!
-        comment.eventID = "-1"
+        if (event?.eventID != nil && event?.eventID != ""){
+            comment.eventID = (event?.eventID)!
+            comment.imageID = (event?.eventID)!
+        }else{
+            comment.eventID = "-1"
+            comment.imageID = (self.imageObj?.imageID)!
+        }
 
 
         comment.comment = commentField.text
