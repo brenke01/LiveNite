@@ -23,7 +23,7 @@ class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var placeTitle : String = ""
     var caption : String = ""
     var userID : String = ""
-    var owner : String = ""
+    var ownerName : String = ""
     var eventID : String = ""
     var geohash: String = ""
     var groupedCount = 0

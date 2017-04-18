@@ -24,7 +24,7 @@ class Event :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var eventID: String = ""
     var url: String = ""
     var timePosted: String = ""
-    var owner = ""
+    var ownerName = ""
     var ownerID = ""
     var totalScore = 0
     

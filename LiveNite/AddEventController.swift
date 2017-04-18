@@ -135,7 +135,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             let s = l.geohash(10)
             let index = s.characters.index(s.endIndex, offsetBy: -7)
             event?.geohash = s.substring(to: index)
-            event?.owner = (self.user?.userName)!
+            event?.ownerName = (self.user?.userName)!
             event?.ownerID = (self.user?.userID)!
             event?.totalScore = 0
             AWSService().save(event!)

@@ -138,7 +138,7 @@ class CommentController: UIViewController, UITableViewDelegate, CLLocationManage
         }
         timeLabel.text = intervalStr
         timeLabel.textColor = UIColor.white
-        nameLabel.text = commentArr[(indexPath as NSIndexPath).row].owner
+        nameLabel.text = commentArr[(indexPath as NSIndexPath).row].ownerName
         commentLabel.text = commentArr[(indexPath as NSIndexPath).row].comment
         border.borderColor = UIColor.white.cgColor
         border.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1)

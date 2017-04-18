@@ -317,7 +317,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             myImage.eventID = UUID().uuidString
             myImage.picTakenLat = self.userLocation.latitude
             myImage.picTakenLong = self.userLocation.longitude
-            myImage.owner = (self.user?.userName)!
+            myImage.ownerName = (self.user?.userName)!
             myImage.userID = (self.user?.userID)!
             myImage.hotColdScore = 0
             myImage.placeLat = self.chosenLatFromMap

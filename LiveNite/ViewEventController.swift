@@ -270,7 +270,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         queryExpression.hashKeyValues = self.selectedEvent?.eventID
         queryExpression.rangeKeyConditionExpression = "owner = :val"
         queryExpression.filterExpression = "placeTitle = :placeTitle"
-        queryExpression.expressionAttributeValues = [":val": self.selectedEvent?.owner]
+        queryExpression.expressionAttributeValues = [":val": self.selectedEvent?.ownerName]
         dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
@@ -315,7 +315,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             //set all parameters in case it is a new vote
             vote?.voteValue = modifier
             vote?.voteID = (self.user?.userID)! + "_" + (self.selectedEvent?.eventID)!
-            vote?.owner = (self.user?.userID)!
+            vote?.ownerName = (self.user?.userID)!
             vote?.imageID = (self.selectedEvent?.eventID)!
             if modifier == 1 {
                 self.hasUpvoted = true
@@ -349,7 +349,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         }
         //update time of vote regardless of initial state
         vote?.timeVoted = dateFormatter.string(from: currentDate)
-        vote?.owner = (self.selectedEvent?.owner)!
+        vote?.ownerName = (self.selectedEvent?.ownerName)!
         AWSService().save(vote!)
         
         //update owner of images score
@@ -535,7 +535,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             cell.captionLabel.textColor = UIColor.white
             cell.userNameLabel.textColor = UIColor.white
             cell.captionLabel.text = self.selectedEvent?.information
-            cell.userNameLabel.text = self.selectedEvent?.owner
+            cell.userNameLabel.text = self.selectedEvent?.ownerName
             //cell.upvoteButton.backgroundColor = UIColor.white
             cell.downvoteButton.isHidden = false
             cell.upvoteButton.isHidden = false
@@ -614,7 +614,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             
             cell.timeLabel.text = intervalStr
             cell.timeLabel.textColor = UIColor.white
-            cell.userNameLabel.text = self.commentArray[indexPath.row - 1].owner
+            cell.userNameLabel.text = self.commentArray[indexPath.row - 1].ownerName
             
             cell.commentLabel.text = self.commentArray[indexPath.row - 1].comment
             //        cell.commentLabel.numberOfLines = 0

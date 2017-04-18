@@ -121,7 +121,7 @@ class SearchPostsController: UIViewController, UISearchBarDelegate, UISearchDisp
         cell.imgView.layer.cornerRadius = 5
         if shouldShowSearchResults{
             cell.placeTitleLabel.text = filteredImages[indexPath.row].placeTitle
-            cell.userNameLabel.text = filteredImages[indexPath.row].owner
+            cell.userNameLabel.text = filteredImages[indexPath.row].ownerName
             imageObj = filteredImages[indexPath.row]
             for imgDict in uiImageDictArray{
                 if imgDict[filteredImages[indexPath.row].imageID] != nil{
@@ -133,7 +133,7 @@ class SearchPostsController: UIViewController, UISearchBarDelegate, UISearchDisp
             
             cell.imgView.image = uiImageArray[indexPath.row]
             cell.placeTitleLabel.text = imageArray[indexPath.row].placeTitle
-            cell.userNameLabel.text = imageArray[indexPath.row].owner
+            cell.userNameLabel.text = imageArray[indexPath.row].ownerName
         }
         
         return cell

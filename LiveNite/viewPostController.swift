@@ -102,7 +102,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 var notification = Notification()
                 notification?.notificationID = notifUUID
                 notification?.userName = (self.user?.userName)!
-                notification?.ownerName = (self.imageObj?.owner)!
+                notification?.ownerName = (self.imageObj?.ownerName)!
                 var date = Date()
                 notification?.actionTime = String(describing: date)
                 notification?.imageID = (self.imageObj?.imageID)!
@@ -145,7 +145,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     var notification = Notification()
                     notification?.notificationID = notifUUID
                     notification?.userName = (self.user?.userName)!
-                    notification?.ownerName = (self.imageObj?.owner)!
+                    notification?.ownerName = (self.imageObj?.ownerName)!
                     var date = Date()
                     notification?.actionTime = String(describing: date)
                     notification?.imageID = (self.imageObj?.imageID)!
@@ -274,7 +274,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         queryExpression.hashKeyValues = self.imageObj?.imageID
         queryExpression.rangeKeyConditionExpression = "owner = :val"
         queryExpression.filterExpression = "placeTitle = :placeTitle"
-        queryExpression.expressionAttributeValues = [":val": self.imageObj?.owner]
+        queryExpression.expressionAttributeValues = [":val": self.imageObj?.ownerName]
         dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
@@ -315,7 +315,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 //set all parameters in case it is a new vote
                 vote?.voteValue = modifier
                 vote?.voteID = (self.user?.userID)! + "_" + self.imageID
-                vote?.owner = (self.user?.userID)!
+                vote?.ownerName = (self.user?.userID)!
                 vote?.imageID = self.imageID
                 if modifier == 1 {
                     self.hasUpvoted = true
@@ -365,7 +365,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
             //update time of vote regardless of initial state
             vote?.timeVoted = dateFormatter.string(from: currentDate)
-            vote?.owner = (self.imageObj?.owner)!
+            vote?.ownerName = (self.imageObj?.ownerName)!
             AWSService().save(vote!)
             
             //update owner of images score
@@ -609,7 +609,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             cell.userNameLabel.textColor = UIColor.white
             cell.hotColdLabel.text = String(self.hotColdScore)
                 cell.captionLabel.text = self.imageObj?.caption
-                cell.userNameLabel.text = self.imageObj?.owner
+                cell.userNameLabel.text = self.imageObj?.ownerName
             //cell.upvoteButton.backgroundColor = UIColor.white
             cell.downvoteButton.isHidden = false
             cell.upvoteButton.isHidden = false
@@ -694,7 +694,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
         cell.timeLabel.text = intervalStr
         cell.timeLabel.textColor = UIColor.white
-        cell.userNameLabel.text = self.commentArray[indexPath.row - 1].owner
+        cell.userNameLabel.text = self.commentArray[indexPath.row - 1].ownerName
             
         cell.commentLabel.text = self.commentArray[indexPath.row - 1].comment
 //        cell.commentLabel.numberOfLines = 0

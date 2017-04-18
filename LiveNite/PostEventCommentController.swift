@@ -25,7 +25,7 @@ class PostEventCommentController: UIViewController,  UINavigationControllerDeleg
         
         
         comment.comment = commentField.text
-        comment.owner = (self.user?.userName)!
+        comment.ownerName = (self.user?.userName)!
         comment.date = String(describing: Date())
         comment.timePosted = String(describing: Date())
         

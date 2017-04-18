@@ -13,7 +13,7 @@ class Comment :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var comment: String = ""
     var imageID: String = ""
-    var owner: String = ""
+    var ownerName: String = ""
     var timePosted: String = ""
     var commentID: String = ""
     var eventID: String = ""

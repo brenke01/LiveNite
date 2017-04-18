@@ -23,14 +23,14 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
 
 
         comment.comment = commentField.text
-        comment.owner = (self.user?.userName)!
+        comment.ownerName = (self.user?.userName)!
         comment.date = String(describing: Date())
         comment.timePosted = String(describing: Date())
         var notifUUID = UUID().uuidString
         var notification = Notification()
         notification?.notificationID = notifUUID
         notification?.userName = (self.user?.userName)!
-        notification?.ownerName = (self.imageObj?.owner)!
+        notification?.ownerName = (self.imageObj?.ownerName)!
         var date = Date()
         notification?.actionTime = String(describing: date)
         notification?.imageID = (self.imageObj?.imageID)!

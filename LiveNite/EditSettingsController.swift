@@ -110,7 +110,7 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
                         var oldUserName = self.user?.userName
                         self.user?.userName = newUserName!
 
-                        self.updateUserNameForTables(oldUserName: oldUserName!)
+                        self.updateUserNameForTables(oldUserName!)
                     }
                     self.user?.userName = newUserName!
                     if (newDistance != nil){
@@ -134,7 +134,7 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
             if (self.user?.userName != newUserName!){
                 var oldUserName = self.user?.userName
                 self.user?.userName = newUserName!
-                updateUserNameForTables(oldUserName:oldUserName!)
+               updateUserNameForTables(oldUserName!)
             }
             self.user?.userName = newUserName!
             if (newDistance != nil){
@@ -157,178 +157,188 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
     }
 
     
-    func updateUserNameForTables(oldUserName : String){
-//        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
-//        var scanExpression = AWSDynamoDBScanExpression()
-//        scanExpression.filterExpression = "owner = :val1"
-//        scanExpression.expressionAttributeValues = [":val1": oldUserName]
-//
-//        
-//        dynamoDBObjectMapper.scan(Image.self, expression: scanExpression).continue({(task: AWSTask) -> Void in
-//            if (task.error != nil) {
-//                print("The request failed. Error: [\(task.error)]")
-//            }
-//            if (task.exception != nil) {
-//                print("The request failed. Exception: [\(task.exception)]")
-//            }
-//            if (task.result != nil) {
-//                let output : AWSDynamoDBPaginatedOutput = task.result!
-//                for image  in output.items {
-//                    let image : Image = image as! Image
-//                    image.owner = (self.user?.userName)!
-//                    AWSService().save(image)
-//                        
-//                    }
-//            }
-//
-//            
-//            
-//
-//    })
-//        
-//
-//        scanExpression = AWSDynamoDBScanExpression()
-//        scanExpression.filterExpression = "owner = :val1 or userName = :val2"
-//        scanExpression.expressionAttributeValues = [":val1": oldUserName, ":val2": oldUserName]
-//        
-//        
-//        dynamoDBObjectMapper.scan(Notification.self, expression: scanExpression).continue({(task: AWSTask) -> Void in
-//            if (task.error != nil) {
-//                print("The request failed. Error: [\(task.error)]")
-//            }
-//            if (task.exception != nil) {
-//                print("The request failed. Exception: [\(task.exception)]")
-//            }
-//            if (task.result != nil) {
-//                let output : AWSDynamoDBPaginatedOutput = task.result!
-//                for notif  in output.items {
-//                    let notif : Notification = notif as! Notification
-//                    if (notif.ownerName == oldUserName){
-//                        notif.ownerName = (self.user?.userName)!
-//                    }
-//                    if (notif.userName == oldUserName){
-//                        notif.userName == self.user?.userName
-//                    }
-//                    AWSService().save(notif)
-//                    
-//                }
-//            }
-//            
-//            
-//            
-//            
-//        })
-//
-//        scanExpression = AWSDynamoDBScanExpression()
-//        scanExpression.filterExpression = "owner = :val1"
-//        scanExpression.expressionAttributeValues = [":val1": oldUserName]
-//
-//        
-//        dynamoDBObjectMapper.scan(Event.self, expression: scanExpression).continue({(task: AWSTask) -> Void in
-//            if (task.error != nil) {
-//                print("The request failed. Error: [\(task.error)]")
-//            }
-//            if (task.exception != nil) {
-//                print("The request failed. Exception: [\(task.exception)]")
-//            }
-//            if (task.result != nil) {
-//                let output : AWSDynamoDBPaginatedOutput = task.result!
-//                for e  in output.items {
-//                    let e : Event = e as! Event
-//                    e.owner = (self.user?.userName)!
-//                    AWSService().save(e)
-//                        
-//                    }
-//            }
-//
-//            
-//            
-//
-//    })
-//
-//        scanExpression = AWSDynamoDBScanExpression()
-//        scanExpression.filterExpression = "owner = :val1"
-//        scanExpression.expressionAttributeValues = [":val1": oldUserName]
-//
-//        
-//        dynamoDBObjectMapper.scan(Event.self, expression: scanExpression).continue({(task: AWSTask) -> Void in
-//            if (task.error != nil) {
-//                print("The request failed. Error: [\(task.error)]")
-//            }
-//            if (task.exception != nil) {
-//                print("The request failed. Exception: [\(task.exception)]")
-//            }
-//            if (task.result != nil) {
-//                let output : AWSDynamoDBPaginatedOutput = task.result!
-//                for e  in output.items {
-//                    let e : Event = e as! Event
-//                    e.owner = (self.user?.userName)!
-//                    AWSService().save(e)
-//                        
-//                    }
-//            }
-//
-//
-//            
-//            
-//
-//    })
-//
-//        scanExpression = AWSDynamoDBScanExpression()
-//        scanExpression.filterExpression = "owner = :val1"
-//        scanExpression.expressionAttributeValues = [":val1": oldUserName]
-//
-//        
-//        dynamoDBObjectMapper.scan(Vote.self, expression: scanExpression).continue({(task: AWSTask) -> Void in
-//            if (task.error != nil) {
-//                print("The request failed. Error: [\(task.error)]")
-//            }
-//            if (task.exception != nil) {
-//                print("The request failed. Exception: [\(task.exception)]")
-//            }
-//            if (task.result != nil) {
-//                let output : AWSDynamoDBPaginatedOutput = task.result!
-//                for v  in output.items {
-//                    let v : Vote = v as! Vote
-//                    v.owner = (self.user?.userName)!
-//                    AWSService().save(v)
-//                        
-//                    }
-//            }
-//
-//
-//            
-//            
-//
-//    })
-//
-//        scanExpression = AWSDynamoDBScanExpression()
-//        scanExpression.filterExpression = "owner = :val1"
-//        scanExpression.expressionAttributeValues = [":val1": oldUserName]
-//
-//        
-//        dynamoDBObjectMapper.scan(Comment.self, expression: scanExpression).continue({(task: AWSTask) -> Void in
-//            if (task.error != nil) {
-//                print("The request failed. Error: [\(task.error)]")
-//            }
-//            if (task.exception != nil) {
-//                print("The request failed. Exception: [\(task.exception)]")
-//            }
-//            if (task.result != nil) {
-//                let output : AWSDynamoDBPaginatedOutput = task.result!
-//                for c  in output.items {
-//                    let c : Comment = c as! Comment
-//                    c.owner = (self.user?.userName)!
-//                    AWSService().save(c)
-//                        
-//                    }
-//            }
-//
-//
-//            
-//            
-//
-//    })
+    func updateUserNameForTables(_ oldUserName : String){
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        var scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "ownerName = :val1"
+        scanExpression.expressionAttributeValues = [":val1": oldUserName]
+
+        
+        dynamoDBObjectMapper.scan(Image.self, expression: scanExpression).continue({(task: AWSTask) -> String in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for image  in output.items {
+                    let image : Image = image as! Image
+                    image.ownerName = (self.user?.userName)!
+                    AWSService().save(image)
+                        
+                    }
+                return "success"
+            }
+
+            
+            return "success"
+
+    })
+        
+
+        scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "ownerName = :val1 or userName = :val2"
+        scanExpression.expressionAttributeValues = [":val1": oldUserName, ":val2": oldUserName]
+        
+        
+        dynamoDBObjectMapper.scan(Notification.self, expression: scanExpression).continue({(task: AWSTask) -> String in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for notif  in output.items {
+                    let notif : Notification = notif as! Notification
+                    if (notif.ownerName == oldUserName){
+                        notif.ownerName = (self.user?.userName)!
+                    }
+                    if (notif.userName == oldUserName){
+                        notif.userName = (self.user?.userName)!
+                    }
+                    AWSService().save(notif)
+                    
+                }
+                return "success"
+            }
+            
+            return "success"
+            
+            
+        })
+
+        scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "ownerName = :val1"
+        scanExpression.expressionAttributeValues = [":val1": oldUserName]
+
+        
+        dynamoDBObjectMapper.scan(Event.self, expression: scanExpression).continue({(task: AWSTask) -> String in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for e  in output.items {
+                    let e : Event = e as! Event
+                    e.ownerName = (self.user?.userName)!
+                    AWSService().save(e)
+                        
+                    }
+                return "success"
+            }
+            return "success"
+
+            
+            
+
+    })
+
+        scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "ownerName = :val1"
+        scanExpression.expressionAttributeValues = [":val1": oldUserName]
+
+        
+        dynamoDBObjectMapper.scan(Event.self, expression: scanExpression).continue({(task: AWSTask) -> String in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for e  in output.items {
+                    let e : Event = e as! Event
+                    e.ownerName = (self.user?.userName)!
+                    AWSService().save(e)
+                        
+                    }
+                return "success"
+            }
+            return "success"
+
+
+            
+            
+
+    })
+
+        scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "ownerName = :val1"
+        scanExpression.expressionAttributeValues = [":val1": oldUserName]
+
+        
+        dynamoDBObjectMapper.scan(Vote.self, expression: scanExpression).continue({(task: AWSTask) -> String in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for v  in output.items {
+                    let v : Vote = v as! Vote
+                    v.ownerName = (self.user?.userName)!
+                    AWSService().save(v)
+                        
+                    }
+                return "success"
+            }
+            return "success"
+
+
+            
+            
+
+    })
+
+        scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "ownerName = :val1"
+        scanExpression.expressionAttributeValues = [":val1": oldUserName]
+
+        
+        dynamoDBObjectMapper.scan(Comment.self, expression: scanExpression).continue({(task: AWSTask) -> String in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for c  in output.items {
+                    let c : Comment = c as! Comment
+                    c.ownerName = (self.user?.userName)!
+                    AWSService().save(c)
+                        
+                    }
+                return "success"
+            }
+            return "success"
+
+
+            
+            
+
+    })
 
     }
 

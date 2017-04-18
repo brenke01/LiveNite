@@ -14,7 +14,7 @@ class Vote :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var imageID: String = ""
     var timeVoted: String = ""
     var voteValue: Int = 0
-    var owner: String = ""
+    var ownerName: String = ""
     var voteID: String = ""
     
     class func dynamoDBTableName() -> String{

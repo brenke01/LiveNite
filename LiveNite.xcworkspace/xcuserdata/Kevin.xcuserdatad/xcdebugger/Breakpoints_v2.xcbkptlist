@@ -303,8 +303,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "151"
             endingLineNumber = "151"
-            landmarkName = "viewDidAppear(_:)"
-            landmarkType = "9">
+            landmarkName = "saveSettings(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -319,8 +319,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
             endingLineNumber = "148"
-            landmarkName = "viewDidAppear(_:)"
-            landmarkType = "9">
+            landmarkName = "saveSettings(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1141,7 +1141,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/PlacesViewController.swift"
@@ -1177,7 +1177,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EventController.swift"
-                  timestampString = "513657014.731872"
+                  timestampString = "514161908.314846"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "114"
@@ -1192,7 +1192,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/EventController.swift"
-                  timestampString = "513657014.733037"
+                  timestampString = "514161908.31763"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "115"
@@ -1273,12 +1273,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/EditSettingsController.swift"
-            timestampString = "513737252.328296"
+            timestampString = "514162701.539622"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
-            landmarkName = "updateUserNameForTables(oldUserName:)"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
+            landmarkName = "updateUserNameForTables(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
