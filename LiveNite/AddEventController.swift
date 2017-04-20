@@ -181,7 +181,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.timeStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.short
         whenLabel.text = dateFormatter.string(from: eventForm.startTime)
         if (eventForm.descInput != "" && eventForm.titleInput != ""){
             postButton.isUserInteractionEnabled = true

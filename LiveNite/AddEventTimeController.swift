@@ -30,7 +30,7 @@ class AddEventTimeController: UIViewController, UIImagePickerControllerDelegate,
         endText.textColor = UIColor.black
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.timeStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.short
         if (eventForm.startTime != nil){
             startText.text = " " + dateFormatter.string(from: eventForm.startTime)
             minDate = eventForm.startTime
@@ -78,7 +78,7 @@ class AddEventTimeController: UIViewController, UIImagePickerControllerDelegate,
         eventForm.startTime = sender.date
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.timeStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.short
         maxDate = eventForm.endTime
 
         startText.text = " " + dateFormatter.string(from: sender.date)
@@ -88,7 +88,7 @@ class AddEventTimeController: UIViewController, UIImagePickerControllerDelegate,
         eventForm.endTime = sender.date
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.timeStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.short
         minDate = eventForm.startTime
         endText.text = " " + dateFormatter.string(from: sender.date)
     }

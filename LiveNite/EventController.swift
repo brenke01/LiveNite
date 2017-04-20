@@ -79,7 +79,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     override func viewDidLoad(){
         super.viewDidLoad()
         self.refreshControl.tintColor = UIColor.white
-
+        progressBarDisplayer("Loading", true)
         self.tableView.addSubview(self.refreshControl)
 
         self.tableView.backgroundColor = UIColor.clear
@@ -110,9 +110,9 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     func getEventData(){
-        progressBarDisplayer("Loading", true)
+        
         self.getEvents(completion: {(result)->Void in
-            DispatchQueue.main.async(execute: {
+      
                
                 if (self.eventsArr.count == 0){
                     self.arrayEmpty = true
@@ -138,7 +138,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 
                 
             })
-        })
+        
     }
     
     func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
@@ -187,6 +187,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     @IBAction func toggleSort(_ sender: AnyObject) {
+        progressBarDisplayer("Loading", true)
         if (self.hotToggle == 0){
             sortButton.setTitle("Popular", for: UIControlState())
             self.hotToggle = 1
@@ -215,6 +216,9 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     func handleRefresh(_ refreshControl: UIRefreshControl){
+        self.eventsArr = []
+        self.uiImageArr = []
+        self.uiImageDict = [:]
         self.getEventData()
         
     }
@@ -373,6 +377,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
          
 
         }
+
         return cell
     }
     
