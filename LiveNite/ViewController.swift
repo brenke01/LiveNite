@@ -200,6 +200,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if (self.imageArr.count == 0){
             progressBarDisplayer("Loading", true)
         }
+        self.collectionView?.alwaysBounceVertical = true
         profileMenu.isHidden = true
         //self.view.isHidden = true
         // Do any additional setup after loading the view, typically from a nib.
