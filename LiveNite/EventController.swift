@@ -213,6 +213,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 ]) as! [Event]
         }
         
+        
     }
     
     func handleRefresh(_ refreshControl: UIRefreshControl){
@@ -386,7 +387,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let tapLocation = sender.location(in: self.tableView)
         let indexPath = self.tableView.indexPathForRow(at: tapLocation)
         self.selectedEvent = self.eventsArr[(indexPath?.row)!]
-        self.selectedEventImg = self.uiImageArr[(indexPath?.row)!]
+        self.selectedEventImg = self.uiImageDict[self.eventsArr[(indexPath?.row)!].eventID]!
         self.performSegue(withIdentifier: "viewEvent", sender: 1)
     }
     
