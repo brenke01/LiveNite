@@ -659,6 +659,38 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
               
                 
             }
+            var timePosted = self.imageObj?.timePosted
+            let dateFormatter = DateFormatter()
+            let localeStr = "us"
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            dateFormatter.locale = Locale(identifier: localeStr)
+            let timePostedFormatted = dateFormatter.date(from: timePosted!)
+            let now = Date()
+            var interval = now.timeIntervalSince(timePostedFormatted!)
+            var intervalStr = ""
+            interval = interval / 3600
+            if (interval < 1){
+                interval = interval * 60
+                let intervalInt = Int(interval)
+                intervalStr = String(intervalInt) + "m"
+            }else{
+                var intervalInt = Int(interval)
+                if (intervalInt > 23){
+                    intervalInt = (intervalInt / 24)
+                    if (intervalInt > 364){
+                        intervalStr = String(intervalInt / 365) + "y"
+                        
+                    }else{
+                        intervalStr = String(intervalInt) + "d"
+                        
+                    }
+                }else{
+                    intervalStr = String(intervalInt) + "h"
+                    
+                }
+            }
+            
+            cell.timePostedLabel.text = intervalStr
             
             cell.maleLabel.text = String(maleCount)
             cell.femaleLabel.text = String(femaleCount)
@@ -825,6 +857,7 @@ class MyCustomTableViewCell: UITableViewCell{
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
     
+    @IBOutlet weak var timePostedLabel: UILabel!
     @IBOutlet weak var genderBar: UIView!
 
     @IBOutlet weak var maleLabel: UILabel!

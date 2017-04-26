@@ -189,6 +189,8 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         // Dispose of any resources that can be recreated.
     }
     
+
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (inputUserName.text != ""){
             submitButton.alpha = 1.0
@@ -250,7 +252,11 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     func textField(_ field: UITextField, shouldChangeCharactersIn range: NSRange, replacementString characters: String) -> Bool{
-        return ((characters as NSString).rangeOfCharacter(from: blockedCharacters).location == NSNotFound)
+        guard let text = field.text else { return true }
+        let newLength = text.characters.count + characters.characters.count - range.length
+        var length = newLength <= 12 // Bool
+        var validCharacters = ((characters as NSString).rangeOfCharacter(from: self.blockedCharacters).location == NSNotFound)
+        return length && validCharacters
     }
     
     
