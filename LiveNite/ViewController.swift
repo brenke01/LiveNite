@@ -83,6 +83,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var sortedUIImageArray = [UIImage]()
     var altNavBar = UIView()
     var arrayEmpty = false
+    var loggingIn = false
     var tryAgainButton = UILabel()
     var emptyArrayLabel = UILabel()
     typealias FinishedDownloaded = () -> ()
@@ -189,6 +190,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }else{
             self.accessToken = String(describing: FBSDKAccessToken.current())
             //setupHomeScreen()
+            if (self.loggingIn){
+                determineQuery()
+                self.loggingIn = false
+            }
 
         }
         
@@ -478,7 +483,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                 self.uiImageDictTemp = self.uiImageDict
                                 self.imageArrTemp = self.imageArr
                                 self.refreshControl.endRefreshing()
-                                self.view.isUserInteractionEnabled = true
+                                if (self.view != nil){
+                                    self.view.isUserInteractionEnabled = true
+                                    
+                                }
                                 self.collectionView!.reloadData()
                             })
                             
@@ -514,7 +522,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             DispatchQueue.main.async(execute: {
                                 self.uiImageDict = self.createUIImageDict()
                                 self.refreshControl.endRefreshing()
-                                self.view.isUserInteractionEnabled = true
+                                if (self.view != nil){
+                                    self.view.isUserInteractionEnabled = true
+                                    
+                                }
                                 self.collectionView!.reloadData()
                             })
                             
@@ -551,7 +562,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                self.uiImageDict = self.createUIImageDict()
 
                                 self.refreshControl.endRefreshing()
-                                self.view.isUserInteractionEnabled = true
+                                if (self.view != nil){
+                                    self.view.isUserInteractionEnabled = true
+
+                                }
                                 self.collectionView!.reloadData()
 
                             })
@@ -835,6 +849,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         }else if segue.identifier == "login"{
             if let destinationVC = segue.destination as? FBLoginController{
+                self.loggingIn = true
                 destinationVC.locations = 1
                 destinationVC.userID = (self.userID)
             }

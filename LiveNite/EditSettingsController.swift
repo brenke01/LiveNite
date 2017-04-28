@@ -76,7 +76,7 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
         navigationController?.navigationBar.tintColor = UIColor.white
         userNameEdit.text = self.user?.userName
             sliderValue.value = Float((self.user?.distance)!)
-        distanceLabel.text = (describing: String(self.user!.distance)) + " mi"
+        distanceLabel.text = String(describing: (self.user?.distance)!)
         userNameView.layer.borderWidth = 2
         distanceView.layer.borderWidth = 2
         userNameView.layer.borderColor = UIColor.white.cgColor

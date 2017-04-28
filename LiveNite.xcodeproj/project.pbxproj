@@ -636,12 +636,12 @@
 					"$(PROJECT_DIR)/FacebookSDKs-iOS-20151111",
 				);
 				INFOPLIST_FILE = LiveNite/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"LIBRARY_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				New_Setting = "";
 				New_Setting2 = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = socialseeker.LiveNite2011;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LiveNite/LiveNite-Bridging-Header.h";
@@ -667,12 +667,12 @@
 					"$(PROJECT_DIR)/FacebookSDKs-iOS-20151111",
 				);
 				INFOPLIST_FILE = LiveNite/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"LIBRARY_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				New_Setting = "";
 				New_Setting2 = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "socialseeker.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = socialseeker.LiveNite2011;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "LiveNite/LiveNite-Bridging-Header.h";

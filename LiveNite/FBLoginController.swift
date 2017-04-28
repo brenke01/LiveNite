@@ -155,7 +155,9 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 print(FBSDKAccessToken.current())
                 userObj?.accessToken = String(describing: FBSDKAccessToken.current()!)
                 AWSService().save(userObj!)
+
                     self.dismiss(animated: true, completion: nil)
+
 
                 })
             }
