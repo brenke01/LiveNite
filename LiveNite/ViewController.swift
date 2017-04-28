@@ -483,10 +483,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                 self.uiImageDictTemp = self.uiImageDict
                                 self.imageArrTemp = self.imageArr
                                 self.refreshControl.endRefreshing()
-                                if (self.view != nil){
-                                    self.view.isUserInteractionEnabled = true
+                                
+                                self.view.isUserInteractionEnabled = true
                                     
-                                }
+                                
                                 self.collectionView!.reloadData()
                             })
                             
@@ -522,10 +522,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             DispatchQueue.main.async(execute: {
                                 self.uiImageDict = self.createUIImageDict()
                                 self.refreshControl.endRefreshing()
-                                if (self.view != nil){
-                                    self.view.isUserInteractionEnabled = true
+                                
+                                self.view.isUserInteractionEnabled = true
                                     
-                                }
+                                
                                 self.collectionView!.reloadData()
                             })
                             
@@ -562,10 +562,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                self.uiImageDict = self.createUIImageDict()
 
                                 self.refreshControl.endRefreshing()
-                                if (self.view != nil){
-                                    self.view.isUserInteractionEnabled = true
 
-                                }
+                                self.view.isUserInteractionEnabled = true
+
+                                
                                 self.collectionView!.reloadData()
 
                             })
