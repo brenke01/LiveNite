@@ -15,7 +15,7 @@ import CoreData
 import CoreLocation
 import GoogleMaps
 
-class AddEventController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate, UITabBarControllerDelegate{
+class AddEventController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout,  CLLocationManagerDelegate, UITabBarControllerDelegate, UITextViewDelegate, UITextFieldDelegate{
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var locLabelBG: UIView!
@@ -31,6 +31,17 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var titleInput: UITextField!
     @IBOutlet weak var locLabel: UILabel!
+    
+        @IBOutlet weak var titleCharCount: UILabel!
+        @IBOutlet weak var descCharCount: UILabel!
+    
+    
+    
+    
+    @IBOutlet weak var titleTextField : UITextView?
+    @IBOutlet weak var descTextField : UITextView?
+
+
     var selectedImg = UIImage()
     var userID = ""
     var placeTitle = ""
@@ -39,34 +50,34 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     var userLocation = CLLocationCoordinate2D()
     var eventForm = EventForm()
     var user = User()
+    var minDate = Date()
+    var maxDate = Date()
+    var titleEdited = false
+    var descEdited = false
+    var titleValid = false
+    var descValid = false
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        postButton.isUserInteractionEnabled = false
+        postButton.isEnabled = false
         postButton.alpha = 0.5
         imgView.image = selectedImg
-        locLabel.text = placeTitle
-
-        whenLabel.text = String(describing: eventForm.startTime)
+        titleTextField?.tag = 1
+        descTextField?.tag = 2
+        titleCharCount.text = "25"
+        descCharCount.text = "250"
+        titleCharCount.textColor = UIColor.lightGray
+        descCharCount.textColor = UIColor.lightGray
+        titleTextField?.delegate = self
+        descTextField?.delegate = self
+        descTextField?.layer.cornerRadius = 3
+        titleTextField?.layer.cornerRadius = 3
+        startText.layer.cornerRadius = 3
+        endText.layer.cornerRadius = 3
         navigationController?.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: "dissmissKeyboard")
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)
         view.addGestureRecognizer(tap)
-        locLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
-        titleLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
-        descLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
-        whenLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
-        privateLabelBG.backgroundColor? = UIColor.black.withAlphaComponent(0.2)
-        privateLabelBG.layer.borderWidth = 1
-        privateLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
-        titleLabelBG.layer.borderWidth = 1
-        titleLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
-        locLabelBG.layer.borderWidth = 1
-        locLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
-        descLabelBG.layer.borderWidth = 1
-        descLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
-        whenLabelBG.layer.borderWidth = 1
-        whenLabelBG.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
         tabBarController?.delegate = self
        
     }
@@ -120,10 +131,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             event?.eventID = eventID
             event?.eventLat = self.placeLat
             event?.eventLong = self.placeLong
-            event?.information = self.descLabel.text!
+            event?.information = (self.descTextField?.text)!
             event?.publicStatus = self.privateToggle.isOn
             event?.placeTitle = self.placeTitle
-            event?.eventTitle = self.titleLabel.text!
+            event?.eventTitle = (self.titleTextField?.text)!
             let date = Date()
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -166,27 +177,8 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     override func viewWillAppear(_ animated: Bool){
-        if (eventForm.titleInput != ""){
-            titleLabel.text = eventForm.titleInput
-        }else{
-            titleLabel.text = "Please enter a title"
 
-        }
-        if (eventForm.descInput != ""){
-            descLabel.text = eventForm.descInput
 
-        }else{
-            descLabel.text = "Please enter a description"
-
-        }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = DateFormatter.Style.medium
-        dateFormatter.timeStyle = DateFormatter.Style.short
-        whenLabel.text = dateFormatter.string(from: eventForm.startTime)
-        if (eventForm.descInput != "" && eventForm.titleInput != ""){
-            postButton.isUserInteractionEnabled = true
-            postButton.alpha = 1.0
-        }
         super.viewWillAppear(animated)
     }
     @IBAction func exit(_ sender: Any) {
@@ -194,5 +186,166 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         self.dismiss(animated: false, completion: nil)
 
     }
+    
+    @IBOutlet weak var startText: UITextField!
+    
+    @IBOutlet weak var endText: UITextField!
+    
+    @IBAction func startTimeEdit(_ sender: UITextField) {
+        let datePickerView: UIDatePicker = UIDatePicker()
+        datePickerView.minimumDate = minDate
+        if (eventForm.endTime != nil && !(endText.text?.isEmpty)!){
+            datePickerView.maximumDate = eventForm.endTime
+        }
+        datePickerView.datePickerMode = UIDatePickerMode.dateAndTime
+        sender.inputView = datePickerView
+        datePickerView.addTarget(self, action: #selector(AddEventTimeController.startDatePickerValueChanged), for: UIControlEvents.valueChanged)
+    }
+    @IBAction func endTimeEdit(_ sender: UITextField) {
+        let datePickerView: UIDatePicker = UIDatePicker()
+        datePickerView.minimumDate = minDate
+        if (eventForm.startTime != nil && !(startText.text?.isEmpty)!){
+            datePickerView.minimumDate = eventForm.startTime
+        }
+        datePickerView.datePickerMode = UIDatePickerMode.dateAndTime
+        sender.inputView = datePickerView
+        datePickerView.addTarget(self, action: #selector(AddEventTimeController.endDatePickerValueChanged), for: UIControlEvents.valueChanged)
+    }
+    
+    
+    func startDatePickerValueChanged(sender: UIDatePicker){
+        eventForm.startTime = sender.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.short
+        maxDate = eventForm.endTime
+        
+        startText.text = " " + dateFormatter.string(from: sender.date)
+        var valid = checkInputs()
+        if (valid){
+            postButton.alpha = 1.0
+            postButton.isEnabled = true
+        }else{
+            postButton.alpha = 0.5
+            postButton.isEnabled = false
+        }
+    }
+    
+    func endDatePickerValueChanged(sender: UIDatePicker){
+        eventForm.endTime = sender.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.short
+        minDate = eventForm.startTime
+        endText.text = " " + dateFormatter.string(from: sender.date)
+        var valid = checkInputs()
+        if (valid){
+            postButton.alpha = 1.0
+            postButton.isEnabled = true
+        }else{
+            postButton.alpha = 0.5
+            postButton.isEnabled = false
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        var charLength = 0
+        if (textView.tag == 1 ){
+            charLength = 25
+        }else{
+            charLength = 250
+        }
+        let count = charLength - textView.text.utf16.count
+        if (textView.text?.isEmpty == false && count >= 0){
+            if (textView.tag == 1 ){
+            titleCharCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
+                 titleCharCount.text = String(count)
+                titleValid = true
+            }else{
+                  descCharCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
+                descCharCount.text = String(count)
+                descValid = true
+            }
+        }else if count < 0{
+            if (textView.tag == 1 ){
+            titleCharCount.textColor = UIColor.red.withAlphaComponent(0.75)
+                 titleCharCount.text = String(count)
+                titleValid = false
+            }else{
+                  descCharCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
+                descCharCount.text = String(count)
+                descValid = false
+            }
+           
+            
+        }else{
+            if (textView.tag == 1 ){
+            titleCharCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
+                 titleCharCount.text = String(count)
+            }else{
+                descCharCount.textColor = UIColor.darkGray.withAlphaComponent(0.75)
+                 descCharCount.text = String(count)
+            }
+            titleValid = false
+            descValid = false
+            
+        }
+        
+        
+       
+        
+        
+    }
+    func textView(_ textView: UITextView, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var charLength = 0
+        if (textView.tag == 1 ){
+            charLength = 25
+        }else{
+            charLength = 250
+        }
+        let newLength = (textView.text?.utf16.count)! + string.utf16.count - range.length
+        //charCount.text = String(newLength)
+        // Find out what the text field will be after adding the current edit
+        let text = (textView.text! as NSString).replacingCharacters(in: range, with: string)
+        
+        
+        // Return true so the text field will be changed
+        return newLength <= charLength
+        return true
+    }
+    
+    func checkInputs() -> Bool{
+        var valid = true
+        if (!self.titleValid || !self.descValid){
+            valid = false
+        }
+        if ((startText.text?.isEmpty)! || (endText.text?.isEmpty)!){
+            valid = false
+        }
+
+        return valid
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if (textView.tag == 1 && !self.titleEdited){
+            self.titleEdited = true
+            titleTextField?.text = ""
+        }else if textView.tag == 2 && !self.descEdited{
+            self.descEdited = true
+            descTextField?.text = ""
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        var valid = checkInputs()
+        if (valid){
+            postButton.alpha = 1.0
+            postButton.isEnabled = true
+        }else{
+            postButton.alpha = 0.5
+            postButton.isEnabled = false
+        }
+    }
+    
     
 }
