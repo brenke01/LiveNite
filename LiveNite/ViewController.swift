@@ -630,8 +630,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
         
             if (self.placesToggle){
-                imgHeight = 240
-                imgWidth = 240
+                imgHeight = 300
+                imgWidth = 300
                 noColumns = 1
             }else{
                 imgHeight = 200
@@ -752,8 +752,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //set size of each square cell to imgSize
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if (self.placesToggle){
-            imgHeight = 240
-            imgWidth = 240
+            imgHeight = 300
+            imgWidth = 300
             noColumns = 1
         }else if (self.arrayEmpty){
             imgHeight = Int((self.collectionView?.frame.height)!)

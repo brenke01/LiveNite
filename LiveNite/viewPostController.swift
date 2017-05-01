@@ -254,7 +254,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
         })
         cell.imgView.image = self.imageTapped
-
+        cell.genderBar.clipsToBounds = true
+        cell.genderBar.layer.masksToBounds = true
         cell.upvotesLabel.text = String(imageObj!.totalScore)
         //Needs styling
         cell.upvotesLabel.textColor = UIColor.white
@@ -264,8 +265,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 cell.hotColdLabel.textColor = UIColor.green
             }else if (self.hotColdScore <= 0.75 && self.hotColdScore >= 0.25){
                 cell.hotColdLabel.textColor = UIColor.yellow
-            }else if (self.hotColdScore < 0.25){
+            }else if (self.hotColdScore < 0.25 && self.hotColdScore > 0){
                 cell.hotColdLabel.textColor = UIColor.red
+            }else{
+                cell.hotColdLabel.textColor = UIColor.white
             }
             
             self.tableView.reloadData()
@@ -620,8 +623,11 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 cell.hotColdLabel.textColor = UIColor.green
             }else if (self.hotColdScore <= 0.75 && self.hotColdScore >= 0.25){
                 cell.hotColdLabel.textColor = UIColor.yellow
-            }else if (self.hotColdScore < 0.25){
+            }else if (self.hotColdScore < 0.25 && self.hotColdScore > 0){
                 cell.hotColdLabel.textColor = UIColor.red
+            }else{
+                cell.hotColdLabel.textColor = UIColor.white
+
             }
                 cell.captionLabel.text = self.imageObj?.caption
                 cell.userNameLabel.text = self.imageObj?.ownerName
@@ -644,6 +650,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("Check in Bar width")
             print(cell.genderBar.bounds.width)
             print(cell.genderBar.bounds.height)
+            cell.genderBar.layer.cornerRadius = 3
+            cell.genderBar.clipsToBounds = true
+            cell.genderBar.layer.masksToBounds = true
             cell.genderBar.backgroundColor = UIColor.darkGray
             if self.checkInArray.count > 0{
                 for checkIn in self.checkInArray{
