@@ -56,17 +56,25 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         self.navigationController?.navigationBar.topItem?.title = selectedEvent?.eventTitle
         let checkInButton = UIBarButtonItem(image: UIImage(named: "checkInButton"), style: .plain, target: self, action: #selector(ViewEventController.checkIn))
         navigationItem.rightBarButtonItem = checkInButton
+        self.refreshControl.tintColor = UIColor.white
         
+        self.tableView.addSubview(self.refreshControl)
+        loadEventDetails()
 
         
+    }
+    
+    func loadEventDetails(){
 
         AWSService().loadCheckIn((self.selectedEvent?.eventID)!, completion: {(result)->Void in
             self.checkInRequest = result
+            
         })
         
         
         getCheckIns(completion: {(result)->Void in
             self.checkInArray = result
+            
             self.tableView.reloadData()
         })
         
@@ -78,6 +86,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
+
     }
     
     @IBAction func exit(_ sender: AnyObject) {
@@ -205,12 +214,29 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         print("\(userLocation.coordinate.latitude) Degrees Latitude, \(userLocation.coordinate.longitude) Degrees Longitude")
         locationUpdated = true
     }
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
+    
+    func handleRefresh(_ refreshControl: UIRefreshControl){
+
+        loadEventDetails()
+        
+        
+        
+    }
+    
     //
     func loadUIDetails() {
         let cell:EventImgCell = self.tableView.dequeueReusableCell(withIdentifier: "eventImgCell")! as! EventImgCell
         
         loadComments(completion: {(result)->Void in
             self.commentArray = result as! [Comment]
+             self.commentArray.sort {$0.timePosted > $1.timePosted}
+            self.refreshControl.endRefreshing()
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
                 
@@ -597,7 +623,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             
             let dateFormatter = DateFormatter()
             let localeStr = "us"
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
             dateFormatter.locale = Locale(identifier: localeStr)
             let timePostedFormatted = dateFormatter.date(from: timePosted)
             let now = Date()
