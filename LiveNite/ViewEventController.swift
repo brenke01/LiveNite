@@ -597,7 +597,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             
             let dateFormatter = DateFormatter()
             let localeStr = "us"
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             dateFormatter.locale = Locale(identifier: localeStr)
             let timePostedFormatted = dateFormatter.date(from: timePosted)
             let now = Date()
@@ -655,7 +655,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         let dateFormatter = DateFormatter()
         let localeStr = "us"
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        dateFormatter.locale = Locale(identifier: localeStr)
+        dateFormatter.locale = Locale.current
         let eventDate = dateFormatter.date(from: startTime)
         let todayDate = dateFormatter.date(from: String(describing: Date()))
         let cal = NSCalendar(calendarIdentifier: NSCalendar.Identifier(rawValue: NSGregorianCalendar))!
@@ -686,7 +686,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         var partOfDay = "AM"
         var hour = cal.component(.hour, from: eventDate!)
         if (hour >= 12){
-            hour = 24 - hour
+            hour = 12 - (24 - hour)
             partOfDay = "PM"
         }
         var formattedEventDate = dayName + " at " + String(hour) + partOfDay

@@ -137,10 +137,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             event?.eventTitle = (self.titleTextField?.text)!
             let date = Date()
             let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            event?.timePosted = String(describing: date)
-            event?.eventStartTime = String(describing: self.eventForm.startTime)
-            event?.eventEndTime = String(describing: self.eventForm.endTime)
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            event?.timePosted = formatter.string(from: date)
+            event?.eventStartTime = formatter.string(from: self.eventForm.startTime)
+            event?.eventEndTime = formatter.string(from: self.eventForm.endTime)
             var geo :Geohash = Geohash()
             let l =  self.userLocation
             let s = l.geohash(10)
