@@ -32,7 +32,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="72" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rlr-bd-LrY">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyCustomTableViewCell" rowHeight="472" id="XXo-4c-hdO" customClass="MyCustomTableViewCell" customModule="LiveNite" customModuleProvider="target">
@@ -269,10 +269,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="rlr-bd-LrY" firstAttribute="leading" secondItem="pLR-rD-vJW" secondAttribute="leading" id="5iV-I9-bUj"/>
-                            <constraint firstAttribute="trailing" secondItem="rlr-bd-LrY" secondAttribute="trailing" id="afL-h0-wCG"/>
-                            <constraint firstAttribute="bottom" secondItem="rlr-bd-LrY" secondAttribute="bottom" id="cTn-Ud-wMA"/>
-                            <constraint firstItem="rlr-bd-LrY" firstAttribute="top" secondItem="tid-IJ-FOd" secondAttribute="bottom" id="l2y-gL-qBu"/>
+                            <constraint firstItem="rlr-bd-LrY" firstAttribute="top" secondItem="tid-IJ-FOd" secondAttribute="bottom" id="Lmj-3b-Inv"/>
+                            <constraint firstItem="rlr-bd-LrY" firstAttribute="leading" secondItem="pLR-rD-vJW" secondAttribute="leading" id="XtL-G0-BWj"/>
+                            <constraint firstAttribute="trailing" secondItem="rlr-bd-LrY" secondAttribute="trailing" id="gIt-az-qVf"/>
+                            <constraint firstItem="FIV-Gq-nnJ" firstAttribute="top" secondItem="rlr-bd-LrY" secondAttribute="bottom" id="m3p-bp-5NE"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -1162,7 +1162,7 @@
                                         </items>
                                     </navigationBar>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="500" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WTN-T8-pQg">
-                                        <rect key="frame" x="0.0" y="44" width="375" height="603"/>
+                                        <rect key="frame" x="0.0" y="44" width="375" height="553"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
