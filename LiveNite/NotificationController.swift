@@ -248,8 +248,9 @@ class NotificationController: UIViewController, UITableViewDelegate, UITableView
         let queryExpression = AWSDynamoDBQueryExpression()
         
         queryExpression.indexName = "ownerName-index"
-        queryExpression.hashKeyAttribute = "ownerName"
-        queryExpression.hashKeyValues = self.user?.userName
+        queryExpression.keyConditionExpression = "ownerName = :ownerName"
+        queryExpression.filterExpression = "userName <> :userName"
+        queryExpression.expressionAttributeValues = [":ownerName": self.user?.userName, ":userName": self.user?.userName]
         
         
         
