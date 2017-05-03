@@ -284,6 +284,11 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         cell.upvotesLabel.text = String(describing: self.selectedEvent?.totalScore)
         //Needs styling
         cell.upvotesLabel.textColor = UIColor.white
+        calculateHotColdScore({(result)->Void in
+            var score = result[0] as Double
+            
+            self.tableView.reloadData()
+        })
         
     }
     
@@ -394,20 +399,22 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         
     }
     
-    func calculateHotColdScore(){
+    func calculateHotColdScore(_ completion:@escaping (_ result:[Double])->Void)->[Double]{
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //factors for decaying function
-        let a = -1000.0
+        let a = -100.0
         let flatnessFactor = 3.0
         
         //retrieve all votes for image
         hotColdScore = 0
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
-        queryExpression.filterExpression = "imageID = "+imageID
+        queryExpression.indexName = "imageID-ownerName-index"
+        queryExpression.keyConditionExpression = "imageID = :imageID"
+        queryExpression.expressionAttributeValues = [":imageID": self.selectedEvent?.eventID]
         dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
@@ -426,14 +433,20 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                     self.hotColdScore += decayedValue
                 }
                 print("The request succeeded. HotColdScore = " + String(self.hotColdScore))
-                return self.hotColdScore as AnyObject
+                self.selectedEvent?.hotColdScore = self.hotColdScore
+                AWSService().save(self.selectedEvent!)
+                
+                completion([self.hotColdScore])
+                
+                return self.hotColdScore as Double as AnyObject
+                
             }
-            return self.hotColdScore as AnyObject
+            return self.hotColdScore as Double as AnyObject
         })
         
         
         self.selectedEvent?.hotColdScore = self.hotColdScore
-        AWSService().save(self.selectedEvent!)
+        return [self.hotColdScore as Double]
     }
     
     //end func zone
@@ -568,6 +581,17 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             cell.downvoteButton.isHidden = false
             cell.upvoteButton.isHidden = false
             cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.hotColdLabel.text = String(floor((self.selectedEvent?.hotColdScore)! * 100)) + "%"
+            if (self.hotColdScore > 0.75){
+                cell.hotColdLabel.textColor = UIColor.green
+            }else if (self.hotColdScore <= 0.75 && self.hotColdScore >= 0.25){
+                cell.hotColdLabel.textColor = UIColor.yellow
+            }else if (self.hotColdScore < 0.25 && self.hotColdScore > 0){
+                cell.hotColdLabel.textColor = UIColor.red
+            }else{
+                cell.hotColdLabel.textColor = UIColor.white
+                
+            }
             if (self.hasUpvoted){
                 cell.upvoteButton.alpha = 0.5
             }else{
@@ -789,6 +813,7 @@ class EventImgCell: UITableViewCell{
     @IBOutlet weak var eventTimeLabel: UILabel!
     @IBOutlet weak var femaleLabel: UILabel!
     @IBOutlet weak var maleLabel: UILabel!
+    @IBOutlet weak var hotColdLabel: UILabel!
     
 }
 

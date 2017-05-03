@@ -260,16 +260,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         //Needs styling
         cell.upvotesLabel.textColor = UIColor.white
         calculateHotColdScore({(result)->Void in
-            cell.hotColdLabel.text = String(describing: result)
-            if (self.hotColdScore > 0.75){
-                cell.hotColdLabel.textColor = UIColor.green
-            }else if (self.hotColdScore <= 0.75 && self.hotColdScore >= 0.25){
-                cell.hotColdLabel.textColor = UIColor.yellow
-            }else if (self.hotColdScore < 0.25 && self.hotColdScore > 0){
-                cell.hotColdLabel.textColor = UIColor.red
-            }else{
-                cell.hotColdLabel.textColor = UIColor.white
-            }
+            var score = result[0] as Double
             
             self.tableView.reloadData()
         })
@@ -401,16 +392,16 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         //factors for decaying function
-        let a = -1000.0
+        let a = -100.0
         let flatnessFactor = 3.0
         
         //retrieve all votes for image
         hotColdScore = 0
         let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         let queryExpression = AWSDynamoDBQueryExpression()
-        queryExpression.indexName = "imageID-owner-index"
-        queryExpression.hashKeyAttribute = "imageID"
-        queryExpression.hashKeyValues = self.imageObj?.imageID
+        queryExpression.indexName = "imageID-ownerName-index"
+        queryExpression.keyConditionExpression = "imageID = :imageID"
+        queryExpression.expressionAttributeValues = [":imageID": self.imageObj?.imageID]
         dynamoDBObjectMapper.query(Vote.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 print("The request failed. Error: [\(task.error)]")
@@ -429,9 +420,11 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.hotColdScore += decayedValue
                 }
                 print("The request succeeded. HotColdScore = " + String(self.hotColdScore))
+                self.imageObj?.hotColdScore = self.hotColdScore
                 AWSService().save(self.imageObj!)
 
                 completion([self.hotColdScore])
+
                 return self.hotColdScore as Double as AnyObject
                 
             }
@@ -453,7 +446,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.isUserInteractionEnabled = true
         tableView.dataSource = self
         tableView.delegate = self
         self.refreshControl.tintColor = UIColor.white
@@ -612,13 +605,13 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
             
             cell.imgView.image = self.imageTapped
-            //calculateHotColdScore()
+
             cell.upvotesLabel.text = String(self.imageObj!.totalScore)
             //Needs styling
             cell.upvotesLabel.textColor = UIColor.white
             cell.captionLabel.textColor = UIColor.white
             cell.userNameLabel.textColor = UIColor.white
-            cell.hotColdLabel.text = String(self.hotColdScore)
+            cell.hotColdLabel.text = String(floor((self.imageObj?.hotColdScore)! * 100)) + "%"
             if (self.hotColdScore > 0.75){
                 cell.hotColdLabel.textColor = UIColor.green
             }else if (self.hotColdScore <= 0.75 && self.hotColdScore >= 0.25){
@@ -772,7 +765,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         cell.backgroundColor = UIColor.clear
         cell.isOpaque = false
         cell.textLabel?.textColor = UIColor.white
-
+            
         return cell
       }
         
