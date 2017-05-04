@@ -657,10 +657,29 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             if (interval < 1){
                 interval = interval * 60
                 let intervalInt = Int(interval)
-                intervalStr = String(intervalInt) + "m"
+                if (intervalInt == 0){
+                    intervalStr = "now"
+                    
+                }else{
+                    intervalStr = String(intervalInt) + "m"
+
+                    
+                }
             }else{
-                let intervalInt = Int(interval)
-                intervalStr = String(intervalInt) + "h"
+                var intervalInt = Int(interval)
+                if (intervalInt > 23){
+                    intervalInt = (intervalInt / 24)
+                    if (intervalInt > 364){
+                        intervalStr = String(intervalInt / 365) + "y"
+                        
+                    }else{
+                        intervalStr = String(intervalInt) + "d"
+                        
+                    }
+                }else{
+                    intervalStr = String(intervalInt) + "h"
+                    
+                }
             }
             
             
