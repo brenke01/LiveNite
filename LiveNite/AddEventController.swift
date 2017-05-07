@@ -70,10 +70,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         descCharCount.textColor = UIColor.lightGray
         titleTextField?.delegate = self
         descTextField?.delegate = self
-        descTextField?.layer.cornerRadius = 3
-        titleTextField?.layer.cornerRadius = 3
-        startText.layer.cornerRadius = 3
-        endText.layer.cornerRadius = 3
+        descTextField?.layer.cornerRadius = 2
+        titleTextField?.layer.cornerRadius = 2
+        startText.layer.cornerRadius = 2
+        endText.layer.cornerRadius = 2
         navigationController?.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: "dissmissKeyboard")
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundimg" )!)

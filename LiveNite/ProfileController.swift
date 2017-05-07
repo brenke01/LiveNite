@@ -60,9 +60,9 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        profileInfoContainer.isHidden = true
-        profileInfoContainer.backgroundColor = UIColor.clear
-        profilebkg.backgroundColor? = UIColor.white.withAlphaComponent(0.2)
+        //profileInfoContainer.isHidden = true
+        //profileInfoContainer.backgroundColor = UIColor.clear
+        profilebkg.backgroundColor? = UIColor.darkGray.withAlphaComponent(0.5)
         navigationController?.navigationBar.topItem?.title = "Profile"
         scrollView.delegate = self
         profileImg.layer.borderWidth = 2
@@ -72,6 +72,16 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         navigationController?.navigationBar.tintColor = UIColor.white
         var editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editSettings))
         self.navigationItem.rightBarButtonItem = editButton
+        
+//        let path = UIBezierPath(roundedRect:profilebkg.bounds,
+//                                byRoundingCorners:[.bottomRight, .bottomLeft],
+//                                cornerRadii: CGSize(width: 10, height:  10))
+//        
+//        let maskLayer = CAShapeLayer()
+//        
+//        maskLayer.path = path.cgPath
+//        profilebkg.layer.mask = maskLayer
+        
         
         connectButton = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(self.connectWithUser))
         self.navigationItem.leftBarButtonItem = connectButton
@@ -100,10 +110,10 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBAction func editProfileImg(_ sender: AnyObject) {
     }
     func loadUserDetail(){
-        profileInfoContainer.isHidden = false
+        //profileInfoContainer.isHidden = false
         userNameLabel.text = self.user?.userName
         imgView.image = getRankMedal((self.user?.score)!)
-        scoreLabel.text = String(describing: user!.score)
+        scoreLabel.text = "Score: " + String(describing: user!.score)
         
         if (self.user?.profileImg != "nil"){
             AWSService().getProfileImageFromUrl((self.user?.profileImg)!, completion: {(result)->Void in
@@ -135,7 +145,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         
 
         
-        distanceLabel.text = String(describing: self.user!.distance) + " mi"
+        //distanceLabel.text = String(describing: self.user!.distance) + " mi"
         view.bringSubview(toFront: imgView)
         
     }
@@ -275,7 +285,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         let currentDate = Date()
         
         currentUser.score += 1
-        scoreLabel.text = String(currentUser.score)
+        scoreLabel.text = "Score: " + String(currentUser.score)
         metUser.score += 1
         AWSService().save(currentUser)
         AWSService().save(metUser)
