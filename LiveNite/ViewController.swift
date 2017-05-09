@@ -396,11 +396,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 nvBar?.tintColor = UIColor.white
                 nvBar?.topItem?.title = self.chosenAlbumLocation
                 let navItem = UINavigationItem(title: self.chosenAlbumLocation)
-                var backbutton = UIButton(type: .custom)
-                backbutton.setImage(UIImage(named: "backBtn"), for: .normal) // Image can be downloaded from here below link
-                backbutton.setTitle("Back", for: .normal)
-                backbutton.setTitleColor(UIColor.white, for: .normal)// You can change the TitleColor
-                backbutton.addTarget(self, action: #selector(self.backToAlbumView(_:)), for: .touchUpInside)
 
                 var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.backToAlbumView(_:)))
                 barButton.title = "Back"
@@ -409,13 +404,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
                 self.navigationItem.leftBarButtonItem = barButton
                 self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-               //self.navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
-                //self.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backbutton)
+
                 self.navigationController?.navigationBar.tintColor = UIColor.white
-                //self.navigationController?.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-                //self.navigationController?.navigationItem.backBarButtonItem?.tintColor = UIColor.white
-                //self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backbutton)
-                //self.view.addSubview(nvBar!)
+
                 
                 
                 
