@@ -166,7 +166,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func viewWillAppear(_ animated: Bool){
+        if(!self.placesToggle && self.displayPlacesAlbum){
+            self.navigationController?.setNavigationBarHidden(false , animated: animated)
+        }else{
+    
         self.navigationController?.setNavigationBarHidden(true , animated: animated)
+        }
         super.viewWillAppear(animated)
     }
     override func viewWillDisappear(_ animated: Bool){
@@ -341,7 +346,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let exitButton = UIButton(frame: CGRect(x: self.topNavBar.frame.width * 0.1, y: self.topNavBar.frame.height * 0.1, width: self.topNavBar.frame.width * 0.1, height: self.topNavBar.frame.height * 0.8))
         var placeTitleLabel = UILabel(frame: CGRect(x: self.topNavBar.frame.width * 0.4, y: self.topNavBar.frame.height * 0.15, width: self.topNavBar.frame.width * 0.6, height: self.topNavBar.frame.height * 0.8))
        
-        placeTitleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)
+        placeTitleLabel.font = UIFont(name: "HelveticaNeue", size: 16.0)
         altNavBar.isHidden = true
 
         
@@ -367,14 +372,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                
                 
             }else{
-                let backButton = UIButton(frame: CGRect(x:0, y: 0, width: 70.0, height: 70.0))
-                let backImage = UIImage(named: "backBtn")
-                backButton.setImage(backImage, for: UIControlState.normal)
+//                let backButton = UIButton(frame: CGRect(x:0, y: 0, width: 70.0, height: 70.0))
+//                let backImage = UIImage(named: "navBack")
+//                backButton.setImage(backImage, for: UIControlState.normal)
                 //backButton.titleEdgeInsets = UIEdgeInsetsMake(5.0, 20.0, 10.0, 0.0)
-                backButton.addTarget(self, action: #selector(self.backToAlbumView(_:)), for: .touchUpInside)
+                //backButton.addTarget(self, action: #selector(self.//backToAlbumView(_:)), for: .touchUpInside)
                 self.topNavBar.isHidden = true
-                self.altNavBar.addSubview(backButton)
-                self.topNavBar.bringSubview(toFront: backButton)
+                //self.altNavBar.addSubview(backButton)
+                //self.topNavBar.bringSubview(toFront: backButton)
                 self.altNavBar.isHidden = false
                 placeTitleLabel.textColor = UIColor.white
                 placeTitleLabel.text = self.chosenAlbumLocation
@@ -383,8 +388,36 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 placeTitleLabel.textAlignment = NSTextAlignment.center
 
                 self.altNavBar.addSubview(placeTitleLabel)
-                self.view.addSubview(self.altNavBar)
-            
+                self.navigationController?.setNavigationBarHidden(false , animated: false)
+                var nvBar = self.navigationController?.navigationBar
+
+                nvBar?.barTintColor = UIColor(red: 56/255, green: 105/255, blue: 203/255, alpha: 1.0)
+                //nvBar?.tintColor = UIColor(red: 56/255, green: 105/255, blue: 203/255, alpha: 1.0)
+                nvBar?.tintColor = UIColor.white
+                nvBar?.topItem?.title = self.chosenAlbumLocation
+                let navItem = UINavigationItem(title: self.chosenAlbumLocation)
+                var backbutton = UIButton(type: .custom)
+                backbutton.setImage(UIImage(named: "backBtn"), for: .normal) // Image can be downloaded from here below link
+                backbutton.setTitle("Back", for: .normal)
+                backbutton.setTitleColor(UIColor.white, for: .normal)// You can change the TitleColor
+                backbutton.addTarget(self, action: #selector(self.backToAlbumView(_:)), for: .touchUpInside)
+
+                var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.backToAlbumView(_:)))
+                barButton.title = "Back"
+                barButton.image = UIImage(named: "backBtn")
+                barButton.tintColor = UIColor.white
+
+                self.navigationItem.leftBarButtonItem = barButton
+                self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+               //self.navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
+                //self.navigationController?.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backbutton)
+                self.navigationController?.navigationBar.tintColor = UIColor.white
+                //self.navigationController?.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+                //self.navigationController?.navigationItem.backBarButtonItem?.tintColor = UIColor.white
+                //self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: backbutton)
+                //self.view.addSubview(nvBar!)
+                
+                
                 
             }
         })
@@ -398,6 +431,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func backToAlbumView(_ sender: UIButton!){
+        self.navigationController?.setNavigationBarHidden(true , animated: false)
         self.topNavBar.isHidden = false
         self.altNavBar.isHidden = true
         self.placesToggle = true

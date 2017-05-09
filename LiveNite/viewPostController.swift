@@ -446,6 +446,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
+        barButton.title = "Back"
+        barButton.image = UIImage(named: "backBtn")
+
+        self.navigationItem.leftBarButtonItem = barButton
         self.view.isUserInteractionEnabled = true
         tableView.dataSource = self
         tableView.delegate = self
@@ -835,6 +841,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             })
             
         })
+    }
+    
+    func back(_ sender: UIBarButtonItem){
+        _ = navigationController?.popViewController(animated: true)
     }
     
     func handleRefresh(_ refreshControl: UIRefreshControl){
