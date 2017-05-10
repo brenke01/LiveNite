@@ -447,11 +447,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
-        barButton.title = "Back"
-        barButton.image = UIImage(named: "backBtn")
 
-        self.navigationItem.leftBarButtonItem = barButton
         self.view.isUserInteractionEnabled = true
         tableView.dataSource = self
         tableView.delegate = self
@@ -502,6 +498,11 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
+        barButton.title = "Back"
+        barButton.image = UIImage(named: "backBtn")
+        
+        self.navigationItem.leftBarButtonItem = barButton
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

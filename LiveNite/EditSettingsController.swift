@@ -79,6 +79,8 @@ class EditSettingsController: UIViewController,UINavigationControllerDelegate, U
         distanceLabel.text = String(describing: (self.user?.distance)!)
         userNameView.layer.borderWidth = 2
         distanceView.layer.borderWidth = 2
+        distanceView.layer.cornerRadius = 2
+        userNameView.layer.cornerRadius = 2 
         userNameView.layer.borderColor = UIColor.white.cgColor
         distanceView.layer.borderColor = UIColor.white.cgColor
         distanceView.layer.masksToBounds = true

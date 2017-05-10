@@ -86,6 +86,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var loggingIn = false
     var tryAgainButton = UILabel()
     var emptyArrayLabel = UILabel()
+    var overlayView = UIView()
     typealias FinishedDownloaded = () -> ()
     
     
@@ -152,7 +153,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var imagesTypeBtn: UIButton!
 
     @IBAction func getPlacesView(_ sender: AnyObject) {
-        progressBarDisplayer("Loading", true)
+        progressBarWithOverlay("Loading", true)
         
         self.view.isUserInteractionEnabled = false
         if (!self.placesToggle){
@@ -447,6 +448,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    func progressBarWithOverlay(_ msg:String, _ indicator:Bool ) {
+        
+        if indicator {
+            
+            self.overlayView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+            self.overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+            self.activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 50, width: 100, height: 100)
+            self.activityIndicator.startAnimating()
+            overlayView.addSubview(self.activityIndicator)
+            self.view.addSubview(self.overlayView)
+            
+            
+        }
+    }
+    
     func determineQuery(){
         let placesViewController : PlacesViewController = PlacesViewController()
         if (self.placesToggle && !self.displayPlacesAlbum){
@@ -717,10 +733,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             cell.clipsToBounds = true
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
+            self.overlayView.removeFromSuperview()
         }else if (doneLoading){
          DispatchQueue.main.async(execute: {
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
+            self.overlayView.removeFromSuperview()
+
             self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 75, width: self.view.frame.width, height: 50))
             self.tryAgainButton = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 50, width: self.view.frame.width, height: 50))
             self.tryAgainButton.text = "Tap to retry"
@@ -765,7 +784,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func displayImagesForAlbum(_ img: Image){
-
+        progressBarWithOverlay("Loading", true)
         self.chosenAlbumLocation = img.placeTitle
         self.displayPlacesAlbum = true
         determineQuery()

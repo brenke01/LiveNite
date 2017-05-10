@@ -31,6 +31,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var user = User()
     var profileForm = ProfileSettingsForm()
     var activityIndicator = UIActivityIndicatorView()
+    var editButton = UIBarButtonItem()
     
     
     
@@ -70,8 +71,9 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         profileImg.layer.masksToBounds = true
         //profileImg.backgroundColor = UIColor(red: 58/255, green:67/255, blue:96/255, alpha:1)
         navigationController?.navigationBar.tintColor = UIColor.white
-        var editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editSettings))
-        self.navigationItem.rightBarButtonItem = editButton
+        self.editButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: #selector(self.editSettings))
+        self.editButton.image = UIImage(named: "editGear")
+        self.navigationItem.rightBarButtonItem = self.editButton
         
 //        let path = UIBezierPath(roundedRect:profilebkg.bounds,
 //                                byRoundingCorners:[.bottomRight, .bottomLeft],
@@ -83,7 +85,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
 //        profilebkg.layer.mask = maskLayer
         
         
-        connectButton = UIBarButtonItem(title: "Connect", style: .plain, target: self, action: #selector(self.connectWithUser))
+        connectButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: #selector(self.connectWithUser))
+        connectButton.image = UIImage(named: "connect")
         self.navigationItem.leftBarButtonItem = connectButton
         
         if (self.user?.userID == ""){
@@ -159,10 +162,14 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
             captureSession?.stopRunning()
             videoPreviewLayer?.zPosition = -1
             captureSession = nil
-            connectButton.title = "Connect"
+            connectButton.image = UIImage(named: "connect")
+            self.navigationItem.title = "Profile"
+             self.navigationItem.rightBarButtonItem = self.self.editButton
         }
         else{
-            connectButton.title = "Return"
+            connectButton.image = UIImage(named: "Cancel")
+            self.navigationItem.title = "Connect"
+           self.navigationItem.rightBarButtonItem = nil
             let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
             
             do{
@@ -215,7 +222,9 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                     captureSession = nil
                     videoPreviewLayer?.zPosition = -1
                     qrCodeFrameView?.frame = CGRect.zero
-                    connectButton.title = "Connect"
+                    connectButton.image = UIImage(named: "connect")
+                    self.navigationItem.title = "Profile"
+                    self.navigationItem.rightBarButtonItem = self.editButton
                     checkIfQRCodeIsUser(qrString: metadataObj.stringValue)
                 }
             }
@@ -284,7 +293,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         let currentDate = Date()
         
-        currentUser.score += 1
+        currentUser.score += 10
         scoreLabel.text = "Score: " + String(currentUser.score)
         metUser.score += 1
         AWSService().save(currentUser)
@@ -348,7 +357,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         AWSService().save(metUserMeetUp!)
         
         print("Score: \(self.user?.score)")
-        SCLAlertView().showSuccess("Congrats", subTitle: "You met up and earned 1 point!")
+        SCLAlertView().showSuccess("Congrats", subTitle: "You met up and earned 10 point!")
     }
     
     func progressBarDisplayer(_ msg:String, _ indicator:Bool ) {
@@ -437,7 +446,6 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     override func viewWillAppear(_ animated: Bool){
         if (profileForm.madeEdits){
             profileForm.madeEdits = false
-            distanceLabel.text = profileForm.distance + " mi"
             userNameLabel.text = profileForm.userName
             
         }

@@ -64,6 +64,10 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         
     }
     
+    func back(_ sender: UIBarButtonItem){
+        _ = navigationController?.popViewController(animated: true)
+    }
+    
     func loadEventDetails(){
 
         AWSService().loadCheckIn((self.selectedEvent?.eventID)!, completion: {(result)->Void in
@@ -465,9 +469,16 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         // Dispose of any resources that can be recreated.
     }
     
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
+        barButton.title = "Back"
+        barButton.image = UIImage(named: "backBtn")
+        
+        self.navigationItem.leftBarButtonItem = barButton
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
