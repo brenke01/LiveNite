@@ -295,7 +295,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         
         currentUser.score += 10
         scoreLabel.text = "Score: " + String(currentUser.score)
-        metUser.score += 1
+        metUser.score += 10
         AWSService().save(currentUser)
         AWSService().save(metUser)
         

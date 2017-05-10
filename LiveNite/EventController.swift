@@ -81,7 +81,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.refreshControl.tintColor = UIColor.white
         progressBarDisplayer("Loading", true)
         self.tableView.addSubview(self.refreshControl)
-
+        self.navigationItem.title = "Events"
         self.tableView.backgroundColor = UIColor.clear
         if #available(iOS 8.0, *) {
             self.locationManager.requestWhenInUseAuthorization()

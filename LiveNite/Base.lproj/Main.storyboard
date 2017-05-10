@@ -1988,7 +1988,7 @@
         <image name="navBack" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="GMz-ac-VLI"/>
         <segue reference="nYP-eX-3SA"/>
-        <segue reference="lOC-7T-djj"/>
     </inferredMetricsTieBreakers>
 </document>
