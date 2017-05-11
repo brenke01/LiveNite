@@ -40,6 +40,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     var sortedUIImageArray = [UIImage]()
     var emptyArrayLabel = UILabel()
     var tryAgainButton = UILabel()
+    var sortBarButton = UIBarButtonItem()
     @IBAction func addEvent(_ sender: AnyObject) {
         
         self.performSegue(withIdentifier: "addEvent", sender: 1)
@@ -66,18 +67,23 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     override func viewWillAppear(_ animated: Bool){
-        self.navigationController?.setNavigationBarHidden(true , animated: animated)
+
 
         super.viewWillAppear(animated)
     }
     override func viewWillDisappear(_ animated: Bool){
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+
         super.viewWillDisappear(animated)
     }
     
     @IBOutlet weak var topNavBar: UIView!
     override func viewDidLoad(){
         super.viewDidLoad()
+        self.navigationItem.title = "Events"
+        self.sortBarButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.toggleSort(_:)))
+        self.sortBarButton.title = "Recent"
+        self.sortBarButton.tintColor = UIColor.white
+        self.navigationItem.leftBarButtonItem = self.sortBarButton
         self.refreshControl.tintColor = UIColor.white
         progressBarDisplayer("Loading", true)
         self.tableView.addSubview(self.refreshControl)
@@ -189,12 +195,12 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBAction func toggleSort(_ sender: AnyObject) {
         progressBarDisplayer("Loading", true)
         if (self.hotToggle == 0){
-            sortButton.setTitle("Popular", for: UIControlState())
+            self.sortBarButton.title = "Popular"
             self.hotToggle = 1
             determineSort()
             self.tableView.reloadData()
         }else{
-            sortButton.setTitle("Recent", for: UIControlState())
+            sortBarButton.title = "Recent"
             self.hotToggle = 0
             determineSort()
             self.tableView.reloadData()
