@@ -114,6 +114,19 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     func loadUserDetail(){
         //profileInfoContainer.isHidden = false
+        var charCount = self.user?.userName.characters.count
+        var originalWidth = self.userNameLabel.frame.size.width
+        var newWidth = 13 * charCount!
+        var differenceWidth = CGFloat(newWidth) - originalWidth
+        var tFrame : CGRect = self.userNameLabel.frame
+        tFrame.size.width = CGFloat(newWidth)
+        self.userNameLabel.frame = tFrame
+        
+        var x = imgView.frame.origin.x
+        var newX = x + differenceWidth
+        var imgFrame : CGRect = imgView.frame
+        imgFrame.origin.x = newX
+        self.imgView.frame = imgFrame
         userNameLabel.text = self.user?.userName
         imgView.image = getRankMedal((self.user?.score)!)
         scoreLabel.text = "Score: " + String(describing: user!.score)
