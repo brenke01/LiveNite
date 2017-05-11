@@ -204,6 +204,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         userLocation = locations[0]
         print("\(userLocation.coordinate.latitude) Degrees Latitude, \(userLocation.coordinate.longitude) Degrees Longitude")
         locationUpdated = true
+        manager.stopUpdatingLocation()
     }
 //
     func loadUIDetails() {

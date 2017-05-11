@@ -118,13 +118,19 @@ class SearchPostsController: UIViewController, UISearchBarDelegate, UISearchDisp
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:ResultsTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "resultsCell")! as! ResultsTableViewCell
+        cell.layer.cornerRadius = 5
+        cell.layer.masksToBounds = true
+        cell.clipsToBounds = true
         cell.imgView.layer.cornerRadius = 5
+        cell.imgView.layer.masksToBounds = true
+        cell.imgView.clipsToBounds = true
         if shouldShowSearchResults{
             cell.placeTitleLabel.text = filteredImages[indexPath.row].placeTitle
             cell.userNameLabel.text = filteredImages[indexPath.row].ownerName
             imageObj = filteredImages[indexPath.row]
             for imgDict in uiImageDictArray{
                 if imgDict[filteredImages[indexPath.row].imageID] != nil{
+
                     cell.imgView.image = imgDict[filteredImages[indexPath.row].imageID]!
                 }
             }
@@ -132,6 +138,8 @@ class SearchPostsController: UIViewController, UISearchBarDelegate, UISearchDisp
         }else{
             
             cell.imgView.image = uiImageArray[indexPath.row]
+            cell.imgView.layer.cornerRadius = 3
+
             cell.placeTitleLabel.text = imageArray[indexPath.row].placeTitle
             cell.userNameLabel.text = imageArray[indexPath.row].ownerName
         }

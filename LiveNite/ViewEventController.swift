@@ -217,6 +217,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         userLocation = locations[0]
         print("\(userLocation.coordinate.latitude) Degrees Latitude, \(userLocation.coordinate.longitude) Degrees Longitude")
         locationUpdated = true
+        manager.stopUpdatingLocation()
     }
     
     lazy var refreshControl: UIRefreshControl = {
