@@ -638,7 +638,49 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                 
                 
             }
-            cell.eventTimeLabel.text = formatEventTime(startTime: (self.selectedEvent?.eventStartTime)!)
+             let now = Date()
+            let dateFormatter = DateFormatter()
+            let localeStr = "us"
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            dateFormatter.locale = Locale.current
+            let eventEndDate = dateFormatter.date(from: (self.selectedEvent?.eventEndTime)!)
+            if (eventEndDate! < now){
+                var interval = now.timeIntervalSince(eventEndDate!)
+                var intervalStr = ""
+                interval = interval / 3600
+                if (interval < 1){
+                    interval = interval * 60
+                    let intervalInt = Int(interval)
+                    if (intervalInt == 0){
+                        intervalStr = "Just ended"
+                        
+                    }else{
+                        intervalStr = String(intervalInt) + "m"
+                        
+                        
+                    }
+                }else{
+                    var intervalInt = Int(interval)
+                    if (intervalInt > 23){
+                        intervalInt = (intervalInt / 24)
+                        if (intervalInt > 364){
+                            intervalStr = String(intervalInt / 365) + "y"
+                            
+                        }else{
+                            intervalStr = String(intervalInt) + "d"
+                            
+                        }
+                    }else{
+                        intervalStr = String(intervalInt) + "h"
+                        
+                    }
+                }
+                
+                cell.eventTimeLabel.text = intervalStr
+            }else{
+                 cell.eventTimeLabel.text = formatEventTime(startTime: (self.selectedEvent?.eventStartTime)!)
+            }
+          
             cell.maleLabel.text = String(maleCount)
             cell.femaleLabel.text = String(femaleCount)
             cell.maleLabel.textColor = UIColor.white
