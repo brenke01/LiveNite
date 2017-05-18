@@ -70,6 +70,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
 
         super.viewWillAppear(animated)
+        self.navigationItem.title = "Events"
     }
     override func viewWillDisappear(_ animated: Bool){
 

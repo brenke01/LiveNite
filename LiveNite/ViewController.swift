@@ -126,11 +126,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var topNavBar: UIView!
     @IBAction func toggleSort(_ sender: AnyObject) {
         if (self.hotToggle == 0){
-            sortBtn.setTitle("Popular", for: UIControlState())
-            getHotImages()
+            sortBtn.setImage(UIImage(named: "populartoggle"), for: .normal)
         }else{
-            sortBtn.setTitle("Recent", for: UIControlState())
-            getRecentImages()
+            sortBtn.setImage(UIImage(named: "Recent"), for: .normal)
         }
     }
     
@@ -158,9 +156,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.view.isUserInteractionEnabled = false
         if (!self.placesToggle){
             self.placesToggle = true
-        imagesTypeBtn.setImage(UIImage(named:"PlacesSelect"), for: UIControlState.normal)
+        imagesTypeBtn.setImage(UIImage(named:"placestoggle"), for: UIControlState.normal)
         }else{
-            imagesTypeBtn.setImage(UIImage(named:"PeopleSelect"), for: UIControlState.normal)
+            imagesTypeBtn.setImage(UIImage(named:"peopletoggle"), for: UIControlState.normal)
             self.placesToggle = false
         }
         determineQuery()
@@ -419,7 +417,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func reloadCollectionView(){
         self.arrayEmpty = false
         progressBarDisplayer("Loading", true)
-        self.determineQuery()
+        AWSService().loadUser(self.userID,completion: {(result)->Void in
+            self.user = result
+            self.determineQuery()
+            
+        })
     }
     
     func backToAlbumView(_ sender: UIButton!){

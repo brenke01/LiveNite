@@ -80,6 +80,19 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
+        barButton.title = "Back"
+        barButton.image = UIImage(named: "backBtn")
+        
+        self.navigationItem.leftBarButtonItem = barButton
+    }
+    
+    func back(_ sender: UIBarButtonItem){
+        _ = navigationController?.popViewController(animated: true)
+    }
+    
     @IBAction func exit(_ sender: AnyObject) {
         self.dismiss(animated: false, completion: nil)
         

@@ -473,6 +473,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationItem.title = self.selectedEvent?.eventTitle
         var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
         barButton.title = "Back"
         barButton.image = UIImage(named: "backBtn")
@@ -587,6 +588,10 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             cell.upvotesLabel.textColor = UIColor.white
             cell.captionLabel.textColor = UIColor.white
             cell.userNameLabel.textColor = UIColor.white
+            cell.genderBar.layer.cornerRadius = 3
+            cell.genderBar.clipsToBounds = true
+            cell.genderBar.layer.masksToBounds = true
+
             cell.captionLabel.text = self.selectedEvent?.information
             cell.userNameLabel.text = self.selectedEvent?.ownerName
             //cell.upvoteButton.backgroundColor = UIColor.white

@@ -119,6 +119,10 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         view.endEditing(true)
     }
     
+    func back(_ sender: UIBarButtonItem){
+        _ = navigationController?.popViewController(animated: true)
+    }
+    
     func saveImageToBucket(){
         let setId : String = UUID().uuidString
         let dataImage:Data = UIImageJPEGRepresentation(self.selectedImg, 0.0)!
@@ -176,10 +180,9 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         
     }
     
-    override func viewWillAppear(_ animated: Bool){
-
-
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
     }
     @IBAction func exit(_ sender: Any) {
         eventForm.eventPlacePicked = false
