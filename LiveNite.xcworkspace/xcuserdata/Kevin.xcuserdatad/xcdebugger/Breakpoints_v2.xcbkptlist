@@ -535,11 +535,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/EventController.swift"
-            timestampString = "516668279.320636"
+            timestampString = "516928069.264668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "getEventData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -551,11 +551,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/EventController.swift"
-            timestampString = "516846384.889183"
+            timestampString = "516928069.264668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "378"
-            endingLineNumber = "378"
+            startingLineNumber = "384"
+            endingLineNumber = "384"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1125,11 +1125,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/EventController.swift"
-            timestampString = "516668279.320636"
+            timestampString = "516928069.264668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "getEventData()"
             landmarkType = "7">
             <Locations>
@@ -1365,11 +1365,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/EventController.swift"
-            timestampString = "516668279.320636"
+            timestampString = "516928069.264668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
             landmarkName = "getEventData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1381,11 +1381,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/EventController.swift"
-            timestampString = "516668279.320636"
+            timestampString = "516928069.264668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "getEventData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1525,11 +1525,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/EventController.swift"
-            timestampString = "516668279.320636"
+            timestampString = "516928069.264668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
             landmarkName = "getEventData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1589,11 +1589,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ViewEventController.swift"
-            timestampString = "516758236.495288"
+            timestampString = "516928709.268353"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "801"
-            endingLineNumber = "801"
+            startingLineNumber = "822"
+            endingLineNumber = "822"
             landmarkName = "formatEventTime(startTime:)"
             landmarkType = "7">
          </BreakpointContent>

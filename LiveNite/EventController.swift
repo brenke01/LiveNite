@@ -107,12 +107,13 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 self.userID = result
                 AWSService().loadUser(self.userID,completion: {(result)->Void in
                     self.user = result
+                     self.getEventData()
                     
                 })
                 
             })
         }
-        getEventData()
+       
 
     }
     
@@ -227,7 +228,12 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.eventsArr = []
         self.uiImageArr = []
         self.uiImageDict = [:]
-        self.getEventData()
+        AWSService().loadUser(self.userID,completion: {(result)->Void in
+            self.user = result
+            self.getEventData()
+            
+        })
+
         
     }
     
@@ -339,7 +345,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             titleView.text = " " + self.eventsArr[indexPath.row].eventTitle
             titleView.textColor = UIColor.white
             titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
-            titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
+            titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 14)
             imageButton.addSubview(titleView)
             imageButton.isUserInteractionEnabled = true
             imageButton.layer.masksToBounds = true
@@ -406,7 +412,13 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         if (self.arrayEmpty){
             self.emptyArrayLabel.removeFromSuperview()
             self.tryAgainButton.removeFromSuperview()
-            getEventData()
+            progressBarDisplayer("Loading", true)
+
+            AWSService().loadUser(self.userID,completion: {(result)->Void in
+                self.user = result
+                self.getEventData()
+                
+            })
         }
         
     }

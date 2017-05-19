@@ -53,7 +53,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         tableView.dataSource = self
         tableView.delegate = self
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        self.navigationController?.navigationBar.topItem?.title = selectedEvent?.eventTitle
+        //self.navigationController?.navigationBar.topItem?.title = selectedEvent?.eventTitle
         let checkInButton = UIBarButtonItem(image: UIImage(named: "checkInButton"), style: .plain, target: self, action: #selector(ViewEventController.checkIn))
         navigationItem.rightBarButtonItem = checkInButton
         self.refreshControl.tintColor = UIColor.white
@@ -331,7 +331,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
     func imageData_DisplayToUI()
     {
         
-        navigationBar.topItem!.title = self.selectedEvent?.placeTitle
+        //navigationBar.topItem!.title = self.selectedEvent?.placeTitle
     }
     
     func registerVote(_ sender: UIButton)
@@ -473,7 +473,28 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = self.selectedEvent?.eventTitle
+        var titleView = UIView(frame: CGRect(x: 0, y: 0, width: 180, height: 32))
+        titleView.backgroundColor = UIColor.clear
+       var eventTitleView = UILabel(frame: CGRect(x: 0, y: 0, width: 180, height: 16))
+        var placeTitleView = UILabel(frame: CGRect(x: 0, y: 16, width: 180, height: 16))
+        eventTitleView.textColor = UIColor.white
+        eventTitleView.text = self.selectedEvent?.eventTitle
+       eventTitleView.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+        eventTitleView.textAlignment = NSTextAlignment.center
+        placeTitleView.textColor = UIColor.white
+        placeTitleView.text = self.selectedEvent?.placeTitle
+        placeTitleView.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+        placeTitleView.textAlignment = NSTextAlignment.center
+        eventTitleView.adjustsFontSizeToFitWidth = true
+        eventTitleView.minimumScaleFactor = 0.2
+        placeTitleView.adjustsFontSizeToFitWidth = true
+        placeTitleView.minimumScaleFactor = 0.2
+        
+        titleView.addSubview(eventTitleView)
+        titleView.addSubview(placeTitleView)
+        
+        
+        self.navigationItem.titleView = titleView
         var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
         barButton.title = "Back"
         barButton.image = UIImage(named: "backBtn")
@@ -577,7 +598,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         var width = CGFloat(1.0)
         if (indexPath.row == 0){
             let cell:EventImgCell = self.tableView.dequeueReusableCell(withIdentifier: "eventImgCell")! as! EventImgCell
-            navBar.topItem?.title = self.selectedEvent?.eventTitle
+            //navBar.topItem?.title = self.selectedEvent?.eventTitle
             cell.imgView.image = self.img
             //calculateHotColdScore()
             cell.upvotesLabel.text = String(self.selectedEvent!.totalScore)
