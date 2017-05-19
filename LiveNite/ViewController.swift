@@ -475,9 +475,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 let imgArr = result
                 if (self.imageArr.count == 0){
                     self.arrayEmpty = true
+                    self.collectionView!.reloadData()
+
                 }else{
                     self.arrayEmpty = false
-                }
+                
                 let sortedArray = (imgArr as NSArray).sortedArray(using: [
                     NSSortDescriptor(key: "placeTitle", ascending: false),
                     NSSortDescriptor(key: "totalScore", ascending: false)
@@ -508,6 +510,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 }
                 self.sort = false
                 self.uiImageArr = []
+                self.uiImageDict = [:]
                 self.idArray = []
                 self.imageArr = []
                 self.imageArr = groupedArr
@@ -536,6 +539,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         }
                     })
                 }
+                }
                 
             })
         }else if(self.placesToggle && self.displayPlacesAlbum){
@@ -545,13 +549,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.sort = false
                 self.idArray = []
                 self.uiImageArr = []
+                self.uiImageDict = [:]
+
                 self.imageArr = []
                 self.imageArr = result
                 if (self.imageArr.count == 0){
                     self.arrayEmpty = true
+                    self.collectionView!.reloadData()
+
                 }else{
                     self.arrayEmpty = false
-                }
+                
 
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
@@ -575,12 +583,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                         }
                     })
                 }
+                }
             })
         }else{
             placesViewController.getImages(user: self.user!, completion: {(result)->Void in
                 self.sort = false
                 self.uiImageArr = []
                 self.imageArr = []
+                self.uiImageDict = [:]
+
                 self.idArray = []
                 self.imageArr = result
                 if (self.imageArr.count == 0){
@@ -588,7 +599,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     self.collectionView!.reloadData()
                 }else{
                     self.arrayEmpty = false
-                }
+                
 
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
@@ -596,6 +607,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 //write function to determine sort
                 //create dictionary with images for sorting
                 self.determineSort()
+
                 for img in self.imageArr{
                     AWSService().getImageFromUrl(String(img.imageID), bucket: "liveniteimages", completion: {(result)->Void in
                         self.uiImageArr.append(result)
@@ -614,6 +626,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                             })
                         }
                     })
+                }
                 }
                 
                 
@@ -662,8 +675,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
+
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
         
+
         cell.backgroundColor = UIColor.clear
     
         if (self.doneLoading && !self.arrayEmpty){
@@ -738,6 +753,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.overlayView.removeFromSuperview()
         }else if (doneLoading){
          DispatchQueue.main.async(execute: {
+            for v  in cell.subviews{
+                v.removeFromSuperview()
+            }
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
             self.overlayView.removeFromSuperview()
@@ -753,7 +771,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
             self.emptyArrayLabel.textColor = UIColor.white
             self.emptyArrayLabel.textAlignment = .center
-
+            self.refreshControl.endRefreshing()
 
             cell.addSubview(self.tryAgainButton)
             cell.addSubview(self.emptyArrayLabel)
@@ -921,6 +939,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
 }
+
+
 
 
 

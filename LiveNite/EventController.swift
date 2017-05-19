@@ -363,9 +363,12 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
         }else if (self.arrayEmpty){
-
+                for v  in cell.subviews{
+                    v.removeFromSuperview()
+                }
                 self.activityIndicator.stopAnimating()
                 self.activityIndicator.removeFromSuperview()
+
                 self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.tableView?.frame.height)! / 2) - 75, width: self.view.frame.width, height: 50))
                 self.tryAgainButton = UILabel(frame: CGRect(x: 0, y: ((self.tableView?.frame.height)! / 2) - 50, width: self.view.frame.width, height: 50))
                 self.tryAgainButton.text = "Tap to retry"
@@ -379,7 +382,8 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 self.emptyArrayLabel.textAlignment = .center
                 self.activityIndicator.stopAnimating()
                 self.activityIndicator.removeFromSuperview()
-                
+                self.refreshControl.endRefreshing()
+
                 cell.addSubview(self.tryAgainButton)
                 cell.addSubview(self.emptyArrayLabel)
          
