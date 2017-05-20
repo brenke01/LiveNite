@@ -87,6 +87,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var tryAgainButton = UILabel()
     var emptyArrayLabel = UILabel()
     var overlayView = UIView()
+    var imageUtil = ImageUtil()
     typealias FinishedDownloaded = () -> ()
     
     
@@ -185,7 +186,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
-        
+        if (self.imageUtil.imageDeleted){
+            self.imageUtil.imageDeleted = false
+            reloadCollectionView()
+        }
         self.view.isHidden = false
         if (FBSDKAccessToken.current() == nil)
         {
@@ -475,7 +479,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 let imgArr = result
                 if (self.imageArr.count == 0){
                     self.arrayEmpty = true
-                    self.collectionView!.reloadData()
+                    DispatchQueue.main.async(execute: {
+                        self.collectionView!.reloadData()
+                    })
 
                 }else{
                     self.arrayEmpty = false
@@ -751,7 +757,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
             self.overlayView.removeFromSuperview()
-        }else if (doneLoading){
+        }else if (doneLoading || self.arrayEmpty){
          DispatchQueue.main.async(execute: {
             for v  in cell.subviews{
                 v.removeFromSuperview()
@@ -894,7 +900,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let image = Image()
           
             if let destinationVC = segue.destination as? viewPostController{
-               
+               destinationVC.imageUtil = self.imageUtil
                 destinationVC.imageTapped = self.chosenImage
                 print("IMAGE ID: " + (image?.imageID)!)
                 destinationVC.imageObj = self.chosenImageObj

@@ -153,6 +153,14 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MOU-O1-cFZ">
+                                                    <rect key="frame" x="309" y="12" width="58" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" image="options"/>
+                                                    <connections>
+                                                        <action selector="loadImageOptions" destination="VBq-gS-Kxm" eventType="touchUpInside" id="dzV-de-QVw"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -199,6 +207,7 @@
                                             <outlet property="hotColdLabel" destination="4vW-U4-OiA" id="BnD-Tb-olx"/>
                                             <outlet property="imgView" destination="7Qs-iL-i5m" id="oby-Xc-wZg"/>
                                             <outlet property="maleLabel" destination="WVN-gE-caL" id="GoR-Tr-6T4"/>
+                                            <outlet property="optionsButton" destination="MOU-O1-cFZ" id="KXF-vP-QPJ"/>
                                             <outlet property="timePostedLabel" destination="qPW-0p-S63" id="2ro-4d-8nS"/>
                                             <outlet property="upvoteButton" destination="jTa-UT-wZ7" id="rOM-lC-2AX"/>
                                             <outlet property="upvotesLabel" destination="Kpv-Rb-7vi" id="MAQ-4K-I9E"/>
@@ -1218,6 +1227,14 @@
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWP-BV-HR9">
+                                                            <rect key="frame" x="309" y="8" width="58" height="22"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <state key="normal" image="options"/>
+                                                            <connections>
+                                                                <action selector="loadImageOptions" destination="7Xu-IW-crY" eventType="touchUpInside" id="6Q9-Dc-ewD"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -1270,6 +1287,7 @@
                                                     <outlet property="hotColdLabel" destination="23T-fN-dYT" id="rCr-GH-P1k"/>
                                                     <outlet property="imgView" destination="tFL-8A-Qab" id="VmW-zs-JxY"/>
                                                     <outlet property="maleLabel" destination="ss1-L3-VeI" id="cxx-4u-2bx"/>
+                                                    <outlet property="optionsButton" destination="yWP-BV-HR9" id="yM0-YP-wfP"/>
                                                     <outlet property="upvoteButton" destination="u8y-6N-yZy" id="LbT-Yh-nY4"/>
                                                     <outlet property="upvotesLabel" destination="6mf-O2-bLV" id="Xzv-Yi-sPE"/>
                                                     <outlet property="userNameLabel" destination="RSd-f1-rP0" id="HiF-gl-bGv"/>
@@ -1965,10 +1983,11 @@
         <image name="backgroundimg" width="750" height="1158"/>
         <image name="loadingImage" width="640" height="799"/>
         <image name="navBack" width="16" height="16"/>
+        <image name="options" width="16" height="16"/>
         <image name="peopletoggle" width="500" height="250"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lOC-7T-djj"/>
+        <segue reference="0JZ-LK-rAL"/>
         <segue reference="nYP-eX-3SA"/>
     </inferredMetricsTieBreakers>
 </document>

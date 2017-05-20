@@ -13,6 +13,7 @@
 		0A3286771E1496A8003655B2 /* SearchPostsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3286761E1496A8003655B2 /* SearchPostsController.swift */; };
 		0A3AB0701E22A64A0082ECFE /* EditSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3AB06F1E22A64A0082ECFE /* EditSettingsController.swift */; };
 		0A3F302A1D9CAE69007AFB06 /* Geohash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F30291D9CAE69007AFB06 /* Geohash.swift */; };
+		0A424E0F1ED09AD300215B85 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A424E0E1ED09AD300215B85 /* ImageUtil.swift */; };
 		0A48A2941D8A1D9C00E70833 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48A2931D8A1D9C00E70833 /* EventController.swift */; };
 		0A4C705D1D1A268600795D20 /* PostCommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C705C1D1A268600795D20 /* PostCommentController.swift */; };
 		0A4D873A1DDD41DC00B5AFE1 /* AddEventTitleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D87391DDD41DC00B5AFE1 /* AddEventTitleController.swift */; };
@@ -75,6 +76,7 @@
 		0A3286761E1496A8003655B2 /* SearchPostsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPostsController.swift; sourceTree = "<group>"; };
 		0A3AB06F1E22A64A0082ECFE /* EditSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSettingsController.swift; sourceTree = "<group>"; };
 		0A3F30291D9CAE69007AFB06 /* Geohash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Geohash.swift; path = LiveNite/Geohash.swift; sourceTree = "<group>"; };
+		0A424E0E1ED09AD300215B85 /* ImageUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
 		0A48A2931D8A1D9C00E70833 /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		0A4C705C1D1A268600795D20 /* PostCommentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentController.swift; sourceTree = "<group>"; };
 		0A4D87391DDD41DC00B5AFE1 /* AddEventTitleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventTitleController.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				0A5FC69D1E16CE570070260F /* NotificationController.swift */,
 				0A3AB06F1E22A64A0082ECFE /* EditSettingsController.swift */,
 				0A75AA0A1E25C2E60058F11D /* ProfileSettingsForm.swift */,
+				0A424E0E1ED09AD300215B85 /* ImageUtil.swift */,
 			);
 			name = View_Controller_Classes;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 				0A4D873A1DDD41DC00B5AFE1 /* AddEventTitleController.swift in Sources */,
 				0ADD5D861D94AE1700DCC3C5 /* AWSGeoHash.swift in Sources */,
 				6BF7D4241D9B68F300348DC7 /* SendGeoRequest.m in Sources */,
+				0A424E0F1ED09AD300215B85 /* ImageUtil.swift in Sources */,
 				0AD58B4F1C9264C70037F0F8 /* LiveNite in Sources */,
 				6B69ED9D1C34C1F2000785EF /* GooglePlace.swift in Sources */,
 				0A75AA0B1E25C2E60058F11D /* ProfileSettingsForm.swift in Sources */,

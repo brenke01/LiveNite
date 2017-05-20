@@ -56,6 +56,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var scrollViewContentHeight = 0 as CGFloat
     let screenHeight = UIScreen.main.bounds.height
     var checkInArray = [CheckIn]()
+    var imageUtil = ImageUtil()
     
     //end var zone
     
@@ -254,6 +255,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
 
         })
+        if (self.imageObj?.userID != self.user?.userID){
+            cell.optionsButton.isHidden = true
+        }
         cell.imgView.image = self.imageTapped
         cell.genderBar.clipsToBounds = true
         cell.genderBar.layer.masksToBounds = true
@@ -506,6 +510,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         self.navigationItem.leftBarButtonItem = barButton
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if segue.identifier == "postComment" {
@@ -613,7 +618,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
             
             cell.imgView.image = self.imageTapped
-
+            
             cell.upvotesLabel.text = String(self.imageObj!.totalScore)
             //Needs styling
             cell.upvotesLabel.textColor = UIColor.white
@@ -865,6 +870,34 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     }
     
+    func deleteImage(){
+        AWSService().deleteItem(self.imageObj!)
+        
+        _ = navigationController?.popViewController(animated: true)
+        imageUtil.imageDeleted = true
+    }
+
+    
+    @IBAction func loadImageOptions(){
+        let alertController = UIAlertController(title: nil, message: "Please select an action", preferredStyle: .actionSheet)
+        //self.navigationItem.leftBarButtonItem?.title = ""
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
+            // ...
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(cancelAction)
+        
+        let destroyAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            self.deleteImage()
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(destroyAction)
+        
+        self.present(alertController, animated: true) {
+            // ...
+        }
+    }
+    
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
@@ -884,7 +917,7 @@ class MyCustomTableViewCell: UITableViewCell{
     
     @IBOutlet weak var timePostedLabel: UILabel!
     @IBOutlet weak var genderBar: UIView!
-
+    @IBOutlet weak var optionsButton : UIButton!
     @IBOutlet weak var maleLabel: UILabel!
     @IBOutlet weak var femaleLabel: UILabel!
     @IBOutlet weak var hotColdLabel: UILabel!

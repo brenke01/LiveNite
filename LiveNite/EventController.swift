@@ -41,6 +41,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     var emptyArrayLabel = UILabel()
     var tryAgainButton = UILabel()
     var sortBarButton = UIBarButtonItem()
+    var imageUtil = ImageUtil()
     @IBAction func addEvent(_ sender: AnyObject) {
         
         self.performSegue(withIdentifier: "addEvent", sender: 1)
@@ -59,6 +60,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }else if segue.identifier == "viewEvent"{
             
             if let destinationVC = segue.destination as? ViewEventController{
+                destinationVC.imageUtil = self.imageUtil
                 destinationVC.user = (self.user)!
                 destinationVC.selectedEvent = self.selectedEvent
                 destinationVC.img = self.selectedEventImg
@@ -124,7 +126,9 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                
                 if (self.eventsArr.count == 0){
                     self.arrayEmpty = true
-                    self.tableView.reloadData()
+                    DispatchQueue.main.async(execute: {
+                        self.tableView.reloadData()
+                    })
                 }else{
                      self.determineSort()
                     self.arrayEmpty = false
@@ -332,7 +336,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = UITableViewCellSelectionStyle.none
 
-        if (self.uiImageArr.count > 0){
+        if (self.uiImageArr.count > 0 && !self.arrayEmpty){
             cell.backgroundColor = UIColor.clear
 
             
@@ -437,6 +441,18 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     override func viewDidAppear(_ animated: Bool){
         super.viewDidAppear(animated)
+        if (self.imageUtil.imageDeleted){
+            self.imageUtil.imageDeleted = false
+            self.emptyArrayLabel.removeFromSuperview()
+            self.tryAgainButton.removeFromSuperview()
+            progressBarDisplayer("Loading", true)
+            
+            AWSService().loadUser(self.userID,completion: {(result)->Void in
+                self.user = result
+                self.getEventData()
+                
+            })
+        }
     }
 
 }

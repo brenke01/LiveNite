@@ -45,6 +45,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
     var checkInArray = [CheckIn]()
     var hasUpvoted = false
     var hasDownvoted = false
+    var imageUtil = ImageUtil()
     @IBOutlet weak var tableView: UITableView!
     var scrollViewContentHeight = 0 as CGFloat
     let screenHeight = UIScreen.main.bounds.height
@@ -605,6 +606,9 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             //Needs styling
             tableView.backgroundColor = UIColor.clear
             tableView.isOpaque = false
+            if (self.selectedEvent?.ownerID != self.user?.userID){
+                cell.optionsButton.isHidden = true
+            }
             cell.backgroundColor = UIColor.clear
             cell.upvotesLabel.textColor = UIColor.white
             cell.captionLabel.textColor = UIColor.white
@@ -896,6 +900,33 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         })
     }
     
+    func deleteEvent(){
+        AWSService().deleteItem(self.selectedEvent!)
+        
+        _ = navigationController?.popViewController(animated: true)
+        imageUtil.imageDeleted = true
+    }
+    
+    @IBAction func loadImageOptions(){
+        let alertController = UIAlertController(title: nil, message: "Please select an action", preferredStyle: .actionSheet)
+        //self.navigationItem.leftBarButtonItem?.title = ""
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
+            // ...
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(cancelAction)
+        
+        let destroyAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            self.deleteEvent()
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(destroyAction)
+        
+        self.present(alertController, animated: true) {
+            // ...
+        }
+    }
+    
 
 }
 
@@ -908,6 +939,7 @@ class EventImgCell: UITableViewCell{
     @IBOutlet var imgView: UIImageView!
     @IBOutlet var upvoteButton: UIButton!
     @IBOutlet var downvoteButton: UIButton!
+    @IBOutlet weak var optionsButton : UIButton!
 
     @IBOutlet weak var eventTimeLabel: UILabel!
     @IBOutlet weak var femaleLabel: UILabel!

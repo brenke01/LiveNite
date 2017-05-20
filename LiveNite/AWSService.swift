@@ -441,6 +441,22 @@ let testFileURL1 = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathCom
         return notificationArray
         
     }
+    
+    func deleteItem(_ myObject : AnyObject){
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDBObjectMapper.remove(myObject as! AWSDynamoDBObjectModel).continue({(task: AWSTask) -> AnyObject in
+            if ((task.error) != nil){
+                print("error: \(task.error)")
+            }
+            if ((task.exception) != nil){
+                print("exception: \(task.exception)")
+            }
+            if ((task.result) != nil){
+                print("delete")
+            }
+            return "success" as AnyObject
+        })
+    }
 
     
 }
