@@ -78,7 +78,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         //determine distance between user and place and set maxAllowableDistance
         let imagePlaceLocation = CLLocation(latitude: (self.imageObj?.placeLat)!, longitude: (self.imageObj?.placeLong)!)
         let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
-        let maxAllowableDistance : CLLocationDistance = 2500
+        let maxAllowableDistance : CLLocationDistance = 100
         
         //if within range, check if they've checked in recently
         if distanceBetweenUserAndPlace < maxAllowableDistance {

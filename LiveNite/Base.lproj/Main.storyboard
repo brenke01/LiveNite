@@ -779,7 +779,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem id="iys-y6-fNs">
-                                        <barButtonItem key="leftBarButtonItem" image="navBack" id="p1q-K9-Qdv">
+                                        <barButtonItem key="leftBarButtonItem" image="backBtn" id="p1q-K9-Qdv">
                                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="exit:" destination="SQT-NH-12I" id="FuJ-u3-KnV"/>
@@ -1982,7 +1982,6 @@
         <image name="backBtn" width="16" height="16"/>
         <image name="backgroundimg" width="750" height="1158"/>
         <image name="loadingImage" width="640" height="799"/>
-        <image name="navBack" width="16" height="16"/>
         <image name="options" width="16" height="16"/>
         <image name="peopletoggle" width="500" height="250"/>
     </resources>

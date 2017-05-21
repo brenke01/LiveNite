@@ -72,6 +72,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
         descTextField?.delegate = self
         descTextField?.layer.cornerRadius = 2
         titleTextField?.layer.cornerRadius = 2
+        self.privateToggle.isOn = false
         startText.layer.cornerRadius = 2
         endText.layer.cornerRadius = 2
         navigationController?.delegate = self
@@ -125,7 +126,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func saveImageToBucket(){
         let setId : String = UUID().uuidString
-        let dataImage:Data = UIImageJPEGRepresentation(self.selectedImg, 0.0)!
+        let dataImage:Data = UIImageJPEGRepresentation(self.selectedImg, 1.0)!
         AWSService().saveImageToBucket(dataImage, id: setId, placeName: placeTitle, completion: {(result)->Void in
         DispatchQueue.main.async(execute: {
             var imageURL = result

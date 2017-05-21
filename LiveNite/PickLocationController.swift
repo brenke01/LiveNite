@@ -16,6 +16,7 @@ import CoreLocation
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
+import SCLAlertView
 
 
 class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextViewDelegate, UISearchDisplayDelegate, UITextFieldDelegate, UITabBarControllerDelegate, AVCaptureMetadataOutputObjectsDelegate{
@@ -143,10 +144,10 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 self.chosenLongFromMap = place.coordinate.longitude
                 let loc = CLLocation(latitude: self.userLocation.latitude, longitude: self.userLocation.longitude)
                 let placeLoc = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
-                if (loc.distance(from: placeLoc) > 3000.0){
-                    let alertController = UIAlertController(title: "Error", message: "The selected location is too far away from your location", preferredStyle: UIAlertControllerStyle.alert)
-                    alertController.addAction(UIAlertAction(title:"Dismiss", style: UIAlertActionStyle.default, handler: nil))
-                    self.present(alertController, animated: true, completion: nil)
+                if (loc.distance(from: placeLoc) > 1000.0){
+
+                    self.searchPlaces()
+                    SCLAlertView().showError("Error", subTitle: "The selected location is too far away from your location.")
                 }else{
                     self.chosenLocation = place.name
                     self.mapPickedLocation = true
@@ -302,7 +303,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
 
     func saveImageInfo(_ sender: UIButton!){
         let tempImage = self.selectedImage
-        let dataImage:Data = UIImageJPEGRepresentation(tempImage, 0.0)!
+        let dataImage:Data = UIImageJPEGRepresentation(tempImage, 1.0)!
         let date = Date()
         let setImageTitle : String = self.chosenLocation
         let setId : String = UUID().uuidString
