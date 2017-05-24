@@ -921,7 +921,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xic-R6-yKC">
-                                        <rect key="frame" x="8" y="17" width="90" height="36"/>
+                                        <rect key="frame" x="21" y="23" width="58" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="Recent">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1966,7 +1966,7 @@
     <resources>
         <image name="Cam" width="27" height="22"/>
         <image name="Comment" width="64" height="64"/>
-        <image name="DownVote" width="40" height="40"/>
+        <image name="DownVote" width="500" height="500"/>
         <image name="Downvote_Gold" width="51" height="28"/>
         <image name="Home" width="26" height="22"/>
         <image name="Notifications " width="30" height="29"/>
@@ -1974,9 +1974,9 @@
         <image name="ProfilePerson" width="25" height="25"/>
         <image name="ProfilePlaceHolder" width="64" height="64"/>
         <image name="ProfilePlaceHolderLarge" width="64" height="64"/>
-        <image name="Recent" width="500" height="250"/>
+        <image name="Recent" width="650" height="500"/>
         <image name="Search" width="64" height="64"/>
-        <image name="UpVote" width="40" height="40"/>
+        <image name="UpVote" width="500" height="500"/>
         <image name="Upvote_Gold" width="51" height="28"/>
         <image name="addItem" width="16" height="16"/>
         <image name="backBtn" width="16" height="16"/>
@@ -1986,7 +1986,7 @@
         <image name="peopletoggle" width="500" height="250"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0JZ-LK-rAL"/>
         <segue reference="nYP-eX-3SA"/>
+        <segue reference="lOC-7T-djj"/>
     </inferredMetricsTieBreakers>
 </document>

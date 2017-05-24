@@ -128,8 +128,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func toggleSort(_ sender: AnyObject) {
         if (self.hotToggle == 0){
             sortBtn.setImage(UIImage(named: "populartoggle"), for: .normal)
+            getHotImages()
         }else{
             sortBtn.setImage(UIImage(named: "Recent"), for: .normal)
+            getRecentImages()
         }
     }
     
