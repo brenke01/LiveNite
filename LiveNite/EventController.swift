@@ -84,7 +84,16 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         super.viewDidLoad()
         self.navigationItem.title = "Events"
         self.sortBarButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.toggleSort(_:)))
-        self.sortBarButton.title = "Recent"
+        let button: UIButton = UIButton()
+        //set image for button
+        button.setImage(UIImage(named: "Recent"), for: .normal)
+        //add function for button
+        button.addTarget(self, action: #selector(self.toggleSort(_:)), for: UIControlEvents.touchUpInside)
+        //set frame
+        button.frame = CGRect(x: 0, y: 0, width: 58, height: 41)
+        
+        let barButton = UIBarButtonItem(customView: button)
+        self.sortBarButton = barButton
         self.sortBarButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = self.sortBarButton
         self.refreshControl.tintColor = UIColor.white
@@ -201,12 +210,33 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBAction func toggleSort(_ sender: AnyObject) {
         progressBarDisplayer("Loading", true)
         if (self.hotToggle == 0){
-            self.sortBarButton.title = "Popular"
+            let button: UIButton = UIButton()
+            //set image for button
+            button.setImage(UIImage(named: "populartoggle"), for: .normal)
+            //add function for button
+            button.addTarget(self, action: #selector(self.toggleSort(_:)), for: UIControlEvents.touchUpInside)
+            //set frame
+            button.frame = CGRect(x: 0, y: 0, width: 58, height: 41)
+            
+            let barButton = UIBarButtonItem(customView: button)
+            self.sortBarButton = barButton
+            self.navigationItem.leftBarButtonItem = self.sortBarButton
             self.hotToggle = 1
             determineSort()
             self.tableView.reloadData()
         }else{
-            sortBarButton.title = "Recent"
+            let button: UIButton = UIButton()
+            //set image for button
+            button.setImage(UIImage(named: "Recent"), for: .normal)
+            //add function for button
+            button.addTarget(self, action: #selector(self.toggleSort(_:)), for: UIControlEvents.touchUpInside)
+            //set frame
+            button.frame = CGRect(x: 0, y: 0, width: 58, height: 41)
+            
+            let barButton = UIBarButtonItem(customView: button)
+            self.sortBarButton = barButton
+            self.navigationItem.leftBarButtonItem = self.sortBarButton
+
             self.hotToggle = 0
             determineSort()
             self.tableView.reloadData()
