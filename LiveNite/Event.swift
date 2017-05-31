@@ -27,6 +27,7 @@ class Event :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var ownerName = ""
     var ownerID = ""
     var totalScore = 0
+    var expirationDate = 0 
     
     class func dynamoDBTableName() -> String{
         return "Events"

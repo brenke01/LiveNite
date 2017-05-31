@@ -121,7 +121,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             let imagePlaceLocation = CLLocation(latitude: (self.selectedEvent?.eventLat)!, longitude: (self.selectedEvent!.eventLong))
             let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
             let maxAllowableDistance : CLLocationDistance = 2500
-            
+            var notifUUID =  UUID().uuidString
             //if within range, check if they've checked in recently
             if distanceBetweenUserAndPlace < maxAllowableDistance {
                 
@@ -139,6 +139,22 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                     checkIn.userID = (self.user?.userID)!
                     checkIn.imageID = (self.selectedEvent?.eventID)!
                     AWSService().save(checkIn)
+                    var notification = Notification()
+                    notification?.notificationID = notifUUID
+                    notification?.userName = (self.user?.userName)!
+                    notification?.ownerName = (self.selectedEvent?.ownerName)!
+                    var date = Date()
+                    notification?.actionTime = String(describing: date)
+                    notification?.imageID = (self.selectedEvent?.eventID)!
+                    notification?.open = true
+                    notification?.type = "checkIn"
+                    var dayComponent = DateComponents()
+                    dayComponent.day = 1
+                    var cal = Calendar.current
+                    var nextDay = cal.date(byAdding: dayComponent, to: date)
+                    var nextDayEpoch = UInt64(floor((nextDay?.timeIntervalSince1970)!))
+                    notification?.expirationDate = Int(nextDayEpoch)
+                    AWSService().save(notification!)
                     
                     //Award user points
                     print("userID: \(userID)")
@@ -170,6 +186,22 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                         user?.score += 5
                         AWSService().save(user!)
                         print("Score: \(user?.score)")
+                        var notification = Notification()
+                        notification?.notificationID = notifUUID
+                        notification?.userName = (self.user?.userName)!
+                        notification?.ownerName = (self.selectedEvent?.ownerName)!
+                        var date = Date()
+                        notification?.actionTime = String(describing: date)
+                        notification?.imageID = (self.selectedEvent?.eventID)!
+                        notification?.open = true
+                        notification?.type = "checkIn"
+                        var dayComponent = DateComponents()
+                        dayComponent.day = 1
+                        var cal = Calendar.current
+                        var nextDay = cal.date(byAdding: dayComponent, to: date)
+                        var nextDayEpoch = UInt64(floor((nextDay?.timeIntervalSince1970)!))
+                        notification?.expirationDate = Int(nextDayEpoch)
+                        AWSService().save(notification!)
                         
                         //Update check in date
                         self.checkInRequest?.checkInTime = dateFormatter.string(from: currentDate)

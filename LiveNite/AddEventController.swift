@@ -141,6 +141,12 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             event?.placeTitle = self.placeTitle
             event?.eventTitle = (self.titleTextField?.text)!
             let date = Date()
+            var dayComponent = DateComponents()
+            dayComponent.day = 1
+            var cal = Calendar.current
+            var nextDay = cal.date(byAdding: dayComponent, to: date)
+            var nextDayEpoch = UInt64(floor((nextDay?.timeIntervalSince1970)!))
+            event?.expirationDate = Int(nextDayEpoch)
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
             event?.timePosted = formatter.string(from: date)

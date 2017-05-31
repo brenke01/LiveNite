@@ -41,6 +41,12 @@ class PostCommentController: UIViewController,  UINavigationControllerDelegate, 
         notification?.imageID = (self.imageObj?.imageID)!
         notification?.open = true
         notification?.type = "comment"
+        var dayComponent = DateComponents()
+        dayComponent.day = 1
+        var cal = Calendar.current
+        var nextDay = cal.date(byAdding: dayComponent, to: date)
+        var nextDayEpoch = UInt64(floor((nextDay?.timeIntervalSince1970)!))
+        notification?.expirationDate = Int(nextDayEpoch)
         AWSService().save(notification!)
         AWSService().save(comment)
         

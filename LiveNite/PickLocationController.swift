@@ -328,6 +328,13 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             myImage.timePosted = formatter.string(from: date)
+                var dayComponent = DateComponents()
+                dayComponent.day = 1
+                var cal = Calendar.current
+                var nextDay = cal.date(byAdding: dayComponent, to: date)
+                var nextDayEpoch = UInt64(floor((nextDay?.timeIntervalSince1970)!))
+                    myImage.expirationDate = Int(nextDayEpoch)
+                
             myImage.totalScore = 0
             var geo :Geohash = Geohash()
            let l =  CLLocationCoordinate2DMake((self.locationManager.location?.coordinate.latitude)!, (self.locationManager.location?.coordinate.longitude)!)

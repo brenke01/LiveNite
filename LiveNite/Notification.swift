@@ -18,6 +18,7 @@ class Notification :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var actionTime = ""
     var imageID = ""
     var type = ""
+    var expirationDate = 0
     
     class func dynamoDBTableName() -> String{
         return "Notifications"
