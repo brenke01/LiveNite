@@ -128,7 +128,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         imgFrame.origin.x = newX
         self.imgView.frame = imgFrame
         userNameLabel.text = self.user?.userName
-        imgView.image = getRankMedal((self.user?.score)!)
+        //imgView.image = getRankMedal((self.user?.score)!)
         scoreLabel.text = "Score: " + String(describing: user!.score)
         
         if (self.user?.profileImg != "nil"){
