@@ -416,7 +416,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 self.tryAgainButton.textColor = UIColor.white
                 self.tryAgainButton.layer.masksToBounds = true
                 
-                self.emptyArrayLabel.text = "No posts found"
+                self.emptyArrayLabel.text = "No events found"
                 self.tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
                 self.emptyArrayLabel.textColor = UIColor.white
                 self.emptyArrayLabel.textAlignment = .center

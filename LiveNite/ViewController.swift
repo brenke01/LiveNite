@@ -768,8 +768,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.activityIndicator.removeFromSuperview()
             self.overlayView.removeFromSuperview()
 
-            self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 75, width: self.view.frame.width, height: 50))
-            self.tryAgainButton = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 50, width: self.view.frame.width, height: 50))
+            self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 110, width: self.view.frame.width, height: 50))
+            self.tryAgainButton = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 85, width: self.view.frame.width, height: 50))
             self.tryAgainButton.text = "Tap to retry"
             self.tryAgainButton.textAlignment = .center
             self.tryAgainButton.textColor = UIColor.white

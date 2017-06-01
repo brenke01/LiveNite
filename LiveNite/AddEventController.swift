@@ -144,7 +144,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
             var dayComponent = DateComponents()
             dayComponent.day = 1
             var cal = Calendar.current
-            var nextDay = cal.date(byAdding: dayComponent, to: date)
+            var nextDay = cal.date(byAdding: dayComponent, to: self.eventForm.endTime)
             var nextDayEpoch = UInt64(floor((nextDay?.timeIntervalSince1970)!))
             event?.expirationDate = Int(nextDayEpoch)
             let formatter = DateFormatter()
