@@ -851,7 +851,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loadingImage" translatesAutoresizingMaskIntoConstraints="NO" id="R4c-yZ-GSy">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="backgroundScreen" translatesAutoresizingMaskIntoConstraints="NO" id="R4c-yZ-GSy">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -879,6 +879,10 @@
                                             <action selector="submitAction:" destination="o6U-yY-ghQ" eventType="touchUpInside" id="pr0-T6-Jff"/>
                                         </connections>
                                     </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tRV-cF-Jho">
+                                        <rect key="frame" x="127" y="84" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -890,6 +894,7 @@
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="inputUserName" destination="qgy-JJ-TGa" id="dxM-PU-hvp"/>
+                        <outlet property="logoImg" destination="tRV-cF-Jho" id="ehG-iG-G7M"/>
                         <outlet property="submitButton" destination="KWU-YT-DAH" id="yvz-83-RjL"/>
                     </connections>
                 </viewController>
@@ -1983,8 +1988,8 @@
         <image name="UpVote" width="500" height="500"/>
         <image name="addItem" width="16" height="16"/>
         <image name="backBtn" width="16" height="16"/>
+        <image name="backgroundScreen" width="818" height="960"/>
         <image name="backgroundimg" width="750" height="1158"/>
-        <image name="loadingImage" width="640" height="799"/>
         <image name="options" width="16" height="16"/>
         <image name="peopletoggle" width="500" height="250"/>
     </resources>

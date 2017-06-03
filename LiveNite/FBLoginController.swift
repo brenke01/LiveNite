@@ -25,14 +25,17 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     var locations = 0
     var blockedCharacters = CharacterSet.alphanumerics.inverted
     
+    @IBOutlet weak var logoImg: UIImageView!
     @IBOutlet var submitButton: UIButton!
     @IBOutlet var inputUserName: UITextField!
     var userID : String = ""
     var loadMask = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(loadMask)
-        loadMask.isHidden = true
+        //self.view.addSubview(loadMask)
+        //loadMask.isHidden = true
+
+
         inputUserName.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
         submitButton.isHidden = true
@@ -49,6 +52,15 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         
         FBSDKProfile.enableUpdates(onAccessTokenChange: true)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool){
+        logoImg.image = UIImage(named: "Logo")
+        logoImg.clipsToBounds = true
+        
+        logoImg.layer.masksToBounds = true
+       logoImg.layer.cornerRadius = 10
+        super.viewWillAppear(animated)
     }
     
     @IBAction func submitAction(_ sender: AnyObject) {

@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Loopolo</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -35,6 +35,8 @@
 	<string>479248718944425</string>
 	<key>FacebookDisplayName</key>
 	<string>LiveNite</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbauth2</string>
@@ -47,11 +49,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>I need to use the camera</string>
+	<string>Camera is required</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>I wanna know where you are at all times.</string>
+	<string>Location is required</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>I wanna know where you are.</string>
+	<string>Location is required</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Profile Image Selector </string>
 	<key>UIBackgroundModes</key>
