@@ -60,6 +60,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     var imageUtil = ImageUtil()
     var player = AVPlayer()
     var playerLayer = AVPlayerLayer()
+    var playerAdded = false
 
     
     //end var zone
@@ -275,7 +276,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             cell.optionsButton.isHidden = true
         }
 
-        if (self.imageObj?.isVideo)!{
+        if ((self.imageObj?.isVideo)! && !self.playerAdded){
+            self.playerAdded = true
             let url = URL(string: "https://s3.amazonaws.com/liveniteimages/" + (imageObj?.url)!)
             player = AVPlayer(url: url!)
             playerLayer = AVPlayerLayer(player: player)
@@ -284,13 +286,16 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             playerLayer.frame = cell.imgView.frame
             playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
             cell.layer.addSublayer(playerLayer)
-            player.play()
-            
-            
+            self.playerLayer.player?.play()
+            //perform play pause toggle on didselectrowatindexpath
+        
         }else{
+        
             cell.imgView.image = self.imageTapped
 
-        }
+        
+
+       }
         cell.genderBar.clipsToBounds = true
         cell.genderBar.layer.masksToBounds = true
         cell.upvotesLabel.text = String(imageObj!.totalScore)
@@ -486,7 +491,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem, queue: nil, using: { (_) in
             DispatchQueue.main.async {
                 self.player.seek(to: kCMTimeZero)
-                self.player.play()
+                self.playerLayer.player?.play()
             }
         })
 
@@ -656,24 +661,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         if (indexPath.row == 0){
             let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
             
-            if (self.imageObj?.isVideo)!{
-                let url = URL(string: "https://s3.amazonaws.com/liveniteimages/" + (imageObj?.url)!)
+            if ((self.imageObj?.isVideo)!){
                 
-               player = AVPlayer(url: url!)
-                
-                
-                //
-                // THIS NEEDS TO BE INITIALIZED ONLY ONCE IT IS RE BUILDING THE PLAYER
-                //
-                
-                
-                playerLayer = AVPlayerLayer(player: player)
                 playerLayer.layoutSublayers()
                 playerLayer.frame = cell.imgView.frame
                 playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
                 cell.layer.addSublayer(playerLayer)
-            
-                player.play()
 
                 
             }else{
@@ -913,9 +906,10 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func back(_ sender: UIBarButtonItem){
+        playerLayer.player?.pause()
         player.pause()
         playerLayer.removeFromSuperlayer()
-
+        playerLayer.player = nil
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -1000,3 +994,5 @@ class CommentTableViewCell: UITableViewCell{
     @IBOutlet weak var commentHeight: NSLayoutConstraint!
 
 }
+
+
