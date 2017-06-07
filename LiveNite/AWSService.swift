@@ -316,7 +316,7 @@ class AWSService {
         return vote
     }
     
-    func saveImageToBucket (_ selectedImage : Data, id : String, placeName: String, completion:@escaping (_ result:String)->Void) -> String{
+    func saveImageToBucket (_ selectedImage : Data, id : String, placeName: String, isVideo : Bool, completion:@escaping (_ result:String)->Void) -> String{
         let transferManager: AWSS3TransferManager = AWSS3TransferManager.default()
         let uploadRequest : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
 let testFileURL1 = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("temp")
@@ -324,6 +324,9 @@ let testFileURL1 = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathCom
         uploadRequest.bucket = "liveniteimages"
         uploadRequest.key = id
         uploadRequest.body = testFileURL1
+        if (isVideo){
+            uploadRequest.contentType = "video/mp4"
+        }
         transferManager.upload(uploadRequest).continue(with: AWSExecutor.mainThread(), with: {(task: AWSTask) -> AnyObject in
             if (task.error != nil) {
                 if (task.error!._domain == AWSS3TransferManagerErrorDomain) {

@@ -17,6 +17,7 @@ import GoogleMaps
 import AWSDynamoDB
 import AWSS3
 import SCLAlertView
+import NotificationCenter
 
 class viewPostController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate,UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate{
     
@@ -57,6 +58,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     let screenHeight = UIScreen.main.bounds.height
     var checkInArray = [CheckIn]()
     var imageUtil = ImageUtil()
+    var player = AVPlayer()
+    var playerLayer = AVPlayerLayer()
+
     
     //end var zone
     
@@ -270,7 +274,23 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         if (self.imageObj?.userID != self.user?.userID){
             cell.optionsButton.isHidden = true
         }
-        cell.imgView.image = self.imageTapped
+
+        if (self.imageObj?.isVideo)!{
+            let url = URL(string: "https://s3.amazonaws.com/liveniteimages/" + (imageObj?.url)!)
+            player = AVPlayer(url: url!)
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer.layoutSublayers()
+
+            playerLayer.frame = cell.imgView.frame
+            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            cell.layer.addSublayer(playerLayer)
+            player.play()
+            
+            
+        }else{
+            cell.imgView.image = self.imageTapped
+
+        }
         cell.genderBar.clipsToBounds = true
         cell.genderBar.layer.masksToBounds = true
         cell.upvotesLabel.text = String(imageObj!.totalScore)
@@ -463,7 +483,12 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem, queue: nil, using: { (_) in
+            DispatchQueue.main.async {
+                self.player.seek(to: kCMTimeZero)
+                self.player.play()
+            }
+        })
 
         self.view.isUserInteractionEnabled = true
         tableView.dataSource = self
@@ -477,7 +502,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         print("IMAGE ID: "+self.imageID)
         let checkInButton = UIBarButtonItem(image: UIImage(named: "checkInButton"), style: .plain, target: self, action: #selector(viewPostController.checkIn))
-        navigationItem.rightBarButtonItem = checkInButton
+        if (self.imageObj?.userID != self.user?.userID){
+            navigationItem.rightBarButtonItem = checkInButton
+        }
         //fetch check in
         AWSService().loadCheckIn((self.imageObj?.imageID)!, completion: {(result)->Void in
             self.checkInRequest = result
@@ -629,7 +656,30 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         if (indexPath.row == 0){
             let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
             
-            cell.imgView.image = self.imageTapped
+            if (self.imageObj?.isVideo)!{
+                let url = URL(string: "https://s3.amazonaws.com/liveniteimages/" + (imageObj?.url)!)
+                
+               player = AVPlayer(url: url!)
+                
+                
+                //
+                // THIS NEEDS TO BE INITIALIZED ONLY ONCE IT IS RE BUILDING THE PLAYER
+                //
+                
+                
+                playerLayer = AVPlayerLayer(player: player)
+                playerLayer.layoutSublayers()
+                playerLayer.frame = cell.imgView.frame
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                cell.layer.addSublayer(playerLayer)
+            
+                player.play()
+
+                
+            }else{
+                cell.imgView.image = self.imageTapped
+                
+            }
             
             cell.upvotesLabel.text = String(self.imageObj!.totalScore)
             //Needs styling
@@ -863,6 +913,9 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     func back(_ sender: UIBarButtonItem){
+        player.pause()
+        playerLayer.removeFromSuperlayer()
+
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -915,6 +968,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
         return refreshControl
     }()
+    
+
 
 }
 class MyCustomTableViewCell: UITableViewCell{

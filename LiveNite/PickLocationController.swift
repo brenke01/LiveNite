@@ -65,6 +65,8 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var eventSaved = false
     var lastIndex = 0
     var eventForm = EventForm()
+    var isVideo = false
+    var videoData = Data()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -254,12 +256,12 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
             let imagePicker = UIImagePickerController()
             
             imagePicker.delegate = self
-            imagePicker.sourceType = .camera;
-            //imagePicker.mediaTypes = [kUTTypeMovie!]
+            imagePicker.sourceType = .camera
+            imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
             imagePicker.allowsEditing = true
             
             imagePicker.showsCameraControls = true
-
+            imagePicker.videoMaximumDuration = 10
             self.present(imagePicker, animated: true, completion: nil)
             complete = true
             
@@ -272,8 +274,19 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : Any]) {
         
-        self.selectedImage = info[UIImagePickerControllerEditedImage] as! UIImage
-        //selectedImageView.image = self.selectedImage
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+            self.selectedImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        }else{
+            self.isVideo = true
+            let videoURL = info[UIImagePickerControllerMediaURL] as! URL
+            do {
+                let data = try Data(contentsOf: videoURL)
+                self.videoData = data
+            }catch{
+                print(Error.self)
+            }
+        }
+
         dismiss(animated: true, completion: nil)
         saved = true
         locationManager.stopUpdatingLocation()
@@ -303,13 +316,21 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
 
     func saveImageInfo(_ sender: UIButton!){
         let tempImage = self.selectedImage
-        let dataImage:Data = UIImageJPEGRepresentation(tempImage, 1.0)!
+        let myImage : Image = Image()
+        var dataImage = Data()
+        if (self.isVideo){
+            dataImage = self.videoData
+            myImage.isVideo = true
+        }else{
+            dataImage = UIImageJPEGRepresentation(tempImage, 1.0)!
+        }
+
         let date = Date()
         let setImageTitle : String = self.chosenLocation
         let setId : String = UUID().uuidString
         var imageURL = ""
-        let myImage : Image = Image()
-        AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle, completion: {(result)->Void in
+        
+        AWSService().saveImageToBucket(dataImage, id: setId, placeName: setImageTitle, isVideo: myImage.isVideo, completion: {(result)->Void in
              DispatchQueue.main.async(execute: {
             imageURL = result
             myImage.imageID = setId

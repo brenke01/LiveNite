@@ -28,6 +28,7 @@ class Image :AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var geohash: String = ""
     var groupedCount = 0
     var expirationDate = 0
+    var isVideo = false
     
     class func dynamoDBTableName() -> String{
         return "Images"

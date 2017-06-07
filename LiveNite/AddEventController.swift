@@ -127,7 +127,7 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     func saveImageToBucket(){
         let setId : String = UUID().uuidString
         let dataImage:Data = UIImageJPEGRepresentation(self.selectedImg, 1.0)!
-        AWSService().saveImageToBucket(dataImage, id: setId, placeName: placeTitle, completion: {(result)->Void in
+        AWSService().saveImageToBucket(dataImage, id: setId, placeName: placeTitle, isVideo: false, completion: {(result)->Void in
         DispatchQueue.main.async(execute: {
             var imageURL = result
             var event = Event()
