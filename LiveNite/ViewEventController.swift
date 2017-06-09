@@ -46,6 +46,9 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
     var hasUpvoted = false
     var hasDownvoted = false
     var imageUtil = ImageUtil()
+    var playerLayer = AVPlayerLayer()
+    var player = AVPlayer()
+    var playerAdded = false
     @IBOutlet weak var tableView: UITableView!
     var scrollViewContentHeight = 0 as CGFloat
     let screenHeight = UIScreen.main.bounds.height
@@ -53,6 +56,13 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem, queue: nil, using: { (_) in
+            DispatchQueue.main.async {
+                self.player.seek(to: kCMTimeZero)
+                
+                self.playerLayer.player?.play()
+            }
+        })
         self.navigationController?.navigationBar.tintColor = UIColor.white
         //self.navigationController?.navigationBar.topItem?.title = selectedEvent?.eventTitle
         let checkInButton = UIBarButtonItem(image: UIImage(named: "checkInButton"), style: .plain, target: self, action: #selector(ViewEventController.checkIn))
@@ -66,6 +76,10 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
     }
     
     func back(_ sender: UIBarButtonItem){
+        playerLayer.player?.pause()
+        player.pause()
+        playerLayer.removeFromSuperlayer()
+        playerLayer.player = nil
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -317,10 +331,28 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
 //            }
 //            
 //        })
-        cell.imgView.image = self.img
-        //calculateHotColdScore()
+        if ((self.selectedEvent?.isVideo)! && !self.playerAdded){
+            self.playerAdded = true
+            let url = URL(string: "https://s3.amazonaws.com/liveniteimages/" + (selectedEvent?.url)!)
+            player = AVPlayer(url: url!)
+            
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer.layoutSublayers()
+            
+            playerLayer.frame = cell.imgView.frame
+            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            cell.layer.addSublayer(playerLayer)
+            self.playerLayer.player?.play()
+            //perform play pause toggle on didselectrowatindexpath
+            
+        }else{
+            
+            cell.imgView.image = self.img
+            
+            
+            
+        }
         cell.upvotesLabel.text = String(describing: self.selectedEvent?.totalScore)
-        //Needs styling
         cell.upvotesLabel.textColor = UIColor.white
         calculateHotColdScore({(result)->Void in
             var score = result[0] as Double
@@ -632,7 +664,6 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         if (indexPath.row == 0){
             let cell:EventImgCell = self.tableView.dequeueReusableCell(withIdentifier: "eventImgCell")! as! EventImgCell
             //navBar.topItem?.title = self.selectedEvent?.eventTitle
-            cell.imgView.image = self.img
             //calculateHotColdScore()
             cell.upvotesLabel.text = String(self.selectedEvent!.totalScore)
             //Needs styling
@@ -640,6 +671,17 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             tableView.isOpaque = false
             if (self.selectedEvent?.ownerID != self.user?.userID){
                 cell.optionsButton.isHidden = true
+            }
+            if ((self.selectedEvent?.isVideo)!){
+                
+                playerLayer.layoutSublayers()
+                playerLayer.frame = cell.imgView.frame
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                cell.layer.addSublayer(playerLayer)
+                
+            }else{
+                cell.imgView.image = self.img
+                
             }
             cell.backgroundColor = UIColor.clear
             cell.upvotesLabel.textColor = UIColor.white

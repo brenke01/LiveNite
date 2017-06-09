@@ -24,4 +24,5 @@ target “LiveNite” do
     	pod 'AWSSNS'
     	pod 'AWSSQS'
         pod 'SCLAlertView'
+        pod 'Fusuma'
 end

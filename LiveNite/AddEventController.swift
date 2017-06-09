@@ -56,12 +56,35 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     var descEdited = false
     var titleValid = false
     var descValid = false
+    var isVideo = false
+    var videoData = Data()
+    var videoURL : URL!
     
     override func viewDidLoad(){
         super.viewDidLoad()
         postButton.isEnabled = false
         postButton.alpha = 0.5
-        imgView.image = selectedImg
+        if (isVideo){
+            let asset = AVURLAsset.init(url: self.videoURL)
+            let gen = AVAssetImageGenerator(asset: asset)
+            gen.appliesPreferredTrackTransform = true
+            let timestamp = CMTime(seconds: 1, preferredTimescale: 60 )
+            do {
+                let imageRef = try gen.copyCGImage(at: timestamp, actualTime: nil)
+                imgView.image = UIImage(cgImage: imageRef)
+                var iconView = UIImageView(frame: CGRect(x: imgView.frame.width * 0.8, y: imgView.frame.height * 0.05, width: imgView.frame.width * 0.15, height: imgView.frame.height * 0.1))
+                
+                var videoIcon = UIImage(named: "videoCamera")
+                iconView.image = videoIcon
+                imgView.addSubview(iconView)
+                
+            }catch let error as NSError{
+                print(error)
+            }
+
+        }else{
+            imgView.image = selectedImg
+        }
         titleTextField?.tag = 1
         descTextField?.tag = 2
         titleCharCount.text = "25"
@@ -126,11 +149,18 @@ class AddEventController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func saveImageToBucket(){
         let setId : String = UUID().uuidString
-        let dataImage:Data = UIImageJPEGRepresentation(self.selectedImg, 1.0)!
-        AWSService().saveImageToBucket(dataImage, id: setId, placeName: placeTitle, isVideo: false, completion: {(result)->Void in
+        var dataImage:Data = Data()
+        var event = Event()
+
+        if (self.isVideo){
+            dataImage = self.videoData
+            event?.isVideo = true
+        }else{
+            dataImage = UIImageJPEGRepresentation(selectedImg, 1.0)!
+        }
+        AWSService().saveImageToBucket(dataImage, id: setId, placeName: placeTitle, isVideo: self.isVideo, completion: {(result)->Void in
         DispatchQueue.main.async(execute: {
             var imageURL = result
-            var event = Event()
             event?.url = imageURL
             let eventID : String = UUID().uuidString
             event?.eventID = eventID

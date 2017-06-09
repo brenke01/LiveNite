@@ -91,7 +91,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             
             //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
-            var notifUUID =  UUID().uuidString
+            let notifUUID =  UUID().uuidString
             if (self.checkInRequest?.userID == ""){
                 
                 //Make new check in in table
@@ -105,11 +105,11 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 AWSService().save(checkIn)
                 
                 
-                var notification = Notification()
+                let notification = Notification()
                 notification?.notificationID = notifUUID
                 notification?.userName = (self.user?.userName)!
                 notification?.ownerName = (self.imageObj?.ownerName)!
-                var date = Date()
+                let date = Date()
                 notification?.actionTime = String(describing: date)
                 notification?.imageID = (self.imageObj?.imageID)!
                 notification?.open = true
@@ -280,6 +280,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             self.playerAdded = true
             let url = URL(string: "https://s3.amazonaws.com/liveniteimages/" + (imageObj?.url)!)
             player = AVPlayer(url: url!)
+
             playerLayer = AVPlayerLayer(player: player)
             playerLayer.layoutSublayers()
 
@@ -296,6 +297,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         
 
        }
+        cell.optionsButton.layer.zPosition = 100
         cell.genderBar.clipsToBounds = true
         cell.genderBar.layer.masksToBounds = true
         cell.upvotesLabel.text = String(imageObj!.totalScore)
@@ -491,6 +493,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem, queue: nil, using: { (_) in
             DispatchQueue.main.async {
                 self.player.seek(to: kCMTimeZero)
+
                 self.playerLayer.player?.play()
             }
         })
@@ -547,8 +550,8 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
-        barButton.title = "Back"
+        var barButton = UIBarButtonItem(title: " ", style: .plain, target: self, action: #selector(self.back(_:)))
+        barButton.title = " "
         barButton.image = UIImage(named: "backBtn")
         
         self.navigationItem.leftBarButtonItem = barButton
@@ -662,12 +665,11 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             let cell:MyCustomTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "MyCustomTableViewCell")! as! MyCustomTableViewCell
             
             if ((self.imageObj?.isVideo)!){
-                
+
                 playerLayer.layoutSublayers()
                 playerLayer.frame = cell.imgView.frame
                 playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
                 cell.layer.addSublayer(playerLayer)
-
                 
             }else{
                 cell.imgView.image = self.imageTapped
@@ -771,6 +773,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             cell.femaleLabel.text = String(femaleCount)
             cell.maleLabel.textColor = UIColor.white
             cell.femaleLabel.textColor = UIColor.white
+            self.view.bringSubview(toFront: cell.optionsButton)
             return cell
         }else{
         let cell:CommentTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "comments")! as! CommentTableViewCell
@@ -952,9 +955,13 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         alertController.addAction(destroyAction)
         
-        self.present(alertController, animated: true) {
-            // ...
-        }
+        self.present(alertController, animated: true)
+        var barButton = UIBarButtonItem(title: " ", style: .plain, target: self, action: #selector(self.back(_:)))
+        barButton.title = " "
+
+        barButton.image = UIImage(named: "backBtn")
+        
+        self.navigationItem.leftBarButtonItem = barButton
     }
     
     lazy var refreshControl: UIRefreshControl = {

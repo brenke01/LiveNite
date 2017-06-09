@@ -34,6 +34,7 @@ PODS:
     - AWSCore (= 2.4.10)
   - AWSSQS (2.4.10):
     - AWSCore (= 2.4.10)
+  - Fusuma (0.5.3)
   - GoogleMaps (2.1.0):
     - GoogleMaps/Maps (= 2.1.0)
   - GoogleMaps/Base (2.1.0)
@@ -65,6 +66,7 @@ DEPENDENCIES:
   - AWSSimpleDB
   - AWSSNS
   - AWSSQS
+  - Fusuma
   - GoogleMaps
   - GooglePlacePicker
   - GooglePlaces
@@ -90,12 +92,13 @@ SPEC CHECKSUMS:
   AWSSimpleDB: f3af211c495d760dd73e58fb050c311f28c9e070
   AWSSNS: b43d0d0d2353b7eae90f2736abdf88ab5647316e
   AWSSQS: fd946e25e02b0857fd36c8209e04fc22bebac5c6
+  Fusuma: 02ffb3a9943792519f2c0972263b750acb550a49
   GoogleMaps: 06589b9a38097bce0cd6e90f0fd9b5e4b4a9344c
   GooglePlacePicker: a2228b447d10008bcb765a6a081f415e8599e5d4
   GooglePlaces: 16e96266483b8010e9f275399403647978523c86
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
   SwiftyJSON: f57b2b44bc166617372d1c70773591fe9f0f5fd4
 
-PODFILE CHECKSUM: e32a4fff44ca7da5035cd0cd01d23168bbf07b47
+PODFILE CHECKSUM: e2e82d9aaf19404d7b3d79043ac9781db4828089
 
 COCOAPODS: 1.1.0.rc.2

@@ -142,6 +142,29 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                      self.determineSort()
                     self.arrayEmpty = false
                     for e in self.eventsArr{
+                        if (e.isVideo){
+                            let url = URL(string: "https://s3.amazonaws.com/liveniteimages/" + e.url)
+                            let asset = AVURLAsset.init(url: url!)
+                            let gen = AVAssetImageGenerator(asset: asset)
+                            gen.appliesPreferredTrackTransform = true
+                            let timestamp = CMTime(seconds: 1, preferredTimescale: 60 )
+                            do {
+                                let imageRef = try gen.copyCGImage(at: timestamp, actualTime: nil)
+                                self.uiImageArr.append(UIImage(cgImage: imageRef))
+                                if self.uiImageArr.count == self.eventsArr.count{
+                                    DispatchQueue.main.async(execute: {
+                                        self.uiImageDict = self.createUIImageDict()
+                                        
+                                        self.refreshControl.endRefreshing()
+                                        self.tableView!.reloadData()
+                                        
+                                    })
+                                }
+                                
+                            }catch let error as NSError{
+                                print(error)
+                            }
+                        }else{
                         AWSService().getImageFromUrl(String(e.url), bucket: "liveniteimages", completion: {(result)->Void in
                             self.uiImageArr.append(result)
                             if self.uiImageArr.count == self.eventsArr.count{
@@ -154,7 +177,9 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
                                 })
                             }
                         })
+                        }
                     }
+                    
                 }
                 
                 
@@ -375,7 +400,13 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
             let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.9, width: imageButton.frame.width, height: imageButton.frame.height * 0.1))
             
-            
+            if (self.eventsArr[(indexPath as NSIndexPath).row].isVideo){
+                var iconView = UIImageView(frame: CGRect(x: imageButton.frame.width * 0.9, y: imageButton.frame.height * 0.05, width: imageButton.frame.width * 0.075, height: imageButton.frame.height * 0.075))
+                
+                var videoIcon = UIImage(named: "videoCamera")
+                iconView.image = videoIcon
+                imageButton.addSubview(iconView)
+            }
             titleView.text = " " + self.eventsArr[indexPath.row].eventTitle
             titleView.textColor = UIColor.white
             titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)

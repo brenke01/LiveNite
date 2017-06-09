@@ -739,7 +739,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
              imageButton.setImage(nil, for: UIControlState())
             imageButton.setImage(self.uiImageDict[self.imageArr[indexPath.row].imageID], for: UIControlState())
             
-
+            if (self.imageArr[(indexPath as NSIndexPath).row].isVideo){
+                var iconView = UIImageView(frame: CGRect(x: imageButton.frame.width * 0.8, y: imageButton.frame.height * 0.05, width: imageButton.frame.width * 0.15, height: imageButton.frame.height * 0.1))
+                
+                var videoIcon = UIImage(named: "videoCamera")
+                iconView.image = videoIcon
+                imageButton.addSubview(iconView)
+            }
             
             //let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
             let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))

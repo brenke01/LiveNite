@@ -17,9 +17,10 @@ import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
 import SCLAlertView
+import Fusuma
 
 
-class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextViewDelegate, UISearchDisplayDelegate, UITextFieldDelegate, UITabBarControllerDelegate, AVCaptureMetadataOutputObjectsDelegate{
+class PickLocationController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, UITableViewDelegate, CLLocationManagerDelegate, UITextViewDelegate, UISearchDisplayDelegate, UITextFieldDelegate, UITabBarControllerDelegate, AVCaptureMetadataOutputObjectsDelegate, FusumaDelegate{
     @IBOutlet var tableView: UITableView!
     
     @IBOutlet weak var charCount: UILabel!
@@ -67,6 +68,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     var eventForm = EventForm()
     var isVideo = false
     var videoData = Data()
+    var videoURL : URL!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -190,6 +192,9 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
                 destinationVC.placeLong = self.chosenLongitude
                 destinationVC.user = self.user
                 destinationVC.eventForm = eventForm
+                destinationVC.isVideo = self.isVideo
+                destinationVC.videoData = self.videoData
+                destinationVC.videoURL = self.videoURL 
             
             }
         }
@@ -249,27 +254,73 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
     func takeAndSave(){
         
         
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
-            
-            print("captureVideoPressed and camera available.")
-            
-            let imagePicker = UIImagePickerController()
-            
-            imagePicker.delegate = self
-            imagePicker.sourceType = .camera
-            imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
-            imagePicker.allowsEditing = true
-            
-            imagePicker.showsCameraControls = true
-            imagePicker.videoMaximumDuration = 10
-            self.present(imagePicker, animated: true, completion: nil)
-            complete = true
-            
+//        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+//            
+//            print("captureVideoPressed and camera available.")
+//            
+//            let imagePicker = UIImagePickerController()
+//            
+//            imagePicker.delegate = self
+//            imagePicker.sourceType = .camera
+//            imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
+//            imagePicker.allowsEditing = true
+//            
+//            imagePicker.showsCameraControls = true
+//            imagePicker.videoMaximumDuration = 10
+//            self.present(imagePicker, animated: true, completion: nil)
+//            complete = true
+//            
+//        }
+//            
+//        else {
+//            print("Camera not available.")
+//        }
+        complete = true
+        let fusuma = FusumaViewController()
+        fusuma.delegate = self
+        fusuma.hasVideo = true
+        fusuma.tabBarController?.viewControllers?.remove(at: 0)
+        self.present(fusuma, animated: true, completion: nil)
+    }
+    
+    // Return the image which is selected from camera roll or is taken via the camera.
+    func fusumaImageSelected(_ image: UIImage) {
+        self.isVideo = false
+        print("Image selected")
+        self.selectedImage = image
+        dismiss(animated: true, completion: nil)
+        saved = true
+        locationManager.stopUpdatingLocation()
+
+    }
+    
+    // Return the image but called after is dismissed.
+    func fusumaDismissedWithImage(image: UIImage) {
+        
+        print("Called just after FusumaViewController is dismissed.")
+   }
+    
+    func fusumaVideoCompleted(withFileURL fileURL: URL) {
+        
+        print("Called just after a video has been selected.")
+        self.isVideo = true
+        do {
+            self.videoURL = fileURL
+            let data = try Data(contentsOf: fileURL)
+            self.videoData = data
+            dismiss(animated: true, completion: nil)
+            saved = true
+            locationManager.stopUpdatingLocation()
+        }catch{
+            print(Error.self)
+
         }
-            
-        else {
-            print("Camera not available.")
-        }
+    }
+    
+    // When camera roll is not authorized, this method is called.
+    func fusumaCameraRollUnauthorized() {
+        
+        print("Camera roll unauthorized")
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[String : Any]) {
@@ -279,12 +330,7 @@ class PickLocationController: UIViewController, UIImagePickerControllerDelegate,
         }else{
             self.isVideo = true
             let videoURL = info[UIImagePickerControllerMediaURL] as! URL
-            do {
-                let data = try Data(contentsOf: videoURL)
-                self.videoData = data
-            }catch{
-                print(Error.self)
-            }
+
         }
 
         dismiss(animated: true, completion: nil)
