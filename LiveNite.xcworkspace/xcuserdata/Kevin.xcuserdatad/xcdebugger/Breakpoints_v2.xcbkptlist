@@ -1530,7 +1530,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "954"
             endingLineNumber = "954"
-            landmarkName = "formatEventTime(startTime:)"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1690,7 +1690,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "559"
             endingLineNumber = "559"
-            landmarkName = "calculateHotColdScore(_:)"
+            landmarkName = "registerVote(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1706,7 +1706,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "552"
             endingLineNumber = "552"
-            landmarkName = "calculateHotColdScore(_:)"
+            landmarkName = "registerVote(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1722,7 +1722,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "411"
             endingLineNumber = "411"
-            landmarkName = "loadImageDetail()"
+            landmarkName = "loadUIDetails()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -1770,7 +1770,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "529"
             endingLineNumber = "529"
-            landmarkName = "calculateHotColdScore(_:)"
+            landmarkName = "registerVote(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2641,11 +2641,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/Fusuma/Sources/FusumaViewController.swift"
-            timestampString = "518671066.788612"
+            timestampString = "518745072.934643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "468"
-            endingLineNumber = "468"
+            startingLineNumber = "478"
+            endingLineNumber = "478"
             landmarkName = "dishighlightButtons()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2721,11 +2721,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/Fusuma/Sources/FusumaViewController.swift"
-            timestampString = "518657423.305552"
+            timestampString = "518745072.934643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "424"
-            endingLineNumber = "424"
+            startingLineNumber = "429"
+            endingLineNumber = "429"
             landmarkName = "changeMode(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2849,11 +2849,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/Fusuma/Sources/FusumaViewController.swift"
-            timestampString = "518657423.305552"
+            timestampString = "518745072.934643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "389"
-            endingLineNumber = "389"
+            startingLineNumber = "393"
+            endingLineNumber = "393"
             landmarkName = "videoFinished(withFileURL:videoFrame:shotButton:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2881,11 +2881,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/Fusuma/Sources/FusumaViewController.swift"
-            timestampString = "518657423.305552"
+            timestampString = "518745072.934643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "408"
-            endingLineNumber = "408"
+            startingLineNumber = "412"
+            endingLineNumber = "412"
             landmarkName = "changeMode(_:)"
             landmarkType = "7">
          </BreakpointContent>
