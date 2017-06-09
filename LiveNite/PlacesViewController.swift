@@ -75,6 +75,7 @@ class PlacesViewController{
         userLocation = locations[0].coordinate
         print("\(userLocation.latitude) Degrees Latitude, \(userLocation.longitude) Degrees Longitude")
         locationUpdated = true
+        manager.stopUpdatingLocation()
     }
     
     

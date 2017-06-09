@@ -390,6 +390,7 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = UITableViewCellSelectionStyle.none
+        locationManager.stopUpdatingLocation()
 
         if (self.uiImageArr.count > 0 && !self.arrayEmpty){
             cell.backgroundColor = UIColor.clear
@@ -486,6 +487,13 @@ class EventController: UIViewController, UIImagePickerControllerDelegate, UINavi
             })
         }
         
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        userLocation = locations[0].coordinate
+        print("\(userLocation.latitude) Degrees Latitude, \(userLocation.longitude) Degrees Longitude")
+        locationUpdated = true
+        locationManager.stopUpdatingLocation()
     }
     
    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath)-> CGFloat{

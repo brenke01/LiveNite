@@ -88,6 +88,7 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         AWSService().loadCheckIn((self.selectedEvent?.eventID)!, completion: {(result)->Void in
             self.checkInRequest = result
             
+            
         })
         
         
@@ -126,25 +127,14 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             //set current date
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            let eventTimeFormatter = DateFormatter()
+            eventTimeFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
             let currentDate = Date()
-            
-            //fetch image data for post
-            
-            
-            //determine distance between user and place and set maxAllowableDistance
-            let imagePlaceLocation = CLLocation(latitude: (self.selectedEvent?.eventLat)!, longitude: (self.selectedEvent!.eventLong))
-            let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
-            let maxAllowableDistance : CLLocationDistance = 2500
-            var notifUUID =  UUID().uuidString
-            //if within range, check if they've checked in recently
-            if distanceBetweenUserAndPlace < maxAllowableDistance {
-                
-                
-                
-                //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
+            var eventStart = eventTimeFormatter.date(from: (selectedEvent?.eventStartTime)!)
+            var eventEnd = eventTimeFormatter.date(from: (selectedEvent?.eventEndTime)!)
+
+            if (eventStart! > currentDate){
                 if (self.checkInRequest?.userID == ""){
-                    
-                    //Make new check in in table
                     let checkIn : CheckIn = CheckIn()
                     checkIn.checkInID = (self.selectedEvent?.eventID)!
                     checkIn.checkInTime = dateFormatter.string(from: currentDate)
@@ -152,54 +142,58 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                     checkIn.gender = self.user!.gender
                     checkIn.userID = (self.user?.userID)!
                     checkIn.imageID = (self.selectedEvent?.eventID)!
+                    checkIn.goingToEvent = true
                     AWSService().save(checkIn)
-                    var notification = Notification()
-                    notification?.notificationID = notifUUID
-                    notification?.userName = (self.user?.userName)!
-                    notification?.ownerName = (self.selectedEvent?.ownerName)!
-                    var date = Date()
-                    notification?.actionTime = String(describing: date)
-                    notification?.imageID = (self.selectedEvent?.eventID)!
-                    notification?.open = true
-                    notification?.type = "checkIn"
-                    var dayComponent = DateComponents()
-                    dayComponent.day = 1
-                    var cal = Calendar.current
-                    var nextDay = cal.date(byAdding: dayComponent, to: date)
-                    var nextDayEpoch = UInt64(floor((nextDay?.timeIntervalSince1970)!))
-                    notification?.expirationDate = Int(nextDayEpoch)
-                    AWSService().save(notification!)
-                    
-                    //Award user points
-                    print("userID: \(userID)")
-                    
-                    self.user?.score += 5
-                    AWSService().save(user!)
-                    print("Score: \(user?.score)")
-                    SCLAlertView().showSuccess("Congrats", subTitle: "You have checked in and earned 5 points!")
-                    
-                } else {
-                    //if it did set the userID, they've checked in there before so we need to see how long it's been
-                    
-                    //get last check in date
-                    let lastCheckIn : Date = dateFormatter.date(from: self.checkInRequest!.checkInTime)!
-                    
-                    //get the difference in date components
-                    let diffDateComponents = (Calendar.current as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day, NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second], from: lastCheckIn, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
-                    
-                    print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
-                    
-                    //if it has been more than a day award the user points and update the check in time
-                    if (diffDateComponents.year! > 0 || diffDateComponents.month! > 0 || diffDateComponents.day! > 0){
-                        print("It's been a while")
+                    SCLAlertView().showSuccess("Congrats", subTitle: "You are going to this event!")
+                    AWSService().loadCheckIn((self.selectedEvent?.eventID)!, completion: {(result)->Void in
+                        self.checkInRequest = result
                         
-                        //Award user points
-                        print("userID: \(userID)")
-                        SCLAlertView().showSuccess("Congrats", subTitle: "You have checked in and earned 5 points!")
                         
-                        user?.score += 5
-                        AWSService().save(user!)
-                        print("Score: \(user?.score)")
+                    })
+                    
+                    
+                    getCheckIns(completion: {(result)->Void in
+                        self.checkInArray = result
+                        
+                        self.tableView.reloadData()
+                    })
+                }else{
+                    SCLAlertView().showError("Sorry", subTitle: "You are already going to this event!")
+                }
+                
+            }else if (eventEnd! < currentDate){
+                SCLAlertView().showError("Sorry", subTitle: "This event has ended!")
+
+            
+            }else{
+    
+            
+            //fetch image data for post
+                
+                
+                //determine distance between user and place and set maxAllowableDistance
+                let imagePlaceLocation = CLLocation(latitude: (self.selectedEvent?.eventLat)!, longitude: (self.selectedEvent!.eventLong))
+                let distanceBetweenUserAndPlace : CLLocationDistance = imagePlaceLocation.distance(from: userLocation)
+                let maxAllowableDistance : CLLocationDistance = 100
+                var notifUUID =  UUID().uuidString
+                //if within range, check if they've checked in recently
+                if distanceBetweenUserAndPlace < maxAllowableDistance {
+                    
+                    
+                    
+                    //If the userID was not set, then the checkInRequest doesn't exist in the db and it is a new check in
+                    if (self.checkInRequest?.userID == ""){
+                        
+                        //Make new check in in table
+                        let checkIn : CheckIn = CheckIn()
+                        checkIn.checkInID = (self.selectedEvent?.eventID)!
+                        checkIn.checkInTime = dateFormatter.string(from: currentDate)
+                        checkIn.placeTitle = (self.selectedEvent?.placeTitle)!
+                        checkIn.gender = self.user!.gender
+                        checkIn.userID = (self.user?.userID)!
+                        checkIn.imageID = (self.selectedEvent?.eventID)!
+                        checkIn.goingToEvent = false
+                        AWSService().save(checkIn)
                         var notification = Notification()
                         notification?.notificationID = notifUUID
                         notification?.userName = (self.user?.userName)!
@@ -217,23 +211,83 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
                         notification?.expirationDate = Int(nextDayEpoch)
                         AWSService().save(notification!)
                         
-                        //Update check in date
-                        self.checkInRequest?.checkInTime = dateFormatter.string(from: currentDate)
-                        AWSService().save(self.checkInRequest!)
+                        //Award user points
+                        print("userID: \(userID)")
                         
-                        //Notify user of successful check in
+                        self.user?.score += 5
+                        AWSService().save(user!)
+                        print("Score: \(user?.score)")
+                        SCLAlertView().showSuccess("Congrats", subTitle: "You have checked in and earned 5 points!")
+                        AWSService().loadCheckIn((self.selectedEvent?.eventID)!, completion: {(result)->Void in
+                            self.checkInRequest = result
+                            
+                            
+                        })
+                        
+                        
+                        getCheckIns(completion: {(result)->Void in
+                            self.checkInArray = result
+                            
+                            self.tableView.reloadData()
+                        })
                         
                     } else {
-                        //if it's been less than a day, let them know they've checked in too recently
-                        print("You've checked in within the last 24 hours")
-                        SCLAlertView().showError("Sorry", subTitle: "You have already checked in within the last 24 hours")
+                        //if it did set the userID, they've checked in there before so we need to see how long it's been
+                        
+                        //get last check in date
+                        let lastCheckIn : Date = dateFormatter.date(from: self.checkInRequest!.checkInTime)!
+                        
+                        //get the difference in date components
+                        let diffDateComponents = (Calendar.current as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.day, NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second], from: lastCheckIn, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
+                        
+                        print("The difference between dates is: \(diffDateComponents.year) years, \(diffDateComponents.month) months, \(diffDateComponents.day) days, \(diffDateComponents.hour) hours, \(diffDateComponents.minute) minutes, \(diffDateComponents.second) seconds")
+                        
+                        //if it has been more than a day award the user points and update the check in time
+                        if (diffDateComponents.year! > 0 || diffDateComponents.month! > 0 || diffDateComponents.day! > 0){
+                            print("It's been a while")
+                            
+                            //Award user points
+                            print("userID: \(userID)")
+                            SCLAlertView().showSuccess("Congrats", subTitle: "You have checked in and earned 5 points!")
+                            
+                            user?.score += 5
+                            AWSService().save(user!)
+                            print("Score: \(user?.score)")
+                            var notification = Notification()
+                            notification?.notificationID = notifUUID
+                            notification?.userName = (self.user?.userName)!
+                            notification?.ownerName = (self.selectedEvent?.ownerName)!
+                            var date = Date()
+                            notification?.actionTime = String(describing: date)
+                            notification?.imageID = (self.selectedEvent?.eventID)!
+                            notification?.open = true
+                            notification?.type = "checkIn"
+                            var dayComponent = DateComponents()
+                            dayComponent.day = 1
+                            var cal = Calendar.current
+                            var nextDay = cal.date(byAdding: dayComponent, to: date)
+                            var nextDayEpoch = UInt64(floor((nextDay?.timeIntervalSince1970)!))
+                            notification?.expirationDate = Int(nextDayEpoch)
+                            AWSService().save(notification!)
+                            
+                            //Update check in date
+                            self.checkInRequest?.checkInTime = dateFormatter.string(from: currentDate)
+                            AWSService().save(self.checkInRequest!)
+                            
+                            //Notify user of successful check in
+                            
+                        } else {
+                            //if it's been less than a day, let them know they've checked in too recently
+                            print("You've checked in within the last 24 hours")
+                            SCLAlertView().showError("Sorry", subTitle: "You have already checked in within the last 24 hours")
+                        }
+                        
                     }
-                    
+                } else {
+                    //if they aren't within range, let them know they aren't close enough to check in
+                    SCLAlertView().showInfo("Sorry", subTitle: "You are not close enough to check in")
+                    print("not close enough to check in")
                 }
-            } else {
-                //if they aren't within range, let them know they aren't close enough to check in
-                SCLAlertView().showInfo("Sorry", subTitle: "You are not close enough to check in")
-                print("not close enough to check in")
             }
 
         }
@@ -560,8 +614,8 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         
         
         self.navigationItem.titleView = titleView
-        var barButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(self.back(_:)))
-        barButton.title = "Back"
+        var barButton = UIBarButtonItem(title: " ", style: .plain, target: self, action: #selector(self.back(_:)))
+        barButton.title = " "
         barButton.image = UIImage(named: "backBtn")
         
         self.navigationItem.leftBarButtonItem = barButton
@@ -995,7 +1049,11 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
             alertController.dismiss(animated: true, completion: nil)
         }
         alertController.addAction(destroyAction)
+        var barButton = UIBarButtonItem(title: " ", style: .plain, target: self, action: #selector(self.back(_:)))
+        barButton.title = " "
+        barButton.image = UIImage(named: "backBtn")
         
+        self.navigationItem.leftBarButtonItem = barButton
         self.present(alertController, animated: true) {
             // ...
         }
