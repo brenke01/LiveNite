@@ -94,7 +94,26 @@ class ViewEventController: UIViewController, UIImagePickerControllerDelegate, UI
         
         getCheckIns(completion: {(result)->Void in
             self.checkInArray = result
-            
+            let eventTimeFormatter = DateFormatter()
+            eventTimeFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            let currentDate = Date()
+            var eventStart = eventTimeFormatter.date(from: (self.selectedEvent?.eventStartTime)!)
+            var newCheckIns = [CheckIn]()
+            if (eventStart! < currentDate){
+                for c in self.checkInArray{
+                    if (c.goingToEvent){
+                        newCheckIns.append(c)
+                    }
+                }
+                self.checkInArray = newCheckIns
+            }else{
+                for c in self.checkInArray{
+                    if (!c.goingToEvent){
+                        newCheckIns.append(c)
+                    }
+                }
+                self.checkInArray = newCheckIns
+            }
             self.tableView.reloadData()
         })
         
