@@ -288,6 +288,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
             playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
             cell.layer.addSublayer(playerLayer)
             self.playerLayer.player?.play()
+            playerLayer.zPosition = -100
             //perform play pause toggle on didselectrowatindexpath
         
         }else{
@@ -670,6 +671,7 @@ class viewPostController: UIViewController, UIImagePickerControllerDelegate, UIN
                 playerLayer.frame = cell.imgView.frame
                 playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
                 cell.layer.addSublayer(playerLayer)
+                playerLayer.zPosition = -100
                 
             }else{
                 cell.imgView.image = self.imageTapped
