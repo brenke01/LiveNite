@@ -1724,38 +1724,6 @@
             endingLineNumber = "411"
             landmarkName = "loadUIDetails()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.ViewEventController.loadImageDetail () -&gt; ()"
-                  moduleName = "LiveNite"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewEventController.swift"
-                  timestampString = "518699967.452506"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "386"
-                  endingLineNumber = "386"
-                  offsetFromSymbolStart = "3212">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LiveNite.ViewEventController.(loadImageDetail () -&gt; ()).(closure #1)"
-                  moduleName = "LiveNite"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewEventController.swift"
-                  timestampString = "518699967.455683"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "387"
-                  endingLineNumber = "387"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1772,6 +1740,38 @@
             endingLineNumber = "529"
             landmarkName = "registerVote(_:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LiveNite.ViewEventController.registerVote (__ObjC.UIButton) -&gt; ()"
+                  moduleName = "LiveNite"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewEventController.swift"
+                  timestampString = "518802301.307691"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "529"
+                  endingLineNumber = "529"
+                  offsetFromSymbolStart = "1180">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LiveNite.ViewEventController.registerVote (__ObjC.UIButton) -&gt; ()"
+                  moduleName = "LiveNite"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewEventController.swift"
+                  timestampString = "518802301.30952"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "529"
+                  endingLineNumber = "529"
+                  offsetFromSymbolStart = "9080">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2951,6 +2951,22 @@
             startingLineNumber = "923"
             endingLineNumber = "923"
             landmarkName = "locationManager(_:didUpdateLocations:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/SearchPostsController.swift"
+            timestampString = "518802212.390217"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "createUIImageDict()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
