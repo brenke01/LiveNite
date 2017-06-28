@@ -45,11 +45,13 @@ class SearchPostsController: UIViewController, UISearchBarDelegate, UISearchDisp
     }
     
     func createUIImageDict(){
-        for i in 0...imageArray.count - 1{
-           var uiImageDict : [String: UIImage] = [:]
-           uiImageDict[imageArray[i].imageID] = uiImageArray[i]
-            uiImageDictArray.append(uiImageDict)
-            
+        if (imageArray.count > 0){
+            for i in 0...imageArray.count - 1{
+               var uiImageDict : [String: UIImage] = [:]
+               uiImageDict[imageArray[i].imageID] = uiImageArray[i]
+                uiImageDictArray.append(uiImageDict)
+                
+            }
         }
     }
     

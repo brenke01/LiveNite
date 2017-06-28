@@ -1989,7 +1989,7 @@
         <image name="ProfilePlaceHolder" width="64" height="64"/>
         <image name="ProfilePlaceHolderLarge" width="64" height="64"/>
         <image name="Recent" width="650" height="500"/>
-        <image name="Search" width="64" height="64"/>
+        <image name="Search" width="32" height="32"/>
         <image name="UpVote" width="500" height="500"/>
         <image name="addItem" width="16" height="16"/>
         <image name="backBtn" width="16" height="16"/>

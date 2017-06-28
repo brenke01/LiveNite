@@ -18,6 +18,7 @@ import GoogleMaps
 
 
 
+
 var appDel = (UIApplication.shared.delegate as! AppDelegate)
 var context:NSManagedObjectContext = appDel.managedObjectContext!
 var upVoteInc : CGFloat = 5
@@ -300,13 +301,36 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 let data:[String:AnyObject] = result as! [String: AnyObject]
                 let userID = data["id"] as? String
                 self.userID = userID!
+                //self.getFriendsList()
                 completion(userID!)
                 
             }
             
         })
+
         
         
+    }
+    
+    func getFriendsList(){
+        print(self.userID)
+        let graphRequestFriends : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "/me/friends", parameters: nil)
+        graphRequestFriends.start(completionHandler: { (connection, result, error) -> Void in
+            
+            if ((error) != nil)
+            {
+                // Process error
+                print("Error: \(error)")
+                
+            }else{
+
+                print("Friends are : \(result)")
+                
+                
+                
+            }
+            
+        })
     }
     
     func hexStringToUIColor (hex:String) -> UIColor {
@@ -800,12 +824,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             for v  in cell.subviews{
                 v.removeFromSuperview()
             }
+            self.view.isUserInteractionEnabled = true
+
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
             self.overlayView.removeFromSuperview()
-
+            if (self.placesToggle){
+                self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 110, width: self.view.frame.width - 75, height: 50))
+                self.tryAgainButton = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 85, width: self.view.frame.width - 75, height: 50))
+            }else{
             self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 110, width: self.view.frame.width, height: 50))
             self.tryAgainButton = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2) - 85, width: self.view.frame.width, height: 50))
+            }
             self.tryAgainButton.text = "Tap to retry"
             self.tryAgainButton.textAlignment = .center
             self.tryAgainButton.textColor = UIColor.white
