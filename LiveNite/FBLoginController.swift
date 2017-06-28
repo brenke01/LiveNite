@@ -35,8 +35,9 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
         //self.view.addSubview(loadMask)
         //loadMask.isHidden = true
 
-
+        
         inputUserName.delegate = self
+        inputUserName.returnKeyType = UIReturnKeyType.done
         // Do any additional setup after loading the view, typically from a nib.
         submitButton.isHidden = true
         inputUserName.isHidden = true
