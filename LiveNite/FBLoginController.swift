@@ -24,11 +24,12 @@ import AWSDynamoDB
 class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, FBSDKLoginButtonDelegate, UITextFieldDelegate{
     var locations = 0
     var blockedCharacters = CharacterSet.alphanumerics.inverted
-    
+    var userObj = User()
     @IBOutlet weak var logoImg: UIImageView!
     @IBOutlet var submitButton: UIButton!
     @IBOutlet var inputUserName: UITextField!
     var userID : String = ""
+    var newUserObj : User = User()
     var loadMask = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,16 +120,19 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        
+        if (self.newUserObj.userID != nil && self.newUserObj.userID != ""){
+            AWSService().deleteItem(self.newUserObj)
+            submitButton.isHidden = true
+            inputUserName.isHidden = true
+        }
     }
     
     func saveUserToCoreData(_ fbResult : AnyObject){
         var newUser : Bool = true
-        var userObj = User()
         AWSService().loadUser(fbResult.value(forKey: "id") as! String,completion: {(result)->Void in
-            userObj = result
+            self.userObj = result
             
-            if (userObj?.userID != ""){
+            if (self.userObj?.userID != ""){
                 newUser = false
             }
             //The result from the Facebook request is an object that works like a Dictionary
@@ -144,16 +148,16 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
                 let email = fbResult.value(forKey: "email") as! String
                 let gender = fbResult.value(forKey: "gender")
                 let ageRange = (fbResult.value(forKey: "age_range") as AnyObject).value(forKey: "min")
-                let newUserObj : User = User()
-                newUserObj.userID = self.userID
-                newUserObj.age = ageRange as! Int
-                newUserObj.gender = String(describing: gender!)
-                newUserObj.accessToken = String(describing: (FBSDKAccessToken.current()!))
-                newUserObj.score = 0
-                newUserObj.email = email
-                newUserObj.userName = "temp"
-                newUserObj.profileImg = "nil"
-                AWSService().save(newUserObj)
+                
+                self.newUserObj.userID = self.userID
+                self.newUserObj.age = ageRange as! Int
+                self.newUserObj.gender = String(describing: gender!)
+                self.newUserObj.accessToken = String(describing: (FBSDKAccessToken.current()!))
+                self.newUserObj.score = 0
+                self.newUserObj.email = email
+                self.newUserObj.userName = "temp"
+                self.newUserObj.profileImg = "nil"
+                AWSService().save(self.newUserObj)
                 self.submitButton.isHidden = false
                 self.submitButton.slideInFromLeft()
                 self.view.bringSubview(toFront: self.submitButton)
@@ -166,8 +170,8 @@ class FBLoginController: UIViewController, UIImagePickerControllerDelegate, UINa
             }else{
                 DispatchQueue.main.async(execute: {
                 print(FBSDKAccessToken.current())
-                userObj?.accessToken = String(describing: FBSDKAccessToken.current()!)
-                AWSService().save(userObj!)
+                self.userObj?.accessToken = String(describing: FBSDKAccessToken.current()!)
+                AWSService().save(self.userObj!)
 
                     self.dismiss(animated: true, completion: nil)
 
