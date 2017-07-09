@@ -7,10 +7,12 @@
 //
 import AVFoundation
 import SCLAlertView
+import AWSDynamoDB
 
-class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate, AVCaptureMetadataOutputObjectsDelegate{
+class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate,  UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate, AVCaptureMetadataOutputObjectsDelegate, UICollectionViewDataSource{
     
     
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet var QrImageView: UIImageView!
     var qrCodeImage : CIImage!
     var captureSession : AVCaptureSession?
@@ -19,7 +21,9 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     @IBOutlet weak var profileInfoContainer: UIView!
     
+    @IBOutlet weak var postsButton: UIButton!
     
+    @IBOutlet weak var eventsButton: UIButton!
     @IBOutlet weak var profilebkg: UIView!
     var locations = 0
     var locationUpdated = false
@@ -32,8 +36,22 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var profileForm = ProfileSettingsForm()
     var activityIndicator = UIActivityIndicatorView()
     var editButton = UIBarButtonItem()
-    
-    
+    var arrayEmpty = false
+    var imageArr = [Image]()
+    var uiImageDict = [String:UIImage]()
+    var uiImageArr = [UIImage]()
+    var chosenImageObj = Image()
+    var chosenImage = UIImage()
+    var imageUtil = ImageUtil()
+    var showEvents = false
+    var showPosts = false
+    var eventBorder = CALayer()
+    var border = CALayer()
+    var eventsArr = [Event]()
+    var selectedEvent = Event()
+    var selectedEventImg = UIImage()
+
+
     
     @IBOutlet weak var profileImg: UIImageView!
     
@@ -61,6 +79,16 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        initializeBorders()
+        self.showPosts = true
+        switchBorder()
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionView?.dataSource = self
+        collectionView!.delegate = self
+        collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        let nibname = UINib(nibName: "Cell", bundle: nil)
+        collectionView!.register(nibname, forCellWithReuseIdentifier: "Cell")
+        collectionView!.register(NSClassFromString("GalleryCell"),forCellWithReuseIdentifier:"CELL");
         //profileInfoContainer.isHidden = true
         //profileInfoContainer.backgroundColor = UIColor.clear
         profilebkg.backgroundColor? = UIColor.darkGray.withAlphaComponent(0.5)
@@ -97,6 +125,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                     DispatchQueue.main.async(execute: {
                         self.progressBarDisplayer("Loading", true)
                         self.loadUserDetail()
+                        self.getImages()
+
                         
                     })
                     
@@ -107,6 +137,48 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         }
         
         
+    }
+    
+    func initializeBorders(){
+        let width = CGFloat(2.0)
+        border.borderColor = UIColor.white.cgColor
+        border.frame = CGRect(x: 0, y: postsButton.frame.size.height - width, width: postsButton.frame.size.width, height: postsButton.frame.size.height)
+        border.borderWidth = width
+        postsButton.layer.addSublayer(border)
+        postsButton.layer.masksToBounds = true
+        
+        
+        
+        
+  
+        eventBorder.borderColor = UIColor.white.cgColor
+        eventBorder.frame = CGRect(x: 0, y: eventsButton.frame.size.height - width, width: eventsButton.frame.size.width, height: eventsButton.frame.size.height)
+        eventBorder.borderWidth = width
+        eventsButton.layer.addSublayer(eventBorder)
+        eventsButton.layer.masksToBounds = true
+   
+    }
+    
+    func switchBorder(){
+        if (self.showPosts){
+
+
+
+            eventBorder.removeFromSuperlayer()
+            postsButton.layer.addSublayer(border)
+            eventsButton.layer.masksToBounds = true
+            postsButton.layer.masksToBounds = true
+
+            
+        }else{
+            border.removeFromSuperlayer()
+            eventsButton.layer.addSublayer(eventBorder)
+            eventsButton.layer.masksToBounds = true
+            postsButton.layer.masksToBounds = true
+ 
+
+
+        }
     }
     
     
@@ -395,7 +467,32 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                 destinationVC.user = self.user
                 destinationVC.currentImg = self.profileImg.image!
                 destinationVC.profileForm = profileForm
-            }}}
+            }
+        } else if segue.identifier == "viewPost" {
+            let image = Image()
+            
+            if let destinationVC = segue.destination as? viewPostController{
+                destinationVC.imageUtil = self.imageUtil
+                destinationVC.imageTapped = self.chosenImage
+                print("IMAGE ID: " + (image?.imageID)!)
+                destinationVC.imageObj = self.chosenImageObj
+                destinationVC.imageID = (self.chosenImageObj?.imageID)!
+                destinationVC.user = self.user
+                
+            }
+            
+            
+            
+        }else if segue.identifier == "viewEvent"{
+            
+            if let destinationVC = segue.destination as? ViewEventController{
+                destinationVC.imageUtil = self.imageUtil
+                destinationVC.user = (self.user)!
+                destinationVC.selectedEvent = self.selectedEvent
+                destinationVC.img = self.selectedEventImg
+            }
+        }
+    }
     
     func getRankMedal(_ score : Int) -> UIImage{
         var medal : UIImage
@@ -456,6 +553,305 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
             })        }
     }
     
+    //set size of each square cell to imgSize
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if (self.arrayEmpty){
+            imgHeight = Int((self.collectionView?.frame.height)!)
+            imgWidth = Int(self.collectionView!.frame.width)
+            noColumns = 1
+        }else{
+            
+            imgHeight = 200
+            imgWidth = 160
+            noColumns = 2
+        }
+        let size = CGSize(width: imgWidth, height: imgHeight)
+        return size
+    }
+    
+    //calculate offset based on screensize, number of columns, and size of cell then use it to apply the inset
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        var offset = CGFloat(0.0)
+        if (noColumns == 2){
+            offset = (screenWidth - CGFloat(noColumns*imgWidth)) / CGFloat(noColumns+1)
+        }else{
+            offset = 25
+        }
+        let sectionInset = UIEdgeInsets(top: offset/2, left: offset, bottom: offset/2, right: offset)
+        return sectionInset
+    }
+    
+    
+    //calculate offset based on screensize, number of columns, and size of cell then use it to set space between lines
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat{
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        var offset = CGFloat(0.0)
+        if (noColumns == 2){
+            offset = (screenWidth - CGFloat(noColumns*imgWidth)) / CGFloat(2*(noColumns+1))
+        }else{
+            offset = 25
+            
+        }
+        return offset
+    }
+    
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
+            
+            collectionView.backgroundColor = UIColor.clear
+            cell.backgroundColor = UIColor.clear
+            
+            if (!self.arrayEmpty){
+                
+             
+                
+                
+
+                    imgHeight = 200
+                    imgWidth = 160
+                    noColumns = 2
+                
+                
+                let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(imgWidth), height: CGFloat(imgHeight)))
+                imageButton.setImage(nil, for: UIControlState())
+                if (self.showPosts){
+                    imageButton.setImage(self.uiImageDict[self.imageArr[indexPath.row].imageID], for: UIControlState())
+                }else{
+                    imageButton.setImage(self.uiImageDict[self.eventsArr[indexPath.row].eventID], for: UIControlState())
+                }
+
+        
+                
+                //let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
+                let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
+                
+                if (self.showPosts){
+                    titleView.text = " " + self.imageArr[(indexPath as NSIndexPath).row].placeTitle
+                }else{
+                    titleView.text = " " + self.eventsArr[(indexPath as NSIndexPath).row].eventTitle
+                }
+
+                titleView.textColor = UIColor.white
+                titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+                titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
+                //titleViewContainer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
+                //imageButton.addSubview(titleViewContainer)
+                imageButton.addSubview(titleView)
+                imageButton.isUserInteractionEnabled = true
+                imageButton.layer.masksToBounds = true
+                //
+                let imagePressed :Selector = #selector(ProfileController.imagePressed(_:))
+                let tap = UITapGestureRecognizer(target: self, action: imagePressed)
+                tap.cancelsTouchesInView = false
+                tap.numberOfTapsRequired = 1
+                imageButton.addGestureRecognizer(tap)
+                let layer = imageButton.layer
+                layer.shadowColor = UIColor.black.cgColor
+                layer.shadowOffset = CGSize(width: 0, height: 20)
+                layer.shadowOpacity = 0.4
+                layer.shadowRadius = 5
+                layer.masksToBounds = true
+                imageButton.clipsToBounds = true
+                
+                
+                cell.addSubview(imageButton)
+                cell.layer.cornerRadius = 5
+                cell.layer.masksToBounds = true
+                cell.clipsToBounds = true
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.removeFromSuperview()
+            }
+
+            return cell
+    }
+    
+    @IBAction func imagePressed(_ sender: UITapGestureRecognizer){
+        let tapLocation = sender.location(in: self.collectionView)
+        let indexPath = self.collectionView?.indexPathForItem(at: tapLocation)
+        if (self.showPosts){
+            self.chosenImageObj = self.imageArr[(indexPath! as NSIndexPath).row]
+            self.chosenImage = self.uiImageDict[self.imageArr[(indexPath?.row)!].imageID]!
+            self.performSegue(withIdentifier: "viewPost", sender: nil)
+        }else{
+            self.selectedEvent = self.eventsArr[(indexPath?.row)!]
+            self.selectedEventImg = self.uiImageDict[self.eventsArr[(indexPath?.row)!].eventID]!
+            self.performSegue(withIdentifier: "viewEvent", sender: 1)
+        }
+
+        
+    }
+    
+
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if (self.arrayEmpty){
+            return 1
+        }else if (self.showPosts){
+            return self.imageArr.count
+        }else if (self.showEvents){
+            return self.eventsArr.count
+        }else{
+            return 1
+        }
+    }
+    
+    func createUIImageDict() -> [String: UIImage]{
+        
+        var dict = [String: UIImage]()
+        if (self.showPosts){
+            for i in 0...self.imageArr.count-1{
+                
+                dict[self.imageArr[i].imageID] = self.uiImageArr[i]
+                
+            }
+        }else{
+            for i in 0...self.eventsArr.count-1{
+                
+                dict[self.eventsArr[i].eventID] = self.uiImageArr[i]
+                
+            }
+        }
+
+        return dict
+    }
+    
+    func progressBarWithOverlay(_ msg:String, _ indicator:Bool ) {
+        
+        if indicator {
+
+            self.activityIndicator.frame = CGRect(x:self.view.frame.midX - 50, y: self.view.frame.midY - 50, width: 100, height: 100)
+            self.activityIndicator.startAnimating()
+            
+            
+        }
+    }
+    
+    func getImages(){
+        progressBarDisplayer("Loading", true)
+        self.imageArr = []
+        self.eventsArr = []
+        getImagesForUser(completion: {(result)->Void in
+
+            self.uiImageArr = []
+            self.uiImageDict = [:]
+            
+
+            if (self.imageArr.count == 0){
+                self.arrayEmpty = true
+                self.collectionView!.reloadData()
+                
+            }else{
+                self.arrayEmpty = false
+                
+                
+                for img in self.imageArr{
+                    AWSService().getImageFromUrl(String(img.imageID), bucket: "liveniteimages", completion: {(result)->Void in
+                        self.uiImageArr.append(result)
+                        if self.uiImageArr.count == self.imageArr.count{
+                            
+                            DispatchQueue.main.async(execute: {
+                                self.uiImageDict = self.createUIImageDict()
+                                
+                                self.view.isUserInteractionEnabled = true
+                                
+                                self.collectionView!.reloadData()
+                            })
+                            
+                        }
+                    })
+                }
+            }
+        })
+
+    }
+    
+    func getEvents(){
+        progressBarDisplayer("Loading", true)
+        self.imageArr = []
+        self.eventsArr = []
+        getEventsForUser(completion: {(result)->Void in
+
+            self.uiImageArr = []
+            self.uiImageDict = [:]
+            
+            
+            if (self.eventsArr.count == 0){
+                self.arrayEmpty = true
+                self.collectionView!.reloadData()
+                
+            }else{
+                self.arrayEmpty = false
+                
+                
+                for e in self.eventsArr{
+                    AWSService().getImageFromUrl(String(e.url), bucket: "liveniteimages", completion: {(result)->Void in
+                        self.uiImageArr.append(result)
+                        if self.uiImageArr.count == self.eventsArr.count{
+                            
+                            DispatchQueue.main.async(execute: {
+                                self.uiImageDict = self.createUIImageDict()
+                                
+                                self.view.isUserInteractionEnabled = true
+                                
+                                self.collectionView!.reloadData()
+                            })
+                            
+                        }
+                    })
+                }
+            }
+        })
+    }
+    
+    func getImagesForUser(completion:@escaping ([Image])->Void)->[Image]{
+        
+     
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        let queryExpression = AWSDynamoDBScanExpression()
+
+
+        queryExpression.filterExpression = "userID = :userID"
+
+        queryExpression.expressionAttributeValues = [":userID": self.user?.userID]
+        
+        
+        
+        dynamoDBObjectMapper.scan(Image.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for img  in output.items {
+                    let img : Image = img as! Image
+                    self.imageArr.append(img)
+                }
+                completion(self.imageArr)
+                return self.imageArr as AnyObject
+                
+            }
+            return self.imageArr as AnyObject
+        })
+        
+        
+        return imageArr
+        
+    }
+    
+
+
+
+    
     override func viewWillAppear(_ animated: Bool){
         if (profileForm.madeEdits){
             profileForm.madeEdits = false
@@ -467,8 +863,62 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         }
         
     }
+    
+    @IBAction func eventsToggle(_ sender: Any) {
+        self.showPosts = false
+        self.showEvents = true
+        switchBorder()
+        getEvents()
+    }
+    
+    @IBAction func postsToggle(_ sender: Any) {
+        self.showPosts = true
+        self.showEvents = false
+        switchBorder()
+        getImages()
+        
+    }
+    
     override func viewDidLayoutSubviews() {
 
         scrollView.contentSize = CGSize(width: CGFloat(contentView.frame.size.width), height: CGFloat(contentView.frame.size.height))
+    }
+    
+    func getEventsForUser(completion:@escaping ([Event])->Void)->[Event]{
+        
+        
+        let dynamoDBObjectMapper: AWSDynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+        let queryExpression = AWSDynamoDBScanExpression()
+        
+        
+        queryExpression.filterExpression = "ownerID = :userID"
+        
+        queryExpression.expressionAttributeValues = [":userID": self.user?.userID]
+        
+        
+        
+        dynamoDBObjectMapper.scan(Event.self, expression: queryExpression).continue({(task: AWSTask) -> AnyObject in
+            if (task.error != nil) {
+                print("The request failed. Error: [\(task.error)]")
+            }
+            if (task.exception != nil) {
+                print("The request failed. Exception: [\(task.exception)]")
+            }
+            if (task.result != nil) {
+                let output : AWSDynamoDBPaginatedOutput = task.result!
+                for e  in output.items {
+                    let e : Event = e as! Event
+                    self.eventsArr.append(e)
+                }
+                completion(self.eventsArr)
+                return self.eventsArr as AnyObject
+                
+            }
+            return self.eventsArr as AnyObject
+        })
+        
+        
+        return eventsArr
+        
     }
 }
