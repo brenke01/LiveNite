@@ -50,6 +50,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var eventsArr = [Event]()
     var selectedEvent = Event()
     var selectedEventImg = UIImage()
+    var tryAgainButton = UILabel()
+    var emptyArrayLabel = UILabel()
 
 
     
@@ -546,6 +548,11 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                 self.user = result
                 DispatchQueue.main.async(execute: {
                     self.loadUserDetail()
+                    if (self.showPosts){
+                        self.getImages()
+                    }else{
+                        self.getEvents()
+                    }
                     
                 })
                 
@@ -663,6 +670,34 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
                 cell.clipsToBounds = true
                 self.activityIndicator.stopAnimating()
                 self.activityIndicator.removeFromSuperview()
+
+            }else if (self.arrayEmpty){
+                DispatchQueue.main.async(execute: {
+                    for v  in cell.subviews{
+                        v.removeFromSuperview()
+                    }
+                    self.view.isUserInteractionEnabled = true
+                    
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.removeFromSuperview()
+
+                    self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2), width: self.view.frame.width, height: 50))
+
+                    
+
+                    if (self.showPosts){
+                        self.emptyArrayLabel.text = "You have no current posts"
+
+                    }else{
+                        self.emptyArrayLabel.text = "You have no current events"
+                    }
+                    self.tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
+                    self.emptyArrayLabel.textColor = UIColor.white
+                    self.emptyArrayLabel.textAlignment = .center
+                    
+                    cell.addSubview(self.tryAgainButton)
+                    cell.addSubview(self.emptyArrayLabel)
+                })
             }
 
             return cell

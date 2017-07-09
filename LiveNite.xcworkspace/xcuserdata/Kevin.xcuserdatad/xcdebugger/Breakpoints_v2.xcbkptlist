@@ -759,11 +759,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "855"
-            endingLineNumber = "855"
+            startingLineNumber = "890"
+            endingLineNumber = "890"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -775,11 +775,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "548"
-            endingLineNumber = "548"
+            startingLineNumber = "551"
+            endingLineNumber = "551"
             landmarkName = "scrollViewDidEndDragging(_:willDecelerate:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -791,11 +791,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "934"
-            endingLineNumber = "934">
+            startingLineNumber = "969"
+            endingLineNumber = "969">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -805,11 +805,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "856"
-            endingLineNumber = "856"
+            startingLineNumber = "891"
+            endingLineNumber = "891"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -821,11 +821,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521330910.288771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
             landmarkName = "loadUserDetail()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1749,7 +1749,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewEventController.swift"
-                  timestampString = "521329984.214464"
+                  timestampString = "521331349.592637"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "529"
@@ -1764,7 +1764,7 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ViewEventController.swift"
-                  timestampString = "521329984.217729"
+                  timestampString = "521331349.593927"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "529"
@@ -1861,11 +1861,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521330910.288771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
             landmarkName = "loadUserDetail()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1893,11 +1893,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521330910.288771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
             landmarkName = "loadUserDetail()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3105,11 +3105,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "816"
-            endingLineNumber = "816"
+            startingLineNumber = "851"
+            endingLineNumber = "851"
             landmarkName = "getImagesForUser(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3121,11 +3121,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "835"
-            endingLineNumber = "835"
+            startingLineNumber = "870"
+            endingLineNumber = "870"
             landmarkName = "getImagesForUser(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3137,11 +3137,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "830"
-            endingLineNumber = "830"
+            startingLineNumber = "865"
+            endingLineNumber = "865"
             landmarkName = "getImagesForUser(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3153,11 +3153,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "613"
-            endingLineNumber = "613"
+            startingLineNumber = "620"
+            endingLineNumber = "620"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3169,11 +3169,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "722"
-            endingLineNumber = "722"
+            startingLineNumber = "757"
+            endingLineNumber = "757"
             landmarkName = "createUIImageDict()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3185,11 +3185,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "625"
-            endingLineNumber = "625"
+            startingLineNumber = "632"
+            endingLineNumber = "632"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3201,11 +3201,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521330910.288771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
             landmarkName = "switchBorder()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3217,11 +3217,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521330910.288771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
             landmarkName = "initializeBorders()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3233,11 +3233,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "869"
-            endingLineNumber = "869"
+            startingLineNumber = "904"
+            endingLineNumber = "904"
             landmarkName = "eventsToggle(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3249,11 +3249,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "875"
-            endingLineNumber = "875"
+            startingLineNumber = "910"
+            endingLineNumber = "910"
             landmarkName = "postsToggle(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3265,11 +3265,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "607"
-            endingLineNumber = "607"
+            startingLineNumber = "614"
+            endingLineNumber = "614"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3281,11 +3281,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "619"
-            endingLineNumber = "619"
+            startingLineNumber = "626"
+            endingLineNumber = "626"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3297,11 +3297,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "708"
-            endingLineNumber = "708"
+            startingLineNumber = "743"
+            endingLineNumber = "743"
             landmarkName = "createUIImageDict()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3313,11 +3313,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "778"
-            endingLineNumber = "778"
+            startingLineNumber = "813"
+            endingLineNumber = "813"
             landmarkName = "getEvents()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3329,11 +3329,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "785"
-            endingLineNumber = "785"
+            startingLineNumber = "820"
+            endingLineNumber = "820"
             landmarkName = "getEvents()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3345,11 +3345,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328303.966797"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "796"
-            endingLineNumber = "796"
+            startingLineNumber = "831"
+            endingLineNumber = "831"
             landmarkName = "getEvents()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3361,11 +3361,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521328421.484741"
+            timestampString = "521331348.808511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "679"
-            endingLineNumber = "679"
+            startingLineNumber = "714"
+            endingLineNumber = "714"
             landmarkName = "imagePressed(_:)"
             landmarkType = "7">
             <Locations>
@@ -3377,11 +3377,11 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ProfileController.swift"
-                  timestampString = "521329984.3588"
+                  timestampString = "521331349.675452"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "679"
-                  endingLineNumber = "679"
+                  startingLineNumber = "714"
+                  endingLineNumber = "714"
                   offsetFromSymbolStart = "1468">
                </Location>
                <Location
@@ -3392,11 +3392,11 @@
                   moduleName = "LiveNite"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kevin/Documents/LiveNite/LiveNite/ProfileController.swift"
-                  timestampString = "521329984.360038"
+                  timestampString = "521331349.676729"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "679"
-                  endingLineNumber = "679"
+                  startingLineNumber = "714"
+                  endingLineNumber = "714"
                   offsetFromSymbolStart = "2312">
                </Location>
             </Locations>
@@ -3425,12 +3425,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LiveNite/ProfileController.swift"
-            timestampString = "521329052.838213"
+            timestampString = "521330910.288771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "463"
-            endingLineNumber = "463"
+            startingLineNumber = "465"
+            endingLineNumber = "465"
             landmarkName = "prepare(for:sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LiveNite/ProfileController.swift"
+            timestampString = "521331348.808511"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "674"
+            endingLineNumber = "674"
+            landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
