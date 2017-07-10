@@ -164,8 +164,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     func switchBorder(){
         if (self.showPosts){
 
-
-
+            postsButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+            eventsButton.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 16)
             eventBorder.removeFromSuperlayer()
             postsButton.layer.addSublayer(border)
             eventsButton.layer.masksToBounds = true
@@ -173,6 +173,9 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
 
             
         }else{
+            eventsButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+            postsButton.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 16)
+
             border.removeFromSuperlayer()
             eventsButton.layer.addSublayer(eventBorder)
             eventsButton.layer.masksToBounds = true
