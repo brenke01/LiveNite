@@ -597,25 +597,55 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageArrLength = self.imageArr.count
                 self.doneLoading = true
                 self.determineSort()
-                for img in self.imageArr{
-                    AWSService().getImageFromUrl(String(img.imageID), bucket: "liveniteimages", completion: {(result)->Void in
-                        self.uiImageArr.append(result)
-                        if self.uiImageArr.count == self.imageArr.count{
-                            self.switchNavBar(albumView: false)
+                    for img in self.imageArr{
+                        if img.isVideo{
+                            let url = URL(string: "https://s3.amazonaws.com/liveniteimages/" + img.url)
+                            let asset = AVURLAsset.init(url: url!)
+                            let gen = AVAssetImageGenerator(asset: asset)
+                            gen.appliesPreferredTrackTransform = true
+                            let timestamp = CMTime(seconds: 1, preferredTimescale: 60 )
+                            do {
+                                let imageRef = try gen.copyCGImage(at: timestamp, actualTime: nil)
+                                self.uiImageArr.append(UIImage(cgImage: imageRef))
+                                if self.uiImageArr.count == self.imageArr.count{
+                                    DispatchQueue.main.async(execute: {
+                                        
+                                        self.uiImageDict = self.createUIImageDict()
+                                        
+                                        self.refreshControl.endRefreshing()
+                                        
+                                        self.view.isUserInteractionEnabled = true
+                                        
+                                        
+                                        self.collectionView!.reloadData()
+                                        
+                                    })
+                                }
+                                
+                            }catch let error as NSError{
+                                print(error)
+                            }
                             
-                            DispatchQueue.main.async(execute: {
-                                self.uiImageDict = self.createUIImageDict()
-                                self.refreshControl.endRefreshing()
-                                
-                                self.view.isUserInteractionEnabled = true
-                                    
-                                
-                                self.collectionView!.reloadData()
+                        }else{
+                            AWSService().getImageFromUrl(String(img.imageID), bucket: "liveniteimages", completion: {(result)->Void in
+                                self.uiImageArr.append(result)
+                                if self.uiImageArr.count == self.imageArr.count{
+                                    DispatchQueue.main.async(execute: {
+                                        
+                                        self.uiImageDict = self.createUIImageDict()
+                                        
+                                        self.refreshControl.endRefreshing()
+                                        
+                                        self.view.isUserInteractionEnabled = true
+                                        
+                                        
+                                        self.collectionView!.reloadData()
+                                        
+                                    })
+                                }
                             })
-                            
                         }
-                    })
-                }
+                    }
                 }
             })
         }else{
