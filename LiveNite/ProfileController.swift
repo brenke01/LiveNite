@@ -77,7 +77,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         self.showPosts = true
         self.refreshControl.tintColor = UIColor.white
         collectionView?.addSubview(self.refreshControl)
-
+        self.profileImage = UIImage(named: "ProfilePlaceHolderLarge")!
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionView?.dataSource = self
         collectionView!.delegate = self
@@ -907,6 +907,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         }
         if (profileForm.didSaveNewImage){
             self.profileImage = profileForm.selectedImage
+            collectionView.reloadData()
         }
         
     }
@@ -976,12 +977,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         case UICollectionElementKindSectionHeader:
             
             let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath as IndexPath) as! HeaderCell
-            if (self.user?.profileImg == "nil"){
-                cell.profileImg.image = UIImage(named: "ProfilePlaceHolderLarge")
-                cell.layer.masksToBounds = true
-                cell.clipsToBounds = true
-               
-            }
+
             cell.profilebkg?.backgroundColor? = UIColor.darkGray.withAlphaComponent(0.5)
             let width = CGFloat(2.0)
             border.borderColor = UIColor.white.cgColor
