@@ -903,6 +903,8 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         if (profileForm.madeEdits){
             profileForm.madeEdits = false
             self.user?.userName = profileForm.userName
+            collectionView.reloadData()
+
             
         }
         if (profileForm.didSaveNewImage){
