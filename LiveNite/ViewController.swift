@@ -562,6 +562,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                 self.imageArrTemp = self.imageArr
                                 self.refreshControl.endRefreshing()
                                 
+                                
                                 self.view.isUserInteractionEnabled = true
                                     
                                 
@@ -820,7 +821,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.activityIndicator.removeFromSuperview()
             self.overlayView.removeFromSuperview()
         }else if (doneLoading || self.arrayEmpty){
-         DispatchQueue.main.async(execute: {
+         
             for v  in cell.subviews{
                 v.removeFromSuperview()
             }
@@ -849,7 +850,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
             cell.addSubview(self.tryAgainButton)
             cell.addSubview(self.emptyArrayLabel)
-            })
+            
         }
 
        

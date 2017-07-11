@@ -20,11 +20,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var qrCodeFrameView:UIView?
     
     @IBOutlet weak var profileInfoContainer: UIView!
-    
-    @IBOutlet weak var postsButton: UIButton!
-    
-    @IBOutlet weak var eventsButton: UIButton!
-    @IBOutlet weak var profilebkg: UIView!
+
     var locations = 0
     var locationUpdated = false
     var toggleState = 0
@@ -52,18 +48,16 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     var selectedEventImg = UIImage()
     var tryAgainButton = UILabel()
     var emptyArrayLabel = UILabel()
+    var profileImage = UIImage()
 
 
     
-    @IBOutlet weak var profileImg: UIImageView!
     
     
-    @IBOutlet weak var userNameLabel: UILabel!
     
     @IBOutlet weak var distanceContainer: UIView!
     @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var imgView: UIImageView!
+   
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -75,30 +69,33 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var sliderValue: UISlider!
     
-    @IBOutlet weak var pullView: UIView!
     var connectButton : UIBarButtonItem!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializeBorders()
         self.showPosts = true
-        switchBorder()
+        self.refreshControl.tintColor = UIColor.white
+        collectionView?.addSubview(self.refreshControl)
+
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionView?.dataSource = self
         collectionView!.delegate = self
         collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+
         let nibname = UINib(nibName: "Cell", bundle: nil)
         collectionView!.register(nibname, forCellWithReuseIdentifier: "Cell")
+//        let nibnameHeader = UINib(nibName: "Header", bundle: nil)
+//        collectionView!.register(nibnameHeader, forCellWithReuseIdentifier: "Header")
         collectionView!.register(NSClassFromString("GalleryCell"),forCellWithReuseIdentifier:"CELL");
         //profileInfoContainer.isHidden = true
         //profileInfoContainer.backgroundColor = UIColor.clear
-        profilebkg.backgroundColor? = UIColor.darkGray.withAlphaComponent(0.5)
+        let index = IndexPath(index: 0)
+
+
+
         navigationController?.navigationBar.topItem?.title = "Profile"
-        scrollView.delegate = self
-        profileImg.layer.borderWidth = 2
-        profileImg.layer.borderColor = UIColor.white.cgColor
-        profileImg.layer.masksToBounds = true
+
         //profileImg.backgroundColor = UIColor(red: 58/255, green:67/255, blue:96/255, alpha:1)
         navigationController?.navigationBar.tintColor = UIColor.white
         self.editButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: #selector(self.editSettings))
@@ -141,49 +138,15 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         
     }
     
-    func initializeBorders(){
-        let width = CGFloat(2.0)
-        border.borderColor = UIColor.white.cgColor
-        border.frame = CGRect(x: 0, y: postsButton.frame.size.height - width, width: postsButton.frame.size.width, height: postsButton.frame.size.height)
-        border.borderWidth = width
-        postsButton.layer.addSublayer(border)
-        postsButton.layer.masksToBounds = true
-        
-        
-        
-        
-  
-        eventBorder.borderColor = UIColor.white.cgColor
-        eventBorder.frame = CGRect(x: 0, y: eventsButton.frame.size.height - width, width: eventsButton.frame.size.width, height: eventsButton.frame.size.height)
-        eventBorder.borderWidth = width
-        eventsButton.layer.addSublayer(eventBorder)
-        eventsButton.layer.masksToBounds = true
+    func initializeBorders(index : IndexPath){
+
+
    
     }
     
     func switchBorder(){
-        if (self.showPosts){
-
-            postsButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-            eventsButton.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 16)
-            eventBorder.removeFromSuperlayer()
-            postsButton.layer.addSublayer(border)
-            eventsButton.layer.masksToBounds = true
-            postsButton.layer.masksToBounds = true
-
-            
-        }else{
-            eventsButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-            postsButton.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 16)
-
-            border.removeFromSuperlayer()
-            eventsButton.layer.addSublayer(eventBorder)
-            eventsButton.layer.masksToBounds = true
-            postsButton.layer.masksToBounds = true
- 
 
 
-        }
     }
     
     
@@ -191,55 +154,24 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     func loadUserDetail(){
         //profileInfoContainer.isHidden = false
-        var charCount = self.user?.userName.characters.count
-        var originalWidth = self.userNameLabel.frame.size.width
-        var newWidth = 13 * charCount!
-        var differenceWidth = CGFloat(newWidth) - originalWidth
-        var tFrame : CGRect = self.userNameLabel.frame
-        tFrame.size.width = CGFloat(newWidth)
-        self.userNameLabel.frame = tFrame
-        
-        var x = imgView.frame.origin.x
-        var newX = x + differenceWidth
-        var imgFrame : CGRect = imgView.frame
-        imgFrame.origin.x = newX
-        self.imgView.frame = imgFrame
-        userNameLabel.text = self.user?.userName
-        //imgView.image = getRankMedal((self.user?.score)!)
-        scoreLabel.text = "Score: " + String(describing: user!.score)
+
         
         if (self.user?.profileImg != "nil"){
             AWSService().getProfileImageFromUrl((self.user?.profileImg)!, completion: {(result)->Void in
-                self.profileImg.image = result
+                self.profileImage = result
                 self.activityIndicator.stopAnimating()
                 self.activityIndicator.removeFromSuperview()
+                collectionView.reloadData()
             })
         }else{
             self.activityIndicator.stopAnimating()
             self.activityIndicator.removeFromSuperview()
         }
-        if qrCodeImage == nil {
-            if self.user?.userID != "" {
-                let data = self.user?.userID.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)
-                let filter = CIFilter(name: "CIQRCodeGenerator")
-                
-                filter?.setValue(data, forKey: "inputMessage")
-                filter?.setValue("Q", forKey: "inputCorrectionLevel")
-                
-                qrCodeImage = filter?.outputImage
-                let scaleX = QrImageView.frame.size.width / qrCodeImage.extent.size.width
-                let scaleY = QrImageView.frame.size.height / qrCodeImage.extent.size.height
-                let transformedImage = qrCodeImage.applying(CGAffineTransform(scaleX: scaleX, y: scaleY))
-                
-                QrImageView.image = UIImage(ciImage: transformedImage)
-                
-            }
-        }
         
 
         
         //distanceLabel.text = String(describing: self.user!.distance) + " mi"
-        view.bringSubview(toFront: imgView)
+       
         
     }
     
@@ -382,9 +314,10 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         let currentDate = Date()
-        
+
         currentUser.score += 10
-        scoreLabel.text = "Score: " + String(currentUser.score)
+        self.user?.score += 10
+        collectionView.reloadData()
         metUser.score += 10
         AWSService().save(currentUser)
         AWSService().save(metUser)
@@ -467,10 +400,10 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editSettings" {
             
-            
+
             if let destinationVC = segue.destination as? EditSettingsController{
                 destinationVC.user = self.user
-                destinationVC.currentImg = self.profileImg.image!
+                destinationVC.currentImg = self.profileImage
                 destinationVC.profileForm = profileForm
             }
         } else if segue.identifier == "viewPost" {
@@ -537,31 +470,28 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         
         
     }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.activityIndicator.frame = CGRect(x:self.pullView.frame.midX - 20, y: self.pullView.frame.midY - 20, width: 30, height: 50)
-        self.activityIndicator.startAnimating()
-        self.pullView?.addSubview(self.activityIndicator)
-        self.pullView.bringSubview(toFront: self.activityIndicator)
+
+    
+
+    
+    func handleRefresh(_ refreshControl: UIRefreshControl){
+        AWSService().loadUser(self.userID,completion: {(result)->Void in
+            self.user = result
+            self.loadUserDetail()
+            if (self.showPosts){
+                self.getImages()
+            }else{
+                self.getEvents()
+            }
+            
+        })
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        var offset = scrollView.contentOffset.y
-        if (scrollView.contentOffset.y < 0){
-            AWSService().loadUser(self.userID,completion: {(result)->Void in
-                self.user = result
-                DispatchQueue.main.async(execute: {
-                    self.loadUserDetail()
-                    if (self.showPosts){
-                        self.getImages()
-                    }else{
-                        self.getEvents()
-                    }
-                    
-                })
-                
-                
-            })        }
-    }
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
     
     //set size of each square cell to imgSize
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -609,101 +539,123 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
-            
-            collectionView.backgroundColor = UIColor.clear
-            cell.backgroundColor = UIColor.clear
-            
-            if (!self.arrayEmpty){
-                
-             
-                
-                
 
+ 
+                var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as UICollectionViewCell
+                switchBorder()
+                collectionView.backgroundColor = UIColor.clear
+                cell.backgroundColor = UIColor.clear
+                initializeBorders(index: indexPath)
+                
+                if (!self.arrayEmpty){
+                    
+                    
+                    
+                    
+                    
                     imgHeight = 200
                     imgWidth = 160
                     noColumns = 2
-                
-                
-                let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(imgWidth), height: CGFloat(imgHeight)))
-                imageButton.setImage(nil, for: UIControlState())
-                if (self.showPosts){
-                    imageButton.setImage(self.uiImageDict[self.imageArr[indexPath.row].imageID], for: UIControlState())
-                }else{
-                    imageButton.setImage(self.uiImageDict[self.eventsArr[indexPath.row].eventID], for: UIControlState())
-                }
-
-        
-                
-                //let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
-                let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
-                
-                if (self.showPosts){
-                    titleView.text = " " + self.imageArr[(indexPath as NSIndexPath).row].placeTitle
-                }else{
-                    titleView.text = " " + self.eventsArr[(indexPath as NSIndexPath).row].eventTitle
-                }
-
-                titleView.textColor = UIColor.white
-                titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
-                titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
-                //titleViewContainer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
-                //imageButton.addSubview(titleViewContainer)
-                imageButton.addSubview(titleView)
-                imageButton.isUserInteractionEnabled = true
-                imageButton.layer.masksToBounds = true
-                //
-                let imagePressed :Selector = #selector(ProfileController.imagePressed(_:))
-                let tap = UITapGestureRecognizer(target: self, action: imagePressed)
-                tap.cancelsTouchesInView = false
-                tap.numberOfTapsRequired = 1
-                imageButton.addGestureRecognizer(tap)
-                let layer = imageButton.layer
-                layer.shadowColor = UIColor.black.cgColor
-                layer.shadowOffset = CGSize(width: 0, height: 20)
-                layer.shadowOpacity = 0.4
-                layer.shadowRadius = 5
-                layer.masksToBounds = true
-                imageButton.clipsToBounds = true
-                
-                
-                cell.addSubview(imageButton)
-                cell.layer.cornerRadius = 5
-                cell.layer.masksToBounds = true
-                cell.clipsToBounds = true
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.removeFromSuperview()
-
-            }else if (self.arrayEmpty){
-                DispatchQueue.main.async(execute: {
-                    for v  in cell.subviews{
-                        v.removeFromSuperview()
-                    }
-                    self.view.isUserInteractionEnabled = true
                     
+                    
+                    let imageButton = UIButton(frame: CGRect(x: 0, y: 0, width: CGFloat(imgWidth), height: CGFloat(imgHeight)))
+                    imageButton.setImage(nil, for: UIControlState())
+                    if (self.showPosts){
+                        imageButton.setImage(self.uiImageDict[self.imageArr[indexPath.row].imageID], for: UIControlState())
+                        if (self.imageArr[(indexPath as NSIndexPath).row].isVideo){
+                            var iconView = UIImageView(frame: CGRect(x: imageButton.frame.width * 0.8, y: imageButton.frame.height * 0.05, width: imageButton.frame.width * 0.15, height: imageButton.frame.height * 0.1))
+                            
+                            var videoIcon = UIImage(named: "videoCamera")
+                            iconView.image = videoIcon
+                            imageButton.addSubview(iconView)
+                        }
+                    }else{
+                        imageButton.setImage(self.uiImageDict[self.eventsArr[indexPath.row].eventID], for: UIControlState())
+                        if (self.eventsArr[(indexPath as NSIndexPath).row].isVideo){
+                            var iconView = UIImageView(frame: CGRect(x: imageButton.frame.width * 0.9, y: imageButton.frame.height * 0.05, width: imageButton.frame.width * 0.075, height: imageButton.frame.height * 0.075))
+                            
+                            var videoIcon = UIImage(named: "videoCamera")
+                            iconView.image = videoIcon
+                            imageButton.addSubview(iconView)
+                        }
+                    }
+                    
+                    
+                    
+                    //let titleViewContainer = UIView(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
+                    let titleView = UILabel(frame: CGRect(x: 0, y: imageButton.frame.height * 0.85, width: imageButton.frame.width, height: imageButton.frame.height * 0.15))
+                    
+                    if (self.showPosts){
+                        titleView.text = " " + self.imageArr[(indexPath as NSIndexPath).row].placeTitle
+                    }else{
+                        titleView.text = " " + self.eventsArr[(indexPath as NSIndexPath).row].eventTitle
+                    }
+                    
+                    titleView.textColor = UIColor.white
+                    titleView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+                    titleView.font = UIFont (name: "HelveticaNeue-Bold", size: 12)
+                    //titleViewContainer.backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
+                    //imageButton.addSubview(titleViewContainer)
+                    imageButton.addSubview(titleView)
+                    imageButton.isUserInteractionEnabled = true
+                    imageButton.layer.masksToBounds = true
+                    //
+                    let imagePressed :Selector = #selector(ProfileController.imagePressed(_:))
+                    let tap = UITapGestureRecognizer(target: self, action: imagePressed)
+                    tap.cancelsTouchesInView = false
+                    tap.numberOfTapsRequired = 1
+                    imageButton.addGestureRecognizer(tap)
+                    let layer = imageButton.layer
+                    layer.shadowColor = UIColor.black.cgColor
+                    layer.shadowOffset = CGSize(width: 0, height: 20)
+                    layer.shadowOpacity = 0.4
+                    layer.shadowRadius = 5
+                    layer.masksToBounds = true
+                    imageButton.clipsToBounds = true
+                    
+                    
+                    cell.addSubview(imageButton)
+                    cell.layer.cornerRadius = 5
+                    cell.layer.masksToBounds = true
+                    cell.clipsToBounds = true
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.removeFromSuperview()
-
-                    self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 2), width: self.view.frame.width, height: 50))
-
+                    self.refreshControl.endRefreshing()
+                }else if (self.arrayEmpty){
                     
+                        for v  in cell.subviews{
+                            v.removeFromSuperview()
+                        }
+                        self.view.isUserInteractionEnabled = true
+                        
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.removeFromSuperview()
+                        
+                        self.emptyArrayLabel = UILabel(frame: CGRect(x: 0, y: ((self.collectionView?.frame.height)! / 6), width: self.view.frame.width, height: 50))
+                        
+                        
+                        
+                        if (self.showPosts){
+                            self.emptyArrayLabel.text = "You have no current posts"
+                            
+                        }else{
+                            self.emptyArrayLabel.text = "You have no current events"
+                        }
+                        self.tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
+                        self.emptyArrayLabel.textColor = UIColor.white
+                        self.emptyArrayLabel.textAlignment = .center
+                        
+                        cell.addSubview(self.tryAgainButton)
+                        cell.addSubview(self.emptyArrayLabel)
+                   self.refreshControl.endRefreshing()
+                }
+                return cell
+            
 
-                    if (self.showPosts){
-                        self.emptyArrayLabel.text = "You have no current posts"
 
-                    }else{
-                        self.emptyArrayLabel.text = "You have no current events"
-                    }
-                    self.tryAgainButton.font = UIFont.boldSystemFont(ofSize: 16)
-                    self.emptyArrayLabel.textColor = UIColor.white
-                    self.emptyArrayLabel.textAlignment = .center
-                    
-                    cell.addSubview(self.tryAgainButton)
-                    cell.addSubview(self.emptyArrayLabel)
-                })
-            }
 
-            return cell
+
+            
     }
     
     @IBAction func imagePressed(_ sender: UITapGestureRecognizer){
@@ -891,13 +843,15 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
 
     
     override func viewWillAppear(_ animated: Bool){
+        let index = IndexPath(index: 0)
+
         if (profileForm.madeEdits){
             profileForm.madeEdits = false
-            userNameLabel.text = profileForm.userName
+            self.user?.userName = profileForm.userName
             
         }
         if (profileForm.didSaveNewImage){
-            profileImg.image = profileForm.selectedImage
+            self.profileImage = profileForm.selectedImage
         }
         
     }
@@ -919,7 +873,7 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     override func viewDidLayoutSubviews() {
 
-        scrollView.contentSize = CGSize(width: CGFloat(contentView.frame.size.width), height: CGFloat(contentView.frame.size.height))
+
     }
     
     func getEventsForUser(completion:@escaping ([Event])->Void)->[Event]{
@@ -959,4 +913,115 @@ class ProfileController: UIViewController, UIImagePickerControllerDelegate, UINa
         return eventsArr
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        switch kind {
+            
+        case UICollectionElementKindSectionHeader:
+            
+            let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath as IndexPath) as! HeaderCell
+            if (self.user?.profileImg == "nil"){
+                cell.profileImg.image = UIImage(named: "ProfilePlaceHolderLarge")
+                cell.layer.masksToBounds = true
+                cell.clipsToBounds = true
+               
+            }
+            cell.profilebkg?.backgroundColor? = UIColor.darkGray.withAlphaComponent(0.5)
+            let width = CGFloat(2.0)
+            border.borderColor = UIColor.white.cgColor
+            border.frame = CGRect(x: 0, y: cell.postsButton.frame.size.height - width, width: cell.postsButton.frame.size.width, height: cell.postsButton.frame.size.height)
+            border.borderWidth = width
+            cell.postsButton.layer.addSublayer(border)
+            cell.postsButton.layer.masksToBounds = true
+            
+            
+            
+            
+            
+            eventBorder.borderColor = UIColor.white.cgColor
+            eventBorder.frame = CGRect(x: 0, y: cell.eventsButton.frame.size.height - width, width: cell.eventsButton.frame.size.width, height: cell.eventsButton.frame.size.height)
+            eventBorder.borderWidth = width
+            cell.eventsButton.layer.addSublayer(eventBorder)
+            cell.eventsButton.layer.masksToBounds = true
+            if (self.showPosts){
+                
+                cell.postsButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+                cell.eventsButton.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 16)
+                eventBorder.removeFromSuperlayer()
+                cell.postsButton.layer.addSublayer(border)
+                cell.eventsButton.layer.masksToBounds = true
+                cell.postsButton.layer.masksToBounds = true
+
+            }else{
+                cell.eventsButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+                cell.postsButton.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 16)
+                
+                border.removeFromSuperlayer()
+                cell.eventsButton.layer.addSublayer(eventBorder)
+                cell.eventsButton.layer.masksToBounds = true
+                cell.postsButton.layer.masksToBounds = true
+
+                
+                
+                
+            }
+            if qrCodeImage == nil {
+                if self.user?.userID != "" {
+                    let data = self.user?.userID.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)
+                    let filter = CIFilter(name: "CIQRCodeGenerator")
+                    
+                    filter?.setValue(data, forKey: "inputMessage")
+                    filter?.setValue("Q", forKey: "inputCorrectionLevel")
+                    
+                    qrCodeImage = filter?.outputImage
+                    let scaleX = cell.QrImageView.frame.size.width / qrCodeImage.extent.size.width
+                    let scaleY = cell.QrImageView.frame.size.height / qrCodeImage.extent.size.height
+                    let transformedImage = qrCodeImage.applying(CGAffineTransform(scaleX: scaleX, y: scaleY))
+                    
+                    cell.QrImageView.image = UIImage(ciImage: transformedImage)
+                    
+                }
+            }
+            
+            cell.profileImg.image = self.profileImage
+            var charCount = self.user?.userName.characters.count
+            var originalWidth = cell.userNameLabel.frame.size.width
+            var newWidth = 13 * charCount!
+            var differenceWidth = CGFloat(newWidth) - originalWidth
+            var tFrame : CGRect = cell.userNameLabel.frame
+            tFrame.size.width = CGFloat(newWidth)
+            cell.userNameLabel.frame = tFrame
+            
+            var x = cell.imgView.frame.origin.x
+            var newX = x + differenceWidth
+            var imgFrame : CGRect = cell.imgView.frame
+            imgFrame.origin.x = newX
+            cell.imgView.frame = imgFrame
+            cell.userNameLabel.text = self.user?.userName
+            //imgView.image = getRankMedal((self.user?.score)!)
+            cell.scoreLabel.text = "Score: " + String(describing: user!.score)
+            view.bringSubview(toFront: cell.imgView)
+            
+            return cell
+            
+
+            
+        default:
+            
+            assert(false, "Unexpected element kind")
+        }
+    }
+}
+
+class HeaderCell: UICollectionReusableView{
+    @IBOutlet weak var eventsButton: UIButton!
+    @IBOutlet weak var postsButton : UIButton!
+    @IBOutlet weak var profileImg : UIImageView!
+    
+    @IBOutlet weak var profilebkg: UIView!
+    @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var QrImageView : UIImageView!
 }
